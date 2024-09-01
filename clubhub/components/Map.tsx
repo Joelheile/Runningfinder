@@ -36,6 +36,6 @@ useEffect(() => {
 },[])
 
     return (
-        <div style={{height: "600px"}} ref={mapRef} />
+        <div className="h-screen" ref={mapRef} />
     );
 }
