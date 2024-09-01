@@ -3,6 +3,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Loader } from "@googlemaps/js-api-loader";
 
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import { Button } from "./ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import FilterBar from "./FilterBar";
+
 interface Location {
   id: number;
   name: string;
@@ -26,7 +31,7 @@ const locations: Location[] = [
     time: "19:00",
     distance: "5km",
     image:
-      "https://scontent-ber1-1.cdninstagram.com/v/t51.2885-19/194291040_904543657149938_3065858583035170659_n.jpg?_nc_ht=scontent-ber1-1.cdninstagram.com&_nc_cat=102&_nc_ohc=iwvV9cf460EQ7kNvgGZKRv8&edm=AEhyXUkBAAAA&ccb=7-5&oh=00_AYBESKimFzZCl3oUcYl5r0OITheRGySXxcv3cRR6LtHXjw&oe=66DABF17&_nc_sid=8f1549",
+      "../assets/midnightrunners.jpeg", //TODO: Images
     instagram: "https://www.instagram.com/midnightrunnersberlin/",
     website: "https://www.midnightrunners.com/cities/berlin",
   },
@@ -225,6 +230,8 @@ export default function Map() {
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(
     null
   );
+  const [popoverOpen, setPopoverOpen] = useState(false);
+  const [popoverPosition, setPopoverPosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     const initMap = async () => {
@@ -256,9 +263,16 @@ export default function Map() {
 
         marker.addListener("click", () => {
           infoWindow.setContent(`
-            <h3>${location.name}</h3>
-            <p>${location.description}</p>
-          `);
+                <div style="max-width: 200px; text-align: center;">
+                  <h3 style="font-weight: bold; margin-bottom: 5px;">${location.name}</h3>
+                  <img src="${location.image}" style="width: 100px; height: 100px; object-fit: cover; margin-bottom: 5px;" />
+                  <p>${location.description}</p>
+                  <p><b>Date:</b> ${location.date}</p>
+                  <p><b>Time:</b> ${location.time}</p>
+                  <p><b>Distance:</b> ${location.distance}</p>
+                 
+              `);
+
           infoWindow.open(map, marker);
           setSelectedLocation(location);
         });
@@ -274,13 +288,30 @@ export default function Map() {
   }, []);
 
   return (
-    <div className="relative h-screen w-full">
-      <div className="absolute top-0 left-0 z-10 p-4 bg-white shadow-md">
+    <div className=" h-screen w-full">
+      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 z-10  w-fit p-4">
+        <FilterBar />
+      </div>
+      <div className="absolute top-0 right-0 z-10 bg-card text-card-foreground shadow-sm rounded-lg p-4 space-y-4 m-4">
         {selectedLocation ? (
           <div>
+            <img src={selectedLocation.image} className="w-48 h-48"
+            ></img>
             <h2 className="text-lg font-bold">{selectedLocation.name}</h2>
             <p>{selectedLocation.description}</p>
+            <p>
+              <b>Date(s):</b> {selectedLocation.date}
+            </p>
+            <p>
+              <b>Time(s):</b> {selectedLocation.time}
+            </p>
+            <p>
+              <b>Distance:</b> {selectedLocation.distance}
+            </p>
+
+            
           </div>
+          //TODO: Website & Profilbild 
         ) : (
           <p>Select a location to see more information</p>
         )}
