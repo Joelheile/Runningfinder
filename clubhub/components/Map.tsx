@@ -297,7 +297,7 @@ export default function Map() {
           <div>
             <img src={selectedLocation.image} className="w-48 h-48"
             ></img>
-            <h2 className="text-lg font-bold">{selectedLocation.name}</h2>
+            <h2 className="">{selectedLocation.name}</h2>
             <p>{selectedLocation.description}</p>
             <p>
               <b>Date(s):</b> {selectedLocation.date}
