@@ -264,13 +264,8 @@ export default function Map() {
         marker.addListener("click", () => {
           infoWindow.setContent(`
                 <div style="max-width: 200px; text-align: center;">
-                  <h3 style="font-weight: bold; margin-bottom: 5px;">${location.name}</h3>
-                  <img src="${location.image}" style="width: 100px; height: 100px; object-fit: cover; margin-bottom: 5px;" />
-                  <p>${location.description}</p>
-                  <p><b>Date:</b> ${location.date}</p>
-                  <p><b>Time:</b> ${location.time}</p>
-                  <p><b>Distance:</b> ${location.distance}</p>
-                 
+                  <h3 style="font-weight: bold; size: 16px; margin-bottom: 5px;">${location.name}</h3>
+                  <img src="${location.image}" style="width: 100px; height: 100px; object-fit: cover; margin-bottom: 5px;" />^
               `);
 
           infoWindow.open(map, marker);
@@ -288,11 +283,11 @@ export default function Map() {
   }, []);
 
   return (
-    <div className=" h-screen w-full">
-      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 z-10  w-fit p-4">
+    <div className="h-screen w-full">
+      <div className="">
         <FilterBar />
       </div>
-      <div className="absolute top-0 right-0 z-10 bg-card text-card-foreground shadow-sm rounded-lg p-4 space-y-4 m-4">
+      <div className="absolute top-0 left-0 z-10 bg-card text-card-foreground shadow-sm rounded-lg p-4 w-full ">
         {selectedLocation ? (
           <div>
             <img src={selectedLocation.image} className="w-48 h-48"

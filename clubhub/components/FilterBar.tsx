@@ -25,10 +25,10 @@ export default function FilterBar() {
   };
 
   return (
-    <div className="bg-card text-card-foreground shadow-sm rounded-lg p-4 space-y-4">
+    <div className="absolute bottom-0 left-0 z-10 w-full bg-card text-card-foreground shadow-sm rounded-lg p-4 space-y-4">
       <div className="flex flex-col sm:flex-row gap-4">
         <div className="flex-1 space-y-2">
-          <label htmlFor="distance-filter" className="text-sm font-medium">
+          <label htmlFor="distance-filter" className="">
             Distance (km)
           </label>
           <Slider
@@ -40,21 +40,21 @@ export default function FilterBar() {
             onValueChange={setDistance}
             className="w-full"
           />
-          <div className="flex justify-between text-sm text-muted-foreground">
+          <div className="flex justify-between">
             {[0, 5, 10, 15, 20].map((value) => (
               <span key={value}>{value}</span>
             ))}
           </div>
         </div>
         <div className="flex-1 space-y-2">
-          <label className="text-sm font-medium">Days</label>
+          <label className=" font-medium">Days</label>
           <Popover>
             <PopoverTrigger asChild>
               <Button
                 variant={"outline"}
                 className={cn(
-                  "w-full justify-start text-left font-normal",
-                  selectedDays.length === 0 && "text-muted-foreground"
+                  "w-full justify-start font-normal",
+                  selectedDays.length === 0 && ""
                 )}
               >
                 <CalendarIcon className="mr-2 h-4 w-4" />
@@ -70,7 +70,7 @@ export default function FilterBar() {
                       checked={selectedDays.includes(day)}
                       onCheckedChange={() => toggleDay(day)}
                     />
-                    <label htmlFor={day} className="text-sm font-medium leading-none">
+                    <label htmlFor={day} className="font-medium leading-none">
                       {day}
                     </label>
                   </div>
@@ -82,7 +82,7 @@ export default function FilterBar() {
       </div>
       <div className="flex justify-between items-center pt-2">
         <Button size="sm">
-          Let's run
+          Lets run
           <Sliders className="ml-2 h-4 w-4" />
         </Button>
         <Button variant="ghost" size="icon" onClick={handleReset}>
