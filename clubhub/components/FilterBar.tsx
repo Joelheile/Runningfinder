@@ -37,7 +37,8 @@ export default function FilterBar() {
   };
 
   return (
-    <div className="absolute bottom-0 left-0 z-10 w-full bg-card text-card-foreground shadow-sm rounded-lg p-6 space-y-4">
+    <div className="absolute bottom-0 left-0 z-10 w-full bg-white/80 backdrop-blur-sm text-card-foreground shadow-sm rounded-lg p-6 space-y-4">
+
       <div className="flex flex-col sm:flex-row gap-4">
         <div className="flex-1 w-1/2  space-y-2">
           <label className=" font-medium">Days</label>
