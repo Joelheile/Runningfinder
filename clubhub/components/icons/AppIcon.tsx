@@ -1,8 +1,10 @@
 //GoogleLogo.js
 import React from "react";
+
+
 export default function AppIcon() {
   return (
-    <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg  viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
 <rect width="100" height="100" rx="12" fill="white"/>
 <g filter="url(#filter0_d_14_121)">
 <path d="M52.844 79.184C59 71.48 73.04 52.808 73.04 42.32C73.04 29.6 62.72 19.28 50 19.28C37.28 19.28 26.96 29.6 26.96 42.32C26.96 52.808 41 71.48 47.156 79.184C48.632 81.02 51.368 81.02 52.844 79.184Z" fill="url(#paint0_linear_14_121)"/>
