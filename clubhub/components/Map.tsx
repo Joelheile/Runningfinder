@@ -284,9 +284,7 @@ export default function Map() {
 
   return (
     <div className="h-screen w-full">
-      <div className="">
-        <FilterBar />
-      </div>
+      
       <div className="absolute top-0 left-0 z-10 bg-card text-card-foreground shadow-sm rounded-lg p-4 w-full ">
         {selectedLocation ? (
           <div>
