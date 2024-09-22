@@ -31,6 +31,12 @@ const config: Config = {
         "transparent-white": "",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        // color palette
+        light: "#F5F7FA",
+        darkest: "#10192C",
+        dark: "#4E5666",
+        medium: "#8B98B1",
+        error: "#E23523",
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",

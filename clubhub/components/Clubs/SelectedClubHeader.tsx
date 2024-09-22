@@ -33,7 +33,7 @@ export default function SelectedClubHeader({
 
         <div>
           <Link href={`/pages/club/${id}`}>
-            <ChevronRight />
+            <ChevronRight className=" stroke-primary" />
           </Link>
         </div>
       </div>
