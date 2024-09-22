@@ -7,6 +7,9 @@ import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import FilterBar from "./FilterBar";
+import Image from "next/image";
+import { ChevronRight } from "lucide-react";
+import SelectedClubHeader from "./Clubs/SelectedClubHeader";
 
 interface Location {
   id: number;
@@ -30,8 +33,7 @@ const locations: Location[] = [
     date: "Wednesday",
     time: "19:00",
     distance: "5km",
-    image:
-      "../assets/midnightrunners.jpeg", //TODO: Images
+    image: "../assets/midnightrunners.jpeg", //TODO: Images
     instagram: "https://www.instagram.com/midnightrunnersberlin/",
     website: "https://www.midnightrunners.com/cities/berlin",
   },
@@ -39,7 +41,7 @@ const locations: Location[] = [
   {
     id: 2,
     name: "forward run club berlin",
-    description: "",
+    description: "Running forward through Berlin",
     position: { lat: 52.5410841, lng: 13.4122118 },
     date: "Sunday coffee run",
     time: "10:00h",
@@ -262,13 +264,6 @@ export default function Map() {
         });
 
         marker.addListener("click", () => {
-          infoWindow.setContent(`
-                <div style="max-width: 200px; text-align: center;">
-                  <h3 style="font-weight: bold; size: 16px; margin-bottom: 5px;">${location.name}</h3>
-                  <img src="${location.image}" style="width: 100px; height: 100px; object-fit: cover; margin-bottom: 5px;" />^
-              `);
-
-          infoWindow.open(map, marker);
           setSelectedLocation(location);
         });
       });
@@ -284,31 +279,13 @@ export default function Map() {
 
   return (
     <div className="h-screen w-full">
-      
-      <div className="absolute top-0 left-0 z-10 bg-card text-card-foreground shadow-sm rounded-lg p-4 w-full ">
-        {selectedLocation ? (
-          <div>
-            <img src={selectedLocation.image} className="w-48 h-48"
-            ></img>
-            <h2 className="">{selectedLocation.name}</h2>
-            <p>{selectedLocation.description}</p>
-            <p>
-              <b>Date(s):</b> {selectedLocation.date}
-            </p>
-            <p>
-              <b>Time(s):</b> {selectedLocation.time}
-            </p>
-            <p>
-              <b>Distance:</b> {selectedLocation.distance}
-            </p>
+      {selectedLocation && (
+        <SelectedClubHeader
+          name={selectedLocation.name}
+          description={selectedLocation.description}
+        />
+      )}
 
-            
-          </div>
-          //TODO: Website & Profilbild 
-        ) : (
-          <p>Select a location to see more information</p>
-        )}
-      </div>
       <div className="h-full w-full" ref={mapRef} />
     </div>
   );

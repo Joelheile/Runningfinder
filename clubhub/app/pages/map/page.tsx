@@ -12,7 +12,7 @@ const MapPage = () => {
     <div className="h-screen">
       <Link
         href={`/pages/run/likedruns`}
-        className="absolute z-20 right-2 top-2"
+        className="absolute z-20   right-2   bottom-60"
       >
         <FilledHeart />
       </Link>
