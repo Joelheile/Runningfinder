@@ -38,10 +38,9 @@ export default function FilterBar() {
 
   return (
     <div className="absolute bottom-0 left-0 z-10 w-full bg-white/80 backdrop-blur-sm text-card-foreground shadow-sm rounded-lg p-6 space-y-4">
-
       <div className="flex flex-col sm:flex-row gap-4">
         <div className="flex-1 w-1/2  space-y-2">
-          <label className=" font-medium">Days</label>
+          <label className=" font-medium">When are you free?</label>
           <Popover>
             <PopoverTrigger asChild>
               <Button
@@ -52,7 +51,10 @@ export default function FilterBar() {
                 )}
               >
                 <CalendarIcon className="mr-2 h-4 w-4" />
-                {selectedDays.length > 2
+
+                {selectedDays.length === 0
+                  ? "Select Days"
+                  : selectedDays.length > 2
                   ? `${selectedDays.slice(0, 2).join(", ")}...`
                   : selectedDays.join(", ")}
               </Button>
@@ -77,25 +79,26 @@ export default function FilterBar() {
         </div>
       </div>
       <div className="flex-1 space-y-2 ">
-        <label className=" font-medium">Distance</label>
-        <Slider
-          id="distance-filter"
-          min={0}
-          max={20}
-          step={5}
-          value={distance}
-          onValueChange={setDistance}
-          className="w-full"
-        />
-        <div className="flex justify-between">
-          {[0, 5, 10, 15, 20].map((value) => (
-            <span key={value}>{value}</span>
-          ))}
+        <label className=" font-medium">Your prefered distance (km)</label>
+        <div className="  pt-5 pb-1 px-4 border border-input bg-background hover:bg-accent hover:text-accent-foreground rounded-sm">
+          <Slider
+            id="distance-filter"
+            min={0}
+            max={20}
+            step={5}
+            value={distance}
+            onValueChange={setDistance}
+            className="w-full"
+          />
+
+          <div className="flex mt-2 mx-2 justify-between">
+            {[0, 5, 10, 15, 20].map((value) => (
+              <span key={value}>{value}</span>
+            ))}
+          </div>
         </div>
       </div>
-      <div className="flex justify-between items-center pt-2">
-        <Button size="sm">Filter</Button>
-      </div>
+      
     </div>
   );
 }
