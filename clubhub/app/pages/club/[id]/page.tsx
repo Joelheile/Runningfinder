@@ -21,7 +21,7 @@ const ClubDetailPage = () => {
         </div>
 
         <div className="flex gap-2">
-          <Link href={`/pages/club/${id}/edit`}>
+          <Link href={`/pages/club/${id}/admin`}>
             <Pencil className="stroke-primary" />
           </Link>
           <Share className="stroke-primary" />
