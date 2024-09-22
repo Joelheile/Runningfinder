@@ -1,7 +1,7 @@
 
 import React from "react";
 
-const EditClubPage = () => {
+const AdminPage = () => {
   return (
     <>
 
@@ -9,4 +9,4 @@ const EditClubPage = () => {
   );
 };
 
-export default EditClubPage;
+export default AdminPage;
