@@ -3,6 +3,9 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Metrics from "./metrics";
 import { SessionProvider } from "next-auth/react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,9 +22,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <SessionProvider>
-        <body className={inter.className}>
-          {children} <Metrics />
-        </body>
+        <QueryClientProvider client={queryClient}>
+          <body className={inter.className}>
+            {children} <Metrics />
+          </body>
+        </QueryClientProvider>
       </SessionProvider>
     </html>
   );
