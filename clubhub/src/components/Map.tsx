@@ -230,7 +230,7 @@ Sunday
 export default function Map() {
   const mapRef = useRef<HTMLDivElement>(null);
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(
-    null
+    null,
   );
   const [popoverOpen, setPopoverOpen] = useState(false);
   const [popoverPosition, setPopoverPosition] = useState({ x: 0, y: 0 });
@@ -244,7 +244,7 @@ export default function Map() {
 
       const { Map } = await loader.importLibrary("maps");
       const { Marker } = (await loader.importLibrary(
-        "marker"
+        "marker",
       )) as google.maps.MarkerLibrary;
       const { InfoWindow } = await loader.importLibrary("maps");
 

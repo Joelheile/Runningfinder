@@ -6,8 +6,6 @@ interface RunIconProps {
 }
 
 export default function RunIcon({ isSelected }: RunIconProps) {
-
-
   function renderIcon() {
     if ((isSelected = true)) {
       return (

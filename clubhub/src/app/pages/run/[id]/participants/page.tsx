@@ -1,12 +1,7 @@
-
 import React from "react";
 
 const RunParticipantsPage = () => {
-  return (
-    <>
-
-    </>
-  );
+  return <></>;
 };
 
 export default RunParticipantsPage;

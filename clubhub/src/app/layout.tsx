@@ -18,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <SessionProvider >
+      <SessionProvider>
         <body className={inter.className}>
           {children} <Metrics />
         </body>

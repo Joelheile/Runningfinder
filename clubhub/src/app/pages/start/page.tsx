@@ -15,13 +15,17 @@ const StartPage = () => {
           <h1>Welcome to ClubHub!</h1>
         </div>
         <div className="w-1/2">
-        <Link href="/pages/signup">
-          <Button variant={"default"} className="w-full">Sign up</Button>
+          <Link href="/pages/signup">
+            <Button variant={"default"} className="w-full">
+              Sign up
+            </Button>
           </Link>
         </div>
         <div className="w-1/2">
-        <Link href="/pages/login">
-          <Button variant={"outline"} className="w-full">Login</Button>
+          <Link href="/pages/login">
+            <Button variant={"outline"} className="w-full">
+              Login
+            </Button>
           </Link>
         </div>
       </div>

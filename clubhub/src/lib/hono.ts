@@ -1,7 +1,7 @@
-import { Hono } from 'hono'
-import { handle } from 'hono/vercel'
+import { Hono } from "hono";
+import { handle } from "hono/vercel";
 
-const app = new Hono().basePath('/api')
+const app = new Hono().basePath("/api");
 
-export { app }
-export default handle(app)
+export { app };
+export default handle(app);

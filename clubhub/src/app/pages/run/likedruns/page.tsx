@@ -1,10 +1,9 @@
-
 import React from "react";
 
 const LikedRunsPage = () => {
   return (
     <>
-<h1>Liked Runs</h1>
+      <h1>Liked Runs</h1>
     </>
   );
 };

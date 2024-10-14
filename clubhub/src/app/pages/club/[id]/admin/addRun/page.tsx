@@ -1,12 +1,7 @@
-
 import React from "react";
 
 const AddRunPage = () => {
-  return (
-    <>
-
-    </>
-  );
+  return <></>;
 };
 
 export default AddRunPage;
