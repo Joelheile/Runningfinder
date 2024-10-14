@@ -7,10 +7,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "db:generate": "npx drizzle-kit generate", 
+    "db:generate": "npx drizzle-kit generate",
     "db:push": "npx drizzle-kit push"
   },
   "dependencies": {
+    "@auth/drizzle-adapter": "^1.5.3",
     "@neondatabase/serverless": "^0.9.5",
     "@radix-ui/react-checkbox": "^1.1.1",
     "@radix-ui/react-label": "^2.1.0",
@@ -24,6 +25,8 @@
     "drizzle-orm": "^0.33.0",
     "lucide-react": "^0.438.0",
     "next": "14.2.7",
+    "next-auth": "^4.24.8",
+    "postgres": "^3.4.4",
     "react": "^18",
     "react-dom": "^18",
     "tailwind-merge": "^2.5.2",
