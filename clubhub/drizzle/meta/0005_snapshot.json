@@ -1,11 +1,11 @@
 {
-  "id": "ebfbcf58-1026-49e8-9ccd-b2504ea5a369",
-  "prevId": "4d6506e9-a5bd-45ba-afa6-c45937ba0097",
+  "id": "5521c500-ef34-4648-bdb0-ca7cbcc92b89",
+  "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.account": {
-      "name": "account",
+    "public.auth_account": {
+      "name": "auth_account",
       "schema": "",
       "columns": {
         "userId": {
@@ -77,9 +77,9 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "account_userId_user_id_fk": {
-          "name": "account_userId_user_id_fk",
-          "tableFrom": "account",
+        "auth_account_userId_user_id_fk": {
+          "name": "auth_account_userId_user_id_fk",
+          "tableFrom": "auth_account",
           "tableTo": "user",
           "columnsFrom": [
             "userId"
@@ -92,8 +92,8 @@
         }
       },
       "compositePrimaryKeys": {
-        "account_provider_providerAccountId_pk": {
-          "name": "account_provider_providerAccountId_pk",
+        "auth_account_provider_providerAccountId_pk": {
+          "name": "auth_account_provider_providerAccountId_pk",
           "columns": [
             "provider",
             "providerAccountId"
@@ -102,8 +102,8 @@
       },
       "uniqueConstraints": {}
     },
-    "public.authenticator": {
-      "name": "authenticator",
+    "public.auth_authenticator": {
+      "name": "auth_authenticator",
       "schema": "",
       "columns": {
         "credentialID": {
@@ -157,9 +157,9 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "authenticator_userId_user_id_fk": {
-          "name": "authenticator_userId_user_id_fk",
-          "tableFrom": "authenticator",
+        "auth_authenticator_userId_user_id_fk": {
+          "name": "auth_authenticator_userId_user_id_fk",
+          "tableFrom": "auth_authenticator",
           "tableTo": "user",
           "columnsFrom": [
             "userId"
@@ -172,8 +172,8 @@
         }
       },
       "compositePrimaryKeys": {
-        "authenticator_userId_credentialID_pk": {
-          "name": "authenticator_userId_credentialID_pk",
+        "auth_authenticator_userId_credentialID_pk": {
+          "name": "auth_authenticator_userId_credentialID_pk",
           "columns": [
             "userId",
             "credentialID"
@@ -181,8 +181,8 @@
         }
       },
       "uniqueConstraints": {
-        "authenticator_credentialID_unique": {
-          "name": "authenticator_credentialID_unique",
+        "auth_authenticator_credentialID_unique": {
+          "name": "auth_authenticator_credentialID_unique",
           "nullsNotDistinct": false,
           "columns": [
             "credentialID"
@@ -527,8 +527,8 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "public.session": {
-      "name": "session",
+    "public.auth_session": {
+      "name": "auth_session",
       "schema": "",
       "columns": {
         "sessionToken": {
@@ -539,7 +539,7 @@
         },
         "userId": {
           "name": "userId",
-          "type": "text",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
@@ -552,9 +552,9 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "session_userId_user_id_fk": {
-          "name": "session_userId_user_id_fk",
-          "tableFrom": "session",
+        "auth_session_userId_user_id_fk": {
+          "name": "auth_session_userId_user_id_fk",
+          "tableFrom": "auth_session",
           "tableTo": "user",
           "columnsFrom": [
             "userId"
@@ -617,8 +617,8 @@
         }
       }
     },
-    "public.verificationToken": {
-      "name": "verificationToken",
+    "public.auth_verificationToken": {
+      "name": "auth_verificationToken",
       "schema": "",
       "columns": {
         "identifier": {
@@ -643,8 +643,8 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {
-        "verificationToken_identifier_token_pk": {
-          "name": "verificationToken_identifier_token_pk",
+        "auth_verificationToken_identifier_token_pk": {
+          "name": "auth_verificationToken_identifier_token_pk",
           "columns": [
             "identifier",
             "token"

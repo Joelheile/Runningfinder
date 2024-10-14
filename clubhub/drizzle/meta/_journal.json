@@ -22,6 +22,27 @@
       "when": 1728928973568,
       "tag": "0002_legal_darwin",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1728931871486,
+      "tag": "0003_glamorous_longshot",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1728933066497,
+      "tag": "0004_sudden_vance_astro",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1728933468694,
+      "tag": "0005_pale_bromley",
+      "breakpoints": true
     }
   ]
 }

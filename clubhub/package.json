@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "format": "prettier --write .",
     "db:generate": "npx drizzle-kit generate",
     "db:push": "npx drizzle-kit push"
   },
@@ -27,6 +28,7 @@
     "next": "14.2.7",
     "next-auth": "^4.24.8",
     "postgres": "^3.4.4",
+    "prettier": "^3.3.3",
     "react": "^18",
     "react-dom": "^18",
     "tailwind-merge": "^2.5.2",

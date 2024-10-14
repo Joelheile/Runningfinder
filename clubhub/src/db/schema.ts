@@ -18,14 +18,10 @@ import { drizzle } from "drizzle-orm/postgres-js";
 import type { AdapterAccount } from "next-auth/adapters";
 import { float } from "drizzle-orm/mysql-core";
 
-//TODO: schema in different files
-
 const connectionString = "postgres://postgres:postgres@localhost:5432/drizzle";
 const pool = postgres(connectionString, { max: 1 });
 
 export const db = drizzle(pool);
-
-//
 
 export const users = pgTable("user", {
   id: uuid("id")
@@ -37,10 +33,8 @@ export const users = pgTable("user", {
   image: text("image"),
 });
 
-// authentication using auth.js
-
 export const accounts = pgTable(
-  "account",
+  "auth_account",
   {
     userId: uuid("userId")
       .notNull()
@@ -63,16 +57,16 @@ export const accounts = pgTable(
   })
 );
 
-export const sessions = pgTable("session", {
+export const sessions = pgTable("auth_session", {
   sessionToken: text("sessionToken").primaryKey(),
-  userId: text("userId")
+  userId: uuid("userId")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
   expires: timestamp("expires", { mode: "date" }).notNull(),
 });
 
 export const verificationTokens = pgTable(
-  "verificationToken",
+  "auth_verificationToken",
   {
     identifier: text("identifier").notNull(),
     token: text("token").notNull(),
@@ -86,7 +80,7 @@ export const verificationTokens = pgTable(
 );
 
 export const authenticators = pgTable(
-  "authenticator",
+  "auth_authenticator",
   {
     credentialID: text("credentialID").notNull().unique(),
     userId: uuid("userId")
@@ -105,8 +99,6 @@ export const authenticators = pgTable(
     }),
   })
 );
-
-// Registration table
 
 export const statusEnum = pgEnum("status", [
   "pending",
@@ -127,14 +119,7 @@ export const registrations = pgTable("registration", {
   status: statusEnum("status").default("pending"),
 });
 
-export const roleEnum = pgEnum("role", [
-  "member",
-  "admin",
-  "manager",
-]);
-
-
-// Membership table
+export const roleEnum = pgEnum("role", ["member", "admin", "manager"]);
 export const memberships = pgTable(
   "membership",
   {
@@ -154,8 +139,6 @@ export const memberships = pgTable(
     clubIdIndex: index("membership_club_id_index").on(membership.clubId),
   })
 );
-
-// Run table
 export const runs = pgTable("run", {
   id: uuid("id").primaryKey().notNull(),
   clubId: uuid("club_id")
@@ -172,7 +155,6 @@ export const runs = pgTable("run", {
   uv_index: decimal("uv_index"),
 });
 
-// Club table
 export const clubs = pgTable("club", {
   id: uuid("id").primaryKey().notNull(),
   name: text("name").notNull(),
