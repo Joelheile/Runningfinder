@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 
-
 type Club = {
   id: string;
   name: string;
@@ -17,13 +16,11 @@ type Club = {
 };
 
 const fetchClubs = async (): Promise<Club[]> => {
-
   const response = await fetch("/api/clubs");
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }
-  const data = await response.json(); 
-
+  const data = await response.json();
 
   const locations: Club[] = data.map((club: any) => ({
     id: club.id,

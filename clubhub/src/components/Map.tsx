@@ -20,18 +20,10 @@ type Club = {
   websiteUrl: string;
 };
 
-type MapProps = {
-  clubs: Club[];
-};
-
-
-
 const Map = ({ clubs }: { clubs: Club[] }) => {
   console.log("map data:", clubs);
   const mapRef = useRef<HTMLDivElement>(null);
-  const [selectedLocation, setSelectedLocation] = useState<Club | null>(
-    null
-  );
+  const [selectedLocation, setSelectedLocation] = useState<Club | null>(null);
   const [popoverOpen, setPopoverOpen] = useState(false);
   const [popoverPosition, setPopoverPosition] = useState({ x: 0, y: 0 });
 
@@ -49,34 +41,33 @@ const Map = ({ clubs }: { clubs: Club[] }) => {
       const { InfoWindow } = await loader.importLibrary("maps");
 
       const map = new Map(mapRef.current as HTMLDivElement, {
-        center: clubs[0]?.position || { lat: 0, lng: 0 },
-        zoom: 10,
+        center: clubs[0]?.position || { lat: 52.5155235, lng: 13.4049124 },
+        zoom: 12,
         mapId: "55c1e732e0359b58",
       });
 
       const infoWindow = new InfoWindow();
 
-      clubs.forEach((location: Club) => {
+      clubs.forEach((club: Club) => {
         const marker = new Marker({
           map,
-          position: location.position,
-          title: location.name,
+          position: club.position,
+          title: club.name,
         });
 
         marker.addListener("click", () => {
-          setSelectedLocation(location);
-          infoWindow.setContent(location.name);
+          setSelectedLocation(club);
+          infoWindow.setContent(club.name);
           infoWindow.open(map, marker);
         });
       });
     };
 
     initMap();
-  }, []);
+  }, [clubs]);
 
   return (
     <div className="h-screen w-full">
-      <div ref={mapRef} className="h-full w-full"></div>
       {selectedLocation && (
         <SelectedClubHeader
           id={selectedLocation.id}
@@ -84,7 +75,7 @@ const Map = ({ clubs }: { clubs: Club[] }) => {
           description={selectedLocation.description}
         />
       )}
-      <div className="h-full w-full" ref={mapRef} />
+      <div style={{ height: '90vh' }} ref={mapRef} />
     </div>
   );
 };
