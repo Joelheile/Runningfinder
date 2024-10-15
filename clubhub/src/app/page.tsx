@@ -13,8 +13,6 @@ const MapPage: React.FC = () => {
   const handleLikeButtonClick = () => {};
   const { data: clubs, isLoading, isError, error } = useClubs();
 
-  // TODO einfach datenbank call direkt hier rein schreiben und testen, ob es klappt
-
   return (
     <div className="h-screen">
       <Link
@@ -24,7 +22,7 @@ const MapPage: React.FC = () => {
         {/* <LikeButton /> */}
       </Link>
       <FilterBar />
-      <Map clubs={clubs} />
+      <Map clubs={clubs || []} />
     </div>
   );
 };

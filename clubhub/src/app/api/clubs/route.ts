@@ -6,15 +6,9 @@ import { NextResponse } from "next/server";
 export async function GET() {
   try {
     const res = await db.select().from(club);
-    const plainRes = res.map((club) => ({
-      id: club.id,
-      name: club.name,
-      positionLang: club.positionLang,
-      positionLat: club.positionLat,
-      description: club.description,
-      creationDate: club.creationDate,
-    }));
-    return NextResponse.json(plainRes);
+    console.log("api response:", res);
+
+    return NextResponse.json(res);
   } catch (error) {
     console.error("Error fetching clubs:", error);
     return NextResponse.json(

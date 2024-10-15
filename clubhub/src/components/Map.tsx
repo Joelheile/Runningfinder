@@ -2,24 +2,34 @@
 // clubhub/src/components/Map.tsx
 import React, { useEffect, useRef, useState } from "react";
 import { Loader } from "@googlemaps/js-api-loader";
+import SelectedClubHeader from "./Clubs/SelectedClubHeader";
 
-interface Location {
-  id: number;
+// Define the Location type
+type Club = {
+  id: string;
   name: string;
-  position: { lat: number; lng: number };
+  position: {
+    lat: number;
+    lng: number;
+  };
   description: string;
-  date: string;
-  time: string;
-  distance: string;
-}
+  creationDate: string;
+  instagramUsername: string;
+  memberCount: number;
+  profileImageUrl: string;
+  websiteUrl: string;
+};
 
-interface MapProps {
-  clubs: Location[];
-}
+type MapProps = {
+  clubs: Club[];
+};
 
-const Map: React.FC<MapProps> = ({ clubs }) => {
+
+
+const Map = ({ clubs }: { clubs: Club[] }) => {
+  console.log("map data:", clubs);
   const mapRef = useRef<HTMLDivElement>(null);
-  const [selectedLocation, setSelectedLocation] = useState<Location | null>(
+  const [selectedLocation, setSelectedLocation] = useState<Club | null>(
     null
   );
   const [popoverOpen, setPopoverOpen] = useState(false);
@@ -46,7 +56,7 @@ const Map: React.FC<MapProps> = ({ clubs }) => {
 
       const infoWindow = new InfoWindow();
 
-      clubs.forEach((location: Location) => {
+      clubs.forEach((location: Club) => {
         const marker = new Marker({
           map,
           position: location.position,
@@ -55,11 +65,6 @@ const Map: React.FC<MapProps> = ({ clubs }) => {
 
         marker.addListener("click", () => {
           setSelectedLocation(location);
-          setPopoverOpen(true);
-          setPopoverPosition({
-            x: location.position.lat,
-            y: location.position.lng,
-          });
           infoWindow.setContent(location.name);
           infoWindow.open(map, marker);
         });
@@ -67,31 +72,19 @@ const Map: React.FC<MapProps> = ({ clubs }) => {
     };
 
     initMap();
-  }, [clubs]);
+  }, []);
 
   return (
     <div className="h-screen w-full">
       <div ref={mapRef} className="h-full w-full"></div>
       {selectedLocation && (
-        <div className="absolute top-0 left-0 z-10 bg-card text-card-foreground shadow-sm rounded-lg p-4 w-full ">
-          <img
-            src="/assets/midnightrunners.jpg"
-            className="w-48 h-48"
-            alt="Midnight Runners"
-          />
-          <h2 className="">{selectedLocation.name}</h2>
-          <p>{selectedLocation.description}</p>
-          <p>
-            <b>Date(s):</b> {selectedLocation.date}
-          </p>
-          <p>
-            <b>Time(s):</b> {selectedLocation.time}
-          </p>
-          <p>
-            <b>Distance:</b> {selectedLocation.distance}
-          </p>
-        </div>
+        <SelectedClubHeader
+          id={selectedLocation.id}
+          name={selectedLocation.name}
+          description={selectedLocation.description}
+        />
       )}
+      <div className="h-full w-full" ref={mapRef} />
     </div>
   );
 };
