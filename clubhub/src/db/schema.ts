@@ -23,7 +23,7 @@ const pool = postgres(connectionString, { max: 1 });
 
 export const db = drizzle(pool);
 
-export const users = pgTable("user", {
+export const user = pgTable("user", {
   id: uuid("id")
     .primaryKey()
     .$defaultFn(() => crypto.randomUUID()),
@@ -33,12 +33,12 @@ export const users = pgTable("user", {
   image: text("image"),
 });
 
-export const accounts = pgTable(
+export const account = pgTable(
   "auth_account",
   {
     userId: uuid("userId")
       .notNull()
-      .references(() => users.id, { onDelete: "cascade" }),
+      .references(() => user.id, { onDelete: "cascade" }),
     type: text("type").$type<AdapterAccount>().notNull(),
     provider: text("provider").notNull(),
     providerAccountId: text("providerAccountId").notNull(),
@@ -57,15 +57,15 @@ export const accounts = pgTable(
   }),
 );
 
-export const sessions = pgTable("auth_session", {
+export const session = pgTable("auth_session", {
   sessionToken: text("sessionToken").primaryKey(),
   userId: uuid("userId")
     .notNull()
-    .references(() => users.id, { onDelete: "cascade" }),
+    .references(() => user.id, { onDelete: "cascade" }),
   expires: timestamp("expires", { mode: "date" }).notNull(),
 });
 
-export const verificationTokens = pgTable(
+export const verificationToken = pgTable(
   "auth_verificationToken",
   {
     identifier: text("identifier").notNull(),
@@ -79,13 +79,13 @@ export const verificationTokens = pgTable(
   }),
 );
 
-export const authenticators = pgTable(
+export const authenticator = pgTable(
   "auth_authenticator",
   {
     credentialID: text("credentialID").notNull().unique(),
     userId: uuid("userId")
       .notNull()
-      .references(() => users.id, { onDelete: "cascade" }),
+      .references(() => user.id, { onDelete: "cascade" }),
     providerAccountId: text("providerAccountId").notNull(),
     credentialPublicKey: text("credentialPublicKey").notNull(),
     counter: integer("counter").notNull(),
@@ -107,29 +107,29 @@ export const statusEnum = pgEnum("status", [
   "banned",
 ]);
 
-export const registrations = pgTable("registration", {
+export const registration = pgTable("registration", {
   id: uuid("id").primaryKey().notNull(),
   runId: uuid("run_id")
     .notNull()
-    .references(() => runs.id),
+    .references(() => run.id),
   userId: uuid("user_id")
     .notNull()
-    .references(() => users.id),
+    .references(() => user.id),
   registrationDate: timestamp("registration_date").notNull(),
   status: statusEnum("status").default("pending"),
 });
 
 export const roleEnum = pgEnum("role", ["member", "admin", "manager"]);
-export const memberships = pgTable(
+export const membership = pgTable(
   "membership",
   {
     id: uuid("id").primaryKey().notNull(),
     userId: uuid("user_id")
       .notNull()
-      .references(() => users.id),
+      .references(() => user.id),
     clubId: uuid("club_id")
       .notNull()
-      .references(() => clubs.id),
+      .references(() => club.id),
     joinDate: timestamp("join_date").notNull(),
     status: statusEnum("status").default("pending"),
     role: roleEnum("role").default("member"),
@@ -139,11 +139,11 @@ export const memberships = pgTable(
     clubIdIndex: index("membership_club_id_index").on(membership.clubId),
   }),
 );
-export const runs = pgTable("run", {
+export const run = pgTable("run", {
   id: uuid("id").primaryKey().notNull(),
   clubId: uuid("club_id")
     .notNull()
-    .references(() => clubs.id),
+    .references(() => club.id),
   date: date("date").notNull(),
   startDescription: text("start_description").notNull(),
   startTime: time("start_time").notNull(),
@@ -155,7 +155,7 @@ export const runs = pgTable("run", {
   uv_index: decimal("uv_index"),
 });
 
-export const clubs = pgTable("club", {
+export const club = pgTable("club", {
   id: uuid("id").primaryKey().notNull(),
   name: text("name").notNull(),
   description: text("description"),

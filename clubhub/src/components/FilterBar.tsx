@@ -1,15 +1,15 @@
 "use client";
 import { useState } from "react";
 import { Calendar as CalendarIcon, Sliders, RotateCcw } from "lucide-react";
-import { Checkbox } from "@/src/components/ui/checkbox";
-import { cn } from "@/src/lib/utils";
-import { Button } from "@/src/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/src/components/ui/popover";
-import { Slider } from "@/src/components/ui/slider";
+} from "@/components/ui/popover";
+import { Slider } from "@/components/ui/slider";
 
 const WEEKDAYS = [
   "Monday",
@@ -32,7 +32,7 @@ export default function FilterBar() {
 
   const toggleDay = (day: string) => {
     setSelectedDays((prev) =>
-      prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day],
+      prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day]
     );
   };
 
@@ -47,7 +47,7 @@ export default function FilterBar() {
                 variant={"outline"}
                 className={cn(
                   "w-full justify-start font-normal",
-                  selectedDays.length === 0 && "",
+                  selectedDays.length === 0 && ""
                 )}
               >
                 <CalendarIcon className="mr-2 h-4 w-4" />
