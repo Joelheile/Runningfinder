@@ -1,6 +1,7 @@
 "use client";
 import { useClubs } from "@/app/hooks/useClubs";
 import FilterBar from "@/components/FilterBar";
+
 import LikeButton from "@/components/icons/LikeButton";
 
 import Map from "@/components/Map";
@@ -9,7 +10,7 @@ import Link from "next/link";
 
 import React from "react";
 
-const MapPage: React.FC = () => {
+const MapPage = () => {
   const handleLikeButtonClick = () => {};
   const { data: clubs, isLoading, isError, error } = useClubs();
 
@@ -19,7 +20,7 @@ const MapPage: React.FC = () => {
         href={`/pages/run/likedruns`}
         className="absolute z-20   right-2   bottom-60"
       >
-        {/* <LikeButton /> */}
+        <LikeButton />
       </Link>
       <FilterBar />
       <Map clubs={clubs || []} />
