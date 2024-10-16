@@ -32,7 +32,7 @@ export default function FilterBar() {
 
   const toggleDay = (day: string) => {
     setSelectedDays((prev) =>
-      prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day]
+      prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day],
     );
   };
 
@@ -47,7 +47,7 @@ export default function FilterBar() {
                 variant={"outline"}
                 className={cn(
                   "w-full justify-start font-normal",
-                  selectedDays.length === 0 && ""
+                  selectedDays.length === 0 && "",
                 )}
               >
                 <CalendarIcon className="mr-2 h-4 w-4" />

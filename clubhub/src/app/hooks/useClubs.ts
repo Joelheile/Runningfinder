@@ -16,7 +16,7 @@ type Club = {
 };
 
 const fetchClubs = async (): Promise<Club[]> => {
-  const response = await fetch("/api/clubs");
+  const response = await fetch("/api/club");
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }

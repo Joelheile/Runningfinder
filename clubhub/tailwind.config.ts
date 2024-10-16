@@ -10,8 +10,6 @@ const config: Config = {
   theme: {
     extend: {
       text: {
-        //TODO: Tailwind text config
-
         body: "font",
         "body-2": "",
         title: "font-bold size-lg",

@@ -36,7 +36,7 @@ const Map = ({ clubs }: { clubs: Club[] }) => {
 
       const { Map } = await loader.importLibrary("maps");
       const { Marker } = (await loader.importLibrary(
-        "marker"
+        "marker",
       )) as google.maps.MarkerLibrary;
       const { InfoWindow } = await loader.importLibrary("maps");
 
@@ -75,7 +75,7 @@ const Map = ({ clubs }: { clubs: Club[] }) => {
           description={selectedLocation.description}
         />
       )}
-      <div style={{ height: '90vh' }} ref={mapRef} />
+      <div style={{ height: "90vh" }} ref={mapRef} />
     </div>
   );
 };

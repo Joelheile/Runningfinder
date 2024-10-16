@@ -1,63 +1,62 @@
-
 const locations: Location[] = [
-  {
-    id: "1",
-    name: "Midnight Runners Berlin",
-    description: "",
-    position: { lat: 52.5257694, lng: 13.3935091 },
-    date: "Wednesday",
-    time: "19:00",
-    distance: "5km",
-    image: "../assets/midnightrunners.jpeg", //TODO: Images
-    instagram: "https://www.instagram.com/midnightrunnersberlin/",
-    website: "https://www.midnightrunners.com/cities/berlin",
-  },
+{
+id: "1",
+name: "Midnight Runners Berlin",
+description: "",
+position: { lat: 52.5257694, lng: 13.3935091 },
+date: "Wednesday",
+time: "19:00",
+distance: "5km",
+image: "../assets/midnightrunners.jpeg", //TODO: Images
+instagram: "https://www.instagram.com/midnightrunnersberlin/",
+website: "https://www.midnightrunners.com/cities/berlin",
+},
 
-  {
-    id: "2",
-    name: "forward run club berlin",
-    description: "Running forward through Berlin",
-    position: { lat: 52.5410841, lng: 13.4122118 },
-    date: "Sunday coffee run",
-    time: "10:00h",
-    distance: "10km",
-    image:
-      "https://scontent-ber1-1.cdninstagram.com/v/t51.2885-19/448115379_439007129086862_6972361061642885259_n.jpg?_nc_ht=scontent-ber1-1.cdninstagram.com&_nc_cat=102&_nc_ohc=YPija2vtruoQ7kNvgH1gQC2&edm=AFg4Q8wBAAAA&ccb=7-5&oh=00_AYC9Dz8Pffvrl5adDKpQcAyjndcbQKOROr9ks5CxxE4Vxw&oe=66DAB65B&_nc_sid=0b30b7",
-    instagram: "https://www.instagram.com/forwardrunningbln/",
-    website: "",
-  },
-  {
-    id: "3",
-    name: "Adidas Runners Berlin",
-    description: `MO 7PM - social run
+{
+id: "2",
+name: "forward run club berlin",
+description: "Running forward through Berlin",
+position: { lat: 52.5410841, lng: 13.4122118 },
+date: "Sunday coffee run",
+time: "10:00h",
+distance: "10km",
+image:
+"https://scontent-ber1-1.cdninstagram.com/v/t51.2885-19/448115379_439007129086862_6972361061642885259_n.jpg?_nc_ht=scontent-ber1-1.cdninstagram.com&_nc_cat=102&_nc_ohc=YPija2vtruoQ7kNvgH1gQC2&edm=AFg4Q8wBAAAA&ccb=7-5&oh=00_AYC9Dz8Pffvrl5adDKpQcAyjndcbQKOROr9ks5CxxE4Vxw&oe=66DAB65B&_nc_sid=0b30b7",
+instagram: "https://www.instagram.com/forwardrunningbln/",
+website: "",
+},
+{
+id: "3",
+name: "Adidas Runners Berlin",
+description: `MO 7PM - social run
 TUE 7PM - tempo tuesdays
 THU 7PM - track session
 SUN 9AM - long run road to`,
-    position: { lat: 52.49802922714861, lng: 13.450062075707867 },
-    date: "Monday, Tuesday, Thursday, Sunday",
-    time: "9:00h, 19:00h",
-    distance: "5km",
-    image:
-      "https://scontent-ber1-1.cdninstagram.com/v/t51.288…NCMCI1zWFyMF6EbKyARJMA&oe=66DAA382&_nc_sid=0b30b7",
-    instagram: "https://www.instagram.com/runnersberlin/",
-    website: "https://linktr.ee/adidasrunnersberlin",
-  },
-  {
-    id: "4",
-    name: "Croissant Run Club",
-    description: `Meet at Dussman & finish with pastry at Albatross bakery`,
-    position: { lat: 52.49802922714861, lng: 13.450062075707867 },
-    date: "Sunday",
-    time: "10:30h",
-    distance: "5km",
-    image:
-      "https://scontent-ber1-1.cdninstagram.com/v/t51.288…NCMCI1zWFyMF6EbKyARJMA&oe=66DAA382&_nc_sid=0b30b7",
-    instagram: "https://www.instagram.com/runnersberlin/",
-    website: "https://linktr.ee/adidasrunnersberlin",
-  },
+position: { lat: 52.49802922714861, lng: 13.450062075707867 },
+date: "Monday, Tuesday, Thursday, Sunday",
+time: "9:00h, 19:00h",
+distance: "5km",
+image:
+"https://scontent-ber1-1.cdninstagram.com/v/t51.288…NCMCI1zWFyMF6EbKyARJMA&oe=66DAA382&_nc_sid=0b30b7",
+instagram: "https://www.instagram.com/runnersberlin/",
+website: "https://linktr.ee/adidasrunnersberlin",
+},
+{
+id: "4",
+name: "Croissant Run Club",
+description: `Meet at Dussman & finish with pastry at Albatross bakery`,
+position: { lat: 52.49802922714861, lng: 13.450062075707867 },
+date: "Sunday",
+time: "10:30h",
+distance: "5km",
+image:
+"https://scontent-ber1-1.cdninstagram.com/v/t51.288…NCMCI1zWFyMF6EbKyARJMA&oe=66DAA382&_nc_sid=0b30b7",
+instagram: "https://www.instagram.com/runnersberlin/",
+website: "https://linktr.ee/adidasrunnersberlin",
+},
 ];
 
-/*
+/_
 #berlin.runners
 crossantrunclubberlin
 berlin.runners (women running collective)
@@ -73,7 +72,7 @@ ktb.runclub (korea town berlin run club)
 mallofberlinrun
 therollingmile (Fitness & Running Club)
 runningorder.berlin
-stillwerunbln (Black Flinta* run Berlin)
+stillwerunbln (Black Flinta_ run Berlin)
 thunder.runners.berlin
 morningrunberlin
 berliner.run
@@ -94,7 +93,7 @@ Booked via @urbansportsclub
 8km, 4:45-6:30 min/km
 📍Adidas Sports Base, 7:00 pm
 
-@paceberlin_
+@paceberlin\_
 Track Session
 📍Mauerpark, 7:30 pm
 
@@ -115,7 +114,7 @@ Tempo Tuesday
 Intervals
 📍Kraftraum, 7:00 pm
 
-@lululemoneurope @ramona__tyler
+@lululemoneurope @ramona\_\_tyler
 7km, 6:35-7 min/km
 📍Lululemon Store Mitte, 6:30 pm
 
@@ -150,8 +149,8 @@ Track Thursday
 6-7km, 6:30 min/km
 📍 Flat Mountain Living Store, 7:00 pm
 
-@paceberlin_
-6-7km social run, for FLINTA* athletes
+@paceberlin\_
+6-7km social run, for FLINTA\* athletes
 📍Südblock, 7:30 pm
 
 Saturday
@@ -197,7 +196,7 @@ Sunday
 5-7km, 6:30 min/km
 📍 Kastanienallee 24, 11:00 am
 
-@paceberlin_
+@paceberlin\_
 7km Social Run & Brunch, 6:45 min/k pace
 📍Lonely Hearts Cafe, 11:00 am
-*/
+\*/
