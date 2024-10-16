@@ -22,7 +22,10 @@ const MapPage = () => {
       >
         <LikeButton />
       </Link>
-      <FilterBar />
+      {/* <FilterBar /> 
+      //TODO: Not needed for prototype
+      */}
+      
       <Map clubs={clubs || []} />
     </div>
   );

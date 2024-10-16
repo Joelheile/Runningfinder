@@ -1,5 +1,5 @@
-import LikeButton from "@/src/components/icons/LikeButton";
-import RunCard from "@/src/components/runs/RunCard";
+import LikeButton from "@/components/icons/LikeButton";
+import RunCard from "@/components/runs/RunCard";
 import { ChevronLeft, Pencil, Share } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
