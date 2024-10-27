@@ -163,7 +163,7 @@ export const club = pgTable("club", {
   positionLat: decimal("position_lat").notNull(),
   instagramUsername: text("instagram_username"),
   websiteUrl: text("website_url"),
-  profileImageUrl: text("profile_image_url"),
+  avatarUrl: text("avatar_url"),
   creationDate: timestamp("creation_date").notNull(),
   memberCount: integer("member_count"),
 });
