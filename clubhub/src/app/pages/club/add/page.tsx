@@ -47,7 +47,7 @@ export default function addClubPage() {
 
   return (
     <div className=" flex justify-center items-start h-screen">
-      <div className="mt-20 flex-col w-1/3 space-y-10">
+      <div className="mt-20 flex-col w-5/6 space-y-10">
         <h1>Add club</h1>
         <div className="flex">
           <Label>Name</Label>
