@@ -19,12 +19,12 @@ export default function addClubPage() {
     var locationPicker = new LocationPicker(
       "map",
       {
-        setCurrentPosition: true, 
-        lat: 52.5200, 
-        lng: 13.4050, 
+        setCurrentPosition: true,
+        lat: 52.52,
+        lng: 13.405,
       },
       {
-        zoom: 12, 
+        zoom: 12,
       }
     );
 
@@ -74,8 +74,6 @@ export default function addClubPage() {
             onChange={(e) => setInstagramUsername(e.target.value)}
           />
         </div>
-
-
 
         <div className="App">
           <Script
