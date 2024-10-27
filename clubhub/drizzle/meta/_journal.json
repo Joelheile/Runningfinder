@@ -43,6 +43,13 @@
       "when": 1728933468694,
       "tag": "0005_pale_bromley",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1730050174460,
+      "tag": "0006_cultured_ikaris",
+      "breakpoints": true
     }
   ]
 }
