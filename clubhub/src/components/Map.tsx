@@ -3,22 +3,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Loader } from "@googlemaps/js-api-loader";
 import SelectedClubHeader from "./Clubs/SelectedClubHeader";
+import { Club } from "@/lib/types/club";
 
-// Define the Location type
-type Club = {
-  id: string;
-  name: string;
-  position: {
-    lat: number;
-    lng: number;
-  };
-  description: string;
-  creationDate: string;
-  instagramUsername: string;
-  memberCount: number;
-  profileImageUrl: string;
-  websiteUrl: string;
-};
+
 
 const Map = ({ clubs }: { clubs: Club[] }) => {
   console.log("map data:", clubs);

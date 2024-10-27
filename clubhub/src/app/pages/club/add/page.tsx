@@ -4,16 +4,49 @@ import { Label } from "@/components/ui/label";
 import LocationPicker from "location-picker";
 import { useState } from "react";
 import Script from "next/script";
+import { Button } from "@/components/ui/button";
+import { useAddClub } from "@/app/hooks/useAddClub";
+import { Club } from "@/lib/types/club";
 
 export default function addClubPage() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [location, setLocation] = useState("");
+  const [location, setLocation] = useState({ lat: 52.52, lng: 13.405 });
   const [websiteUrl, setWebsiteUrl] = useState("");
   const [instagramUsername, setInstagramUsername] = useState("");
-  const [profileImageUrl, setProfileImageUrl] = useState("");
+  const [avatarUrl , setAvatarUrl] = useState("");
 
   // TODO: it should only be possible to submit as an admin
+  // TODO: Needs to be redesigned
+
+  const [formData, setFormData] = useState<Partial<Club>>({
+    name: name,
+    description: description,
+    websiteUrl: websiteUrl,
+    instagramUsername: instagramUsername,
+    avatarUrl: "",
+    location: location,
+  });
+  const mutation = useAddClub();
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const formData: Club = {
+      name,
+      description,
+      location: {
+        lat: location.lat,
+        lng: location.lng,
+      },
+      instagramUsername,
+      memberCount: 0,
+      avatarUrl: "",
+      websiteUrl,
+      id: "",
+      creationDate: ""
+    };
+    mutation.mutate(formData);
+  };
 
   const defaultPosition = () => {
     var locationPicker = new LocationPicker(
@@ -38,7 +71,7 @@ export default function addClubPage() {
           "The chosen location is " + location.lat + "," + location.lng
         );
         console.log(location);
-        setLocation(location.lat + ", " + location.lng);
+        setLocation({ lat: location.lat, lng: location.lng });
       }
     );
 
@@ -47,7 +80,7 @@ export default function addClubPage() {
 
   return (
     <div className=" flex justify-center items-start h-screen">
-      <div className="mt-20 flex-col w-5/6 space-y-10">
+      <form className="mt-20 flex-col w-5/6 space-y-10" onSubmit={handleSubmit}>
         <h1>Add club</h1>
         <div className="flex">
           <Label>Name</Label>
@@ -74,6 +107,7 @@ export default function addClubPage() {
             onChange={(e) => setInstagramUsername(e.target.value)}
           />
         </div>
+        <Button type="submit">Add club</Button>
 
         <div className="App">
           <Script
@@ -84,9 +118,9 @@ export default function addClubPage() {
           <h1>Location Picker</h1>
           <h2>React Location Picker Example</h2>
           <div id="map" style={{ height: "400px", marginBottom: 20 }} />
-          Location: <b>{location}</b>
+          Location: <b>{location.lat + " | " + location.lng}</b>
         </div>
-      </div>
+      </form>
     </div>
   );
 }

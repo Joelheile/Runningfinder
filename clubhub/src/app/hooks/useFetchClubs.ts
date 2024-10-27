@@ -1,19 +1,5 @@
+import { Club } from "@/lib/types/club";
 import { useQuery } from "@tanstack/react-query";
-
-type Club = {
-  id: string;
-  name: string;
-  position: {
-    lat: number;
-    lng: number;
-  };
-  description: string;
-  creationDate: string;
-  instagramUsername: string;
-  memberCount: number;
-  profileImageUrl: string;
-  websiteUrl: string;
-};
 
 const fetchClubs = async (): Promise<Club[]> => {
   const response = await fetch("/api/club");
@@ -41,7 +27,6 @@ const fetchClubs = async (): Promise<Club[]> => {
 };
 
 export function useClubs() {
-  console.log("useClubs hook called");
   return useQuery({
     queryKey: ["clubs"],
     queryFn: fetchClubs,

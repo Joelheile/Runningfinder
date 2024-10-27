@@ -1,5 +1,5 @@
 "use client";
-import { useClubs } from "@/app/hooks/useClubs";
+import { useClubs } from "@/app/hooks/useFetchClubs";
 import FilterBar from "@/components/FilterBar";
 
 import LikeButton from "@/components/icons/LikeButton";

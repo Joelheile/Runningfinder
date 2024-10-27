@@ -14,25 +14,36 @@ export async function GET() {
     console.error("Error fetching clubs:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }
 
 export async function POST(request: Request) {
-  const { name, positionLang, positionLat, description, creationDate } =
-    await request.json();
-
+  const {
+    name,
+    location,
+    description,
+    instagramUsername,
+    websiteUrl,
+    avatarUrl,
+  } = await request.json();
+ 
   try {
+    console.log("Club request body:", request.body);
     const res = await db
       .insert(club)
       .values({
         id: uuidv4(),
         name,
-        positionLang,
-        positionLat,
         description,
-        creationDate,
+        locationLng: location.lng,
+        locationLat: location.lat,
+        avatarUrl,
+        creationDate: new Date(),
+        instagramUsername,
+        websiteUrl,
+        memberCount: 0,
       })
       .execute();
     return NextResponse.json(res);
@@ -40,7 +51,7 @@ export async function POST(request: Request) {
     console.error("Error creating club:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }
