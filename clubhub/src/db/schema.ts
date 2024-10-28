@@ -12,6 +12,7 @@ import {
   doublePrecision,
   decimal,
   pgEnum,
+  customType,
 } from "drizzle-orm/pg-core";
 import postgres from "postgres";
 import { drizzle } from "drizzle-orm/postgres-js";
@@ -54,7 +55,7 @@ export const account = pgTable(
     compoundKey: primaryKey({
       columns: [account.provider, account.providerAccountId],
     }),
-  }),
+  })
 );
 
 export const session = pgTable("auth_session", {
@@ -76,7 +77,7 @@ export const verificationToken = pgTable(
     compositePk: primaryKey({
       columns: [verificationToken.identifier, verificationToken.token],
     }),
-  }),
+  })
 );
 
 export const authenticator = pgTable(
@@ -97,7 +98,7 @@ export const authenticator = pgTable(
     compositePK: primaryKey({
       columns: [authenticator.userId, authenticator.credentialID],
     }),
-  }),
+  })
 );
 
 export const statusEnum = pgEnum("status", [
@@ -137,7 +138,7 @@ export const membership = pgTable(
   (membership) => ({
     userIdIndex: index("membership_user_id_index").on(membership.userId),
     clubIdIndex: index("membership_club_id_index").on(membership.clubId),
-  }),
+  })
 );
 export const run = pgTable("run", {
   id: uuid("id").primaryKey().notNull(),
@@ -155,6 +156,12 @@ export const run = pgTable("run", {
   uv_index: decimal("uv_index"),
 });
 
+const bytea = customType<{ data: Buffer; notNull: false; default: false }>({
+  dataType() {
+    return "bytea";
+  },
+});
+
 export const club = pgTable("club", {
   id: uuid("id").primaryKey().notNull(),
   name: text("name").notNull(),
@@ -163,7 +170,7 @@ export const club = pgTable("club", {
   locationLat: decimal("location_lat").notNull(),
   instagramUsername: text("instagram_username"),
   websiteUrl: text("website_url"),
-  avatarUrl: text("avatar_url"),
+  avatar: bytea("avatar"),
   creationDate: timestamp("creation_date").notNull(),
   memberCount: integer("member_count"),
 });
