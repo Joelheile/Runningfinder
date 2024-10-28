@@ -20,17 +20,17 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const {
-    name,
-    location,
-    description,
-    instagramUsername,
-    websiteUrl,
-    avatarUrl,
-  } = await request.json();
- 
+  const { name, location, description, instagramUsername, websiteUrl, avatar } =
+    await request.json();
+
   try {
-    console.log("Club request body:", request.body);
+    if (!avatar) {
+      throw new Error("Avatar is required");
+    }
+
+    const fileBuffer = Buffer.from(avatar, "base64");
+    console.log("File Buffer:", fileBuffer);
+
     const res = await db
       .insert(club)
       .values({
@@ -39,13 +39,14 @@ export async function POST(request: Request) {
         description,
         locationLng: location.lng,
         locationLat: location.lat,
-        avatarUrl,
+        avatar: fileBuffer,
         creationDate: new Date(),
         instagramUsername,
         websiteUrl,
         memberCount: 0,
       })
       .execute();
+
     return NextResponse.json(res);
   } catch (error) {
     console.error("Error creating club:", error);

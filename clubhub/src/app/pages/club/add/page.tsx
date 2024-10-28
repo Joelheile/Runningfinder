@@ -7,6 +7,7 @@ import Script from "next/script";
 import { Button } from "@/components/ui/button";
 import { useAddClub } from "@/app/hooks/useAddClub";
 import { Club } from "@/lib/types/club";
+import { ConsoleLogWriter } from "drizzle-orm";
 
 export default function addClubPage() {
   const [name, setName] = useState("");
@@ -14,22 +15,29 @@ export default function addClubPage() {
   const [location, setLocation] = useState({ lat: 52.52, lng: 13.405 });
   const [websiteUrl, setWebsiteUrl] = useState("");
   const [instagramUsername, setInstagramUsername] = useState("");
-  const [avatarUrl , setAvatarUrl] = useState("");
+  const [avatar, setAvatar] = useState<string | null>(null);
 
   // TODO: it should only be possible to submit as an admin
   // TODO: Needs to be redesigned
 
-  const [formData, setFormData] = useState<Partial<Club>>({
-    name: name,
-    description: description,
-    websiteUrl: websiteUrl,
-    instagramUsername: instagramUsername,
-    avatarUrl: "",
-    location: location,
-  });
-  const mutation = useAddClub();
+
+
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null;
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const base64String = event.target?.result as string;
+        console.log("avatar base 64", base64String);
+        setAvatar(base64String.split(",")[1]); // Remove the data URL prefix
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
+    console.log("avatar", avatar);
     e.preventDefault();
     const formData: Club = {
       name,
@@ -40,13 +48,15 @@ export default function addClubPage() {
       },
       instagramUsername,
       memberCount: 0,
-      avatarUrl: "",
+      avatar: avatar,
       websiteUrl,
       id: "",
-      creationDate: ""
+      creationDate: "",
     };
     mutation.mutate(formData);
   };
+
+  const mutation = useAddClub();
 
   const defaultPosition = () => {
     var locationPicker = new LocationPicker(
@@ -107,6 +117,7 @@ export default function addClubPage() {
             onChange={(e) => setInstagramUsername(e.target.value)}
           />
         </div>
+        <input type="file" accept="image/*" onChange={handleFileChange} />
         <Button type="submit">Add club</Button>
 
         <div className="App">

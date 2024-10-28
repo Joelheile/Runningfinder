@@ -1,3 +1,4 @@
+
 export type Club = {
   id: string;
   name: string;
@@ -9,6 +10,6 @@ export type Club = {
   creationDate: string;
   instagramUsername: string;
   memberCount: number;
-  avatarUrl: string;
+  avatar: string | null;
   websiteUrl: string;
 };
