@@ -1,3 +1,4 @@
+// usefetchclubs.ts
 import { Club } from "@/lib/types/club";
 import { useQuery } from "@tanstack/react-query";
 
@@ -9,20 +10,15 @@ const fetchClubs = async (): Promise<Club[]> => {
   const data = await response.json();
 
   const locations: Club[] = data.map((club: any) => ({
-    id: club.id,
-    name: club.name,
-    position: {
-      lat: parseFloat(club.positionLat),
-      lng: parseFloat(club.positionLang),
+    ...club,
+    location: {
+      lat: parseFloat(club.locationLat),
+      lng: parseFloat(club.locationLng),
     },
-    description: club.description,
-    creationDate: club.creationDate,
-    instagramUsername: club.instagramUsername,
-    memberCount: club.memberCount,
-    profileImageUrl: club.profileImageUrl,
-    websiteUrl: club.websiteUrl,
-  }));
 
+    avatar: club.avatar ? `data:image/jpeg;base64,${club.avatar}` : null,
+  }));
+  console.log("Fetched club data:", data);
   return locations;
 };
 
