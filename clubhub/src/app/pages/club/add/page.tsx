@@ -30,7 +30,7 @@ export default function addClubPage() {
       reader.onload = (event) => {
         const base64String = event.target?.result as string;
         console.log("avatar base 64", base64String);
-        setAvatar(base64String.split(",")[1]); // Remove the data URL prefix
+        setAvatar(base64String.split(",")[1]); 
       };
       reader.readAsDataURL(file);
     }

@@ -12,7 +12,7 @@ const Map = ({ clubs }: { clubs: Club[] }) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const [selectedLocation, setSelectedLocation] = useState<Club | null>(null);
   const [popoverOpen, setPopoverOpen] = useState(false);
-  const [popoverPosition, setPopoverPosition] = useState({ x: 0, y: 0 });
+  const [popoverlocation, setPopoverlocation] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     const initMap = async () => {
@@ -28,7 +28,7 @@ const Map = ({ clubs }: { clubs: Club[] }) => {
       const { InfoWindow } = await loader.importLibrary("maps");
 
       const map = new Map(mapRef.current as HTMLDivElement, {
-        center: clubs[0]?.position || { lat: 52.5155235, lng: 13.4049124 },
+        center: clubs[0]?.location || { lat: 52.5155235, lng: 13.4049124 },
         zoom: 12,
         mapId: "55c1e732e0359b58",
       });
@@ -38,7 +38,7 @@ const Map = ({ clubs }: { clubs: Club[] }) => {
       clubs.forEach((club: Club) => {
         const marker = new Marker({
           map,
-          position: club.position,
+          position: club.location,
           title: club.name,
         });
 
@@ -60,6 +60,7 @@ const Map = ({ clubs }: { clubs: Club[] }) => {
           id={selectedLocation.id}
           name={selectedLocation.name}
           description={selectedLocation.description}
+          avatar={selectedLocation.avatar || ""}
         />
       )}
       <div style={{ height: "90vh" }} ref={mapRef} />

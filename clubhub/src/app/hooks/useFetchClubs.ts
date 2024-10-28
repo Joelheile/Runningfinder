@@ -1,4 +1,3 @@
-// usefetchclubs.ts
 import { Club } from "@/lib/types/club";
 import { useQuery } from "@tanstack/react-query";
 
@@ -9,16 +8,19 @@ const fetchClubs = async (): Promise<Club[]> => {
   }
   const data = await response.json();
 
-  const locations: Club[] = data.map((club: any) => ({
+const locations: Club[] = data.map((club: any) => {
+  console.log("buffer avatar, ", club.avatar);
+  const avatarBase64 = Buffer.from(club.avatar).toString("base64");
+  console.log("avatarBase64", avatarBase64);
+  return {
     ...club,
     location: {
       lat: parseFloat(club.locationLat),
       lng: parseFloat(club.locationLng),
     },
-
-    avatar: club.avatar ? `data:image/jpeg;base64,${club.avatar}` : null,
-  }));
-  console.log("Fetched club data:", data);
+    avatar: `data:image/jpeg;base64,${avatarBase64}`
+  };
+});
   return locations;
 };
 

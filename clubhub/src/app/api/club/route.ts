@@ -1,4 +1,4 @@
-// clubhub/src/app/api/clubs.ts
+// clubhub/src/app/api/club.ts
 import { db } from "@/db/db";
 import { club } from "@/db/schema";
 import { NextResponse } from "next/server";
@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from "uuid";
 export async function GET() {
   try {
     const res = await db.select().from(club);
-    console.log("api response:", res);
+    // console.log("api response:", res);
 
     return NextResponse.json(res);
   } catch (error) {
