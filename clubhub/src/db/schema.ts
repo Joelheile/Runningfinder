@@ -166,6 +166,7 @@ export const club = pgTable("club", {
   websiteUrl: text("website_url"),
   avatarFileId: uuid("avatar_file_id")
     .notNull()
+    .unique() 
     .references(() => avatarStorage.id),
   creationDate: timestamp("creation_date").notNull(),
   memberCount: integer("member_count"),

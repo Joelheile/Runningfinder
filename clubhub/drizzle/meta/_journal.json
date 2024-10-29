@@ -92,6 +92,13 @@
       "when": 1730186611206,
       "tag": "0012_slimy_living_tribunal",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1730190248712,
+      "tag": "0013_glorious_tarot",
+      "breakpoints": true
     }
   ]
 }
