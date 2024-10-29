@@ -78,6 +78,20 @@
       "when": 1730098010784,
       "tag": "0010_sudden_turbo",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1730185804973,
+      "tag": "0011_fearless_matthew_murdock",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1730186611206,
+      "tag": "0012_slimy_living_tribunal",
+      "breakpoints": true
     }
   ]
 }
