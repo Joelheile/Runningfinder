@@ -156,12 +156,6 @@ export const run = pgTable("run", {
   uv_index: decimal("uv_index"),
 });
 
-const bytea = customType<{ data: Buffer; notNull: false; default: false }>({
-  dataType() {
-    return "bytea";
-  },
-});
-
 export const club = pgTable("club", {
   id: uuid("id").primaryKey().notNull(),
   name: text("name").notNull(),
@@ -170,7 +164,15 @@ export const club = pgTable("club", {
   locationLat: decimal("location_lat").notNull(),
   instagramUsername: text("instagram_username"),
   websiteUrl: text("website_url"),
-  avatar: bytea("avatar"),
+  avatarFileId: uuid("avatar_file_id")
+    .notNull()
+    .references(() => avatarStorage.id),
   creationDate: timestamp("creation_date").notNull(),
   memberCount: integer("member_count"),
+});
+
+export const avatarStorage = pgTable("avatar_storage", {
+  id: uuid("id").primaryKey().notNull(),
+  name: text("name").notNull(),
+  img_url: text("img_url").notNull(),
 });
