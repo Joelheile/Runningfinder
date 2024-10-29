@@ -2,34 +2,28 @@ import { Avatar } from "@/lib/types/Avatar";
 import { Club } from "@/lib/types/club";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { v4 } from "uuid";
-import { useUploadAvatar } from "./useUploadAvatar";
 
-const addClub = async (newClub: Club): Promise<Club> => {
-  console.log("hook addClub called");
-
-  const avatarId = v4();
-
-  const response = await fetch("/api/v1/club", {
+const uploadAvatar = async (newAvatar: Avatar): Promise<Avatar> => {
+  // TODO: refactor AvatarUploader to this hook
+  const response = await fetch("/api/v1/aws/upload", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      ...newClub,
-      avatarFileId: avatarId,
+      avatarFileId: v4(),
     }),
   });
-
   if (!response.ok) {
     throw new Error("Failed to add club");
   }
   return response.json();
 };
 
-export function useAddClub() {
+export function useUploadAvatar() {
   const queryClient = useQueryClient();
-  return useMutation<Club, Error, Club>({
-    mutationFn: addClub,
+  return useMutation<Avatar, Error, Avatar>({
+    mutationFn: uploadAvatar,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["clubs"] });
+      queryClient.invalidateQueries({ queryKey: ["avatars"] });
     },
   });
 }

@@ -10,6 +10,6 @@ export type Club = {
   creationDate: string;
   instagramUsername: string;
   memberCount: number;
-  avatar: string | null;
+  avatarFileId: string;
   websiteUrl: string;
 };

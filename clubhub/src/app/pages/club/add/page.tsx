@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button";
 import { useAddClub } from "@/app/hooks/useAddClub";
 import { Club } from "@/lib/types/club";
 import { ConsoleLogWriter } from "drizzle-orm";
+import { v4 } from "uuid";
+import AvatarUploader from "@/components/Upload/AvatarUploader";
 
 export default function addClubPage() {
   const [name, setName] = useState("");
@@ -15,7 +17,7 @@ export default function addClubPage() {
   const [location, setLocation] = useState({ lat: 52.52, lng: 13.405 });
   const [websiteUrl, setWebsiteUrl] = useState("");
   const [instagramUsername, setInstagramUsername] = useState("");
-  const [avatar, setAvatar] = useState<string | null>(null);
+  const [avatarFileId] = useState(v4()); 
 
   // TODO: it should only be possible to submit as an admin
   // TODO: Needs to be redesigned
@@ -23,21 +25,9 @@ export default function addClubPage() {
 
 
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] || null;
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const base64String = event.target?.result as string;
-        console.log("avatar base 64", base64String);
-        setAvatar(base64String.split(",")[1]); 
-      };
-      reader.readAsDataURL(file);
-    }
-  };
 
   const handleSubmit = (e: React.FormEvent) => {
-    console.log("avatar", avatar);
+
     e.preventDefault();
     const formData: Club = {
       name,
@@ -48,7 +38,7 @@ export default function addClubPage() {
       },
       instagramUsername,
       memberCount: 0,
-      avatar: avatar,
+      avatarFileId: avatarFileId,
       websiteUrl,
       id: "",
       creationDate: "",
@@ -117,7 +107,7 @@ export default function addClubPage() {
             onChange={(e) => setInstagramUsername(e.target.value)}
           />
         </div>
-        <input type="file" accept="image/*" onChange={handleFileChange} />
+        <AvatarUploader id={avatarFileId} />
         <Button type="submit">Add club</Button>
 
         <div className="App">
