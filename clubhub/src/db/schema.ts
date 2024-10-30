@@ -166,7 +166,7 @@ export const club = pgTable("club", {
   websiteUrl: text("website_url"),
   avatarFileId: uuid("avatar_file_id")
     .notNull()
-    .unique() 
+    .unique()
     .references(() => avatarStorage.id),
   creationDate: timestamp("creation_date").notNull(),
   memberCount: integer("member_count"),
@@ -174,6 +174,7 @@ export const club = pgTable("club", {
 
 export const avatarStorage = pgTable("avatar_storage", {
   id: uuid("id").primaryKey().notNull(),
-  name: text("name").notNull(),
+  name: text("name"),
   img_url: text("img_url").notNull(),
+  uploadDate: timestamp("upload_date").notNull(),
 });
