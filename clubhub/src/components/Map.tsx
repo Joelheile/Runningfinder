@@ -4,15 +4,13 @@ import React, { useEffect, useRef, useState } from "react";
 import { Loader } from "@googlemaps/js-api-loader";
 import SelectedClubHeader from "./Clubs/SelectedClubHeader";
 import { Club } from "@/lib/types/club";
-
-
+import Image from "next/image";
 
 const Map = ({ clubs }: { clubs: Club[] }) => {
   console.log("map data:", clubs);
   const mapRef = useRef<HTMLDivElement>(null);
   const [selectedLocation, setSelectedLocation] = useState<Club | null>(null);
-  const [popoverOpen, setPopoverOpen] = useState(false);
-  const [popoverlocation, setPopoverlocation] = useState({ x: 0, y: 0 });
+  const [markers, setMarkers] = useState<google.maps.Marker[]>([]);
 
   useEffect(() => {
     const initMap = async () => {
@@ -23,7 +21,7 @@ const Map = ({ clubs }: { clubs: Club[] }) => {
 
       const { Map } = await loader.importLibrary("maps");
       const { Marker } = (await loader.importLibrary(
-        "marker",
+        "marker"
       )) as google.maps.MarkerLibrary;
       const { InfoWindow } = await loader.importLibrary("maps");
 
@@ -35,23 +33,52 @@ const Map = ({ clubs }: { clubs: Club[] }) => {
 
       const infoWindow = new InfoWindow();
 
-      clubs.forEach((club: Club) => {
+      const newMarkers = clubs.map((club: Club) => {
         const marker = new Marker({
           map,
           position: club.location,
           title: club.name,
+          icon: {
+            url: "/icons/ClubUnselected.svg", // Default icon
+            scaledSize: new google.maps.Size(50, 50),
+          },
         });
 
         marker.addListener("click", () => {
           setSelectedLocation(club);
-          infoWindow.setContent(club.name);
+
+          infoWindow.setContent(
+            `<div>
+            <img src="${club.avatarUrl}" alt="${club.name}" style="width:50px;height:50px;"/>
+                <br/>
+            <strong>${club.name}</strong>
+
+                          </div>`
+          );
           infoWindow.open(map, marker);
         });
+
+        return marker;
       });
+
+      setMarkers(newMarkers);
     };
 
     initMap();
   }, [clubs]);
+
+  useEffect(() => {
+    markers.forEach((marker) => {
+      const iconUrl =
+        selectedLocation && marker.getTitle() === selectedLocation.name
+          ? "/icons/ClubSelected.svg"
+          : "/icons/ClubUnselected.svg";
+      marker.setIcon({
+        url: iconUrl,
+        scaledSize: new google.maps.Size(50, 50),
+      });
+    });
+  }, [selectedLocation, markers]);
 
   return (
     <div className="h-screen w-full">
@@ -63,7 +90,7 @@ const Map = ({ clubs }: { clubs: Club[] }) => {
           avatar={selectedLocation.avatarUrl || ""}
         />
       )}
-      <div style={{ height: "90vh" }} ref={mapRef} />
+      <div style={{ height: "100vh" }} ref={mapRef} />
     </div>
   );
 };
