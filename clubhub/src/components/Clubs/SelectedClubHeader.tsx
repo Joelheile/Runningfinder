@@ -16,7 +16,7 @@ export default function SelectedClubHeader({
   avatar,
 }: LocationProps) {
   const avatarUrl = avatar ? avatar : "/path/to/fallback/image.jpg";
-  console.log("Avatar URL:", avatarUrl);
+  //TODO: Impemenet Fallback data
 
   return (
     <div className="bg-white/80 backdrop-blur-sm absolute top-0 left-0 z-10 w-full text-card-foreground shadow-sm p-6 space-y-4">
@@ -27,7 +27,7 @@ export default function SelectedClubHeader({
             alt={name}
             width={100}
             height={100}
-            className="rounded-md border border-black border-2"
+            className="rounded-md border "
             unoptimized={true}
           />
           <div className="flex-col ml-10">
