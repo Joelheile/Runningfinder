@@ -39,7 +39,7 @@ const Map = ({ clubs }: { clubs: Club[] }) => {
         const marker = new Marker({
           map,
           position: club.location,
-          title: club.name,
+          title: club.id,
           icon: {
             url: "/icons/ClubUnselected.svg", // Default icon
             scaledSize: new google.maps.Size(50, 50),
@@ -77,7 +77,7 @@ const Map = ({ clubs }: { clubs: Club[] }) => {
   useEffect(() => {
     markers.forEach((marker) => {
       const iconUrl =
-        selectedLocation && marker.getTitle() === selectedLocation.name
+        selectedLocation && marker.getTitle() === selectedLocation.id
           ? "/icons/ClubSelected.svg"
           : "/icons/ClubUnselected.svg";
       marker.setIcon({
@@ -91,7 +91,7 @@ const Map = ({ clubs }: { clubs: Club[] }) => {
     <div className="h-screen w-full">
       {selectedLocation && (
         <SelectedClubHeader
-          id={selectedLocation.id}
+          slug={selectedLocation.slug}
           name={selectedLocation.name}
           description={selectedLocation.description}
           avatar={selectedLocation.avatarUrl || ""}
