@@ -7,14 +7,13 @@ import { useUploadAvatar } from "./useUploadAvatar";
 const addClub = async (newClub: Club): Promise<Club> => {
   console.log("hook addClub called");
 
-  const avatarId = v4();
+
 
   const response = await fetch("/api/v1/club", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       ...newClub,
-      avatarFileId: avatarId,
     }),
   });
 

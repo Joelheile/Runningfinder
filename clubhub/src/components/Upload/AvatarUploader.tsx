@@ -3,6 +3,8 @@ import { useDropzone } from "react-dropzone";
 
 const AvatarUploader = ({ id }: { id: string }) => {
   const [uploadedUrl, setUploadedUrl] = useState<string | null>(null);
+  const [avatarId] = useState(id);
+
 
   const onDrop = async (files: File[]) => {
     const file = files[0];
@@ -18,28 +20,31 @@ const AvatarUploader = ({ id }: { id: string }) => {
         presignedURL.searchParams.set("fileName", file.name);
         presignedURL.searchParams.set("contentType", file.type);
 
-        fetch(presignedURL.toString())
-          .then((res) => res.json())
-          .then((res) => {
-            const body = new Blob([fileData], { type: file.type });
-            console.log("signedUrl:", res.signedUrl.split("?")[0]);
+        try {
+          const res = await fetch(presignedURL.toString());
+          const json = await res.json();
+          const body = new Blob([fileData], { type: file.type });
+          console.log("signedUrl:", json.signedUrl.split("?")[0]);
 
-            fetch(res.signedUrl, {
-              body,
-              method: "PUT",
-            }).then(() => {
-              fetch("/api/v1/upload/avatar", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                  objectId: id,
-                  objectName: file.name,
-                  objectUrl: res.signedUrl.split("?")[0],
-                }),
-              });
-              setUploadedUrl(res.signedUrl.split("?")[0]);
-            });
+          await fetch(json.signedUrl, {
+            body,
+            method: "PUT",
           });
+
+          await fetch("/api/v1/upload/avatar", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              objectId: avatarId,
+              objectName: file.name,
+              objectUrl: json.signedUrl.split("?")[0],
+            }),
+          });
+
+          setUploadedUrl(json.signedUrl.split("?")[0]);
+        } catch (error) {
+          console.error("Error uploading file:", error);
+        }
       }
     };
     reader.readAsArrayBuffer(file);

@@ -17,10 +17,10 @@ export async function GET(
         return new Response(null, { status: 500 });
     }
 
-    const fileKey = `${Date.now().toString()}-${fileName}`;     // for uniqueness of the url
+    const fileKey = `${Date.now().toString()}-${fileName}`;
 
     const uploadParams = {
-        Bucket: process.env.NEXT_AWS_S3_BUCKET_NAME!,
+        Bucket: process.env.NEXT_PUBLIC_AWS_S3_BUCKET_NAME!,
         Key: fileKey,
         ContentType: contentType,
     };

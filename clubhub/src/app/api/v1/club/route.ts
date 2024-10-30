@@ -1,12 +1,24 @@
 import { db } from "@/db/db";
-import { club } from "@/db/schema";
+import { avatarStorage, club } from "@/db/schema";
+import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 
 export async function GET() {
   try {
-    const res = await db.select().from(club);
-    // console.log("api response:", res);
+    const res = await db
+      .select({
+        id: club.id,
+        name: club.name,
+        description: club.description,
+        locationLat: club.locationLat,
+        locationLng: club.locationLng,
+        instagramUsername: club.instagramUsername,
+        websiteUrl: club.websiteUrl,
+        avatarUrl: avatarStorage.img_url, // Ensure img_url is included
+      })
+      .from(club)
+      .leftJoin(avatarStorage, eq(club.avatarFileId, avatarStorage.id));
 
     return NextResponse.json(res);
   } catch (error) {
@@ -19,11 +31,16 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const { name, location, description, instagramUsername, websiteUrl, avatarFileId } =
-    await request.json();
+  const {
+    name,
+    location,
+    description,
+    instagramUsername,
+    websiteUrl,
+    avatarFileId,
+  } = await request.json();
 
   try {
-  
     const res = await db
       .insert(club)
       .values({
@@ -37,7 +54,6 @@ export async function POST(request: Request) {
         instagramUsername,
         websiteUrl,
         memberCount: 0,
-
       })
       .execute();
 

@@ -60,7 +60,7 @@ const Map = ({ clubs }: { clubs: Club[] }) => {
           id={selectedLocation.id}
           name={selectedLocation.name}
           description={selectedLocation.description}
-          avatar={selectedLocation.avatar || ""}
+          avatar={selectedLocation.avatarUrl || ""}
         />
       )}
       <div style={{ height: "90vh" }} ref={mapRef} />

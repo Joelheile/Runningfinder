@@ -7,15 +7,16 @@ import { avatarStorage } from "@/db/schema";
 
 export async function POST(request: Request) {
   //TODO: Refactor AvatarUploader to this route
-  const { objectName, objectUrl } = await request.json();
+  const { objectName, objectUrl, objectId } = await request.json();
 
   try {
     const res = await db
       .insert(avatarStorage)
       .values({
-        id: v4(),
+        id: objectId,
         name: objectName,
         img_url: objectUrl,
+        uploadDate: new Date(),
       })
       .execute();
 

@@ -23,9 +23,6 @@ export default function addClubPage() {
   // TODO: Needs to be redesigned
 
 
-
-
-
   const handleSubmit = (e: React.FormEvent) => {
 
     e.preventDefault();
@@ -39,9 +36,11 @@ export default function addClubPage() {
       instagramUsername,
       memberCount: 0,
       avatarFileId: avatarFileId,
+      avatarUrl: "",
       websiteUrl,
       id: "",
       creationDate: "",
+
     };
     mutation.mutate(formData);
   };
