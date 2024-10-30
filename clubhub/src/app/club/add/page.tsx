@@ -5,7 +5,7 @@ import LocationPicker from "location-picker";
 import { useState } from "react";
 import Script from "next/script";
 import { Button } from "@/components/ui/button";
-import { useAddClub } from "@/app/hooks/useAddClub";
+import { useAddClub } from "@/lib/hooks/useAddClub";
 import { Club } from "@/lib/types/club";
 import { ConsoleLogWriter } from "drizzle-orm";
 import { v4 } from "uuid";

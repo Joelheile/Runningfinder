@@ -1,5 +1,5 @@
 "use client";
-import { useClubs } from "@/app/hooks/useFetchClubs";
+import { useClubs } from "@/lib/hooks/useFetchClubs";
 import FilterBar from "@/components/FilterBar";
 
 import LikeButton from "@/components/icons/LikeButton";
@@ -23,7 +23,7 @@ const MapPage = () => {
         <LikeButton />
       </Link>
       {/* <FilterBar /> 
-      //TODO: Not needed for prototype
+      // TODO: Not needed for prototype
       */}
 
       <Map clubs={clubs || []} />

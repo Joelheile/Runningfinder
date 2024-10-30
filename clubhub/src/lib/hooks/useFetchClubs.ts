@@ -1,5 +1,5 @@
-import { Club } from "@/lib/types/club";
 import { useQuery } from "@tanstack/react-query";
+import { Club } from "../types/club";
 
 const fetchClubs = async (): Promise<Club[]> => {
   const response = await fetch("/api/v1/club");
@@ -15,7 +15,6 @@ const fetchClubs = async (): Promise<Club[]> => {
         lat: parseFloat(club.locationLat),
         lng: parseFloat(club.locationLng),
       },
-      //    avatar: `data:image/jpeg;base64,${avatarBase64}`
     };
   });
   return locations;

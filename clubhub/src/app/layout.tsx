@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Metrics from "./metrics";
+import Metrics from "../components/metrics";
 import { SessionProvider } from "next-auth/react";
 import ReactQueryProvider from "../components/ReactQueryProvider";
 

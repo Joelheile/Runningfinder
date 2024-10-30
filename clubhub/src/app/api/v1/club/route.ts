@@ -1,5 +1,6 @@
-import { db } from "@/db/db";
-import { avatarStorage, club } from "@/db/schema";
+import { db } from "@/lib/db/db";
+import { avatarStorage, club } from "@/lib/db/schema";
+
 import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
@@ -15,7 +16,7 @@ export async function GET() {
         locationLng: club.locationLng,
         instagramUsername: club.instagramUsername,
         websiteUrl: club.websiteUrl,
-        avatarUrl: avatarStorage.img_url, // Ensure img_url is included
+        avatarUrl: avatarStorage.img_url,
       })
       .from(club)
       .leftJoin(avatarStorage, eq(club.avatarFileId, avatarStorage.id));
@@ -25,7 +26,7 @@ export async function GET() {
     console.error("Error fetching clubs:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }
@@ -62,7 +63,7 @@ export async function POST(request: Request) {
     console.error("Error creating club:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }

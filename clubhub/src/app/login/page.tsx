@@ -1,7 +1,7 @@
-import AppIcon from "@/src/components/icons/AppIcon";
-import { Button } from "@/src/components/ui/button";
-import { Input } from "@/src/components/ui/input";
-import { Label } from "@/src/components/ui/label";
+import AppIcon from "@/components/icons/AppIcon";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import React from "react";
 

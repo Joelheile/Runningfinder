@@ -2,7 +2,7 @@
 // clubhub/src/components/Map.tsx
 import React, { useEffect, useRef, useState } from "react";
 import { Loader } from "@googlemaps/js-api-loader";
-import SelectedClubHeader from "./Clubs/SelectedClubHeader";
+import SelectedClubHeader from "./clubs/SelectedClubHeader";
 import { Club } from "@/lib/types/club";
 import Image from "next/image";
 

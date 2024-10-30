@@ -2,8 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { neon } from "@neondatabase/serverless";
 
 import { v4 } from "uuid";
-import { db } from "@/db/db";
-import { avatarStorage } from "@/db/schema";
+import { db } from "@/lib/db/db";
+import { avatarStorage } from "@/lib/db/schema";
+
 
 export async function POST(request: Request) {
   //TODO: Refactor AvatarUploader to this route

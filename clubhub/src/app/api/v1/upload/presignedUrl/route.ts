@@ -3,8 +3,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
+import { s3Client } from "@/lib/db/s3-client";
 
-import { s3Client } from "@/db/s3-client";
+
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
