@@ -8,17 +8,16 @@ const fetchClubs = async (): Promise<Club[]> => {
   }
   const data = await response.json();
 
-const locations: Club[] = data.map((club: any) => {
-
-  return {
-    ...club,
-    location: {
-      lat: parseFloat(club.locationLat),
-      lng: parseFloat(club.locationLng),
-    },
-//    avatar: `data:image/jpeg;base64,${avatarBase64}`
-  };
-});
+  const locations: Club[] = data.map((club: any) => {
+    return {
+      ...club,
+      location: {
+        lat: parseFloat(club.locationLat),
+        lng: parseFloat(club.locationLng),
+      },
+      //    avatar: `data:image/jpeg;base64,${avatarBase64}`
+    };
+  });
   return locations;
 };
 

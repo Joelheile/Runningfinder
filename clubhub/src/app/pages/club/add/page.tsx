@@ -17,14 +17,12 @@ export default function addClubPage() {
   const [location, setLocation] = useState({ lat: 52.52, lng: 13.405 });
   const [websiteUrl, setWebsiteUrl] = useState("");
   const [instagramUsername, setInstagramUsername] = useState("");
-  const [avatarFileId] = useState(v4()); 
+  const [avatarFileId] = useState(v4());
 
   // TODO: it should only be possible to submit as an admin
   // TODO: Needs to be redesigned
 
-
   const handleSubmit = (e: React.FormEvent) => {
-
     e.preventDefault();
     const formData: Club = {
       name,
@@ -40,7 +38,6 @@ export default function addClubPage() {
       websiteUrl,
       id: "",
       creationDate: "",
-
     };
     mutation.mutate(formData);
   };
@@ -57,7 +54,7 @@ export default function addClubPage() {
       },
       {
         zoom: 12,
-      }
+      },
     );
 
     google.maps.event.addListener(
@@ -67,11 +64,11 @@ export default function addClubPage() {
         // Get current location and show it in HTML
         var location = locationPicker.getMarkerPosition();
         console.log(
-          "The chosen location is " + location.lat + "," + location.lng
+          "The chosen location is " + location.lat + "," + location.lng,
         );
         console.log(location);
         setLocation({ lat: location.lat, lng: location.lng });
-      }
+      },
     );
 
     console.log(locationPicker);

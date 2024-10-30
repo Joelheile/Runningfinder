@@ -21,7 +21,7 @@ const Map = ({ clubs }: { clubs: Club[] }) => {
 
       const { Map } = await loader.importLibrary("maps");
       const { Marker } = (await loader.importLibrary(
-        "marker"
+        "marker",
       )) as google.maps.MarkerLibrary;
       const { InfoWindow } = await loader.importLibrary("maps");
 
@@ -49,11 +49,10 @@ const Map = ({ clubs }: { clubs: Club[] }) => {
 
           infoWindow.setContent(
             `<div>
-            <img src="${club.avatarUrl}" alt="${club.name}" style="width:50px;height:50px;"/>
+              <img src="${club.avatarUrl}" alt="${club.name}" style="width:50px;height:50px;"/>
                 <br/>
-            <strong>${club.name}</strong>
-
-                          </div>`
+              <strong>${club.name}</strong>
+            </div>`,
           );
           infoWindow.open(map, marker);
         });

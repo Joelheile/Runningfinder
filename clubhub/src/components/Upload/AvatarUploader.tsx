@@ -5,7 +5,6 @@ const AvatarUploader = ({ id }: { id: string }) => {
   const [uploadedUrl, setUploadedUrl] = useState<string | null>(null);
   const [avatarId] = useState(id);
 
-
   const onDrop = async (files: File[]) => {
     const file = files[0];
 
@@ -15,7 +14,7 @@ const AvatarUploader = ({ id }: { id: string }) => {
       if (fileData) {
         const presignedURL = new URL(
           "/api/v1/upload/presignedUrl",
-          window.location.href
+          window.location.href,
         );
         presignedURL.searchParams.set("fileName", file.name);
         presignedURL.searchParams.set("contentType", file.type);

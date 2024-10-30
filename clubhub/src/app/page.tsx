@@ -25,7 +25,7 @@ const MapPage = () => {
       {/* <FilterBar /> 
       //TODO: Not needed for prototype
       */}
-      
+
       <Map clubs={clubs || []} />
     </div>
   );

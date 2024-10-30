@@ -22,13 +22,13 @@ export async function POST(request: Request) {
 
     return NextResponse.json(
       { message: "Successfully uploaded the file" },
-      { status: 200 }
+      { status: 200 },
     );
   } catch (error) {
     console.error("Error uploading file: ", error);
     return NextResponse.json(
       { error: "Failed to upload file" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

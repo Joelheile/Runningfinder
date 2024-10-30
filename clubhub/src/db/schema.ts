@@ -55,7 +55,7 @@ export const account = pgTable(
     compoundKey: primaryKey({
       columns: [account.provider, account.providerAccountId],
     }),
-  })
+  }),
 );
 
 export const session = pgTable("auth_session", {
@@ -77,7 +77,7 @@ export const verificationToken = pgTable(
     compositePk: primaryKey({
       columns: [verificationToken.identifier, verificationToken.token],
     }),
-  })
+  }),
 );
 
 export const authenticator = pgTable(
@@ -98,7 +98,7 @@ export const authenticator = pgTable(
     compositePK: primaryKey({
       columns: [authenticator.userId, authenticator.credentialID],
     }),
-  })
+  }),
 );
 
 export const statusEnum = pgEnum("status", [
@@ -138,7 +138,7 @@ export const membership = pgTable(
   (membership) => ({
     userIdIndex: index("membership_user_id_index").on(membership.userId),
     clubIdIndex: index("membership_club_id_index").on(membership.clubId),
-  })
+  }),
 );
 export const run = pgTable("run", {
   id: uuid("id").primaryKey().notNull(),
