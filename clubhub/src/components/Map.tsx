@@ -3,8 +3,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Loader } from "@googlemaps/js-api-loader";
 import SelectedClubHeader from "./clubs/SelectedClubHeader";
-import { Club } from "@/lib/types/club";
+
 import Image from "next/image";
+import ReactDOMServer from "react-dom/server";
+import { Club } from "@/lib/types/club";
 
 const Map = ({ clubs }: { clubs: Club[] }) => {
   console.log("map data:", clubs);
@@ -21,7 +23,7 @@ const Map = ({ clubs }: { clubs: Club[] }) => {
 
       const { Map } = await loader.importLibrary("maps");
       const { Marker } = (await loader.importLibrary(
-        "marker",
+        "marker"
       )) as google.maps.MarkerLibrary;
       const { InfoWindow } = await loader.importLibrary("maps");
 
@@ -44,15 +46,23 @@ const Map = ({ clubs }: { clubs: Club[] }) => {
           },
         });
 
+        const InfoWindowContent = () => (
+          <div>
+            <img
+              src={club.avatarUrl}
+              alt={club.name}
+              style={{ width: "50px", height: "50px" }}
+            />
+            <br />
+            <strong>{club.name}</strong>
+          </div>
+        );
+
         marker.addListener("click", () => {
           setSelectedLocation(club);
 
           infoWindow.setContent(
-            `<div>
-              <img src="${club.avatarUrl}" alt="${club.name}" style="width:50px;height:50px;"/>
-                <br/>
-              <strong>${club.name}</strong>
-            </div>`,
+            ReactDOMServer.renderToString(<InfoWindowContent />)
           );
           infoWindow.open(map, marker);
         });
