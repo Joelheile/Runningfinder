@@ -46,23 +46,21 @@ const Map = ({ clubs }: { clubs: Club[] }) => {
           },
         });
 
-        const InfoWindowContent = () => (
-          <div>
-            <img
-              src={club.avatarUrl}
-              alt={club.name}
-              style={{ width: "50px", height: "50px" }}
-            />
-            <br />
-            <strong>{club.name}</strong>
-          </div>
-        );
-
         marker.addListener("click", () => {
           setSelectedLocation(club);
 
           infoWindow.setContent(
-            ReactDOMServer.renderToString(<InfoWindowContent />)
+            ReactDOMServer.renderToString(
+              <div>
+                <img
+                  src={club.avatarUrl}
+                  alt={club.name}
+                  style={{ width: "50px", height: "50px" }}
+                />
+                <br />
+                <strong>{club.name}</strong>
+              </div>
+            )
           );
           infoWindow.open(map, marker);
         });

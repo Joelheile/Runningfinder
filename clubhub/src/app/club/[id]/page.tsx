@@ -1,35 +1,46 @@
+"use client";
 import LikeButton from "@/components/icons/LikeButton";
 import RunCard from "@/components/runs/RunCard";
+import { useFetchClubById } from "@/lib/hooks/useFetchClubs";
+
 import { ChevronLeft, Pencil, Share } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useParams } from "next/navigation";
+import { useRouter } from "next/navigation";
+
 import React from "react";
 
 const ClubDetailPage = () => {
-  const name = "Midnight Runners";
-  const description = "Love to run";
-  const id = 1;
-  const carouselImages = ["", ""];
+  const clubId = useParams().toString();
 
+  const { data: club, isLoading, isError, error } = useFetchClubById(clubId);
+
+  const { name, description, avatarUrl } = club?.[0] || {};
+  const router = useRouter();
   return (
     // TODO: Refactor Nav
     <div className="flex-col bg-light w-screen h-screen p-8">
       <nav className="flex justify-between ">
-        <div className="flex">
-          <ChevronLeft className="stroke-primary stroke" />
-          <span className="Back text-primary">Back</span>
-        </div>
+      <Link href="/">
+          <div className="flex">
+            <ChevronLeft className="stroke-primary stroke" />
+            <span className="Back text-primary">Back</span>
+          </div>
+          </Link>
 
         <div className="flex gap-2">
-          <Link href={`/pages/club/${id}/admin`}>
+        <button type="button" onClick={() => router.push(`club/${clubId}/admin`)}>
+          
             <Pencil className="stroke-primary" />
-          </Link>
+            </button>
+      
           <Share className="stroke-primary" />
         </div>
       </nav>
 
       <div className="mt-10">
-        <Image src={"/"} width={200} height={100} alt={""} className="w-3/4 " />
+        <Image src={avatarUrl || "/default-avatar.png"} width={100} height={100} alt={""} className="w-1/4 rounded-lg" />
         <div className="flex">
           <LikeButton />
           <div className="flex-col ml-4">
@@ -37,7 +48,7 @@ const ClubDetailPage = () => {
             <p>{description}</p>
           </div>
         </div>
-        <div className="flex w-full mt-4">
+        {/* <div className="flex w-full mt-4">
           {carouselImages.map((imageUrl, index) => (
             <Image
               key={index}
@@ -48,7 +59,7 @@ const ClubDetailPage = () => {
               className="w-1/4"
             />
           ))}
-        </div>
+        </div> */}
       </div>
 
       <div className="">

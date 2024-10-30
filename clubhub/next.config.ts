@@ -1,5 +1,15 @@
-module.exports = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   images: {
-    domains: ["localhost"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "runningfinder.s3.eu-central-1.amazonaws.com",
+        port: "",
+      },
+    ],
+    domains: ["localhost", "runningfinder.s3.eu-central-1.amazonaws.com"],
   },
 };
+
+export default nextConfig;

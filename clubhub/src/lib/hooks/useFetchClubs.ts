@@ -20,9 +20,18 @@ const fetchClubs = async (): Promise<Club[]> => {
   return locations;
 };
 
-export function useClubs() {
+function useFetchClubs() {
   return useQuery({
     queryKey: ["clubs"],
     queryFn: fetchClubs,
   });
 }
+
+function useFetchClubById(id: string) {
+  return useQuery({
+    queryKey: ["clubs", id],
+    queryFn: fetchClubs,
+  });
+}
+
+export { useFetchClubs, useFetchClubById };

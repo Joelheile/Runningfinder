@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
   const fileKey = `${Date.now().toString()}-${fileName}`;
 
   const uploadParams = {
-    Bucket: process.env.NEXT_PUBLIC_AWS_S3_BUCKET_NAME!,
+    Bucket: process.env.NEXT_PUBLIC_AWS_BUCKET_NAME!,
     Key: fileKey,
     ContentType: contentType,
   };

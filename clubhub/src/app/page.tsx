@@ -1,5 +1,5 @@
 "use client";
-import { useClubs } from "@/lib/hooks/useFetchClubs";
+import {  useFetchClubs } from "@/lib/hooks/useFetchClubs";
 import FilterBar from "@/components/FilterBar";
 
 import LikeButton from "@/components/icons/LikeButton";
@@ -12,7 +12,7 @@ import React from "react";
 
 const MapPage = () => {
   const handleLikeButtonClick = () => {};
-  const { data: clubs, isLoading, isError, error } = useClubs();
+  const { data: clubs, isLoading, isError, error } = useFetchClubs();
 
   return (
     <div className="h-screen">
