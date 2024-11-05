@@ -91,10 +91,7 @@ const Map = ({ clubs }: { clubs: Club[] }) => {
     <div className="h-screen w-full">
       {selectedLocation && (
         <SelectedClubHeader
-          slug={selectedLocation.slug}
-          name={selectedLocation.name}
-          description={selectedLocation.description}
-          avatar={selectedLocation.avatarUrl || ""}
+          {...clubs.find((club) => club.id === selectedLocation.id)!}
         />
       )}
       <div style={{ height: "100vh" }} ref={mapRef} />

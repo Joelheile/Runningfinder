@@ -12,10 +12,14 @@ export async function GET() {
         id: club.id,
         name: club.name,
         description: club.description,
-        locationLat: club.locationLat,
         locationLng: club.locationLng,
+        locationLat: club.locationLat,
+        avatarFileId: club.avatarFileId,
+        creationDate: club.creationDate,
         instagramUsername: club.instagramUsername,
         websiteUrl: club.websiteUrl,
+        memberCount: club.memberCount,
+        slug: club.slug,
         avatarUrl: avatarStorage.img_url,
       })
       .from(club)
@@ -55,6 +59,7 @@ export async function POST(request: Request) {
         instagramUsername,
         websiteUrl,
         memberCount: 0,
+        slug: name.toLowerCase().replace(/ /g, "-"),
       })
       .execute();
 

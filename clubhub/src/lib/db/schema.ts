@@ -159,6 +159,7 @@ export const run = pgTable("run", {
 export const club = pgTable("club", {
   id: uuid("id").primaryKey().notNull(),
   name: text("name").notNull(),
+  slug: text("slug").notNull().unique(),
   description: text("description"),
   locationLng: decimal("location_lng").notNull(),
   locationLat: decimal("location_lat").notNull(),
@@ -170,6 +171,7 @@ export const club = pgTable("club", {
     .references(() => avatarStorage.id),
   creationDate: timestamp("creation_date").notNull(),
   memberCount: integer("member_count"),
+  
 });
 
 export const avatarStorage = pgTable("avatar_storage", {
