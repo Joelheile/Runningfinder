@@ -20,12 +20,15 @@ export default function SelectedClubHeader(club: Club) {
             <img
               src={avatarUrl}
               alt={club.name}
-              className="rounded-md border w-full sm:w-1/6 h-auto object-cover mb-4 sm:mb-0 sm:mr-6"
+              className="rounded-md border w-auto sm:w-1/6 h-auto object-cover mb-4 sm:mb-0 sm:mr-6"
             />
             <div className="flex flex-col   justify-between w-full sm:w-2/3">
-              <h1 className="text-lg sm:text-xl font-semibold">{club.name}</h1>
-              <p className="lg:w-1/3 mt-2">{club.description}</p>
-
+              <div>
+                <h1 className="text-lg sm:text-xl font-semibold">
+                  {club.name}
+                </h1>
+                <p className="lg:w-1/3 mt-2">{club.description}</p>
+              </div>
               <div className="flex flew-row   space-x-3 mt-3">
                 <div
                   onMouseEnter={() => setInstagramSelected(true)}
