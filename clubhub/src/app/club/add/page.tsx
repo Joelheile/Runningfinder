@@ -10,6 +10,7 @@ import { Club } from "@/lib/types/club";
 import { ConsoleLogWriter } from "drizzle-orm";
 import { v4 } from "uuid";
 import AvatarUploader from "@/components/Upload/AvatarUploader";
+import { Textarea } from "@/components/ui/textarea";
 
 export default function addClubPage() {
   const [name, setName] = useState("");
@@ -73,47 +74,65 @@ export default function addClubPage() {
   };
 
   return (
-    <div className=" flex justify-center items-start h-screen">
-      <form className="mt-20 flex-col w-5/6 space-y-10" onSubmit={handleSubmit}>
-        <h1>Add club</h1>
-        <div className="flex">
-          <Label>Name</Label>
-          <Input value={name} onChange={(e) => setName(e.target.value)} />
+    <div className="container mx-auto p-4 max-w-2xl mt-10">
+      <h1 className="text-2xl font-bold mb-4">Add Club</h1>
+      <form>
+        <div className="grid gap-4">
+          <div className="flex flex-col">
+            <Label>Club Name</Label>
+            <Input
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="mt-1 p-2 border rounded"
+            />
+          </div>
+          <div className="flex flex-col">
+            <Label>Club Description</Label>
+            <Textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              className="mt-1 p-2 border rounded"
+            />
+          </div>
+          <div className="flex flex-col">
+            <Label>Website Url (https://)</Label>
+            <Input
+              value={websiteUrl}
+              onChange={(e) => setWebsiteUrl(e.target.value)}
+              className="mt-1 p-2 border rounded"
+            />
+          </div>
+          <div className="flex flex-col">
+            <Label>Instagram Username</Label>
+            <Input
+              value={instagramUsername}
+              onChange={(e) => setInstagramUsername(e.target.value)}
+              className="mt-1 p-2 border rounded"
+            />
+          </div>
+          <AvatarUploader id={avatarFileId} />
+          <Button
+            type="submit"
+            className="mt-4 p-2 bg-blue-500 text-white rounded"
+          >
+            Add club
+          </Button>
         </div>
-        <div className="flex">
-          <Label>Description</Label>
-          <Input
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-        </div>
-        <div className="flex">
-          <Label>Website Url (https://)</Label>
-          <Input
-            value={websiteUrl}
-            onChange={(e) => setWebsiteUrl(e.target.value)}
-          />
-        </div>
-        <div className="flex">
-          <Label>Instagram Username</Label>
-          <Input
-            value={instagramUsername}
-            onChange={(e) => setInstagramUsername(e.target.value)}
-          />
-        </div>
-        <AvatarUploader id={avatarFileId} />
-        <Button type="submit">Add club</Button>
-
-        <div className="App">
+        <div className="App mt-8">
           <Script
             src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS}`}
             onError={() => console.log("onError")}
             onLoad={defaultPosition}
           />
-          <h1>Location Picker</h1>
-          <h2>React Location Picker Example</h2>
-          <div id="map" style={{ height: "400px", marginBottom: 20 }} />
-          Location: <b>{location.lat + " | " + location.lng}</b>
+          <h2 className="text-xl font-semibold mb-2">Location Picker</h2>
+          <div
+            id="map"
+            style={{ height: "400px", marginBottom: 20 }}
+            className="border rounded"
+          />
+          <p>
+            Location: <b>{location.lat + " | " + location.lng}</b>
+          </p>
         </div>
       </form>
     </div>

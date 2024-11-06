@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { useDropzone } from "react-dropzone";
+import { LoadingSpinner } from "../ui/loadingSpinner";
 
 const AvatarUploader = ({ id }: { id: string }) => {
   const [uploadedUrl, setUploadedUrl] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [avatarId] = useState(id);
 
   const onDrop = async (files: File[]) => {
@@ -11,6 +13,8 @@ const AvatarUploader = ({ id }: { id: string }) => {
     const reader = new FileReader();
     reader.onload = async (event) => {
       const fileData = event.target?.result;
+      setIsLoading(true);
+      //TODO: convert into hooks
       if (fileData) {
         const presignedURL = new URL(
           "/api/v1/upload/presignedUrl",
@@ -41,7 +45,9 @@ const AvatarUploader = ({ id }: { id: string }) => {
           });
 
           setUploadedUrl(json.signedUrl.split("?")[0]);
+          setIsLoading(false);
         } catch (error) {
+          setIsLoading(false);
           console.error("Error uploading file:", error);
         }
       }
@@ -55,6 +61,12 @@ const AvatarUploader = ({ id }: { id: string }) => {
     <div {...getRootProps()} className="p-6 border-2 border-dashed rounded-lg">
       <input {...getInputProps()} />
       <p>Drag & drop a file here, or click to select one</p>
+      {isLoading && (
+        <div className="flex gap-x-2">
+          <LoadingSpinner className="" />
+          Uploading file
+        </div>
+      )}
       {uploadedUrl && (
         <p className="mt-4">
           File uploaded! View it{" "}
