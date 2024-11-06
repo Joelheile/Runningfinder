@@ -7,6 +7,7 @@ import SelectedClubHeader from "./clubs/SelectedClubHeader";
 import Image from "next/image";
 import ReactDOMServer from "react-dom/server";
 import { Club } from "@/lib/types/club";
+import Link from "next/link";
 
 const Map = ({ clubs }: { clubs: Club[] }) => {
   console.log("map data:", clubs);
@@ -23,7 +24,7 @@ const Map = ({ clubs }: { clubs: Club[] }) => {
 
       const { Map } = await loader.importLibrary("maps");
       const { Marker } = (await loader.importLibrary(
-        "marker",
+        "marker"
       )) as google.maps.MarkerLibrary;
       const { InfoWindow } = await loader.importLibrary("maps");
 
@@ -51,15 +52,17 @@ const Map = ({ clubs }: { clubs: Club[] }) => {
 
           infoWindow.setContent(
             ReactDOMServer.renderToString(
-              <div>
-                <img
-                  src={club.avatarUrl}
-                  alt={club.name}
-                  className="h-20 w-full mb-2 rounded-sm"
-                />
-                <strong>{club.name}</strong>
-              </div>,
-            ),
+              <div className="cursor-pointer">
+                <Link href={`/club/${club.slug}`}>
+                  <img
+                    src={club.avatarUrl}
+                    alt={club.name}
+                    className="h-20 w-full mb-2 rounded-sm"
+                  />
+                  <strong>{club.name}</strong>
+                </Link>
+              </div>
+            )
           );
           infoWindow.open(map, marker);
         });
