@@ -76,7 +76,7 @@ export default function addClubPage() {
   return (
     <div className="container mx-auto p-4 max-w-2xl mt-10">
       <h1 className="text-2xl font-bold mb-4">Add Club</h1>
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className="grid gap-4">
           <div className="flex flex-col">
             <Label>Club Name</Label>
