@@ -30,9 +30,7 @@ const ClubDetailPage = () => {
   const { name, description, avatarUrl, instagramUsername, websiteUrl } = club;
 
   return (
-    //TODO Redesing page to have all information and description code. Differentiate between mobile and desktop view
-
-    <div className="flex-col bg-light w-screen h-screen p-8">
+    <div className="flex flex-col bg-light w-screen h-screen p-8">
       <nav className="flex justify-between">
         <Link href="/">
           <div className="flex">
@@ -52,37 +50,33 @@ const ClubDetailPage = () => {
         </div>
       </nav>
 
-      <div className="flex mt-10 ">
-        <Image
-          src={avatarUrl || "/default-avatar.png"}
-          width={1000}
-          height={1000}
-          alt={`${name} avatar`}
-          className="w-full sm:w-1/2 md:w-1/4 rounded-lg"
-        />
-        <div className="flex flex-col sm:flex-row mt-4">
-          
-          <div className="flex-col ml-0 sm:ml-4 mt-4 sm:mt-0">
-          
-            <h1 className="text-lg sm:text-xl md:text-2xl">{name}</h1>
-            <p className="text-sm sm:text-base md:text-lg">{description}</p>
-            <p className="text-sm sm:text-base md:text-lg">
-              {instagramUsername}
-            </p>
-            <LikeButton />
-            <ClubIconBar instagramUsername={instagramUsername} websiteUrl={websiteUrl} />
+      <div className="flex-col mt-10 lg:max-w-7xl md:w-2/3  sm:flex-row justify-center self-center">
+        <div className="flex flex-col sm:flex-row  bg-white gap-x-5 border p-3 rounded-md">
+          <img
+            src={avatarUrl}
+            alt={club.name}
+            className="rounded-md border lg:w-1/4 sm:w-1/6 h-auto max-h-48 object-cover mb-4 sm:mb-0 sm:mr-6"
+          />
+          <div className="flex flex-col max-w-2xl py-4 justify-between">
+            <div>
+              <h1>{club.name}</h1>
+              <p className="mt-2">{club.description}</p>
+            </div>
+            <ClubIconBar
+              instagramUsername={club.instagramUsername}
+              websiteUrl={club.websiteUrl}
+            />
           </div>
         </div>
-      </div>
-
-      <div className="mt-10">
-        <h2 className="mb-2 text-lg sm:text-xl md:text-2xl">Upcoming runs</h2>
-        <RunCard
-          date={"Fr, 2.1"}
-          time={0}
-          distance={5}
-          location={"Warschauer Straße"}
-        />
+        <div className="mt-10">
+          <h2 className="mb-2 text-lg sm:text-xl md:text-2xl">Upcoming runs</h2>
+          <RunCard
+            date={"Fr, 2.1"}
+            time={0}
+            distance={5}
+            location={"Warschauer Straße"}
+          />
+        </div>
       </div>
     </div>
   );

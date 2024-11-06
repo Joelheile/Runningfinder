@@ -94,10 +94,10 @@ body {
     @apply bg-background text-foreground;
   }
   h1 {
-    @apply font-bold text-lg;
+    @apply font-extrabold text-2xl text-primary;
   }
   h2 {
-    @apply font-medium;
+    @apply font-bold text-lg;
   }
   strong {
     @apply font-medium;
