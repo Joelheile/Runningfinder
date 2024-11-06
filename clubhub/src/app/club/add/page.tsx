@@ -19,9 +19,6 @@ export default function addClubPage() {
   const [instagramUsername, setInstagramUsername] = useState("");
   const [avatarFileId] = useState(v4());
 
-  // TODO: it should only be possible to submit as an admin
-  // TODO: Needs to be redesigned
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const formData: Club = {
@@ -38,6 +35,7 @@ export default function addClubPage() {
       websiteUrl,
       id: "",
       creationDate: "",
+      slug: "",
     };
     mutation.mutate(formData);
   };

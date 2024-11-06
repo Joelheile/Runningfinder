@@ -1,5 +1,3 @@
-// clubhub/src/lib/hooks/useFetchClubs.ts
-
 import { useQuery } from "@tanstack/react-query";
 import { Club } from "../types/club";
 

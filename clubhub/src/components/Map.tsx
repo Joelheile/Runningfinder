@@ -1,5 +1,4 @@
 "use client";
-// clubhub/src/components/Map.tsx
 import React, { useEffect, useRef, useState } from "react";
 import { Loader } from "@googlemaps/js-api-loader";
 import SelectedClubHeader from "./clubs/SelectedClubHeader";
@@ -24,7 +23,7 @@ const Map = ({ clubs }: { clubs: Club[] }) => {
 
       const { Map } = await loader.importLibrary("maps");
       const { Marker } = (await loader.importLibrary(
-        "marker"
+        "marker",
       )) as google.maps.MarkerLibrary;
       const { InfoWindow } = await loader.importLibrary("maps");
 
@@ -61,8 +60,8 @@ const Map = ({ clubs }: { clubs: Club[] }) => {
                   />
                   <strong>{club.name}</strong>
                 </Link>
-              </div>
-            )
+              </div>,
+            ),
           );
           infoWindow.open(map, marker);
         });

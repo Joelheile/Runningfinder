@@ -1,5 +1,3 @@
-// clubhub/src/app/club/[slug]/page.tsx
-
 "use client";
 import ClubIconBar from "@/components/clubs/ClubIconBar";
 import Instagram from "@/components/icons/InstagramIcon";

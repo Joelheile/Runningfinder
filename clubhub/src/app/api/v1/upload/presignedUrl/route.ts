@@ -1,4 +1,3 @@
-// /app/api/presigned/route.ts
 // Presigned URLs allow you to upload large chunks of data directly at the source (here, Amazon S3).
 import { NextRequest, NextResponse } from "next/server";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
