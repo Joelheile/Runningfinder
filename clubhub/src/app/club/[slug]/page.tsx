@@ -1,6 +1,8 @@
 // clubhub/src/app/club/[slug]/page.tsx
 
 "use client";
+import ClubIconBar from "@/components/clubs/ClubIconBar";
+import Instagram from "@/components/icons/InstagramIcon";
 import LikeButton from "@/components/icons/LikeButton";
 import RunCard from "@/components/runs/RunCard";
 import { useFetchClubById } from "@/lib/hooks/useFetchClubs";
@@ -50,26 +52,31 @@ const ClubDetailPage = () => {
         </div>
       </nav>
 
-      <div className="mt-10">
+      <div className="flex mt-10 ">
         <Image
           src={avatarUrl || "/default-avatar.png"}
           width={1000}
           height={1000}
           alt={`${name} avatar`}
-          className="w-1/4 rounded-lg"
+          className="w-full sm:w-1/2 md:w-1/4 rounded-lg"
         />
-        <div className="flex">
-          <LikeButton />
-          <div className="flex-col ml-4">
-            <h1>{name}</h1>
-            <p>{description}</p>
-            <p>{instagramUsername}</p>
+        <div className="flex flex-col sm:flex-row mt-4">
+          
+          <div className="flex-col ml-0 sm:ml-4 mt-4 sm:mt-0">
+          
+            <h1 className="text-lg sm:text-xl md:text-2xl">{name}</h1>
+            <p className="text-sm sm:text-base md:text-lg">{description}</p>
+            <p className="text-sm sm:text-base md:text-lg">
+              {instagramUsername}
+            </p>
+            <LikeButton />
+            <ClubIconBar instagramUsername={instagramUsername} websiteUrl={websiteUrl} />
           </div>
         </div>
       </div>
 
-      <div>
-        <h2 className="mb-2">Upcoming runs</h2>
+      <div className="mt-10">
+        <h2 className="mb-2 text-lg sm:text-xl md:text-2xl">Upcoming runs</h2>
         <RunCard
           date={"Fr, 2.1"}
           time={0}
