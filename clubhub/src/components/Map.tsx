@@ -23,7 +23,7 @@ const Map = ({ clubs }: { clubs: Club[] }) => {
 
       const { Map } = await loader.importLibrary("maps");
       const { Marker } = (await loader.importLibrary(
-        "marker"
+        "marker",
       )) as google.maps.MarkerLibrary;
       const { InfoWindow } = await loader.importLibrary("maps");
 
@@ -58,8 +58,8 @@ const Map = ({ clubs }: { clubs: Club[] }) => {
                   className="h-20 w-full mb-2 rounded-sm"
                 />
                 <strong>{club.name}</strong>
-              </div>
-            )
+              </div>,
+            ),
           );
           infoWindow.open(map, marker);
         });

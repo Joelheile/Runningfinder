@@ -171,7 +171,6 @@ export const club = pgTable("club", {
     .references(() => avatarStorage.id),
   creationDate: timestamp("creation_date").notNull(),
   memberCount: integer("member_count"),
-  
 });
 
 export const avatarStorage = pgTable("avatar_storage", {

@@ -30,7 +30,7 @@ export async function GET() {
     console.error("Error fetching clubs:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -62,14 +62,14 @@ export async function POST(request: Request) {
         slug: name.toLowerCase().replace(/ /g, "-"),
       })
       .execute();
-      console.log("clubs", res);
+    console.log("clubs", res);
 
     return NextResponse.json(res);
   } catch (error) {
     console.error("Error creating club:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

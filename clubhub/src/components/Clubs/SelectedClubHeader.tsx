@@ -22,16 +22,16 @@ export default function SelectedClubHeader(club: Club) {
               alt={club.name}
               width={200}
               height={200}
-              className="rounded-md border h-auto w-auto object-cover " 
+              className="rounded-md border h-auto w-auto object-cover "
             />
             <div className="flex flex-col ml-10 size-2/5">
               <h1>{club.name}</h1>
-              <p className="">{club.description}</p>
+              <p>{club.description}</p>
               <div className="flex  space-x-2 mt-3 align-middle flex-row">
                 <div
                   onMouseEnter={() => setInstagramSelected(true)}
                   onMouseLeave={() => setInstagramSelected(false)}
-    className=" cursor-pointer"
+                  className=" cursor-pointer"
                 >
                   <Link
                     href={`https://www.instagram.com/${club.instagramUsername}`}
@@ -40,10 +40,14 @@ export default function SelectedClubHeader(club: Club) {
                   </Link>
                 </div>
                 <Link className="flex h-5" href={club.websiteUrl}>
-                  <Globe 
-                  size={24}  
-                  onMouseEnter={(e) => e.currentTarget.style.color = "hsl(var(--primary))"} 
-                  onMouseLeave={(e) => e.currentTarget.style.color = 'black'}
+                  <Globe
+                    size={24}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.color = "hsl(var(--primary))")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.color = "black")
+                    }
                   />
                 </Link>
               </div>
