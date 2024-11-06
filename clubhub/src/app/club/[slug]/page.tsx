@@ -5,6 +5,7 @@ import ClubIconBar from "@/components/clubs/ClubIconBar";
 import Instagram from "@/components/icons/InstagramIcon";
 import LikeButton from "@/components/icons/LikeButton";
 import RunCard from "@/components/runs/RunCard";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useFetchClubById } from "@/lib/hooks/useFetchClubs";
 
 import { ChevronLeft, Pencil, Share } from "lucide-react";
@@ -22,7 +23,17 @@ const ClubDetailPage = () => {
   const { data: club, isLoading, isError, error } = useFetchClubById(slug);
   console.log("Fetched club data:", club);
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) {
+    return (
+      <div className="flex flex-col items-center mt-32">
+        <Skeleton className="w-1/3 h-48 mb-4" />
+        <Skeleton className="w-1/4 h-6 mb-2" />
+        <Skeleton className="w-1/4 h-6 mb-2" />
+        <Skeleton className="w-1/4 h-6 mb-2" />
+      </div>
+    );
+  }
+
   if (isError) return <p>Error: {error?.message}</p>;
 
   if (!club) return <p>No club data available.</p>;
