@@ -1,0 +1,94 @@
+"use client";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import LocationPicker from "location-picker";
+import { useState } from "react";
+import Script from "next/script";
+import { Button } from "@/components/ui/button";
+import { useAddClub } from "@/lib/hooks/useAddClub";
+import { Club } from "@/lib/types/Club";
+import { ConsoleLogWriter } from "drizzle-orm";
+import { v4 } from "uuid";
+import AvatarUploader from "@/components/Upload/AvatarUploader";
+import { Textarea } from "@/components/ui/textarea";
+
+export default function AddClub() {
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [websiteUrl, setWebsiteUrl] = useState("");
+  const [instagramUsername, setInstagramUsername] = useState("");
+  const [avatarFileId] = useState(v4());
+  
+  const handleSubmit = (e: React.FormEvent) => {
+      e.preventDefault();
+      const formData: Club = {
+          name,
+          description,
+          location: { lat: 0, lng: 0 },
+            instagramUsername,
+            memberCount: 0,
+            avatarFileId: avatarFileId,
+            avatarUrl: "",
+            websiteUrl,
+            id: "",
+            creationDate: "",
+            slug: "",
+        };
+        mutation.mutate(formData);
+    };
+    
+    const mutation = useAddClub();
+    
+
+  return (
+  <div>
+      <form onSubmit={handleSubmit}>
+        <div className="grid gap-4">
+          <div className="flex flex-col">
+            <Label>Club Name</Label>
+            <Input
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="mt-1 p-2 border rounded"
+            />
+          </div>
+          <div className="flex flex-col">
+            <Label>Club Description</Label>
+            <Textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              className="mt-1 p-2 border rounded"
+            />
+          </div>
+          <div className="flex flex-col">
+            <Label>Website Url (https://)</Label>
+            <Input
+              value={websiteUrl}
+              onChange={(e) => setWebsiteUrl(e.target.value)}
+              className="mt-1 p-2 border rounded"
+            />
+          </div>
+          <div className="flex flex-col">
+            <Label>Instagram Username</Label>
+            <Input
+              value={instagramUsername}
+              onChange={(e) => setInstagramUsername(e.target.value)}
+              className="mt-1 p-2 border rounded"
+            />
+          </div>
+          <AvatarUploader id={avatarFileId} />
+          <Button
+            type="submit"
+            className="mt-4 p-2 bg-blue-500 text-white rounded"
+          >
+            Add club
+          </Button>
+        </div>
+        <div className="App mt-8">
+          
+          
+        </div>
+      </form>
+    </div>
+  );
+}
