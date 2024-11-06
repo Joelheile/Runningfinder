@@ -62,6 +62,7 @@ export async function POST(request: Request) {
         slug: name.toLowerCase().replace(/ /g, "-"),
       })
       .execute();
+      console.log("clubs", res);
 
     return NextResponse.json(res);
   } catch (error) {

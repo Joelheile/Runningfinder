@@ -1,5 +1,3 @@
-// clubhub/src/app/api/v1/club/[slug]/route.ts
-
 import { db } from "@/lib/db/db";
 import { club, avatarStorage } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
@@ -15,22 +13,19 @@ export async function GET(
       .select({
         id: club.id,
         name: club.name,
+        slug: club.slug,
         description: club.description,
         locationLng: club.locationLng,
         locationLat: club.locationLat,
-        avatarFileId: club.avatarFileId,
-        creationDate: club.creationDate,
         instagramUsername: club.instagramUsername,
         websiteUrl: club.websiteUrl,
-        memberCount: club.memberCount,
-        slug: club.slug,
         avatarUrl: avatarStorage.img_url,
       })
       .from(club)
       .leftJoin(avatarStorage, eq(club.avatarFileId, avatarStorage.id))
       .where(eq(club.slug, params.slug));
 
-    console.log("Fetched club:", res);
+    console.log("Fetched club test:", res);
     if (res.length === 0) {
       return NextResponse.json({ error: "Club not found" }, { status: 404 });
     }

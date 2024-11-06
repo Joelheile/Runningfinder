@@ -15,7 +15,7 @@ import React from "react";
 
 const ClubDetailPage = () => {
   const router = useRouter();
-  const slug  = useParams().slug.toString();
+  const slug = useParams().slug.toString();
 
   const { data: club, isLoading, isError, error } = useFetchClubById(slug);
   console.log("Fetched club data:", club);
@@ -28,6 +28,8 @@ const ClubDetailPage = () => {
   const { name, description, avatarUrl, instagramUsername, websiteUrl } = club;
 
   return (
+    //TODO Redesing page to have all information and description code. Differentiate between mobile and desktop view
+
     <div className="flex-col bg-light w-screen h-screen p-8">
       <nav className="flex justify-between">
         <Link href="/">
@@ -51,8 +53,8 @@ const ClubDetailPage = () => {
       <div className="mt-10">
         <Image
           src={avatarUrl || "/default-avatar.png"}
-          width={100}
-          height={100}
+          width={1000}
+          height={1000}
           alt={`${name} avatar`}
           className="w-1/4 rounded-lg"
         />
