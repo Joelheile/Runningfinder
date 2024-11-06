@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { Club } from "../types/club";
+import { Club } from "../types/Club";
 
 const fetchClubs = async (): Promise<Club[]> => {
   const response = await fetch("/api/v1/club");

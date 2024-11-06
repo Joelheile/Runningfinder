@@ -6,7 +6,7 @@ import { useState } from "react";
 import Script from "next/script";
 import { Button } from "@/components/ui/button";
 import { useAddClub } from "@/lib/hooks/useAddClub";
-import { Club } from "@/lib/types/club";
+import { Club } from "@/lib/types/Club";
 import { ConsoleLogWriter } from "drizzle-orm";
 import { v4 } from "uuid";
 import AvatarUploader from "@/components/Upload/AvatarUploader";

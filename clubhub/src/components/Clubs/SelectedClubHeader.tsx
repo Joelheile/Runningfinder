@@ -1,7 +1,7 @@
 import { ChevronRight, ClubIcon, Globe, InstagramIcon } from "lucide-react";
 import Link from "next/link";
 
-import { Club } from "@/lib/types/club";
+import { Club } from "@/lib/types/Club";
 import { useState } from "react";
 
 import ClubIconBar from "./ClubIconBar";

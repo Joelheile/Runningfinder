@@ -1,5 +1,5 @@
 import { Avatar } from "@/lib/types/Avatar";
-import { Club } from "@/lib/types/club";
+import { Club } from "@/lib/types/Club";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { v4 } from "uuid";
 import { useUploadAvatar } from "./useUploadAvatar";

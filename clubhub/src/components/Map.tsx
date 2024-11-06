@@ -5,7 +5,7 @@ import SelectedClubHeader from "./clubs/SelectedClubHeader";
 
 import Image from "next/image";
 import ReactDOMServer from "react-dom/server";
-import { Club } from "@/lib/types/club";
+import { Club } from "@/lib/types/Club";
 import Link from "next/link";
 
 const Map = ({ clubs }: { clubs: Club[] }) => {

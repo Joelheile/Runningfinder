@@ -140,15 +140,20 @@ export const membership = pgTable(
     clubIdIndex: index("membership_club_id_index").on(membership.clubId),
   }),
 );
+
+const intervalEnum = pgEnum("interval", ["daily", "weekly", "biweekly", "monthly"]);
+
 export const run = pgTable("run", {
   id: uuid("id").primaryKey().notNull(),
   clubId: uuid("club_id")
     .notNull()
     .references(() => club.id),
   date: date("date").notNull(),
+  interval: intervalEnum("interval").notNull(),
+  intervalDay: integer("interval_day").notNull(),
   startDescription: text("start_description").notNull(),
   startTime: time("start_time").notNull(),
-  locationLang: decimal("location_lang").notNull(),
+  locationLng: decimal("location_lng").notNull(),
   locationLat: decimal("location_lat").notNull(),
   distance: decimal("distance").notNull(),
   temperature: decimal("temperature"),
