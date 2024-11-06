@@ -13,25 +13,24 @@ export default function SelectedClubHeader(club: Club) {
   const [instagramSelected, setInstagramSelected] = useState(false);
 
   return (
-    <div className="bg-white/80 backdrop-blur-sm absolute top-0 left-0 z-10 h-fit w-full text-card-foreground shadow-sm p-6 space-y-4">
+    <div className="bg-white/80 backdrop-blur-sm absolute top-0 left-0 z-10 w-full text-card-foreground shadow-sm p-4 sm:p-6 space-y-4">
       <Link href={`/club/${club.slug}`}>
-        <div className="flex justify-between items-start">
-          <div className="flex">
-            <Image
+        <div className="flex flex-col sm:flex-row justify-between items-start">
+          <div className="flex flex-col sm:flex-row w-full">
+            <img
               src={avatarUrl}
               alt={club.name}
-              width={200}
-              height={200}
-              className="rounded-md border h-auto w-auto object-cover "
+              className="rounded-md border w-full sm:w-1/6 h-auto object-cover mb-4 sm:mb-0 sm:mr-6"
             />
-            <div className="flex flex-col ml-10 size-2/5">
-              <h1>{club.name}</h1>
-              <p>{club.description}</p>
-              <div className="flex  space-x-2 mt-3 align-middle flex-row">
+            <div className="flex flex-col   justify-between w-full sm:w-2/3">
+              <h1 className="text-lg sm:text-xl font-semibold">{club.name}</h1>
+              <p className="lg:w-1/3 mt-2">{club.description}</p>
+
+              <div className="flex flew-row   space-x-3 mt-3">
                 <div
                   onMouseEnter={() => setInstagramSelected(true)}
                   onMouseLeave={() => setInstagramSelected(false)}
-                  className=" cursor-pointer"
+                  className="cursor-pointer"
                 >
                   <Link
                     href={`https://www.instagram.com/${club.instagramUsername}`}
@@ -39,21 +38,14 @@ export default function SelectedClubHeader(club: Club) {
                     <Instagram filled={instagramSelected} />
                   </Link>
                 </div>
-                <Link className="flex h-5" href={club.websiteUrl}>
-                  <Globe
-                    size={24}
-                    onMouseEnter={(e) =>
-                      (e.currentTarget.style.color = "hsl(var(--primary))")
-                    }
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.style.color = "black")
-                    }
-                  />
+                <Link className="flex items-center" href={club.websiteUrl}>
+                  <Globe size={24} className="transition-colors duration-200" />
                 </Link>
               </div>
             </div>
           </div>
-          <div>
+          <div className="flex  mt-4 sm:mt-0">
+            <strong className=" text-primary"> Club</strong>
             <ChevronRight className="stroke-primary" />
           </div>
         </div>
