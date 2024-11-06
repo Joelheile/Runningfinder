@@ -94,9 +94,12 @@ body {
     @apply bg-background text-foreground;
   }
   h1 {
-    @apply font-medium;
+    @apply font-bold text-lg;
   }
   h2 {
+    @apply font-medium;
+  }
+  strong {
     @apply font-medium;
   }
 }

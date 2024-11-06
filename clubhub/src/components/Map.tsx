@@ -55,9 +55,8 @@ const Map = ({ clubs }: { clubs: Club[] }) => {
                 <img
                   src={club.avatarUrl}
                   alt={club.name}
-                  style={{ width: "50px", height: "50px" }}
+                  className="h-20 w-full mb-2 rounded-sm"
                 />
-                <br />
                 <strong>{club.name}</strong>
               </div>
             )
