@@ -8,6 +8,7 @@ interface ScheduleEntry {
   day: string;
   time: string;
   location: string;
+  pace: number;
   coordinates?: { lat: number; lng: number };
 }
 
@@ -22,7 +23,7 @@ export default function AddRun() {
     "Sunday",
   ];
   const [schedule, setSchedule] = useState<ScheduleEntry[]>(
-    days.map((day) => ({ day, time: "", location: "" }))
+    days.map((day) => ({ day, time: "", location: "", pace:  }))
   );
 
   const [isLocationPickerOpen, setIsLocationPickerOpen] = useState(false);
@@ -43,6 +44,22 @@ export default function AddRun() {
               setSchedule((prev) => {
                 const updated = [...prev];
                 updated[index].time = e.target.value;
+                return updated;
+              });
+            }}
+            className="w-32"
+          />
+          //TODO: Add pace input
+          <Input
+            type="pace"
+            value={entry.pace}
+            onChange={(e) => {
+              const index = schedule.findIndex(
+                (item) => item.day === entry.day
+              );
+              setSchedule((prev) => {
+                const updated = [...prev];
+                updated[index].pace = Number(e.target.value);
                 return updated;
               });
             }}
@@ -76,12 +93,9 @@ export default function AddRun() {
       ))}
       <MapLocationPicker onCancel={() => {}} onSelect={() => {}} />
       {isLocationPickerOpen && (
-        <div
-          className="fixed inset-0 bg-black/50 flex justify-center items-center"
-        >
+        <div className="fixed inset-0 bg-black/50 flex justify-center items-center">
           <div className="bg-white p-4 rounded">
             <MapLocationPicker
-            
               onSelect={(lat: number, lng: number) => {
                 setIsLocationPickerOpen(false);
                 setSelectedDay(null);

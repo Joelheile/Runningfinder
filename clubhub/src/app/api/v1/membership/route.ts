@@ -1,5 +1,5 @@
 import { db } from "@/lib/db/db";
-import { avatarStorage, club, run } from "@/lib/db/schema";
+import { avatarStorage, membership, run } from "@/lib/db/schema";
 
 import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
@@ -9,11 +9,11 @@ export async function GET() {
   try {
     const res = await db
       .select()
-      .from(run)
+      .from(membership)
 
     return NextResponse.json(res);
   } catch (error) {
-    console.error("Error fetching clubs:", error);
+    console.error("Error fetching memberships:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 },
@@ -23,38 +23,28 @@ export async function GET() {
 
 export async function POST(request: Request) {
   const {
-    clubId,
-    date,
-    interval,
-    intervalDay,
-    startDescription,
-    startTime,
-    location,
-    distance,
+   user_id,
+    club_id,
+    status
   } = await request.json();
 
   try {
     const res = await db
-      .insert(run)
+      .insert(membership)
       .values({
         id: uuidv4(),
-        clubId,
-        date,
-        interval,
-        intervalDay,
-        startDescription,
-        startTime,
-        distance,
-        locationLng: location.lng,
-        locationLat: location.lat,
+        userId: user_id,
+        clubId: club_id,
+        joinDate: new Date(),
+        status: status,
 
       })
       .execute();
-    console.log("clubs", res);
+    console.log("memberships", res);
 
     return NextResponse.json(res);
   } catch (error) {
-    console.error("Error creating club:", error);
+    console.error("Error creating membership:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 },
