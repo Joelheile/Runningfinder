@@ -23,7 +23,7 @@ export default function AddRun() {
     "Sunday",
   ];
   const [schedule, setSchedule] = useState<ScheduleEntry[]>(
-    days.map((day) => ({ day, time: "", location: "", pace:  }))
+    days.map((day) => ({ day, time: "", location: "", pace:  0}))
   );
 
   const [isLocationPickerOpen, setIsLocationPickerOpen] = useState(false);
