@@ -1,5 +1,6 @@
 import { db } from "@/lib/db/db";
-import { avatarStorage, membership, registration, run } from "@/lib/db/schema";
+import { registrations } from "@/lib/db/schema/runs";
+
 
 import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
@@ -7,7 +8,7 @@ import { v4 as uuidv4 } from "uuid";
 
 export async function GET() {
   try {
-    const res = await db.select().from(registration);
+    const res = await db.select().from(registrations);
 
     return NextResponse.json(res);
   } catch (error) {
@@ -24,7 +25,7 @@ export async function POST(request: Request) {
 
   try {
     const res = await db
-      .insert(registration)
+      .insert(registrations)
       .values({
         id: uuidv4(),
         runId: run_id,
@@ -50,9 +51,9 @@ export async function PUT(request: Request) {
 
   try {
     const res = await db
-      .update(registration)
+      .update(registrations)
       .set({ status })
-      .where(eq(registration.id, id))
+      .where(eq(registrations.id, id))
       .execute();
 
     return NextResponse.json(res);

@@ -3,7 +3,8 @@ import { neon } from "@neondatabase/serverless";
 
 import { v4 } from "uuid";
 import { db } from "@/lib/db/db";
-import { avatarStorage } from "@/lib/db/schema";
+import { avatars } from "@/lib/db/schema/users";
+
 
 export async function POST(request: Request) {
   //TODO: Refactor AvatarUploader to this route
@@ -11,7 +12,7 @@ export async function POST(request: Request) {
 
   try {
     const res = await db
-      .insert(avatarStorage)
+      .insert(avatars)
       .values({
         id: objectId,
         name: objectName,
