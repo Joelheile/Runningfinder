@@ -17,8 +17,8 @@ const AvatarUploader = ({ id }: { id: string }) => {
       //TODO: convert into hooks
       if (fileData) {
         const presignedURL = new URL(
-          "/api/v1/upload/presignedUrl",
-          window.location.href,
+          "/api/upload/presignedUrl",
+          window.location.href
         );
         presignedURL.searchParams.set("fileName", file.name);
         presignedURL.searchParams.set("contentType", file.type);
@@ -34,7 +34,7 @@ const AvatarUploader = ({ id }: { id: string }) => {
             method: "PUT",
           });
 
-          await fetch("/api/v1/upload/avatar", {
+          await fetch("/api/upload/avatar", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
