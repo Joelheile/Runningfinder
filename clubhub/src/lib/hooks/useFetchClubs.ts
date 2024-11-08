@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Club } from "../types/Club";
 
 const fetchClubs = async (): Promise<Club[]> => {
-  const response = await fetch("/api/v1/club");
+  const response = await fetch("/api/club");
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }
@@ -19,7 +19,7 @@ const fetchClubs = async (): Promise<Club[]> => {
 };
 
 const fetchClubById = async (slug: string): Promise<Club> => {
-  const response = await fetch(`/api/v1/club/${slug}`);
+  const response = await fetch(`/api/club/${slug}`);
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }

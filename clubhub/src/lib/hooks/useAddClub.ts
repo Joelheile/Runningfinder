@@ -8,7 +8,7 @@ import { Club } from "../types/Club";
 const addClub = async (newClub: Club): Promise<Club> => {
   console.log("hook addClub called");
 
-  const response = await fetch("/api/v1/club", {
+  const response = await fetch("/api/club", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({

@@ -5,7 +5,7 @@ import { v4 } from "uuid";
 
 const uploadAvatar = async (newAvatar: Avatar): Promise<Avatar> => {
   // TODO: refactor AvatarUploader to this hook
-  const response = await fetch("/api/v1/aws/upload", {
+  const response = await fetch("/api/aws/upload", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({

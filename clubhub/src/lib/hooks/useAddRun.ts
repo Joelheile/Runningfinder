@@ -4,7 +4,7 @@ import { Run } from "../types/Run";
 const addRun = async (newRun: Run): Promise<Run> => {
   console.log("hook addRun called");
 
-  const response = await fetch("/api/v1/run", {
+  const response = await fetch("/api/run", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
