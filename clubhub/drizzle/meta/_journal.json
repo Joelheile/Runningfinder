@@ -127,6 +127,13 @@
       "when": 1730909774950,
       "tag": "0017_fat_mach_iv",
       "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1731052095644,
+      "tag": "0018_wealthy_silverclaw",
+      "breakpoints": true
     }
   ]
 }
