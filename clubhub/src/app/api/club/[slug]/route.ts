@@ -1,5 +1,7 @@
 import { db } from "@/lib/db/db";
-import { club, avatarStorage } from "@/lib/db/schema";
+import { clubs as club } from "@/lib/db/schema/clubs";
+import { avatars } from "@/lib/db/schema/users";
+
 import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
@@ -19,10 +21,10 @@ export async function GET(
         locationLat: club.locationLat,
         instagramUsername: club.instagramUsername,
         websiteUrl: club.websiteUrl,
-        avatarUrl: avatarStorage.img_url,
+        avatarUrl: avatars.img_url,
       })
       .from(club)
-      .leftJoin(avatarStorage, eq(club.avatarFileId, avatarStorage.id))
+      .leftJoin(avatars, eq(club.avatarFileId, avatars.id))
       .where(eq(club.slug, params.slug));
 
     console.log("Fetched club test:", res);
