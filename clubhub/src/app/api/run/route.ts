@@ -7,9 +7,7 @@ import { v4 as uuidv4 } from "uuid";
 
 export async function GET() {
   try {
-    const res = await db
-      .select()
-      .from(run)
+    const res = await db.select().from(run);
 
     return NextResponse.json(res);
   } catch (error) {
@@ -47,7 +45,6 @@ export async function POST(request: Request) {
         distance,
         locationLng: location.lng,
         locationLat: location.lat,
-
       })
       .execute();
     console.log("clubs", res);

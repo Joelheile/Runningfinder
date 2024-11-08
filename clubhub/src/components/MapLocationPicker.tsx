@@ -13,8 +13,7 @@ export const MapLocationPicker: React.FC<MapLocationPickerProps> = ({
   onCancel,
 }) => {
   const [location, setLocation] = useState({ lat: 52.52, lng: 13.405 });
-  
-  
+
   console.log("test");
 
   const defaultPosition = () => {
@@ -27,7 +26,7 @@ export const MapLocationPicker: React.FC<MapLocationPickerProps> = ({
       },
       {
         zoom: 12,
-      }
+      },
     );
 
     google.maps.event.addListener(
@@ -37,11 +36,11 @@ export const MapLocationPicker: React.FC<MapLocationPickerProps> = ({
         // Get current location and show it in HTML
         var location = locationPicker.getMarkerPosition();
         console.log(
-          "The chosen location is " + location.lat + "," + location.lng
+          "The chosen location is " + location.lat + "," + location.lng,
         );
         console.log(location);
         setLocation({ lat: location.lat, lng: location.lng });
-      }
+      },
     );
 
     console.log(locationPicker);

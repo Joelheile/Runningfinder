@@ -18,30 +18,29 @@ export default function AddClub() {
   const [websiteUrl, setWebsiteUrl] = useState("");
   const [instagramUsername, setInstagramUsername] = useState("");
   const [avatarFileId] = useState(v4());
-  
+
   const handleSubmit = (e: React.FormEvent) => {
-      e.preventDefault();
-      const formData: Club = {
-          name,
-          description,
-          location: { lat: 0, lng: 0 },
-            instagramUsername,
-            memberCount: 0,
-            avatarFileId: avatarFileId,
-            avatarUrl: "",
-            websiteUrl,
-            id: "",
-            creationDate: "",
-            slug: "",
-        };
-        mutation.mutate(formData);
+    e.preventDefault();
+    const formData: Club = {
+      name,
+      description,
+      location: { lat: 0, lng: 0 },
+      instagramUsername,
+      memberCount: 0,
+      avatarFileId: avatarFileId,
+      avatarUrl: "",
+      websiteUrl,
+      id: "",
+      creationDate: "",
+      slug: "",
     };
-    
-    const mutation = useAddClub();
-    
+    mutation.mutate(formData);
+  };
+
+  const mutation = useAddClub();
 
   return (
-  <div>
+    <div>
       <form onSubmit={handleSubmit}>
         <div className="grid gap-4">
           <div className="flex flex-col">
@@ -84,10 +83,7 @@ export default function AddClub() {
             Add club
           </Button>
         </div>
-        <div className="App mt-8">
-          
-          
-        </div>
+        <div className="App mt-8"></div>
       </form>
     </div>
   );

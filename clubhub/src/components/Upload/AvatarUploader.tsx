@@ -18,7 +18,7 @@ const AvatarUploader = ({ id }: { id: string }) => {
       if (fileData) {
         const presignedURL = new URL(
           "/api/upload/presignedUrl",
-          window.location.href
+          window.location.href,
         );
         presignedURL.searchParams.set("fileName", file.name);
         presignedURL.searchParams.set("contentType", file.type);

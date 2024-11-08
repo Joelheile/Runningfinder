@@ -5,8 +5,8 @@ import React from "react";
 async function LikedRunsPage() {
   const session = await auth();
 
-  if(!session?.user){
-    redirect("/api/auth/signin?callbackUrl=/run/your-runs")
+  if (!session?.user) {
+    redirect("/api/auth/signin?callbackUrl=/run/your-runs");
   }
 
   return (
@@ -14,6 +14,6 @@ async function LikedRunsPage() {
       <h1>Liked Runs</h1>
     </>
   );
-};
+}
 
 export default LikedRunsPage;

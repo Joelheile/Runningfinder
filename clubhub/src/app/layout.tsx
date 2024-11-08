@@ -20,11 +20,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       {/* <SessionProvider> */}
-        <ReactQueryProvider>
-          <body className={inter.className}>
-            {children} <Metrics />
-          </body>
-        </ReactQueryProvider>
+      <ReactQueryProvider>
+        <body className={inter.className}>
+          {children} <Metrics />
+        </body>
+      </ReactQueryProvider>
       {/* </SessionProvider> */}
     </html>
   );

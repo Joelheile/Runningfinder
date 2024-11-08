@@ -1,6 +1,5 @@
 import resendLogin from "@/lib/authentication/resend-login";
 
-
 export function SignIn() {
   return (
     <form className="flex flex-col items-center gap-2" action={resendLogin}>
@@ -14,5 +13,5 @@ export function SignIn() {
         Signin with Resend
       </button>
     </form>
-  )
+  );
 }

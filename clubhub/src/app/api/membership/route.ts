@@ -7,9 +7,7 @@ import { v4 as uuidv4 } from "uuid";
 
 export async function GET() {
   try {
-    const res = await db
-      .select()
-      .from(membership)
+    const res = await db.select().from(membership);
 
     return NextResponse.json(res);
   } catch (error) {
@@ -22,11 +20,7 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const {
-   user_id,
-    club_id,
-    status
-  } = await request.json();
+  const { user_id, club_id, status } = await request.json();
 
   try {
     const res = await db
@@ -37,7 +31,6 @@ export async function POST(request: Request) {
         clubId: club_id,
         joinDate: new Date(),
         status: status,
-
       })
       .execute();
     console.log("memberships", res);

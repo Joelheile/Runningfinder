@@ -11,7 +11,6 @@ import {
   time,
   decimal,
   pgEnum,
-
   uniqueIndex,
 } from "drizzle-orm/pg-core";
 import postgres from "postgres";
@@ -19,8 +18,6 @@ import { drizzle } from "drizzle-orm/postgres-js";
 import type { AdapterAccount, AdapterAccountType } from "next-auth/adapters";
 
 import { v4 } from "uuid";
-
-
 
 const connectionString = "postgres://postgres:postgres@localhost:5432/drizzle";
 const pool = postgres(connectionString, { max: 1 });
@@ -42,8 +39,8 @@ export const user = pgTable("user", {
   lastLogin: timestamp("last_login"),
   attendedRuns: integer("attended_runs"),
   image: text("image"),
-})
- 
+});
+
 export const accounts = pgTable(
   "account",
   {
@@ -65,17 +62,17 @@ export const accounts = pgTable(
     compoundKey: primaryKey({
       columns: [account.provider, account.providerAccountId],
     }),
-  })
-)
- 
+  }),
+);
+
 export const sessions = pgTable("session", {
   sessionToken: text("sessionToken").primaryKey(),
   userId: text("userId")
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
   expires: timestamp("expires", { mode: "date" }).notNull(),
-})
- 
+});
+
 export const verificationTokens = pgTable(
   "verificationToken",
   {
@@ -87,9 +84,9 @@ export const verificationTokens = pgTable(
     compositePk: primaryKey({
       columns: [verificationToken.identifier, verificationToken.token],
     }),
-  })
-)
- 
+  }),
+);
+
 export const authenticators = pgTable(
   "authenticator",
   {
@@ -108,8 +105,8 @@ export const authenticators = pgTable(
     compositePK: primaryKey({
       columns: [authenticator.userId, authenticator.credentialID],
     }),
-  })
-)
+  }),
+);
 
 export const statusEnum = pgEnum("status", [
   "pending",
@@ -151,7 +148,12 @@ export const membership = pgTable(
   }),
 );
 
-const intervalEnum = pgEnum("interval", ["daily", "weekly", "biweekly", "monthly"]);
+const intervalEnum = pgEnum("interval", [
+  "daily",
+  "weekly",
+  "biweekly",
+  "monthly",
+]);
 
 export const run = pgTable("run", {
   id: uuid("id").primaryKey().notNull(),
