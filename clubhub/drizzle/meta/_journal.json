@@ -134,6 +134,34 @@
       "when": 1731052095644,
       "tag": "0018_wealthy_silverclaw",
       "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1731053659234,
+      "tag": "0019_peaceful_corsair",
+      "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1731053670425,
+      "tag": "0020_past_falcon",
+      "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1731053847501,
+      "tag": "0021_abnormal_wrecker",
+      "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "7",
+      "when": 1731053984170,
+      "tag": "0022_useful_mattie_franklin",
+      "breakpoints": true
     }
   ]
 }

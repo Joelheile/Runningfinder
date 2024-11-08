@@ -1,5 +1,3 @@
-import { Theme } from "next-auth";
-
 interface SendVerificationRequestParams {
   identifier: string;
   provider: {
@@ -7,47 +5,48 @@ interface SendVerificationRequestParams {
     from: string;
   };
   url: string;
-  theme: Theme;
 }
 
-export async function sendVerificationRequest(params: SendVerificationRequestParams) {
-    const { identifier: to, provider, url, theme } = params
-    const { host } = new URL(url)
-    const res = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${provider.apiKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        from: provider.from,
-        to,
-        subject: `Sign in to ${host}`,
-        html: html({ url, host, theme }),
-        text: text({ url, host }),
-      }),
-    })
-   
-    if (!res.ok)
-      throw new Error("Resend error: " + JSON.stringify(await res.json()))
-  }
-   
-  function html(params: { url: string; host: string; theme: Theme }) {
-    const { url, host, theme } = params
-   
-    const escapedHost = host.replace(/\./g, "&#8203;.")
-   
-    const brandColor = theme.brandColor || "#346df1"
-    const color = {
-      background: "#f9f9f9",
-      text: "#444",
-      mainBackground: "#fff",
-      buttonBackground: brandColor,
-      buttonBorder: brandColor,
-      buttonText: theme.buttonText || "#fff",
-    }
-   
-    return `
+export async function sendVerificationRequest(
+  params: SendVerificationRequestParams,
+) {
+  const { identifier: to, provider, url } = params;
+  const { host } = new URL(url);
+  const res = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${provider.apiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      from: provider.from,
+      to,
+      subject: `Sign in to ${host}`,
+      html: html({ url, host, theme }),
+      text: text({ url, host }),
+    }),
+  });
+
+  if (!res.ok)
+    throw new Error("Resend error: " + JSON.stringify(await res.json()));
+}
+
+function html(params: { url: string; host: string; theme: Theme }) {
+  const { url, host, theme } = params;
+
+  const escapedHost = host.replace(/\./g, "&#8203;.");
+
+  const brandColor = theme.brandColor || "#346df1";
+  const color = {
+    background: "#f9f9f9",
+    text: "#444",
+    mainBackground: "#fff",
+    buttonBackground: brandColor,
+    buttonBorder: brandColor,
+    buttonText: theme.buttonText || "#fff",
+  };
+
+  return `
   <body style="background: ${color.background};">
     <table width="100%" border="0" cellspacing="20" cellpadding="0"
       style="background: ${color.mainBackground}; max-width: 600px; margin: auto; border-radius: 10px;">
@@ -77,10 +76,10 @@ export async function sendVerificationRequest(params: SendVerificationRequestPar
       </tr>
     </table>
   </body>
-  `
-  }
-   
-  // Email Text body (fallback for email clients that don't render HTML, e.g. feature phones)
-  function text({ url, host }: { url: string; host: string }) {
-    return `Sign in to ${host}\n${url}\n\n`
-  }
+  `;
+}
+
+// Email Text body (fallback for email clients that don't render HTML, e.g. feature phones)
+function text({ url, host }: { url: string; host: string }) {
+  return `Sign in to ${host}\n${url}\n\n`;
+}

@@ -10,9 +10,9 @@ export const users = pgTable("users", {
   email: text("email").unique(),
   emailVerified: timestamp("emailVerified", { mode: "date" }),
   bio: text("bio"),
-  createdAt: timestamp("created_at"),
-  updatedAt: timestamp("updated_at"),
-  lastLogin: timestamp("last_login"),
+  createdAt: timestamp("created_at", { mode: "date" }),
+  updatedAt: timestamp("updated_at", { mode: "date" }),
+  lastLogin: timestamp("last_login", { mode: "date" }),
   attendedRuns: integer("attended_runs"),
   image: text("image"),
 });
