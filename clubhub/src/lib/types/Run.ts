@@ -1,9 +1,11 @@
+
+
 export type Run = {
   id: string;
   name: string;
   difficulty: string;
   clubId: string;
-  date: Date;
+  date: Date | null;
   location: {
     lat: number;
     lng: number;

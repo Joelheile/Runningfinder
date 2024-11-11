@@ -2,7 +2,9 @@ import { db } from "@/lib/db/db";
 import { runs } from "@/lib/db/schema/runs";
 import { and, between, inArray } from "drizzle-orm";
 import { NextResponse } from "next/server";
-import { v4 as uuidv4 } from "uuid";
+
+import { interval } from "../../../../drizzle/schema";
+import { v4 } from "uuid";
 
 // Helper function to parse query parameters
 function parseQueryParams(searchParams: URLSearchParams) {
@@ -50,10 +52,10 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   const runData = await request.json();
+  console.log("runData", runData);
 
   try {
     const newRun = {
-      id: uuidv4(),
       ...runData,
       locationLng: runData.location.lng,
       locationLat: runData.location.lat,
@@ -61,9 +63,11 @@ export async function POST(request: Request) {
 
     await db.insert(runs).values(newRun).execute();
 
+
+
     return NextResponse.json(
       { message: "Run created successfully", run: newRun },
-      { status: 201 },
+      { status: 201 }
     );
   } catch (error) {
     return handleErrorResponse(error, "Error creating run");
