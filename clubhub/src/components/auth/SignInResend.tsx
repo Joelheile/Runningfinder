@@ -1,11 +1,13 @@
-import { signIn } from "@/lib/authentication/auth";
+import { signIn } from "next-auth/react";
+
 
 export function SignIn() {
   return (
     <form
       action={async (formData) => {
         "use server";
-        await signIn("resend", formData);
+        const formObject = Object.fromEntries(formData.entries());
+        await signIn("resend", formObject);
       }}
     >
       <input type="text" name="email" placeholder="Email" />

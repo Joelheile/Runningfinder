@@ -1,5 +1,5 @@
 "use client";
-import ClubIconBar from "@/components/clubs/ClubIconBar";
+import ClubIconBar from "@/components/icons/ClubIconBar";
 import Instagram from "@/components/icons/InstagramIcon";
 import LikeButton from "@/components/icons/LikeButton";
 import RunCard from "@/components/runs/RunCard";

@@ -9,7 +9,7 @@ import { useAddClub } from "@/lib/hooks/useAddClub";
 import { Club } from "@/lib/types/Club";
 import { ConsoleLogWriter } from "drizzle-orm";
 import { v4 } from "uuid";
-import AvatarUploader from "@/components/Upload/AvatarUploader";
+import AvatarUploader from "@/components/Upload/AvatarUploaderLogic";
 import { Textarea } from "@/components/ui/textarea";
 
 export default function AddClub() {
