@@ -1,12 +1,12 @@
 import { db } from "@/lib/db/db";
 import { runs } from "@/lib/db/schema/runs";
-import { and, between, inArray } from "drizzle-orm";
+import { and, between, eq, inArray } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
 import { interval } from "../../../../drizzle/schema";
 import { v4 } from "uuid";
 
-// Helper function to parse query parameters
+
 function parseQueryParams(searchParams: URLSearchParams) {
   const minDistance = parseInt(searchParams.get("minDistance") || "0", 42);
   const maxDistance = parseInt(searchParams.get("maxDistance") || "0", 42);
@@ -15,7 +15,6 @@ function parseQueryParams(searchParams: URLSearchParams) {
   return { minDistance, maxDistance, intervalDays };
 }
 
-// Helper function to handle errors
 function handleErrorResponse(
   error: unknown,
   message = "Internal Server Error",
@@ -42,6 +41,9 @@ export async function GET(request: Request) {
     if (intervalDays.length > 0) {
       query.where(inArray(runs.intervalDay, intervalDays));
     }
+
+
+    query.where(eq(runs.membersOnly,false ));
 
     const result = await query.execute();
     return NextResponse.json(result);
