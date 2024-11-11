@@ -1,0 +1,1 @@
+ALTER TABLE "runs" RENAME COLUMN "is_private" TO "members_only";

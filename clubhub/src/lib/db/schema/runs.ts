@@ -6,6 +6,7 @@ import {
   decimal,
   text,
   integer,
+  boolean,
 } from "drizzle-orm/pg-core";
 import { users } from "./users";
 import { clubs } from "./clubs";
@@ -53,4 +54,5 @@ export const runs = pgTable("runs", {
   temperature: decimal("temperature"),
   wind: decimal("wind"),
   uv_index: decimal("uv_index"),
+ membersOnly: boolean("members_only").default(false),
 });
