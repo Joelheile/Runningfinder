@@ -27,11 +27,11 @@ export default function FilterBarUI({
   return (
     <div className="bg-white/90 backdrop-blur-sm absolute bottom-0 left-0 z-10 w-full text-card-foreground shadow-lg p-6 space-y-6">
       <div className="flex flex-col space-y-4">
-        <div className="space-y-4">
+        <div className="space-y-4 flex flex-col w-1/5 ">
           <label className="font-semibold text-lg">When are you free?</label>
           <Popover>
             <PopoverTrigger asChild>
-              <Button variant="outline" className="w-full sm:w-auto">
+              <Button variant="outline" className=" sm:w-auto">
                 Select Days
               </Button>
             </PopoverTrigger>
