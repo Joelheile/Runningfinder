@@ -5,6 +5,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+
+import { weekdays } from "@/lib/weekdays";
 import { Slider } from "../ui/slider";
 
 interface FilterBarUIProps {
@@ -22,16 +24,6 @@ export default function FilterBarUI({
   toggleDay,
   setDistanceIndex,
 }: FilterBarUIProps) {
-  const weekdays = [
-    { name: "Monday", index: 1 },
-    { name: "Tuesday", index: 2 },
-    { name: "Wednesday", index: 3 },
-    { name: "Thursday", index: 4 },
-    { name: "Friday", index: 5 },
-    { name: "Saturday", index: 6 },
-    { name: "Sunday", index: 7 },
-  ];
-
   return (
     <div className="bg-white/90 backdrop-blur-sm absolute bottom-0 left-0 z-10 w-full text-card-foreground shadow-lg p-6 space-y-6">
       <div className="flex flex-col space-y-4">
@@ -46,11 +38,11 @@ export default function FilterBarUI({
             <PopoverContent className="w-full sm:w-auto p-4">
               <div className="space-y-2">
                 {weekdays.map((day) => (
-                  <div key={day.index} className="flex items-center space-x-2">
+                  <div key={day.value} className="flex items-center space-x-2">
                     <Checkbox
                       id={day.name}
-                      checked={selectedDays.includes(day.index)}
-                      onCheckedChange={() => toggleDay(day.index)}
+                      checked={selectedDays.includes(day.value)}
+                      onCheckedChange={() => toggleDay(day.value)}
                     />
                     <label
                       htmlFor={day.name}
@@ -75,7 +67,7 @@ export default function FilterBarUI({
               max={allowedDistances.length - 1}
               step={1}
               value={[distanceIndex]}
-              onValueChange={(value) => setDistanceIndex(value[0])}
+              onValueChange={(value: number[]) => setDistanceIndex(value[0])}
               className="w-full"
             />
             <div className="flex mt-2 justify-between text-sm">
