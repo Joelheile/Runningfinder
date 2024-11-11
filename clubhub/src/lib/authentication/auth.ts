@@ -17,7 +17,7 @@ export const { handlers, auth } = NextAuth({
   }),
   providers: [GitHub, Resend({
     apiKey: process.env.NEXT_PUBLIC_AUTH_RESEND_KEY,
-    from: "team@runningfinder.de",
+    from: "no-reply@runningfinder.de",
     sendVerificationRequest: sendVerificationRequest
   })],
 });

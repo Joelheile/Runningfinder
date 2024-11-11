@@ -1,12 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { neon } from "@neondatabase/serverless";
 
-import { v4 } from "uuid";
 import { db } from "@/lib/db/db";
 import { avatars } from "@/lib/db/schema/users";
+import { eq } from "drizzle-orm";
 
 export async function POST(request: Request) {
-  //TODO: Refactor AvatarUploader to this route
   const { objectName, objectUrl, objectId } = await request.json();
 
   try {
@@ -14,6 +12,7 @@ export async function POST(request: Request) {
       .insert(avatars)
       .values({
         id: objectId,
+        type: "user",
         name: objectName,
         img_url: objectUrl,
         uploadDate: new Date(),
@@ -28,6 +27,28 @@ export async function POST(request: Request) {
     console.error("Error uploading file: ", error);
     return NextResponse.json(
       { error: "Failed to upload file" },
+      { status: 500 },
+    );
+  }
+}
+
+export async function DELETE(request: Request) {
+  const { objectId } = await request.json();
+
+  try {
+    const res = await db
+      .delete(avatars)
+      .where(eq(avatars.id, objectId))
+      .execute();
+
+    return NextResponse.json(
+      { message: "Successfully deleted the file" },
+      { status: 200 },
+    );
+  } catch (error) {
+    console.error("Error deleting file: ", error);
+    return NextResponse.json(
+      { error: "Failed to delete file" },
       { status: 500 },
     );
   }
