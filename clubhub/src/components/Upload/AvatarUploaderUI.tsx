@@ -20,13 +20,9 @@ const AvatarUploaderUI: React.FC<AvatarUploaderUIProps> = ({
       {!uploadedUrl ? (
         <p>Drag & drop a file here, or click to select one</p>
       ) : (
-        <p className="mt-4">
-          File uploaded! View it
-          <a href={uploadedUrl} className="underline">
-            here
-          </a>
-          .
-        </p>
+        <>
+          <img src={uploadedUrl} alt="Uploaded file" className="h-32 w-auto rounded-md" />
+        </>
       )}
 
       {isLoading && (
