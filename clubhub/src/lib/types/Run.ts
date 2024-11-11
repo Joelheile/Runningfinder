@@ -11,7 +11,7 @@ export type Run = {
   interval: string;
   intervalDay: number;
   startDescription: string;
-  startTime: Date;
+  startTime: string;
   distance: number;
   membersOnly: boolean;
 };

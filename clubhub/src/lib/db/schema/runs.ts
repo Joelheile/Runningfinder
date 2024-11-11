@@ -7,6 +7,7 @@ import {
   text,
   integer,
   boolean,
+  time,
 } from "drizzle-orm/pg-core";
 import { users } from "./users";
 import { clubs } from "./clubs";
@@ -38,7 +39,7 @@ export const runs = pgTable("runs", {
   interval: intervalEnum("interval"),
   intervalDay: integer("interval_day"),
   startDescription: text("start_description"),
-  startTime: timestamp("last_login", { mode: "date" }),
+  startTime: text("start_time"),
   locationLng: decimal("location_lng").notNull(),
   locationLat: decimal("location_lat").notNull(),
   distance: decimal("distance"),
