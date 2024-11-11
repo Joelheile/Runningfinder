@@ -1,32 +1,62 @@
 "use client";
 import { useFetchClubs } from "@/lib/hooks/useFetchClubs";
-import FilterBar from "@/components/FilterBar";
 
 import LikeButton from "@/components/icons/LikeButton";
-
 import Map from "@/components/Map";
 import Image from "next/image";
 import Link from "next/link";
-
-import React from "react";
+import React, { useState } from "react";
+import { useQueryRuns } from "@/lib/hooks/useQueryRuns";
+import FilterBar from "@/components/FilterBarLogic";
 
 const MapPage = () => {
-  const handleLikeButtonClick = () => {};
-  const { data: clubs, isLoading, isError, error } = useFetchClubs();
+  const [filters, setFilters] = useState<{
+    minDistance: number;
+    maxDistance: number;
+    days: number[];
+  }>({
+    minDistance: 0,
+    maxDistance: 10,
+    days: [],
+  });
+
+  const {
+    data: runs,
+    isLoading,
+    error,
+  } = useQueryRuns({
+    minDistance: filters.minDistance,
+    maxDistance: filters.maxDistance,
+    days: filters.days,
+  });
+
+  const handleFilterChange = (
+    newFilters: React.SetStateAction<{
+      minDistance: number;
+      maxDistance: number;
+      days: number[];
+    }>
+  ) => {
+    setFilters(newFilters);
+  };
+
+  const {
+    data: clubs,
+    isLoading: clubsLoading,
+    error: clubsError,
+  } = useFetchClubs();
 
   return (
     <div className="h-screen">
       <Link
         href={`/pages/run/likedruns`}
-        className="absolute z-20   right-2   bottom-60"
+        className="absolute z-20 right-2 bottom-60"
       >
         <LikeButton />
       </Link>
-      {/* <FilterBar /> 
-      // TODO: Not needed for prototype
-      */}
+      <FilterBar onFilterChange={handleFilterChange} />
 
-      <Map clubs={clubs || []} />
+      <Map runs={runs || []} clubs={clubs || []} />
     </div>
   );
 };
