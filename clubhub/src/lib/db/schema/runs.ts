@@ -11,7 +11,7 @@ import {
 } from "drizzle-orm/pg-core";
 import { users } from "./users";
 import { clubs } from "./clubs";
-import { intervalEnum, statusEnum } from "./enums";
+import {  statusEnum } from "./enums";
 
 
 export const registrations = pgTable("registrations", {
@@ -36,7 +36,7 @@ export const runs = pgTable("runs", {
     .notNull()
     .references(() => clubs.id),
   date: timestamp("date"),
-  interval: intervalEnum("interval"),
+  interval: text("interval"),
   intervalDay: integer("interval_day"),
   startDescription: text("start_description"),
   startTime: text("start_time"),

@@ -7,9 +7,3 @@ export const statusEnum = pgEnum("status", [
   "banned",
 ]);
 
-export const intervalEnum = pgEnum("interval", [
-  "daily",
-  "weekly",
-  "biweekly",
-  "monthly",
-]);
