@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
-import { MapLocationPicker } from "../MapLocationPicker";
+import { MapLocationPicker } from "../Map/MapLocationPicker";
 
 interface ScheduleEntry {
   day: string;

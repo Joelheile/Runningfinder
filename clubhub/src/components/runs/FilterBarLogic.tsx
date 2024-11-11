@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import FilterBarUI from "./FilterBarUI";
 
+
 interface FilterBarLogicProps {
   onFilterChange: (filters: {
     minDistance: number;

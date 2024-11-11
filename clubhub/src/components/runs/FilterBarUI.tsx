@@ -5,7 +5,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Slider } from "./ui/slider";
+import { Slider } from "../ui/slider";
 
 interface FilterBarUIProps {
   allowedDistances: number[];

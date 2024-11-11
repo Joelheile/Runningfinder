@@ -7,6 +7,7 @@ import { Club } from "@/lib/types/Club";
 import Link from "next/link";
 import MapUI from "./MapUI";
 
+
 interface MapContainerProps {
   runs: Run[];
   clubs: Club[];

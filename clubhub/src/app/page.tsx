@@ -2,12 +2,12 @@
 import { useFetchClubs } from "@/lib/hooks/useFetchClubs";
 
 import LikeButton from "@/components/icons/LikeButton";
-import Map from "@/components/MapLogic";
+import Map from "@/components/Map/MapLogic";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
 import { useQueryRuns } from "@/lib/hooks/useQueryRuns";
-import FilterBar from "@/components/FilterBarLogic";
+import FilterBar from "@/components/runs/FilterBarLogic";
 
 const MapPage = () => {
   const [filters, setFilters] = useState<{

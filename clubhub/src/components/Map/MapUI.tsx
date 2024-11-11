@@ -1,5 +1,5 @@
 import React from "react";
-import SelectedClubHeader from "./clubs/SelectedClubHeader";
+import SelectedClubHeader from "../clubs/SelectedClubHeader";
 import { Run } from "@/lib/types/Run";
 
 interface MapViewProps {
