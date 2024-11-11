@@ -10,13 +10,8 @@ import {
 } from "drizzle-orm/pg-core";
 import { users } from "./users";
 import { clubs } from "./clubs";
+import { intervalEnum, statusEnum } from "./enums";
 
-export const statusEnum = pgEnum("status", [
-  "pending",
-  "active",
-  "deactivated",
-  "banned",
-]);
 
 export const registrations = pgTable("registrations", {
   id: text("id").primaryKey().notNull(),
@@ -30,12 +25,7 @@ export const registrations = pgTable("registrations", {
   status: statusEnum("status").default("pending"),
 });
 
-export const intervalEnum = pgEnum("interval", [
-  "daily",
-  "weekly",
-  "biweekly",
-  "monthly",
-]);
+
 
 export const runs = pgTable("runs", {
   id: text("id").primaryKey().notNull(),

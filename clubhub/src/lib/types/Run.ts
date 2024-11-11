@@ -13,4 +13,5 @@ export type Run = {
   startDescription: string;
   startTime: Date;
   distance: number;
+  membersOnly: boolean;
 };

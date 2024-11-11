@@ -9,7 +9,8 @@ import {
   index,
 } from "drizzle-orm/pg-core";
 import { avatars, users } from "./users";
-import { statusEnum } from "./runs";
+import { statusEnum } from "./enums";
+
 
 export const roleEnum = pgEnum("role", ["member", "admin", "manager"]);
 
