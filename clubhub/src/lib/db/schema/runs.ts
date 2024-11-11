@@ -39,15 +39,15 @@ export const intervalEnum = pgEnum("interval", [
 
 export const runs = pgTable("runs", {
   id: text("id").primaryKey().notNull(),
-  name: text("name").notNull(),
+  name: text("name"),
   difficulty: text("difficulty"),
   clubId: text("club_id")
     .notNull()
     .references(() => clubs.id),
-  date: timestamp("date").notNull(),
-  interval: intervalEnum("interval").notNull(),
-  intervalDay: integer("interval_day").notNull(),
-  startDescription: text("start_description").notNull(),
+  date: timestamp("date"),
+  interval: intervalEnum("interval"),
+  intervalDay: integer("interval_day"),
+  startDescription: text("start_description"),
   startTime: timestamp("last_login", { mode: "date" }),
   locationLng: decimal("location_lng").notNull(),
   locationLat: decimal("location_lat").notNull(),

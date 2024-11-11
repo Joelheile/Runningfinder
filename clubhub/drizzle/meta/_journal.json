@@ -323,6 +323,13 @@
       "when": 1731338145860,
       "tag": "0045_condemned_thunderbolt",
       "breakpoints": true
+    },
+    {
+      "idx": 46,
+      "version": "7",
+      "when": 1731342407510,
+      "tag": "0046_flimsy_bloodstrike",
+      "breakpoints": true
     }
   ]
 }
