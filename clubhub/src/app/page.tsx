@@ -2,7 +2,7 @@
 import { useFetchClubs } from "@/lib/hooks/useFetchClubs";
 
 import LikeButton from "@/components/icons/LikeButton";
-import Map from "@/components/Map";
+import Map from "@/components/MapLogic";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
