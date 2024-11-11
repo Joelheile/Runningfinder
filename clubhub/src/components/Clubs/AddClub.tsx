@@ -11,6 +11,8 @@ import { ConsoleLogWriter } from "drizzle-orm";
 import { v4 } from "uuid";
 import AvatarUploader from "@/components/Upload/AvatarUploaderLogic";
 import { Textarea } from "@/components/ui/textarea";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 export default function AddClub() {
   const [name, setName] = useState("");
@@ -19,22 +21,31 @@ export default function AddClub() {
   const [instagramUsername, setInstagramUsername] = useState("");
   const [avatarFileId] = useState(v4());
 
+  const router = useRouter();
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const formData: Club = {
-      name,
-      description,
-      location: { lat: 0, lng: 0 },
-      instagramUsername,
-      memberCount: 0,
-      avatarFileId: avatarFileId,
-      avatarUrl: "",
-      websiteUrl,
-      id: "",
-      creationDate: "",
-      slug: "",
-    };
-    mutation.mutate(formData);
+    if (!name || !description || !websiteUrl || !instagramUsername) {
+      toast.error("Please fill out all fields");
+      return;
+    } else {
+      const formData: Club = {
+        name,
+        description,
+        location: { lat: 0, lng: 0 },
+        instagramUsername,
+        memberCount: 0,
+        avatarFileId: avatarFileId,
+        avatarUrl: "",
+        websiteUrl,
+        id: "",
+        creationDate: "",
+        slug: "",
+      };
+      mutation.mutate(formData);
+      router.push("/");
+      toast.success("Club added successfully");
+    }
   };
 
   const mutation = useAddClub();

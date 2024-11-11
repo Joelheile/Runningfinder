@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Metrics from "../components/metrics";
-import { SessionProvider } from "next-auth/react";
 import ReactQueryProvider from "../components/ReactQuery/ReactQueryProvider";
+import {Toaster} from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,13 +19,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      {/* <SessionProvider> */}
+
       <ReactQueryProvider>
         <body className={inter.className}>
+          <Toaster position="bottom-center" />
           {children} <Metrics />
         </body>
       </ReactQueryProvider>
-      {/* </SessionProvider> */}
+
     </html>
   );
 }
