@@ -23,7 +23,7 @@ export default function AddRun() {
     "Sunday",
   ];
   const [schedule, setSchedule] = useState<ScheduleEntry[]>(
-    days.map((day) => ({ day, time: "", location: "", pace: 0 }))
+    days.map((day) => ({ day, time: "", location: "", pace: 0 })),
   );
 
   const [isLocationPickerOpen, setIsLocationPickerOpen] = useState(false);
@@ -39,7 +39,7 @@ export default function AddRun() {
             value={entry.time}
             onChange={(e) => {
               const index = schedule.findIndex(
-                (item) => item.day === entry.day
+                (item) => item.day === entry.day,
               );
               setSchedule((prev) => {
                 const updated = [...prev];
@@ -55,7 +55,7 @@ export default function AddRun() {
             value={entry.pace}
             onChange={(e) => {
               const index = schedule.findIndex(
-                (item) => item.day === entry.day
+                (item) => item.day === entry.day,
               );
               setSchedule((prev) => {
                 const updated = [...prev];
@@ -71,7 +71,7 @@ export default function AddRun() {
             value={entry.location}
             onChange={(e) => {
               const index = schedule.findIndex(
-                (item) => item.day === entry.day
+                (item) => item.day === entry.day,
               );
               setSchedule((prev) => {
                 const updated = [...prev];

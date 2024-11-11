@@ -52,7 +52,10 @@ export default function FilterBarUI({
                       checked={selectedDays.includes(day.index)}
                       onCheckedChange={() => toggleDay(day.index)}
                     />
-                    <label htmlFor={day.name} className="font-medium leading-none">
+                    <label
+                      htmlFor={day.name}
+                      className="font-medium leading-none"
+                    >
                       {day.name}
                     </label>
                   </div>
@@ -62,7 +65,9 @@ export default function FilterBarUI({
           </Popover>
         </div>
         <div className="space-y-4">
-          <label className="font-semibold text-lg">Your preferred distance (km)</label>
+          <label className="font-semibold text-lg">
+            Your preferred distance (km)
+          </label>
           <div className="p-4 border border-input bg-background hover:bg-accent hover:text-accent-foreground rounded-md">
             <Slider
               id="distance-filter"

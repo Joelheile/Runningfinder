@@ -11,7 +11,10 @@ export function useUploadAvatar() {
       setIsLoading(true);
 
       if (fileData) {
-        const presignedURL = new URL("/api/upload/presignedUrl", window.location.href);
+        const presignedURL = new URL(
+          "/api/upload/presignedUrl",
+          window.location.href,
+        );
         presignedURL.searchParams.set("fileName", file.name);
         presignedURL.searchParams.set("contentType", file.type);
 

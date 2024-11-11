@@ -5,8 +5,7 @@ import { useFetchClubById } from "@/lib/hooks/useFetchClubs";
 import { ChevronRight } from "lucide-react";
 import { Run } from "@/lib/types/Run";
 
-
-export default function SelectedClubHeader({run}: {run: Run}) {
+export default function SelectedClubHeader({ run }: { run: Run }) {
   const { data, error, isLoading } = useFetchClubById(run.clubId);
   const club = data;
 

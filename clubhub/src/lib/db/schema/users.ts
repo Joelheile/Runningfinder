@@ -8,7 +8,6 @@ import {
 } from "drizzle-orm/pg-core";
 import { v4 } from "uuid";
 
-
 export const users = pgTable("users", {
   id: text("id")
     .primaryKey()

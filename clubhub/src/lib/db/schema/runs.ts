@@ -54,5 +54,5 @@ export const runs = pgTable("runs", {
   temperature: decimal("temperature"),
   wind: decimal("wind"),
   uv_index: decimal("uv_index"),
- membersOnly: boolean("members_only").default(false),
+  membersOnly: boolean("members_only").default(false),
 });

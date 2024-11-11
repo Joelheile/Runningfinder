@@ -1,4 +1,3 @@
-
 import { db } from "@/lib/db/db";
 import { runs } from "@/lib/db/schema/runs";
 import { clubs } from "@/lib/db/schema/clubs";
@@ -7,8 +6,9 @@ import { NextResponse } from "next/server";
 
 export async function GET(params: { params: { slug: string } }) {
   const clubId = params.params.slug;
-    try {
-    const res = await db.select()
+  try {
+    const res = await db
+      .select()
       .from(runs)
       .leftJoin(clubs, eq(clubs.id, runs.clubId))
       .execute();

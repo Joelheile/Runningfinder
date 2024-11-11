@@ -26,7 +26,7 @@ const MapContainer = ({ runs, clubs }: MapContainerProps) => {
     const initializeMap = async () => {
       const { Map } = await loader.importLibrary("maps");
       const { Marker } = (await loader.importLibrary(
-        "marker"
+        "marker",
       )) as google.maps.MarkerLibrary;
       const { InfoWindow } = await loader.importLibrary("maps");
 
@@ -42,7 +42,7 @@ const MapContainer = ({ runs, clubs }: MapContainerProps) => {
       runs.forEach((run: Run) => {
         const marker = createMarker(map, run, Marker);
         marker.addListener("click", () =>
-          handleMarkerClick(run, marker, map, infoWindow)
+          handleMarkerClick(run, marker, map, infoWindow),
         );
         markersRef.current.push(marker);
       });
@@ -69,7 +69,7 @@ const MapContainer = ({ runs, clubs }: MapContainerProps) => {
       run: Run,
       marker: google.maps.Marker,
       map: google.maps.Map,
-      infoWindow: google.maps.InfoWindow
+      infoWindow: google.maps.InfoWindow,
     ) => {
       setSelectedLocation(run);
       const associatedClub = clubs.find((club) => club.id === run.clubId);
@@ -82,9 +82,9 @@ const MapContainer = ({ runs, clubs }: MapContainerProps) => {
                   <strong>{associatedClub.name}</strong>
                 </Link>
                 <p>{associatedClub.description}</p>
-              </div>
+              </div>,
             )
-          : "Club information not available."
+          : "Club information not available.",
       );
       infoWindow.open(map, marker);
     };

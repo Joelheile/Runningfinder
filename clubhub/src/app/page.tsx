@@ -35,7 +35,7 @@ const MapPage = () => {
       minDistance: number;
       maxDistance: number;
       days: number[];
-    }>
+    }>,
   ) => {
     setFilters(newFilters);
   };

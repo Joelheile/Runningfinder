@@ -1,5 +1,13 @@
-
-import { pgTable, uuid, timestamp, pgEnum, decimal, text, integer, index } from "drizzle-orm/pg-core";
+import {
+  pgTable,
+  uuid,
+  timestamp,
+  pgEnum,
+  decimal,
+  text,
+  integer,
+  index,
+} from "drizzle-orm/pg-core";
 import { avatars, users } from "./users";
 import { statusEnum } from "./runs";
 

@@ -3,7 +3,6 @@
 import { useUploadAvatar } from "@/lib/hooks/useUploadAvatar";
 import AvatarUploaderUI from "./AvatarUploaderUI";
 
-
 interface AvatarUploaderProps {
   id: string;
 }
@@ -18,7 +17,11 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({ id }) => {
   };
 
   return (
-    <AvatarUploaderUI onDrop={handleDrop} isLoading={isLoading} uploadedUrl={uploadedUrl} />
+    <AvatarUploaderUI
+      onDrop={handleDrop}
+      isLoading={isLoading}
+      uploadedUrl={uploadedUrl}
+    />
   );
 };
 
