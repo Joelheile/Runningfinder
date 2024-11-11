@@ -48,12 +48,12 @@ const MapPage = () => {
 
   return (
     <div className="h-screen">
-      <Link
+      {/* <Link
         href={`/pages/run/likedruns`}
         className="absolute z-20 right-2 bottom-60"
       >
         <LikeButton />
-      </Link>
+      </Link> */}
       <FilterBar onFilterChange={handleFilterChange} />
 
       <Map runs={runs || []} clubs={clubs || []} />
