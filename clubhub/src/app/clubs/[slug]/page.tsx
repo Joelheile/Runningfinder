@@ -4,7 +4,7 @@ import Instagram from "@/components/icons/InstagramIcon";
 import LikeButton from "@/components/icons/LikeButton";
 import RunCard from "@/components/runs/RunCard";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useFetchClubById } from "@/lib/hooks/useFetchClubs";
+import { useFetchClubBySlug } from "@/lib/hooks/useFetchClubs";
 
 import { ChevronLeft, Pencil, Share } from "lucide-react";
 import Image from "next/image";
@@ -18,7 +18,7 @@ const ClubDetailPage = () => {
   const router = useRouter();
   const slug = useParams().slug.toString();
 
-  const { data: club, isLoading, isError, error } = useFetchClubById(slug);
+  const { data: club, isLoading, isError, error } = useFetchClubBySlug(slug);
   console.log("Fetched club data:", club);
 
   if (isLoading) {

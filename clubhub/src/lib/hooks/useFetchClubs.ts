@@ -42,11 +42,11 @@ function useFetchClubs() {
   });
 }
 
-function useFetchClubById(slug: string) {
+function useFetchClubBySlug(slug: string) {
   return useQuery({
     queryKey: ["clubs", slug],
     queryFn: () => fetchClubById(slug),
   });
 }
 
-export { useFetchClubs, useFetchClubById };
+export { useFetchClubs, useFetchClubBySlug };

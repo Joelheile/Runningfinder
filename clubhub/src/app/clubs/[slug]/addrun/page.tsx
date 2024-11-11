@@ -4,7 +4,7 @@ import AddRun from "@/components/runs/AddRun";
 import { useState } from "react";
 import { Run } from "@/lib/types/Run";
 import { useParams } from "next/navigation";
-import { useFetchClubById, useFetchClubs } from "@/lib/hooks/useFetchClubs";
+import { useFetchClubBySlug, useFetchClubs } from "@/lib/hooks/useFetchClubs";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function AddRunsPage() {
@@ -15,7 +15,7 @@ export default function AddRunsPage() {
     data: club,
     isLoading: clubsLoading,
     error: clubsError,
-  } = useFetchClubById(slug);
+  } = useFetchClubBySlug(slug);
 
   return (
     <div className="flex-col p-10 items-center w-2/3 mx-auto">

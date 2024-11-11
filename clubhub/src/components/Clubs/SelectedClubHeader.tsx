@@ -1,12 +1,12 @@
 import { useState } from "react";
 import Link from "next/link";
 import ClubIconBar from "../icons/ClubIconBar";
-import { useFetchClubById } from "@/lib/hooks/useFetchClubs";
+import { useFetchClubBySlug } from "@/lib/hooks/useFetchClubs";
 import { ChevronRight } from "lucide-react";
 import { Run } from "@/lib/types/Run";
 
 export default function SelectedClubHeader({ run }: { run: Run }) {
-  const { data, error, isLoading } = useFetchClubById(run.clubId);
+  const { data, error, isLoading } = useFetchClubBySlug(run.clubId);
   const club = data;
 
   if (isLoading) {
