@@ -41,6 +41,7 @@ export const clubs = pgTable("clubs", {
   locationLng: decimal("location_lng").notNull(),
   locationLat: decimal("location_lat").notNull(),
   instagramUsername: text("instagram_username"),
+  stravaUsername: text("strava_username"),
   websiteUrl: text("website_url"),
   avatarFileId: text("avatar_file_id")
     .notNull()

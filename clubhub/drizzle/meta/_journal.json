@@ -316,6 +316,13 @@
       "when": 1731337748090,
       "tag": "0044_grey_nova",
       "breakpoints": true
+    },
+    {
+      "idx": 45,
+      "version": "7",
+      "when": 1731338145860,
+      "tag": "0045_condemned_thunderbolt",
+      "breakpoints": true
     }
   ]
 }
