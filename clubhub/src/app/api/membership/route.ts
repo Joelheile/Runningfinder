@@ -1,7 +1,6 @@
 import { db } from "@/lib/db/db";
 import { memberships } from "@/lib/db/schema/clubs";
 
-
 import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";

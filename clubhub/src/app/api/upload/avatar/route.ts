@@ -5,7 +5,6 @@ import { v4 } from "uuid";
 import { db } from "@/lib/db/db";
 import { avatars } from "@/lib/db/schema/users";
 
-
 export async function POST(request: Request) {
   //TODO: Refactor AvatarUploader to this route
   const { objectName, objectUrl, objectId } = await request.json();

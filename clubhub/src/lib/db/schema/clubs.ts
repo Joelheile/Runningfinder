@@ -8,11 +8,11 @@ export const roleEnum = pgEnum("role", ["member", "admin", "manager"]);
 export const memberships = pgTable(
   "memberships",
   {
-    id: uuid("id").primaryKey().notNull(),
-    userId: uuid("user_id")
+    id: text("id").primaryKey().notNull(),
+    userId: text("user_id")
       .notNull()
       .references(() => users.id),
-    clubId: uuid("club_id")
+    clubId: text("club_id")
       .notNull()
       .references(() => clubs.id),
     joinDate: timestamp("join_date").notNull(),
@@ -26,7 +26,7 @@ export const memberships = pgTable(
 );
 
 export const clubs = pgTable("clubs", {
-  id: uuid("id").primaryKey().notNull(),
+  id: text("id").primaryKey().notNull(),
   name: text("name").notNull(),
   slug: text("slug").notNull().unique(),
   description: text("description"),
@@ -34,7 +34,7 @@ export const clubs = pgTable("clubs", {
   locationLat: decimal("location_lat").notNull(),
   instagramUsername: text("instagram_username"),
   websiteUrl: text("website_url"),
-  avatarFileId: uuid("avatar_file_id")
+  avatarFileId: text("avatar_file_id")
     .notNull()
     .unique()
     .references(() => avatars.id),

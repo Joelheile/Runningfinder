@@ -1,7 +1,6 @@
 import { db } from "@/lib/db/db";
 import { clubs as club } from "@/lib/db/schema/clubs";
-import { avatars} from "@/lib/db/schema/users";
-
+import { avatars } from "@/lib/db/schema/users";
 
 import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";

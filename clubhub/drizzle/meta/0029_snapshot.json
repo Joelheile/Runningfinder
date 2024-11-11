@@ -1,9 +1,250 @@
 {
-  "id": "f4a37762-d0e0-4c36-9656-5ca91f220ec9",
-  "prevId": "a1114d69-142c-4fd8-8852-85c1e8867124",
+  "id": "d64c7974-0a5b-483f-8c84-f092a490116f",
+  "prevId": "8f4cbe71-49d9-432e-ae98-8dd1030b84f0",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
+    "public.account": {
+      "name": "account",
+      "schema": "",
+      "columns": {
+        "userId": {
+          "name": "userId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "type": {
+          "name": "type",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "provider": {
+          "name": "provider",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "providerAccountId": {
+          "name": "providerAccountId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "refresh_token": {
+          "name": "refresh_token",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "access_token": {
+          "name": "access_token",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "expires_at": {
+          "name": "expires_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "token_type": {
+          "name": "token_type",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "scope": {
+          "name": "scope",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "id_token": {
+          "name": "id_token",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "session_state": {
+          "name": "session_state",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "account_userId_users_id_fk": {
+          "name": "account_userId_users_id_fk",
+          "tableFrom": "account",
+          "tableTo": "users",
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "account_provider_providerAccountId_pk": {
+          "name": "account_provider_providerAccountId_pk",
+          "columns": ["provider", "providerAccountId"]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "public.authenticator": {
+      "name": "authenticator",
+      "schema": "",
+      "columns": {
+        "credentialID": {
+          "name": "credentialID",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "providerAccountId": {
+          "name": "providerAccountId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "credentialPublicKey": {
+          "name": "credentialPublicKey",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "counter": {
+          "name": "counter",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "credentialDeviceType": {
+          "name": "credentialDeviceType",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "credentialBackedUp": {
+          "name": "credentialBackedUp",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "transports": {
+          "name": "transports",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "authenticator_userId_users_id_fk": {
+          "name": "authenticator_userId_users_id_fk",
+          "tableFrom": "authenticator",
+          "tableTo": "users",
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "authenticator_userId_credentialID_pk": {
+          "name": "authenticator_userId_credentialID_pk",
+          "columns": ["userId", "credentialID"]
+        }
+      },
+      "uniqueConstraints": {
+        "authenticator_credentialID_unique": {
+          "name": "authenticator_credentialID_unique",
+          "nullsNotDistinct": false,
+          "columns": ["credentialID"]
+        }
+      }
+    },
+    "public.session": {
+      "name": "session",
+      "schema": "",
+      "columns": {
+        "sessionToken": {
+          "name": "sessionToken",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "expires": {
+          "name": "expires",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "session_userId_users_id_fk": {
+          "name": "session_userId_users_id_fk",
+          "tableFrom": "session",
+          "tableTo": "users",
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.verificationToken": {
+      "name": "verificationToken",
+      "schema": "",
+      "columns": {
+        "identifier": {
+          "name": "identifier",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "token": {
+          "name": "token",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "expires": {
+          "name": "expires",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "verificationToken_identifier_token_pk": {
+          "name": "verificationToken_identifier_token_pk",
+          "columns": ["identifier", "token"]
+        }
+      },
+      "uniqueConstraints": {}
+    },
     "public.clubs": {
       "name": "clubs",
       "schema": "",
@@ -58,7 +299,7 @@
         },
         "avatar_file_id": {
           "name": "avatar_file_id",
-          "type": "uuid",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         },
@@ -303,11 +544,11 @@
           "primaryKey": false,
           "notNull": true
         },
-        "start_time": {
-          "name": "start_time",
+        "last_login": {
+          "name": "last_login",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "location_lng": {
           "name": "location_lng",
@@ -326,6 +567,12 @@
           "type": "numeric",
           "primaryKey": false,
           "notNull": true
+        },
+        "pace": {
+          "name": "pace",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
         },
         "temperature": {
           "name": "temperature",
@@ -388,6 +635,13 @@
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true
+        },
+        "type": {
+          "name": "type",
+          "type": "avatarType",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
         }
       },
       "indexes": {},
@@ -401,7 +655,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "text",
+          "type": "uuid",
           "primaryKey": true,
           "notNull": true
         },
@@ -493,6 +747,11 @@
       "name": "status",
       "schema": "public",
       "values": ["pending", "active", "deactivated", "banned"]
+    },
+    "public.avatarType": {
+      "name": "avatarType",
+      "schema": "public",
+      "values": ["user", "club"]
     }
   },
   "schemas": {},

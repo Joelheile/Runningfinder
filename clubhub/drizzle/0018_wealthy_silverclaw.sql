@@ -30,3 +30,4 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 CREATE UNIQUE INDEX IF NOT EXISTS "Authenticator_credentialID_key" ON "auth_authenticator" USING btree ("credentialId");
+ALTER TABLE "auth_authenticator" DROP CONSTRAINT "auth_authenticator_userId_credentialID_pk";
