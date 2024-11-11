@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LocationPicker from "location-picker";
 import Script from "next/script";
-import { on } from "events";
+import { Button } from "../ui/button";
 
 interface MapLocationPickerProps {
   onSelect: (lat: number, lng: number) => void;
@@ -13,11 +13,21 @@ export const MapLocationPicker: React.FC<MapLocationPickerProps> = ({
   onCancel,
 }) => {
   const [location, setLocation] = useState({ lat: 52.52, lng: 13.405 });
+  const [isScriptLoaded, setIsScriptLoaded] = useState(false);
 
-  console.log("test");
+  useEffect(() => {
+    if (isScriptLoaded && typeof window !== "undefined") {
+      initializeMap();
+    }
+  }, [isScriptLoaded]);
 
-  const defaultPosition = () => {
-    var locationPicker = new LocationPicker(
+  const initializeMap = () => {
+    if (typeof google === "undefined") {
+      console.error("Google Maps JavaScript API not loaded.");
+      return;
+    }
+
+    const locationPicker = new LocationPicker(
       "map",
       {
         setCurrentPosition: true,
@@ -29,25 +39,36 @@ export const MapLocationPicker: React.FC<MapLocationPickerProps> = ({
       }
     );
 
-    google.maps.event.addListener(
+    const idleListener = google.maps.event.addListener(
       locationPicker.map,
       "idle",
       function (event: google.maps.MapMouseEvent) {
-        var location = locationPicker.getMarkerPosition();
-
-        setLocation({ lat: location.lat, lng: location.lng });
+        const currentLocation = locationPicker.getMarkerPosition();
+        setLocation({ lat: currentLocation.lat, lng: currentLocation.lng });
       }
     );
 
     console.log(locationPicker);
+
+    // Cleanup listener on unmount
+    return () => {
+      google.maps.event.removeListener(idleListener);
+    };
+  };
+
+  const selectLocation = () => {
+    onSelect(location.lat, location.lng);
+    onCancel();
+    console.log("location", location);
   };
 
   return (
-    <div className="App mt-8">
+    <div className="App mt-8" onDrag={selectLocation}>
       <Script
         src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS}`}
-        onError={() => console.log("onError")}
-        onLoad={defaultPosition}
+        strategy="lazyOnload"
+        onLoad={() => setIsScriptLoaded(true)}
+        onError={() => console.error("Google Maps script failed to load.")}
       />
       <h2 className="text-xl font-semibold mb-2">Location Picker</h2>
       <div
@@ -56,8 +77,9 @@ export const MapLocationPicker: React.FC<MapLocationPickerProps> = ({
         className="border rounded"
       />
       <p>
-        Location: <b>{location.lat + " | " + location.lng}</b>
+Location: {location.lat}, {location.lng}
       </p>
+
     </div>
   );
 };
