@@ -1,5 +1,3 @@
-// src/lib/db/queries/updateClub.ts
-
 export interface UpdateClubData {
     name?: string;
     description?: string;
