@@ -39,6 +39,8 @@ export const intervalEnum = pgEnum("interval", [
 
 export const runs = pgTable("runs", {
   id: text("id").primaryKey().notNull(),
+  name: text("name").notNull(),
+  difficulty: text("difficulty"),
   clubId: text("club_id")
     .notNull()
     .references(() => clubs.id),
@@ -49,8 +51,7 @@ export const runs = pgTable("runs", {
   startTime: timestamp("last_login", { mode: "date" }),
   locationLng: decimal("location_lng").notNull(),
   locationLat: decimal("location_lat").notNull(),
-  distance: decimal("distance").notNull(),
-  pace: decimal("pace"),
+  distance: decimal("distance"),
   temperature: decimal("temperature"),
   wind: decimal("wind"),
   uv_index: decimal("uv_index"),

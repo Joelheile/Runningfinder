@@ -1,5 +1,7 @@
 export type Run = {
   id: string;
+  name: string;
+  difficulty: string;
   clubId: string;
   date: Date;
   location: {
