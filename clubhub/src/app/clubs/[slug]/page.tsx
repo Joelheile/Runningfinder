@@ -13,6 +13,7 @@ import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 
 import React from "react";
+import toast from "react-hot-toast";
 
 const ClubDetailPage = () => {
   const router = useRouter();
@@ -38,6 +39,15 @@ const ClubDetailPage = () => {
 
   const { name, description, avatarUrl, instagramUsername, websiteUrl } = club;
 
+  const handleShare = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      toast("Link copied to clipboard!", { icon: "📋" });
+    } catch (err) {
+      console.error("Failed to copy: ", err);
+    }
+  };
+
   return (
     <div className="flex flex-col bg-light w-screen h-screen p-8">
       <nav className="flex justify-between">
@@ -55,7 +65,9 @@ const ClubDetailPage = () => {
           >
             <Plus className="stroke-primary" />
           </button>
-          <Share className="stroke-primary" />
+          <button onClick={handleShare}>
+            <Share className="stroke-primary" />
+          </button>
         </div>
       </nav>
 
