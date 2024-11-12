@@ -11,8 +11,6 @@ import {
 } from "drizzle-orm/pg-core";
 import { users } from "./users";
 import { clubs } from "./clubs";
-import {  statusEnum } from "./enums";
-
 
 export const registrations = pgTable("registrations", {
   id: text("id").primaryKey().notNull(),
@@ -22,8 +20,8 @@ export const registrations = pgTable("registrations", {
   userId: text("user_id")
     .notNull()
     .references(() => users.id),
-  registrationDate: timestamp("registration_date").notNull(),
-  status: statusEnum("status").default("pending"),
+  registrationDate: timestamp("registration_date"),
+  status: text("status")
 });
 
 
