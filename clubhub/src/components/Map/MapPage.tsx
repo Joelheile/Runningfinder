@@ -29,7 +29,10 @@ const MapPage = ({ session }: { session: Session | null }) => {
 
   return (
     <div className="h-screen">
-      {/* <Link
+
+      {/* 
+      //TODO: 
+      <Link
         href={`/pages/run/likedruns`}
         className="absolute z-20 right-2 bottom-60"
       >
