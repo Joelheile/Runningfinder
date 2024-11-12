@@ -5,6 +5,8 @@ import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 
+
+//TODO: Implement on like
 export async function GET() {
   try {
     const res = await db.select().from(registrations);
