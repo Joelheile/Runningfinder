@@ -2,27 +2,35 @@ import LikeButton from "../icons/LikeButton";
 import { Input } from "../ui/input";
 
 interface RunCardProps {
-  date: string;
-  time: number;
+  time: string;
   distance: number;
-  location: string;
+  location: { lat: number; lng: number };
+  intervalDay: number;
+  name: string;
+  startDescription: string;
+  difficulty: string;
 }
 
 export default function RunCard({
-  date,
   time,
   distance,
   location,
+  intervalDay,
+  name,
+  startDescription,
+  difficulty,
 }: RunCardProps) {
+  function placeholder() {
+    return <p className=" text-medium ">|</p>;
+  }
+
   return (
     <div className="flex bg-white gap-x-5 border p-3 rounded-md">
       <LikeButton />
-      <p>{date}</p>
-      <p className=" text-medium ">|</p>
-
+      {placeholder()}
       <p>{distance} km </p>
-      <p className=" text-medium ">|</p>
-      <p>{location} </p>
+      {placeholder()}
+      {/* <p>{location} </p> */}
     </div>
   );
 }

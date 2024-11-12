@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import ClubIconBar from "@/components/icons/ClubIconBar";
 import RunCard from "@/components/runs/RunCard";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -98,13 +98,18 @@ const ClubDetailPage = () => {
         </div>
         <div className="mt-10">
           <h2 className="mb-2 text-lg sm:text-xl md:text-2xl">Upcoming runs</h2>
-          //TODO: Implement runs and fetch routes for club id
-          <RunCard
-            date={"Fr, 2.1"}
-            time={0}
-            distance={5}
-            location={"Warschauer Straße"}
-          />
+          {runs?.map((run) => (
+            <RunCard
+              key={run.id}
+              time={run.startTime}
+              intervalDay={run.intervalDay}
+              name={run.name}
+              startDescription={run.startDescription}
+              difficulty={run.difficulty}
+              distance={5}
+              location={run.location}
+            />
+          ))}
         </div>
       </div>
     </div>
