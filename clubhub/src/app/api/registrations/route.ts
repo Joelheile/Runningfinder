@@ -1,12 +1,11 @@
 import { db } from "@/lib/db/db";
 import { registrations } from "@/lib/db/schema/runs";
 
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 
 
-//TODO: Implement on like
 export async function GET() {
   try {
     const res = await db.select().from(registrations);
@@ -22,24 +21,24 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const { user_id, run_id, status } = await request.json();
-
+  const { userId, runId, status } = await request.json();
+  console.log("api run", userId, runId);
   try {
     const res = await db
       .insert(registrations)
       .values({
         id: uuidv4(),
-        runId: run_id,
-        userId: user_id,
-        status: "active",
-        registrationDate: new Date(),
+        runId: runId,
+        userId: userId,
+        status: status,
+        registrationDate:   new Date().toISOString(),
       })
       .execute();
-    console.log("memberships", res);
+    console.log("registration", res);
 
     return NextResponse.json(res);
   } catch (error) {
-    console.error("Error creating membership:", error);
+    console.error("Error creating registration:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 },
