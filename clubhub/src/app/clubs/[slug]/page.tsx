@@ -1,10 +1,9 @@
-"use client";
+"use client"
 import ClubIconBar from "@/components/icons/ClubIconBar";
-import Instagram from "@/components/icons/InstagramIcon";
-import LikeButton from "@/components/icons/LikeButton";
 import RunCard from "@/components/runs/RunCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useFetchClubBySlug } from "@/lib/hooks/useFetchClubs";
+import { useFetchRunsByClubId } from "@/lib/hooks/useFetchRuns"; // Use named export
 
 import { ChevronLeft, Pencil, Plus, Share } from "lucide-react";
 import Image from "next/image";
@@ -21,6 +20,14 @@ const ClubDetailPage = () => {
 
   const { data: club, isLoading, isError, error } = useFetchClubBySlug(slug);
   console.log("Fetched club data:", club);
+
+  const {
+    data: runs,
+    isLoading: runsLoading,
+    isError: runsError,
+  } = useFetchRunsByClubId(club?.id || "");
+
+  console.log("fetched runs data:", runs);
 
   if (isLoading) {
     return (

@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { Run } from "../types/Run";
 
 export const useFetchRuns = (filters: {
   minDistance?: number;
@@ -29,3 +30,19 @@ export const useFetchRuns = (filters: {
     },
   });
 };
+
+const fetchRunsByClubId = async (clubId: string): Promise<Run[]> => {
+  const response = await axios.get(`/api/runs?clubId=${clubId}`);
+  if (response.status !== 200) {
+    throw new Error("Failed to fetch runs by club ID");
+  }
+  return response.data;
+};
+
+export function useFetchRunsByClubId(clubId: string) {
+  return useQuery({
+    queryKey: ["runs", clubId],
+    queryFn: () => fetchRunsByClubId(clubId),
+    enabled: !!clubId, // only query if clubId exists
+  });
+}
