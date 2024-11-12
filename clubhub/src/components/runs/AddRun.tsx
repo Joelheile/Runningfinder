@@ -29,27 +29,27 @@ export default function AddRun({ club }: { club: Club }) {
       toast("You are missing some important fields!", {
         icon: "🔎",
       });
+    } else {
+      e.preventDefault();
+      const formData: Run = {
+        name,
+        difficulty,
+        clubId: club?.id || "",
+        location: {
+          lat: location.lat,
+          lng: location.lng,
+        },
+        interval: interval,
+        intervalDay: weekday,
+        startDescription,
+        startTime,
+        distance,
+        id: v4(),
+        date: null,
+        membersOnly,
+      };
+      mutation.mutate(formData);
     }
-
-    e.preventDefault();
-    const formData: Run = {
-      name,
-      difficulty,
-      clubId: club?.id || "",
-      location: {
-        lat: location.lat,
-        lng: location.lng,
-      },
-      interval: interval,
-      intervalDay: weekday,
-      startDescription,
-      startTime,
-      distance,
-      id: v4(),
-      date: null,
-      membersOnly,
-    };
-    mutation.mutate(formData);
   };
 
   const mutation = useAddRun();
