@@ -8,8 +8,8 @@ import toast from "react-hot-toast";
 
 export default function SelectedClubHeader({ run }: { run: Run }) {
   const { data, error, isLoading } = useFetchClubs();
-  if (data) {
-    const club = data.filter((club) => club.id === run.clubId)[0];
+
+    const club = data?.filter((club) => club.id === run.clubId)[0];
 
     if (isLoading) {
       return (
@@ -74,7 +74,4 @@ export default function SelectedClubHeader({ run }: { run: Run }) {
         </Link>
       </div>
     );
-  } else {
-    toast.error("Unable to load club information ");
-  }
 }
