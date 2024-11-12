@@ -12,11 +12,7 @@ const Map = ({ runs, clubs }: { runs: Run[]; clubs: Club[] }) => {
   const [markers, setMarkers] = useState<google.maps.Marker[]>([]);
 
   useEffect(() => {
-    if (!runs || runs.length === 0) {
-      console.error("Runs data is not available.");
-      return;
-    }
-
+   
     const initMap = async () => {
       const loader = new Loader({
         apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS!,
@@ -52,6 +48,7 @@ const Map = ({ runs, clubs }: { runs: Run[]; clubs: Club[] }) => {
 
       const newMarkers = runs
         .map((run: Run) => {
+          
           const lat = Number(run.location.lat);
           const lng = Number(run.location.lng);
 

@@ -9,9 +9,10 @@ interface MapViewProps {
 }
 
 const MapUI = ({ mapRef, selectedLocation, runs }: MapViewProps) => {
+  console.log("runs", runs.length);
   return (
     <div className="h-screen w-full">
-      {(selectedLocation && runs.length !== 0 ) && (
+      {selectedLocation && runs.length !== 0 && (
         <SelectedClubHeader
           run={runs.find((run) => run.id === selectedLocation.id)!}
         />
