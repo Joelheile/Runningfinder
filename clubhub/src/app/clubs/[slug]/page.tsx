@@ -1,4 +1,5 @@
-import ClubDetailPage from "@/components/clubs/ClubDetailPage";
+
+import ClubDetailPage from "@/components/Clubs/ClubDetailPage";
 import { auth } from "@/lib/authentication/auth";
 
 export default async function ClubPage() {

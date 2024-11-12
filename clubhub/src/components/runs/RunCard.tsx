@@ -1,13 +1,12 @@
+import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import LikeButton from "../icons/LikeButton";
-import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { weekdays } from "@/lib/weekdays";
-import { useState } from "react";
-
-import { User } from "next-auth";
 import { redirect } from "next/navigation";
-import toast from "react-hot-toast";
+import { useRegisterRun } from "@/lib/hooks/useRegisterRun";
+import { useCancelRegistration } from "@/lib/hooks/useCancelRegistration";
+import { useFetchRegistration } from "@/lib/hooks/useFetchRegistration";
 
 interface RunCardProps {
   id: string;
@@ -36,26 +35,28 @@ export default function RunCard({
 }: RunCardProps) {
   const [likeFilled, setLikeFilled] = useState(false);
 
-  function placeholder() {
-    return <p className=" text-medium ">|</p>;
-  }
+
+
+
   const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${location.lat},${location.lng}`;
 
   const registerMutation = useRegisterRun();
-
   const cancelRegistrationMutation = useCancelRegistration();
+  
 
   function handleClick() {
-    setLikeFilled(!likeFilled);
     if (!userId) {
       redirect(`/api/auth/signin?callbackUrl=/clubs/${slug}`);
     } else {
       if (likeFilled) {
         cancelRegistrationMutation.mutate({ runId: id, userId: userId });
       } else {
-
-        registerMutation.mutate({ runId: id, userId: userId });
-      }asdf
+        registerMutation.mutate({
+          runId: id,
+          userId: userId,
+        });
+      }
+      setLikeFilled(!likeFilled);
     }
   }
 
@@ -66,13 +67,11 @@ export default function RunCard({
         <div className="flex gap-x-5 items-center pl-2">
           <LikeButton onClick={handleClick} isFilled={likeFilled} />
           <strong>{name} </strong>
-          {placeholder()}
+          <p className=" text-medium ">|</p>
           <p>{time} </p>
-          {placeholder()}
-
+          <p className=" text-medium ">|</p>
           <p>{distance} km </p>
-
-          {placeholder()}
+          <p className=" text-medium ">|</p>
           <p>{difficulty} </p>
         </div>
         <div>
@@ -87,3 +86,4 @@ export default function RunCard({
     </div>
   );
 }
+

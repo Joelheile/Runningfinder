@@ -1,22 +1,20 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
-interface useCancelRegistrationParams {
+interface UseCancelRegistrationParams {
   runId: string;
   userId: string;
 }
 
-const cancelRegistration = async ({ runId, userId }: useCancelRegistrationParams) => {
-
+const cancelRegistration = async ({ runId, userId }: UseCancelRegistrationParams) => {
   const response = await fetch("/api/registrations", {
-    method: "PUT", 
+    method: "DELETE",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
       runId,
       userId,
-      status: "canceled"
     }),
   });
 

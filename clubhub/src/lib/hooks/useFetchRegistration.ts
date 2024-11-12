@@ -1,39 +1,36 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
-interface UseRegisterRunParams {
+interface UseFetchRegistrationParams {
   runId: string;
   userId: string;
-
 }
 
-const registerRun = async ({ runId, userId }: UseRegisterRunParams) => {
-  const response = await fetch("/api/registrations", {
-    method: "POST",
+const fetchRegistration = async ({ runId, userId }: UseFetchRegistrationParams) => {
+  const response = await fetch("/api/registrations",{
+    method: "GET",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      runId,
-      userId,
-      status: "registered",
-    }),
+        runId,
+        userId,
+        }),
   });
 
   if (!response.ok) {
-    toast.error("Failed to register for run");
-    throw new Error("Failed to register for run");
+    toast.error("Failed to fetch registration status");
+    throw new Error("Failed to fetch registration status");
   }
 
-  toast.success("Successfully registered for run");
   return response.json();
 };
 
-export function useRegisterRun() {
+export function useFetchRegistration() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: registerRun,
+    mutationFn: fetchRegistration,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["registrations"] });
     },

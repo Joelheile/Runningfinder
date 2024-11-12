@@ -57,7 +57,7 @@ const ClubDetailPage = ({ userId }: { userId: string | undefined }) => {
   };
 
   return (
-    <div className="flex flex-col bg-light w-screen h-screen p-8">
+    <div className="flex flex-col bg-light w-screen h-full p-8">
       <nav className="flex justify-between">
         <Link href="/">
           <div className="flex">
@@ -79,7 +79,7 @@ const ClubDetailPage = ({ userId }: { userId: string | undefined }) => {
         </div>
       </nav>
 
-      <div className="flex-col mt-10 lg:max-w-7xl md:w-2/3  sm:flex-row justify-center self-center">
+      <div className="flex-col mt-5 lg:max-w-7xl md:w-2/3  sm:flex-row justify-center self-center">
         <div className="flex flex-col sm:flex-row  bg-white gap-x-5 border p-3 rounded-md">
           <img
             src={avatarUrl}
@@ -97,7 +97,7 @@ const ClubDetailPage = ({ userId }: { userId: string | undefined }) => {
             />
           </div>
         </div>
-        <div className="mt-10">
+        <div className="mt-4">
           <h2 className="mb-2 text-lg sm:text-xl md:text-2xl">Upcoming runs</h2>
           {runs?.map((run) => (
             <RunCard

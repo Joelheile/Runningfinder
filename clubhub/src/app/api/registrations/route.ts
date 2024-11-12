@@ -6,9 +6,14 @@ import { NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 
 
-export async function GET() {
+export async function GET({ request }: { request: Request }) {
+  const { userId, runId } = await request.json();
+
   try {
-    const res = await db.select().from(registrations);
+    const res = await db.select()
+      .from(registrations)
+      .where(and(eq(registrations.userId, userId), eq(registrations.runId, runId)))
+      .execute();
 
     return NextResponse.json(res);
   } catch (error) {
@@ -31,7 +36,6 @@ export async function POST(request: Request) {
         runId: runId,
         userId: userId,
         status: status,
-        registrationDate:   new Date().toISOString(),
       })
       .execute();
     console.log("registration", res);
