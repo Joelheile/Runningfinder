@@ -12,7 +12,10 @@ export const useFetchRuns = (filters: {
     queryKey: ["runs", { ...filters }],
     queryFn: () => {
       const params = new URLSearchParams();
-      if (filters.minDistance !== undefined && filters.maxDistance !== undefined) {
+      if (
+        filters.minDistance !== undefined &&
+        filters.maxDistance !== undefined
+      ) {
         params.append("minDistance", filters.minDistance.toString());
         params.append("maxDistance", filters.maxDistance.toString());
       }

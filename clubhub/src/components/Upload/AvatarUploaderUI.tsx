@@ -21,7 +21,11 @@ const AvatarUploaderUI: React.FC<AvatarUploaderUIProps> = ({
         <p>Drag & drop a file here, or click to select one</p>
       ) : (
         <>
-          <img src={uploadedUrl} alt="Uploaded file" className="h-32 w-auto rounded-md" />
+          <img
+            src={uploadedUrl}
+            alt="Uploaded file"
+            className="h-32 w-auto rounded-md"
+          />
         </>
       )}
 

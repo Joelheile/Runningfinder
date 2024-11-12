@@ -6,4 +6,3 @@ export const statusEnum = pgEnum("status", [
   "deactivated",
   "banned",
 ]);
-

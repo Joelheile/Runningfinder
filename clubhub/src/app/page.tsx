@@ -15,14 +15,12 @@ const MapPage = () => {
 
   const { data: runs, isLoading, error } = useFetchRuns(filters);
 
-  const handleFilterChange = (
-    newFilters: {
-      minDistance?: number;
-      maxDistance?: number;
-      days?: number[];
-      difficulty?: string;
-    }
-  ) => {
+  const handleFilterChange = (newFilters: {
+    minDistance?: number;
+    maxDistance?: number;
+    days?: number[];
+    difficulty?: string;
+  }) => {
     setFilters(newFilters);
   };
 
@@ -30,7 +28,7 @@ const MapPage = () => {
 
   return (
     <div className="h-screen">
-       {/* <Link
+      {/* <Link
         href={`/pages/run/likedruns`}
         className="absolute z-20 right-2 bottom-60"
       >

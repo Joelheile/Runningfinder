@@ -37,7 +37,7 @@ export const MapLocationPicker: React.FC<MapLocationPickerProps> = ({
       },
       {
         zoom: 12,
-      }
+      },
     );
 
     const idleListener = google.maps.event.addListener(
@@ -46,7 +46,7 @@ export const MapLocationPicker: React.FC<MapLocationPickerProps> = ({
       function (event: google.maps.MapMouseEvent) {
         const currentLocation = mapRef.current!.getMarkerPosition();
         onSelect(currentLocation.lat, currentLocation.lng);
-      }
+      },
     );
 
     return () => {

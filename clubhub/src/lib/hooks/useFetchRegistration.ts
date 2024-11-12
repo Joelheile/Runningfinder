@@ -6,16 +6,19 @@ interface UseFetchRegistrationParams {
   userId: string;
 }
 
-const fetchRegistration = async ({ runId, userId }: UseFetchRegistrationParams) => {
-  const response = await fetch("/api/registrations",{
+const fetchRegistration = async ({
+  runId,
+  userId,
+}: UseFetchRegistrationParams) => {
+  const response = await fetch("/api/registrations", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-        runId,
-        userId,
-        }),
+      runId,
+      userId,
+    }),
   });
 
   if (!response.ok) {

@@ -4,7 +4,6 @@ import toast from "react-hot-toast";
 interface UseRegisterRunParams {
   runId: string;
   userId: string;
-
 }
 
 const registerRun = async ({ runId, userId }: UseRegisterRunParams) => {

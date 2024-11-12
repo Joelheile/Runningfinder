@@ -21,10 +21,8 @@ export const registrations = pgTable("registrations", {
     .notNull()
     .references(() => users.id),
   registrationDate: timestamp("registration_date"),
-  status: text("status")
+  status: text("status"),
 });
-
-
 
 export const runs = pgTable("runs", {
   id: text("id").primaryKey().notNull(),

@@ -5,14 +5,16 @@ import { and, eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 
-
 export async function GET({ request }: { request: Request }) {
   const { userId, runId } = await request.json();
 
   try {
-    const res = await db.select()
+    const res = await db
+      .select()
       .from(registrations)
-      .where(and(eq(registrations.userId, userId), eq(registrations.runId, runId)))
+      .where(
+        and(eq(registrations.userId, userId), eq(registrations.runId, runId)),
+      )
       .execute();
 
     return NextResponse.json(res);

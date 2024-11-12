@@ -15,7 +15,7 @@ function parseQueryParams(searchParams: URLSearchParams) {
     ? intervalDaysParam.split(",").map(Number)
     : [];
   const difficulty = difficultyParam || null;
-  
+
   return { minDistance, maxDistance, intervalDays, difficulty };
 }
 
@@ -33,64 +33,66 @@ export async function GET(request: Request) {
     parseQueryParams(searchParams);
 
   try {
-    const baseQuery = db.select({
-      id: runs.id,
-      name: runs.name,
-      clubId: runs.clubId,
-      difficulty: runs.difficulty,
-      date: runs.date,
-      interval: runs.interval,
-      intervalDay: runs.intervalDay,
-      startDescription: runs.startDescription,
-      startTime: runs.startTime,
-      distance: runs.distance,
-      location: {
-        lat: runs.locationLat,
-        lng: runs.locationLng,
-      },
-    }).from(runs);
+    const baseQuery = db
+      .select({
+        id: runs.id,
+        name: runs.name,
+        clubId: runs.clubId,
+        difficulty: runs.difficulty,
+        date: runs.date,
+        interval: runs.interval,
+        intervalDay: runs.intervalDay,
+        startDescription: runs.startDescription,
+        startTime: runs.startTime,
+        distance: runs.distance,
+        location: {
+          lat: runs.locationLat,
+          lng: runs.locationLng,
+        },
+      })
+      .from(runs);
 
-// Initialize conditions array
-const conditions = [eq(runs.membersOnly, false)];
+    // Initialize conditions array
+    const conditions = [eq(runs.membersOnly, false)];
 
-// Validate and add distance condition
-if (
-  typeof minDistance === "number" &&
-  typeof maxDistance === "number" &&
-  minDistance >= 0 &&
-  maxDistance >= minDistance
-) {
-  conditions.push(
-    between(runs.distance, minDistance.toString(), maxDistance.toString())
-  );
-}
+    // Validate and add distance condition
+    if (
+      typeof minDistance === "number" &&
+      typeof maxDistance === "number" &&
+      minDistance >= 0 &&
+      maxDistance >= minDistance
+    ) {
+      conditions.push(
+        between(runs.distance, minDistance.toString(), maxDistance.toString()),
+      );
+    }
 
-// Validate and add interval days condition
-const validDays = intervalDays.filter(
-  (day) => Number.isInteger(day) && day >= 1 && day <= 7
-);
-if (validDays.length > 0) {
-  conditions.push(inArray(runs.intervalDay, validDays));
-}
+    // Validate and add interval days condition
+    const validDays = intervalDays.filter(
+      (day) => Number.isInteger(day) && day >= 1 && day <= 7,
+    );
+    if (validDays.length > 0) {
+      conditions.push(inArray(runs.intervalDay, validDays));
+    }
 
-// Validate difficulty
-const validDifficulties = ["easy", "intermediate", "advanced"];
-if (difficulty && validDifficulties.includes(difficulty)) {
-  conditions.push(eq(runs.difficulty, difficulty));
-}
+    // Validate difficulty
+    const validDifficulties = ["easy", "intermediate", "advanced"];
+    if (difficulty && validDifficulties.includes(difficulty)) {
+      conditions.push(eq(runs.difficulty, difficulty));
+    }
 
-// Apply conditions
-if (conditions.length > 1) {
-  baseQuery.where(and(...conditions));
-} else {
-  baseQuery.where(eq(runs.membersOnly, false));
-}
+    // Apply conditions
+    if (conditions.length > 1) {
+      baseQuery.where(and(...conditions));
+    } else {
+      baseQuery.where(eq(runs.membersOnly, false));
+    }
 
-const result = await baseQuery.execute();
-return NextResponse.json(result);
-} catch (error) {
-return handleErrorResponse(error, "Error fetching runs");
-}
+    const result = await baseQuery.execute();
+    return NextResponse.json(result);
+  } catch (error) {
+    return handleErrorResponse(error, "Error fetching runs");
+  }
 }
 
 export async function POST(request: Request) {
@@ -106,11 +108,9 @@ export async function POST(request: Request) {
 
     await db.insert(runs).values(newRun).execute();
 
-
-
     return NextResponse.json(
       { message: "Run created successfully", run: newRun },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (error) {
     return handleErrorResponse(error, "Error creating run");

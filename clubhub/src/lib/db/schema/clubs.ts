@@ -11,7 +11,6 @@ import {
 import { avatars, users } from "./users";
 import { statusEnum } from "./enums";
 
-
 export const roleEnum = pgEnum("role", ["member", "admin", "manager"]);
 
 export const memberships = pgTable(

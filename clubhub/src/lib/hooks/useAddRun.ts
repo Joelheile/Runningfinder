@@ -17,7 +17,6 @@ const addRun = async (newRun: Run): Promise<Run> => {
   if (!response.ok) {
     toast.error("Failed to add run");
     throw new Error("Failed to add run");
-   
   }
   toast.success("Run added successfully");
   return response.json();

@@ -4,8 +4,7 @@ import { clubs } from "@/lib/db/schema/clubs";
 import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
-export async function GET({clubId}: {clubId: string}) {
-
+export async function GET({ clubId }: { clubId: string }) {
   try {
     const res = await db
       .select()

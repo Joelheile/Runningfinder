@@ -35,14 +35,10 @@ export default function RunCard({
 }: RunCardProps) {
   const [likeFilled, setLikeFilled] = useState(false);
 
-
-
-
   const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${location.lat},${location.lng}`;
 
   const registerMutation = useRegisterRun();
   const cancelRegistrationMutation = useCancelRegistration();
-  
 
   function handleClick() {
     if (!userId) {
@@ -86,4 +82,3 @@ export default function RunCard({
     </div>
   );
 }
-

@@ -6,7 +6,10 @@ interface UseCancelRegistrationParams {
   userId: string;
 }
 
-const cancelRegistration = async ({ runId, userId }: UseCancelRegistrationParams) => {
+const cancelRegistration = async ({
+  runId,
+  userId,
+}: UseCancelRegistrationParams) => {
   const response = await fetch("/api/registrations", {
     method: "DELETE",
     headers: {
