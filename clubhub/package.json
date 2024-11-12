@@ -9,7 +9,8 @@
     "lint": "next lint",
     "format": "prettier --write .",
     "db:generate": "npx drizzle-kit generate",
-    "db:push": "npx drizzle-kit push"
+    "db:push": "npx drizzle-kit push",
+    "test": "jest"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.5.3",
