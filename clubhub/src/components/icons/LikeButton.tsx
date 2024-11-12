@@ -2,19 +2,21 @@
 import React, { useState } from "react";
 
 interface LikeButtonProps {
-  // onClick: () => void;
+  onClick: () => void;
+  isFilled: boolean;
 }
 
-export default function LikeButton({}: LikeButtonProps) {
-  const [isFilled, setIsFilled] = useState(false);
+export default function LikeButton({ onClick, isFilled }: LikeButtonProps) {
+  const [isFilledState, setIsFilledState] = useState(isFilled || false);
 
   function handleClick() {
-    setIsFilled(!isFilled);
+    setIsFilledState(!isFilledState);
+    onClick();
   }
 
   return (
     <button onClick={handleClick}>
-      {isFilled ? (
+      {isFilledState ? (
         <>
           <svg
             width="18"
