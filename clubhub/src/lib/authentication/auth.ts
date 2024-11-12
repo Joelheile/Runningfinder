@@ -15,36 +15,8 @@ const providers= [
     from: "no-reply@runningfinder.de",
     sendVerificationRequest: sendVerificationRequest,
   }),
-  Credentials({
-       credentials: {
-        username: { label: "Username" },
-        password: { label: "Password", type: "password" },
-      },
-  })
-]
-if (process.env.NODE_ENV === "development") {
-  providers.push(
-    Credentials({
-      id: "password",
-      name: "Password",
-      credentials: {
-        password: { label: "Password", type: "password" },
-      },
-      async authorize(credentials) {
-        if (credentials.password === process.env.NEXT_PUBLIC_TEST_PASSWORD) {
-          return {
-            id: "1",
-            email: "bob@alice.com",
-            name: "Bob Alice",
-            image: "https://avatars.githubusercontent.com/u/67470890?s=200&v=4",
-          };
-        }
-        return null;
-      },
-    })
-  );
-}
 
+]
 
 export const { handlers, auth } = NextAuth({
   providers,
