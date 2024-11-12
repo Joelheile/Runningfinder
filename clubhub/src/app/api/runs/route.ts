@@ -29,6 +29,7 @@ export async function GET(request: Request) {
   try {
     const query = db.select({
       id: runs.id,
+      name: runs.name,
       clubId: runs.clubId,
       date: runs.date,
       interval: runs.interval,
