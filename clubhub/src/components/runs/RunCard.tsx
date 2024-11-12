@@ -4,9 +4,10 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { weekdays } from "@/lib/weekdays";
 import { useState } from "react";
-import { useRegisterRun } from "@/lib/hooks/useRegisterRun";
+
 import { User } from "next-auth";
 import { redirect } from "next/navigation";
+import toast from "react-hot-toast";
 
 interface RunCardProps {
   id: string;
@@ -42,12 +43,20 @@ export default function RunCard({
 
   const registerMutation = useRegisterRun();
 
+  const cancelRegistrationMutation = useCancelRegistration();
+
   function handleClick() {
     setLikeFilled(!likeFilled);
     if (!userId) {
       redirect(`/api/auth/signin?callbackUrl=/clubs/${slug}`);
+    } else {
+      if (likeFilled) {
+        cancelRegistrationMutation.mutate({ runId: id, userId: userId });
+      } else {
+
+        registerMutation.mutate({ runId: id, userId: userId });
+      }asdf
     }
-    registerMutation.mutate({ runId: id, userId: userId });
   }
 
   return (
