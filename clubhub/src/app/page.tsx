@@ -1,43 +1,14 @@
-"use client";
-import { useFetchClubs } from "@/lib/hooks/useFetchClubs";
-import Map from "@/components/Map/MapLogic";
-import React, { useState } from "react";
-import { useFetchRuns } from "@/lib/hooks/useFetchRuns";
-import FilterBar from "@/components/runs/FilterBarLogic";
+import MapPage from "@/components/Map/MapPage";
+import { auth } from "@/lib/authentication/auth";
 
-const MapPage = () => {
-  const [filters, setFilters] = useState<{
-    minDistance?: number;
-    maxDistance?: number;
-    days?: number[];
-    difficulty?: string;
-  }>({}); // No filters at initial render
-
-  const { data: runs, isLoading, error } = useFetchRuns(filters);
-
-  const handleFilterChange = (newFilters: {
-    minDistance?: number;
-    maxDistance?: number;
-    days?: number[];
-    difficulty?: string;
-  }) => {
-    setFilters(newFilters);
-  };
-
-  const { data: clubs } = useFetchClubs();
+export default async function HomePage() {
+  const session = await auth();
+  console.log("auth", session);
 
   return (
-    <div className="h-screen">
-      {/* <Link
-        href={`/pages/run/likedruns`}
-        className="absolute z-20 right-2 bottom-60"
-      >
-        <LikeButton />
-      </Link> */}
-      <FilterBar onFilterChange={handleFilterChange} />
-      <Map runs={runs || []} clubs={clubs || []} />
+    <div>
+    
+      <MapPage session={session}/>
     </div>
   );
-};
-
-export default MapPage;
+}

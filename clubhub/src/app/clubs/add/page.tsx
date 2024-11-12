@@ -1,4 +1,5 @@
-import AddClub from "@/components/clubs/AddClub";
+
+import AddClub from "@/components/Clubs/AddClub";
 import AddRun from "@/components/runs/AddRun";
 import { auth } from "@/lib/authentication/auth";
 import { redirect } from "next/navigation";
