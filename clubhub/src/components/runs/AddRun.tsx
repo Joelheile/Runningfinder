@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -26,8 +26,8 @@ export default function AddRun({ club }: { club: Club }) {
 
   const handleSubmit = (e: React.FormEvent) => {
     if (!name || !difficulty || !startTime || !distance) {
-      toast('You are missing some important fields!', {
-        icon: '🔎',
+      toast("You are missing some important fields!", {
+        icon: "🔎",
       });
     }
 
@@ -54,6 +54,15 @@ export default function AddRun({ club }: { club: Club }) {
 
   const mutation = useAddRun();
 
+  const handleSelect = (lat: number, lng: number) => {
+    console.log("Selected location:", lat, lng);
+    setLocation({ lat, lng });
+  };
+
+  useEffect(() => {
+    console.log("Location updated:", location);
+    toast.success(`${location.lat} ${location.lng}`);
+  }, [location]);
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -151,8 +160,9 @@ export default function AddRun({ club }: { club: Club }) {
         </Button>
         <div className="App mt-8"></div>
         <MapLocationPicker
-          onSelect={(lat, lng) => setLocation({ lat, lng })}
+          onSelect={handleSelect}
           onCancel={() => {}}
+          location={location}
         />
       </form>
     </div>

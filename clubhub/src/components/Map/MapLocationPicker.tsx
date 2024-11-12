@@ -1,19 +1,20 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import LocationPicker from "location-picker";
 import Script from "next/script";
-import { Button } from "../ui/button";
 
 interface MapLocationPickerProps {
   onSelect: (lat: number, lng: number) => void;
   onCancel: () => void;
+  location: { lat: number; lng: number };
 }
 
 export const MapLocationPicker: React.FC<MapLocationPickerProps> = ({
   onSelect,
   onCancel,
+  location,
 }) => {
-  const [location, setLocation] = useState({ lat: 52.52, lng: 13.405 });
   const [isScriptLoaded, setIsScriptLoaded] = useState(false);
+  const mapRef = useRef<LocationPicker | null>(null);
 
   useEffect(() => {
     if (isScriptLoaded && typeof window !== "undefined") {
@@ -27,12 +28,12 @@ export const MapLocationPicker: React.FC<MapLocationPickerProps> = ({
       return;
     }
 
-    const locationPicker = new LocationPicker(
+    mapRef.current = new LocationPicker(
       "map",
       {
         setCurrentPosition: true,
-        lat: 52.52,
-        lng: 13.405,
+        lat: location.lat,
+        lng: location.lng,
       },
       {
         zoom: 12,
@@ -40,30 +41,21 @@ export const MapLocationPicker: React.FC<MapLocationPickerProps> = ({
     );
 
     const idleListener = google.maps.event.addListener(
-      locationPicker.map,
+      mapRef.current.map,
       "idle",
       function (event: google.maps.MapMouseEvent) {
-        const currentLocation = locationPicker.getMarkerPosition();
-        setLocation({ lat: currentLocation.lat, lng: currentLocation.lng });
+        const currentLocation = mapRef.current!.getMarkerPosition();
+        onSelect(currentLocation.lat, currentLocation.lng);
       }
     );
 
-    console.log(locationPicker);
-
-    // Cleanup listener on unmount
     return () => {
       google.maps.event.removeListener(idleListener);
     };
   };
 
-  const selectLocation = () => {
-    onSelect(location.lat, location.lng);
-    onCancel();
-    console.log("location", location);
-  };
-
   return (
-    <div className="App mt-8" onDrag={selectLocation}>
+    <div className="App mt-8">
       <Script
         src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS}`}
         strategy="lazyOnload"
@@ -77,9 +69,8 @@ export const MapLocationPicker: React.FC<MapLocationPickerProps> = ({
         className="border rounded"
       />
       <p>
-Location: {location.lat}, {location.lng}
+        Location: {location.lat}, {location.lng}
       </p>
-
     </div>
   );
 };
