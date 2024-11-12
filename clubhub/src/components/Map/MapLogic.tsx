@@ -78,6 +78,8 @@ const Map = ({ runs, clubs }: { runs: Run[]; clubs: Club[] }) => {
                       className="h-20 w-full mb-2 rounded-sm"
                     />
                     <strong>{run.name}</strong>
+                    <p>{run.distance} km</p>
+                    <p className="capitalize">{run.difficulty}</p>
                   </Link>
                 </div>
               )
