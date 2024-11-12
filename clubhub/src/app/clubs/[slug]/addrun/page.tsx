@@ -7,6 +7,7 @@ import { useParams } from "next/navigation";
 import { useFetchClubBySlug, useFetchClubs } from "@/lib/hooks/useFetchClubs";
 import { Skeleton } from "@/components/ui/skeleton";
 import { auth } from "@/lib/authentication/auth";
+import AddRunSkeleton from "@/components/runs/addRunSkeleton";
 
 export default  function AddRunsPage() {
   const slug = useParams().slug.toString();
@@ -36,37 +37,7 @@ export default  function AddRunsPage() {
         )}
         {clubsLoading && (
           <>
-            <div className="grid gap-4">
-              <div className="flex flex-col">
-                <Skeleton className="h-8 mt-1 w-full" />
-              </div>
-              <div className="flex flex-col">
-                <Skeleton className="h-8 mt-1 w-full" />
-              </div>
-              <div className="flex flex-col">
-                <Skeleton className="h-8 mt-1 w-full" />
-              </div>
-              <div className="flex flex-col">
-                <Skeleton className="h-8 mt-1 w-full" />
-              </div>
-              <div className="flex flex-col">
-                <Skeleton className="h-8 mt-1 w-full" />
-              </div>
-              <div className="flex flex-col">
-                <Skeleton className="h-8 mt-1 w-full" />
-              </div>
-              <div className="flex flex-col">
-                <Skeleton className="h-8 mt-1 w-full" />
-              </div>
-              <div className="flex items-center space-x-2">
-                <Skeleton className="h-8 mt-1 w-6" />
-              </div>
-            </div>
-
-            <Skeleton className="h-10 mt-4 w-full" />
-            <div className="App mt-8">
-              <Skeleton className="h-64 w-full" />
-            </div>
+           <AddRunSkeleton/>
           </>
         )}
       </div>
