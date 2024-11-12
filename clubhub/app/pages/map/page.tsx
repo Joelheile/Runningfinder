@@ -1,5 +1,7 @@
+"use client";
 import FilterBar from "@/components/FilterBar";
-import FilledHeart from "@/components/icons/FilledHeart";
+import LikeButton from "@/components/icons/LikeButton";
+
 import Map from "@/components/Map";
 import Image from "next/image";
 import Link from "next/link";
@@ -7,6 +9,8 @@ import Link from "next/link";
 import React from "react";
 
 const MapPage = () => {
+  const handleLikeButtonClick = () => {};
+
   const id = 1;
   return (
     <div className="h-screen">
@@ -14,7 +18,7 @@ const MapPage = () => {
         href={`/pages/run/likedruns`}
         className="absolute z-20   right-2   bottom-60"
       >
-        <FilledHeart />
+        <LikeButton />
       </Link>
       <FilterBar />
       <Map />

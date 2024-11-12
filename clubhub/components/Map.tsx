@@ -12,7 +12,7 @@ import { ChevronRight } from "lucide-react";
 import SelectedClubHeader from "./Clubs/SelectedClubHeader";
 
 interface Location {
-  id: number;
+  id: string;
   name: string;
   description: string;
   position: { lat: number; lng: number };
@@ -26,7 +26,7 @@ interface Location {
 
 const locations: Location[] = [
   {
-    id: 1,
+    id: "1",
     name: "Midnight Runners Berlin",
     description: "",
     position: { lat: 52.5257694, lng: 13.3935091 },
@@ -39,7 +39,7 @@ const locations: Location[] = [
   },
 
   {
-    id: 2,
+    id: "2",
     name: "forward run club berlin",
     description: "Running forward through Berlin",
     position: { lat: 52.5410841, lng: 13.4122118 },
@@ -52,7 +52,7 @@ const locations: Location[] = [
     website: "",
   },
   {
-    id: 3,
+    id: "3",
     name: "Adidas Runners Berlin",
     description: `MO 7PM - social run
 TUE 7PM - tempo tuesdays
@@ -68,7 +68,7 @@ SUN 9AM - long run road to`,
     website: "https://linktr.ee/adidasrunnersberlin",
   },
   {
-    id: 4,
+    id: "4",
     name: "Croissant Run Club",
     description: `Meet at Dussman & finish with pastry at Albatross bakery`,
     position: { lat: 52.49802922714861, lng: 13.450062075707867 },
@@ -281,6 +281,7 @@ export default function Map() {
     <div className="h-screen w-full">
       {selectedLocation && (
         <SelectedClubHeader
+          id={selectedLocation.id}
           name={selectedLocation.name}
           description={selectedLocation.description}
         />
