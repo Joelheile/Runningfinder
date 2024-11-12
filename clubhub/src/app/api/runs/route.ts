@@ -3,9 +3,6 @@ import { runs } from "@/lib/db/schema/runs";
 import { and, between, eq, inArray } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
-import { interval } from "../../../../drizzle/schema";
-import { v4 } from "uuid";
-
 
 function parseQueryParams(searchParams: URLSearchParams) {
   const minDistance = parseInt(searchParams.get("minDistance") || "0", 42);
@@ -30,7 +27,20 @@ export async function GET(request: Request) {
     parseQueryParams(searchParams);
 
   try {
-    const query = db.select().from(runs);
+    const query = db.select({
+      id: runs.id,
+      clubId: runs.clubId,
+      date: runs.date,
+      interval: runs.interval,
+      intervalDay: runs.intervalDay,
+      startDescription: runs.startDescription,
+      startTime: runs.startTime,
+      distance: runs.distance,
+      location: {
+        lat: runs.locationLat,
+        lng: runs.locationLng,
+      },
+    }).from(runs);
 
     if (minDistance > 0 || maxDistance > 0) {
       query.where(
