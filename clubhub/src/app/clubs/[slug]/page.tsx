@@ -6,7 +6,7 @@ import RunCard from "@/components/runs/RunCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useFetchClubBySlug } from "@/lib/hooks/useFetchClubs";
 
-import { ChevronLeft, Pencil, Share } from "lucide-react";
+import { ChevronLeft, Pencil, Plus, Share } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -51,9 +51,9 @@ const ClubDetailPage = () => {
         <div className="flex gap-2">
           <button
             type="button"
-            onClick={() => router.push(`club/${slug}/admin`)}
+            onClick={() => router.push(`/clubs/${slug}/addrun`)}
           >
-            <Pencil className="stroke-primary" />
+            <Plus className="stroke-primary" />
           </button>
           <Share className="stroke-primary" />
         </div>
@@ -79,6 +79,7 @@ const ClubDetailPage = () => {
         </div>
         <div className="mt-10">
           <h2 className="mb-2 text-lg sm:text-xl md:text-2xl">Upcoming runs</h2>
+          //TODO: Implement runs and fetch routes for club id
           <RunCard
             date={"Fr, 2.1"}
             time={0}
