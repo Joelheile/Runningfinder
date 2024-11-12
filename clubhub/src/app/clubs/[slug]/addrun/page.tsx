@@ -6,9 +6,9 @@ import { Run } from "@/lib/types/Run";
 import { useParams } from "next/navigation";
 import { useFetchClubBySlug, useFetchClubs } from "@/lib/hooks/useFetchClubs";
 import { Skeleton } from "@/components/ui/skeleton";
+import { auth } from "@/lib/authentication/auth";
 
-export default function AddRunsPage() {
-  const [runsData, setRunsData] = useState<{ [key: string]: Run[] }>({});
+export default  function AddRunsPage() {
   const slug = useParams().slug.toString();
 
   const {

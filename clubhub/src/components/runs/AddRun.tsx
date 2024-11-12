@@ -12,6 +12,8 @@ import { weekdays } from "@/lib/weekdays";
 import { v4 } from "uuid";
 import { Club } from "@/lib/types/Club";
 import toast from "react-hot-toast";
+import { useSession } from "next-auth/react";
+import { auth } from "@/lib/authentication/auth";
 
 export default function AddRun({ club }: { club: Club }) {
   const [name, setName] = useState("");
@@ -23,7 +25,6 @@ export default function AddRun({ club }: { club: Club }) {
   const [location, setLocation] = useState({ lat: 52.52, lng: 13.405 });
   const [membersOnly, setMembersOnly] = useState(false);
   const [interval, setInterval] = useState("weekly");
-
   const handleSubmit = (e: React.FormEvent) => {
     if (!name || !difficulty || !startTime || !distance) {
       toast("You are missing some important fields!", {
