@@ -5,16 +5,18 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-
-import { weekdays } from "@/lib/weekdays";
 import { Slider } from "../ui/slider";
+import { weekdays } from "@/lib/weekdays";
 
 interface FilterBarUIProps {
   allowedDistances: number[];
-  distanceIndex: number;
+  distanceIndex: number | null;
   selectedDays: number[];
   toggleDay: (dayValue: number) => void;
-  setDistanceIndex: (index: number) => void;
+  setDistanceIndex: (index: number | null) => void;
+  difficulty: string | null;
+  setDifficulty: (value: string | null) => void;
+  resetFilters: () => void; 
 }
 
 export default function FilterBarUI({
@@ -23,7 +25,12 @@ export default function FilterBarUI({
   selectedDays,
   toggleDay,
   setDistanceIndex,
+  difficulty,
+  setDifficulty,
+  resetFilters,
 }: FilterBarUIProps) {
+  const difficulties = ["easy", "intermediate", "advanced"];
+
   return (
     <div className="bg-white/90 backdrop-blur-sm absolute bottom-0 left-0 z-10 w-full text-card-foreground shadow-lg p-6 space-y-6">
       <div className="flex flex-col space-y-4">
@@ -66,7 +73,11 @@ export default function FilterBarUI({
               min={0}
               max={allowedDistances.length - 1}
               step={1}
-              value={[distanceIndex]}
+              value={
+                distanceIndex !== null
+                  ? [distanceIndex]
+                  : [allowedDistances.length - 1]
+              }
               onValueChange={(value: number[]) => setDistanceIndex(value[0])}
               className="w-full"
             />
@@ -76,6 +87,33 @@ export default function FilterBarUI({
               ))}
             </div>
           </div>
+        </div>
+        <div className="space-y-4">
+          <label className="font-semibold text-lg">Select Difficulty</label>
+          <div className="flex space-x-4">
+            {difficulties.map((level) => (
+              <button
+                key={level}
+                className={`py-2 px-4 rounded ${
+                  difficulty === level
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-200"
+                }`}
+                onClick={() =>
+                  setDifficulty(difficulty === level ? null : level)
+                }
+              >
+                {level.charAt(0).toUpperCase() + level.slice(1)}
+              </button>
+            ))}
+          </div>
+        </div>
+
+//TODO: make it responsive
+        <div>
+          <Button variant="outline" onClick={resetFilters}>
+            Reset Filters
+          </Button>
         </div>
       </div>
     </div>

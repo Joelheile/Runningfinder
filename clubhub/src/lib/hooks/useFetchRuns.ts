@@ -5,21 +5,27 @@ export const useFetchRuns = (filters: {
   minDistance?: number;
   maxDistance?: number;
   days?: number[];
+  difficulty?: string;
 }) => {
   return useQuery({
     queryKey: ["runs", { ...filters }],
     queryFn: () => {
       const params = new URLSearchParams();
-      if (filters.minDistance !== undefined)
+      if (filters.minDistance !== undefined && filters.maxDistance !== undefined) {
         params.append("minDistance", filters.minDistance.toString());
-      if (filters.maxDistance !== undefined)
         params.append("maxDistance", filters.maxDistance.toString());
-      if (filters.days && filters.days.length > 0) {
-        params.append("intervalDay", filters.days.join(","));
       }
-      return axios
-        .get(`/api/runs?${params.toString()}`)
-        .then((res) => res.data);
+      if (filters.days && filters.days.length > 0) {
+        params.append("interval_day", filters.days.join(","));
+      }
+      if (filters.difficulty) {
+        params.append("difficulty", filters.difficulty);
+      }
+
+      const queryString = params.toString();
+      const url = queryString ? `/api/runs?${queryString}` : `/api/runs`;
+
+      return axios.get(url).then((res) => res.data);
     },
   });
 };
