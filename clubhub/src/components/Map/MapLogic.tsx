@@ -68,7 +68,7 @@ const Map = ({ runs, clubs }: { runs: Run[]; clubs: Club[] }) => {
             infoWindow.setContent(
               ReactDOMServer.renderToString(
                 <div className="cursor-pointer">
-                  <Link href={`/club/${club?.slug}`}>
+                  <Link href={`/clubs/${club?.slug}`}>
                     <img
                       src={club?.avatarUrl}
                       alt={run.name}
