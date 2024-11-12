@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-export const useQueryRuns = (filters: {
+export const useFetchRuns = (filters: {
   minDistance?: number;
   maxDistance?: number;
   days?: number[];

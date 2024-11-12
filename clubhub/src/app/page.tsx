@@ -6,7 +6,7 @@ import Map from "@/components/Map/MapLogic";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
-import { useQueryRuns } from "@/lib/hooks/useQueryRuns";
+import { useFetchRuns } from "@/lib/hooks/useFetchRuns";
 import FilterBar from "@/components/runs/FilterBarLogic";
 
 const MapPage = () => {
@@ -24,7 +24,7 @@ const MapPage = () => {
     data: runs,
     isLoading,
     error,
-  } = useQueryRuns({
+  } = useFetchRuns({
     minDistance: filters.minDistance,
     maxDistance: filters.maxDistance,
     days: filters.days,
