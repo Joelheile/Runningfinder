@@ -39,8 +39,16 @@ export default function FilterBarUI({
             <label className="font-semibold text-lg">When are you free?</label>
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="outline" className=" sm:w-auto">
-                  Select Days
+                <Button
+                  variant="outline"
+                  className="sm:w-auto overflow-hidden  text-ellipsis   text-wrap"
+                >
+                  {selectedDays.length === 0
+                    ? "Select Days"
+                    : selectedDays
+                        .sort((a, b) => a - b)
+                        .map((day) => weekdays[day - 1].name)
+                        .join(", ")}
                 </Button>
               </PopoverTrigger>
               <PopoverContent className=" p-4">
