@@ -1,6 +1,6 @@
 "use client";
 import ClubCard from "@/components/Clubs/ClubCard";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/UI/button";
 import { useFetchClubs } from "@/lib/hooks/useFetchClubs";
 import Link from "next/link";
 

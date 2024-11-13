@@ -1,4 +1,4 @@
-import { Skeleton } from "../ui/skeleton";
+import { Skeleton } from "../UI/skeleton";
 
 export default function AddRunSkeleton() {
   return (

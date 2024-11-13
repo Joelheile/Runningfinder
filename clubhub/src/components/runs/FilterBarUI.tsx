@@ -1,11 +1,11 @@
-import { Checkbox } from "@/components/ui/checkbox";
-import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/UI/checkbox";
+import { Button } from "@/components/UI/button";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
-import { Slider } from "../ui/slider";
+} from "@/components/UI/popover";
+import { Slider } from "../UI/slider";
 import { weekdays } from "@/lib/weekdays";
 
 interface FilterBarUIProps {

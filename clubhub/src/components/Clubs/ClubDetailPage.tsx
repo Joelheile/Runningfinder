@@ -1,7 +1,7 @@
 "use client";
-import ClubIconBar from "@/components/icons/ClubIconBar";
-import RunCard from "@/components/runs/RunCard";
-import { Skeleton } from "@/components/ui/skeleton";
+import ClubIconBar from "@/components/Icons/ClubIconBar";
+import RunCard from "@/components/Runs/RunCard";
+import { Skeleton } from "@/components/UI/skeleton";
 import { useFetchClubBySlug } from "@/lib/hooks/useFetchClubs";
 import { useFetchRunsByClubId } from "@/lib/hooks/useFetchRuns";
 

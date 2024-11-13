@@ -1,5 +1,5 @@
 import { useDropzone } from "react-dropzone";
-import { LoadingSpinner } from "../ui/loadingSpinner";
+import { LoadingSpinner } from "../UI/loadingSpinner";
 
 interface AvatarUploaderUIProps {
   onDrop: (files: File[]) => void;

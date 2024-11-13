@@ -3,7 +3,7 @@ import { useFetchClubs } from "@/lib/hooks/useFetchClubs";
 import Map from "@/components/Map/MapLogic";
 import React, { useState } from "react";
 import { useFetchRuns } from "@/lib/hooks/useFetchRuns";
-import FilterBar from "@/components/runs/FilterBarLogic";
+import FilterBar from "@/components/Runs/FilterBarLogic";
 import { Session } from "next-auth";
 import { Plus } from "lucide-react";
 import Link from "next/link";

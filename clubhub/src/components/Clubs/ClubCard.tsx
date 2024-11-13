@@ -1,4 +1,4 @@
-import ClubIconBar from "../icons/ClubIconBar";
+import ClubIconBar from "../Icons/ClubIconBar";
 
 interface ClubCardProps {
   avatarUrl?: string;

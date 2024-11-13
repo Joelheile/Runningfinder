@@ -1,16 +1,16 @@
 "use client";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Input } from "@/components/UI/input";
+import { Label } from "@/components/UI/label";
 import LocationPicker from "location-picker";
 import { useState } from "react";
 import Script from "next/script";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/UI/button";
 import { useAddClub } from "@/lib/hooks/useAddClub";
 import { Club } from "@/lib/types/Club";
 import { ConsoleLogWriter } from "drizzle-orm";
 import { v4 } from "uuid";
 import AvatarUploader from "@/components/Upload/AvatarUploaderLogic";
-import { Textarea } from "@/components/ui/textarea";
+import { Textarea } from "@/components/UI/textarea";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 

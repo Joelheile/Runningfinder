@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import LikeButton from "../icons/LikeButton";
-import { Button } from "../ui/button";
+import LikeButton from "../Icons/LikeButton";
+import { Button } from "../UI/button";
 import { weekdays } from "@/lib/weekdays";
 import { redirect } from "next/navigation";
 import { useRegisterRun } from "@/lib/hooks/useRegisterRun";

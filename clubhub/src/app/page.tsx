@@ -1,5 +1,5 @@
 import MapPage from "@/components/Map/MapPage";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/UI/button";
 import { auth } from "@/lib/authentication/auth";
 import Link from "next/link";
 

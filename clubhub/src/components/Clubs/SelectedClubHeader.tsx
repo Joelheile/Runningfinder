@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Link from "next/link";
-import ClubIconBar from "../icons/ClubIconBar";
+import ClubIconBar from "../Icons/ClubIconBar";
 import { useFetchClubBySlug, useFetchClubs } from "@/lib/hooks/useFetchClubs";
 import { ChevronRight } from "lucide-react";
 import { Run } from "@/lib/types/Run";
