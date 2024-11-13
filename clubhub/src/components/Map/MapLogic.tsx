@@ -1,9 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Loader } from "@googlemaps/js-api-loader";
-import ReactDOMServer from "react-dom/server";
-import Link from "next/link";
 import { Club } from "@/lib/types/Club";
 import { Run } from "@/lib/types/Run";
+import { Loader } from "@googlemaps/js-api-loader";
+import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
+import ReactDOMServer from "react-dom/server";
 import MapUI from "./MapUI";
 
 const Map = ({ runs, clubs }: { runs: Run[]; clubs: Club[] }) => {
@@ -19,13 +19,13 @@ const Map = ({ runs, clubs }: { runs: Run[]; clubs: Club[] }) => {
       });
 
       const { Map } = (await loader.importLibrary(
-        "maps",
+        "maps"
       )) as google.maps.MapsLibrary;
       const { Marker } = (await loader.importLibrary(
-        "marker",
+        "marker"
       )) as google.maps.MarkerLibrary;
       const { InfoWindow } = (await loader.importLibrary(
-        "maps",
+        "maps"
       )) as google.maps.MapsLibrary;
 
       const defaultCenter = { lat: 52.5155235, lng: 13.4049124 };
@@ -70,14 +70,14 @@ const Map = ({ runs, clubs }: { runs: Run[]; clubs: Club[] }) => {
                     <img
                       src={club?.avatarUrl}
                       alt={run.name}
-                      className="h-20 w-full mb-2 rounded-sm"
+                      className="h-20 w-auto mb-2  object-cover rounded-sm"
                     />
                     <strong>{run.name}</strong>
                     <p>{run.distance} km</p>
                     <p className="capitalize">{run.difficulty}</p>
                   </Link>
-                </div>,
-              ),
+                </div>
+              )
             );
             infoWindow.open(map, marker);
           });
