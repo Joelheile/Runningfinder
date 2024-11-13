@@ -74,3 +74,23 @@ export async function POST(request: Request) {
     );
   }
 }
+
+export async function DELETE(request: Request) {
+  const { id } = await request.json();
+
+  try {
+    const res = await db
+      .delete(club)
+      .where(eq(club.id, id))
+      .execute();
+    console.log("Deleted club", res);
+
+    return NextResponse.json({ message: "Club deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting club:", error);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 },
+    );
+  }
+}
