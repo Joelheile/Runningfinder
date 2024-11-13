@@ -48,7 +48,6 @@ const ClubDetailPage = ({ userId }: { userId: string | undefined }) => {
 
   return (
     <div className="flex flex-col bg-light w-screen  max-w-full h-screen p-8">
-      <h1>id: {club.id}</h1>
       <nav className="flex justify-between">
         <Link href="/clubs/">
           <div className="flex">
@@ -83,7 +82,6 @@ const ClubDetailPage = ({ userId }: { userId: string | undefined }) => {
           ?.sort((a, b) => a.intervalDay - b.intervalDay)
           .map((run) => (
             <>
-              <h1>id: {run.clubId}</h1>
               <RunCard
                 userId={userId}
                 id={run.id}
