@@ -1,12 +1,10 @@
-import { useCallback, useEffect, useState } from "react";
-import Link from "next/link";
-import LikeButton from "../Icons/LikeButton";
-import { Button } from "../UI/button";
-import { weekdays } from "@/lib/weekdays";
-import { redirect } from "next/navigation";
-import { useRegisterRun } from "@/lib/hooks/useRegisterRun";
+import { useState } from "react";
+
 import { useCancelRegistration } from "@/lib/hooks/useCancelRegistration";
-import { useFetchRegistration } from "@/lib/hooks/useFetchRegistration";
+import { useRegisterRun } from "@/lib/hooks/useRegisterRun";
+import { redirect } from "next/navigation";
+import LikeButton from "../icons/LikeButton";
+import { Button } from "../UI/button";
 
 interface RunCardProps {
   id: string;
@@ -58,7 +56,7 @@ export default function RunCard({
 
   return (
     <div className="mt-2 ">
-      <strong className="ml-1">{weekdays[intervalDay - 1].name}</strong>
+      {/* <strong className="ml-1">{weekdays[intervalDay - 1].name}</strong> */}
       <div className="flex bg-white mt-2 border justify-between p-2 rounded-md">
         <div className="flex gap-x-5 items-center pl-2">
           <LikeButton onClick={handleClick} isFilled={likeFilled} />
