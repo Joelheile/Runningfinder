@@ -1,18 +1,16 @@
 "use client";
+import { Button } from "@/components/UI/button";
 import { Input } from "@/components/UI/input";
 import { Label } from "@/components/UI/label";
-import LocationPicker from "location-picker";
-import { useState } from "react";
-import Script from "next/script";
-import { Button } from "@/components/UI/button";
+import AvatarUploader from "@/components/Upload/AvatarUploaderLogic";
 import { useAddClub } from "@/lib/hooks/useAddClub";
 import { Club } from "@/lib/types/Club";
-import { ConsoleLogWriter } from "drizzle-orm";
+import { useState } from "react";
 import { v4 } from "uuid";
-import AvatarUploader from "@/components/Upload/AvatarUploaderLogic";
-import { Textarea } from "@/components/UI/textarea";
+
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { Textarea } from "../ui/textarea";
 
 export default function AddClub() {
   const [name, setName] = useState("");
@@ -53,7 +51,7 @@ export default function AddClub() {
         slug: "",
       };
       mutation.mutate(formData);
-      router.push("/");
+      router.push("/clubs");
       toast.success("Club added successfully");
     }
   };
