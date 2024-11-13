@@ -1,15 +1,16 @@
 /** @type {import('ts-jest').JestConfigWithTsJest} **/
-
-import { pathsToModuleNameMapper } from "ts-jest";
-import { compilerOptions } from "./tsconfig.json";
-module.exports = {
-  testEnvironment: "jsdom",
-  preset: "ts-jest",
-
-  transform: {
-    "^.+.tsx?$": ["ts-jest", {}],
+export default {
+  preset: "ts-jest/presets/default-esm",
+  globals: {
+    "ts-jest": {
+      useESM: true,
+    },
   },
+  transform: {
+    "^.+\\.ts$": "ts-jest",
+  },
+  extensionsToTreatAsEsm: [".ts"],
   moduleNameMapper: {
-    "^@/(.*)$": "<rootDir>/$1",
+    "^@/(.*)$": "<rootDir>/src/$1",
   },
 };
