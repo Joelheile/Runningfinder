@@ -1,5 +1,7 @@
-<!-- Improved compatibility of back to top link: See: https://github.com/othneildrew/Best-README-Template/pull/73 -->
+<!-- Improved compatibility of back to top link: See: https://github.com/Joelheile/ClubHub/pull/73 -->
+
 <a id="readme-top"></a>
+
 <!--
 *** Thanks for checking out the Best-README-Template. If you have a suggestion
 *** that would make this better, please fork the repo and create a pull request
@@ -7,8 +9,6 @@
 *** Don't forget to give the project a star!
 *** Thanks again! Now go create something AMAZING! :D
 -->
-
-
 
 <!-- PROJECT SHIELDS -->
 <!--
@@ -18,19 +18,12 @@
 *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
-
 
 
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/othneildrew/Best-README-Template">
+  <a href="https://github.com/Joelheile/ClubHub">
     <img src="/public/icons/App Icon.png" alt="Logo" width="80" height="80">
   </a>
 
@@ -42,8 +35,6 @@ Tired of running alone? Got overwhelmed with all the running clubs?
     <br />
    
 </div>
-
-
 
 <!-- TABLE OF CONTENTS -->
 <details>
@@ -71,23 +62,21 @@ Tired of running alone? Got overwhelmed with all the running clubs?
   </ol>
 </details>
 
-
-
 <!-- ABOUT THE PROJECT -->
+
 ## About The Project
 
 Running finder is a plattform to display all runs in Berlin on a map. The user is able to filter all the runs by distance, weekday and difficulty. <br>
 Runs can be connected to clubs and users can register to runs by clicking.
 
-
-
 ### Built With
 
 This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
-* [![Next][Next.js]][Next-url]
-* [![React][React.js]][React-url]
-* [![Drizzle][Drizzle]][Drizzle-url]
-* [![Jest][Jest]][Jest-url]
+
+- [![Next][Next.js]][Next-url]
+- [![React][React.js]][React-url]
+- [![Drizzle][Drizzle]][Drizzle-url]
+- [![Jest][Jest]][Jest-url]
 
 [Drizzle]: https://img.shields.io/badge/Drizzle-000000?style=for-the-badge&logo=drizzle&logoColor=white
 [Drizzle-url]: https://drizzle.team/
@@ -98,9 +87,8 @@ This section should list any major frameworks/libraries used to bootstrap your p
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 <!-- GETTING STARTED -->
+
 ## Getting Started
 
 This is an example of how you may give instructions on setting up your project locally.
@@ -108,42 +96,61 @@ To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
-* pnpm
+Download node.js and install pnpm
+
+- pnpm
   ```sh
   npm install pnpm
   ```
 
 ### Installation
 
-_Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
+_To skip the process of setting up different API Keys in Google and Github oAuth in this assessment, I've provided my env secrets to copy them into a .env.local file. <br> <Please do not share them_
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
+1. Clone the repo
    ```sh
-   git clone https://github.com/github_username/repo_name.git
+   git clone https://github.com/Joelheile/ClubHub.git
    ```
-3. Install NPM packages
+2. Install packages
    ```sh
-   npm install
+   pnpm i
    ```
-4. Enter your API in `config.js`
+3. Create .env.local file
+
    ```js
-   const API_KEY = 'ENTER YOUR API';
+   NEXT_PUBLIC_GOOGLE_MAPS = "AIzaSyBbcMGc_p3x5QCI7VL6oWhwjOoRuK8bg1E";
+    NEXT_PUBLIC_DATABASE_URL=postgresql://neondb_owner:uYHlKUV4O2dD@ep-autumn-leaf-a2sf0ajv.eu-central-1.aws.neon.tech/neondb?sslmode=require
+
+    NEXT_PUBLIC_AWS_REGION=eu-central-1
+    NEXT_PUBLIC_AWS_ACCESS_KEY_ID=AKIA272ZFXQ2WYDUSYMJ
+    NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY=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
+    NEXT_PUBLIC_AWS_BUCKET_NAME=runningfinder
+    NEXT_PUBLIC_AWS_HOSTNAME=runningfinder.s3.eu-central-1.amazonaws.com
+
+    NEXT_PUBLIC_AUTH_RESEND_KEY=re_cuZuLfEn_AJKP36qoUnWrGktJUBqF6tT7
+
+    AUTH_GITHUB_ID=Ov23liKJjCL6DL4YYt0I
+    AUTH_GITHUB_SECRET=7242a21ade85ff72b0f495f9bc7b79148cf8106c
+
+    AUTH_SECRET="QXk7UrfIiNGtVeZmRqoIs40pBSrVJ4lOuftPg8sOROI="
+
+    NEXT_PUBLIC_TEST_PASSWORD="123456789"
    ```
-5. Change git remote url to avoid accidental pushes to base project
+
+4. Run project
    ```sh
-   git remote set-url origin github_username/repo_name
-   git remote -v # confirm the changes
+   pnpm run dev
+   ```
+5. Run tests
+   ```sh
+   pnpm run tests
    ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 <!-- <Flowchart> -->
-### Entity-Relationship (ER) Diagram
 
+### Entity-Relationship (ER) Diagram
 
 ```mermaid
 erDiagram
@@ -262,6 +269,7 @@ erDiagram
 ```
 
 <!-- ROADMAP -->
+
 ## Roadmap
 
 - [x] Setup database & API routes
@@ -271,17 +279,17 @@ erDiagram
 - [ ] Fetch registered runs and display them on club page
 - [ ] Add one time runs based on date
 - [ ] Enhance club dashboard
-    - [ ] Page editing
-    - [ ] Membership management
-    - [ ] Registration management
+  - [ ] Page editing
+  - [ ] Membership management
+  - [ ] Registration management
 - [ ] Open plattform for other sport types
-  
 
 See the [open issues](https://github.com/Joelheile/ClubHub/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- CONTRIBUTING -->
+
 ## Contributing
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
@@ -295,75 +303,59 @@ Don't forget to give the project a star! Thanks again!
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-
-
-
 <!-- LICENSE -->
+
 ## License
 
 Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 <!-- CONTACT -->
+
 ## Contact
 
-Joel Heil  Escobar - [@instagram](https://instagram/joelheile) - joel.heil-escobar@code.berlin
+Joel Heil Escobar - [@instagram](https://instagram/joelheile) - joel.heil-escobar@code.berlin
 
 Project Link: [https://github.com/Joelheile/ClubHub](https://github.com/Joelheile/ClubHub)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 <!-- ACKNOWLEDGMENTS -->
+
 ## Acknowledgments
 
 Use this space to list resources you find helpful and would like to give credit to. I've included a few of my favorites to kick things off!
 
-* [Choose an Open Source License](https://choosealicense.com)
-* [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
-* [Malven's Flexbox Cheatsheet](https://flexbox.malven.co/)
-* [Malven's Grid Cheatsheet](https://grid.malven.co/)
-* [Img Shields](https://shields.io)
-* [GitHub Pages](https://pages.github.com)
-* [Font Awesome](https://fontawesome.com)
-* [React Icons](https://react-icons.github.io/react-icons/search)
+- [Choose an Open Source License](https://choosealicense.com)
+- [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
+- [Malven's Flexbox Cheatsheet](https://flexbox.malven.co/)
+- [Malven's Grid Cheatsheet](https://grid.malven.co/)
+- [Img Shields](https://shields.io)
+- [GitHub Pages](https://pages.github.com)
+- [Font Awesome](https://fontawesome.com)
+- [React Icons](https://react-icons.github.io/react-icons/search)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
-[contributors-url]: https://github.com/othneildrew/Best-README-Template/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=for-the-badge
-[forks-url]: https://github.com/othneildrew/Best-README-Template/network/members
-[stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=for-the-badge
-[stars-url]: https://github.com/othneildrew/Best-README-Template/stargazers
-[issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=for-the-badge
-[issues-url]: https://github.com/othneildrew/Best-README-Template/issues
-[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
-[license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
+
+[contributors-shield]: https://img.shields.io/github/contributors/Joelheile/ClubHub.svg?style=for-the-badge
+[contributors-url]: https://github.com/Joelheile/ClubHub/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/Joelheile/ClubHub.svg?style=for-the-badge
+[forks-url]: https://github.com/Joelheile/ClubHub/network/members
+[stars-shield]: https://img.shields.io/github/stars/Joelheile/ClubHub.svg?style=for-the-badge
+[stars-url]: https://github.com/Joelheile/ClubHub/stargazers
+[issues-shield]: https://img.shields.io/github/issues/Joelheile/ClubHub.svg?style=for-the-badge
+[issues-url]: https://github.com/Joelheile/ClubHub/issues
+[license-shield]: https://img.shields.io/github/license/Joelheile/ClubHub.svg?style=for-the-badge
+[license-url]: https://github.com/Joelheile/ClubHub/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/othneildrew
+[linkedin-url]: https://linkedin.com/in/joel-heil-escobar
 [product-screenshot]: images/screenshot.png
 [Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
 [Next-url]: https://nextjs.org/
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
 [React-url]: https://reactjs.org/
-[Vue.js]: https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D
-[Vue-url]: https://vuejs.org/
-[Angular.io]: https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white
-[Angular-url]: https://angular.io/
-[Svelte.dev]: https://img.shields.io/badge/Svelte-4A4A55?style=for-the-badge&logo=svelte&logoColor=FF3E00
-[Svelte-url]: https://svelte.dev/
-[Laravel.com]: https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white
-[Laravel-url]: https://laravel.com
-[Bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
-[Bootstrap-url]: https://getbootstrap.com
-[JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
-[JQuery-url]: https://jquery.com 
+[
