@@ -20,13 +20,17 @@ export default function AddClub() {
   const [websiteUrl, setWebsiteUrl] = useState("");
   const [instagramUsername, setInstagramUsername] = useState("");
   const [avatarFileId] = useState(v4());
+  const [isUploaded, setIsUploaded] = useState(false);
 
   const router = useRouter();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name || !description || !websiteUrl || !instagramUsername) {
-      toast.error("Please fill out all fields");
+    if (!name || !description || !websiteUrl || !instagramUsername || !isUploaded) {
+      isUploaded
+        ? toast.error("Please fill out all fields")
+        : toast.error("Please upload an avatar");
+
       return;
     } else {
       const formData: Club = {
@@ -49,6 +53,10 @@ export default function AddClub() {
   };
 
   const mutation = useAddClub();
+
+  const handleUploadChange = (uploaded: boolean) => {
+    setIsUploaded(uploaded);
+  };
 
   return (
     <div>
@@ -86,7 +94,11 @@ export default function AddClub() {
               className="mt-1 p-2 border rounded"
             />
           </div>
-          <AvatarUploader id={avatarFileId} />
+
+          <AvatarUploader
+            id={avatarFileId}
+            onUploadChange={handleUploadChange}
+          />
           <Button
             type="submit"
             className="mt-4 p-2 bg-blue-500 text-white rounded"
