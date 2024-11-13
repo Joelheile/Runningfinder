@@ -1,6 +1,5 @@
 import { Skeleton } from "../UI/skeleton";
 
-
 export default function ClubHeaderSkeleton() {
   return (
     <div className="bg-white/80 backdrop-blur-sm absolute top-0 left-0 z-10 w-full text-card-foreground shadow-sm lg:p-6 sm:p-4 space-y-4">
