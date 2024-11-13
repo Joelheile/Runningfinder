@@ -16,7 +16,7 @@ describe("API Run Routes", () => {
     console.log("clubId", clubId);
   });
 
-  it("should return added data with status 200", async () => {
+  it("should add a run with status 200", async () => {
     const requestObj = {
       json: async () => ({
         id: runId,

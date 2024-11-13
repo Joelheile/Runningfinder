@@ -35,10 +35,11 @@ export const useFetchRuns = (filters: {
 };
 
 const fetchRunsByClubId = async (clubId: string): Promise<Run[]> => {
-  const response = await axios.get(`/api/runs?clubId=${clubId}`);
+  const response = await axios.get(`/api/runs/${clubId}`);
   if (response.status !== 200) {
     throw new Error("Failed to fetch runs by club ID");
   }
+  console.log("Fetched runs by club ID:", response.data);
   return response.data;
 };
 
