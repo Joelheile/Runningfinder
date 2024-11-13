@@ -1,5 +1,5 @@
 import { v4 } from "uuid";
-import { DELETE, GET, POST } from "./route";
+import { DELETE, GET, POST } from "../src/app/api/runs/route";
 
 let clubId: string;
 let runId = v4();
