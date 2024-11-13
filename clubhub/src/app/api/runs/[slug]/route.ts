@@ -31,8 +31,10 @@ export async function GET(
           lng: runs.locationLng,
         },
       })
-      .from(runs).where(eq(runs.clubId, slug)).execute();
-      console.log("API: Fetched runs with club ID:", res);
+      .from(runs)
+      .where(eq(runs.clubId, slug))
+      .execute();
+    console.log("API: Fetched runs with club ID:", res);
     return NextResponse.json(res);
   } catch (error) {
     console.error("Error fetching runs with clubs:", error);
