@@ -44,7 +44,6 @@ export const clubs = pgTable("clubs", {
   stravaUsername: text("strava_username"),
   websiteUrl: text("website_url"),
   avatarFileId: text("avatar_file_id")
-    .notNull()
     .unique()
     .references(() => avatars.id),
   creationDate: timestamp("creation_date").notNull(),
