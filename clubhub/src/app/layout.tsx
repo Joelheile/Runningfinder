@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Metrics from "../components/Metrics";
+
 import ReactQueryProvider from "../components/ReactQuery/ReactQueryProvider";
 import { Toaster } from "react-hot-toast";
-
+import { Analytics } from "@vercel/analytics/react";
+import Metrics from "@/components/metrics";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -23,6 +24,7 @@ export default function RootLayout({
         <body className={inter.className}>
           <Toaster position="bottom-center" />
           {children} <Metrics />
+          <Analytics />
         </body>
       </ReactQueryProvider>
     </html>
