@@ -5,6 +5,8 @@ import React, { useState } from "react";
 import { useFetchRuns } from "@/lib/hooks/useFetchRuns";
 import FilterBar from "@/components/runs/FilterBarLogic";
 import { Session } from "next-auth";
+import { Plus } from "lucide-react";
+import Link from "next/link";
 
 const MapPage = ({ session }: { session: Session | null }) => {
   const [filters, setFilters] = useState<{
@@ -29,14 +31,6 @@ const MapPage = ({ session }: { session: Session | null }) => {
 
   return (
     <div className="h-screen">
-      {/* 
-      //TODO: 
-      <Link
-        href={`/pages/run/likedruns`}
-        className="absolute z-20 right-2 bottom-60"
-      >
-        <LikeButton />
-      </Link> */}
       <FilterBar onFilterChange={handleFilterChange} />
       <Map runs={runs || []} clubs={clubs || []} />
       <script id="session-info" type="application/json">
