@@ -7,8 +7,7 @@ export default async function HomePage() {
 
   return (
     <div>
-    
-      <MapPage session={session}/>
+      <MapPage session={session} />
     </div>
   );
 }

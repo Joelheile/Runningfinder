@@ -29,7 +29,6 @@ const MapPage = ({ session }: { session: Session | null }) => {
 
   return (
     <div className="h-screen">
-
       {/* 
       //TODO: 
       <Link

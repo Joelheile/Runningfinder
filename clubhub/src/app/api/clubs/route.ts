@@ -79,10 +79,7 @@ export async function DELETE(request: Request) {
   const { id } = await request.json();
 
   try {
-    const res = await db
-      .delete(club)
-      .where(eq(club.id, id))
-      .execute();
+    const res = await db.delete(club).where(eq(club.id, id)).execute();
     console.log("Deleted club", res);
 
     return NextResponse.json({ message: "Club deleted successfully" });

@@ -6,17 +6,16 @@ import { db } from "../db/db";
 import { sendVerificationRequest } from "./sendMailRequest";
 import { users } from "../db/schema/users";
 import { accounts, sessions, verificationTokens } from "../db/schema/auth";
-import Credentials from "next-auth/providers/credentials"
+import Credentials from "next-auth/providers/credentials";
 
-const providers= [
+const providers = [
   GitHub,
   Resend({
     apiKey: process.env.NEXT_PUBLIC_AUTH_RESEND_KEY,
     from: "no-reply@runningfinder.de",
     sendVerificationRequest: sendVerificationRequest,
   }),
-
-]
+];
 
 export const { handlers, auth } = NextAuth({
   providers,
@@ -26,5 +25,4 @@ export const { handlers, auth } = NextAuth({
     sessionsTable: sessions,
     verificationTokensTable: verificationTokens,
   }),
-
 });
