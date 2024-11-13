@@ -1,6 +1,7 @@
 import React from "react";
-import SelectedClubHeader from "../clubs/SelectedClubHeader";
+
 import { Run } from "@/lib/types/Run";
+import SelectedClubHeader from "../Clubs/SelectedClubHeader";
 
 interface MapViewProps {
   mapRef: React.RefObject<HTMLDivElement>;

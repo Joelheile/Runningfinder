@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import { weekdays } from "@/lib/weekdays";
 import AddRunUI from "./AddRunUI";
 
+
 export default function AddRunState({ club }: { club: Club }) {
   const [name, setName] = useState("");
   const [difficulty, setDifficulty] = useState("easy");

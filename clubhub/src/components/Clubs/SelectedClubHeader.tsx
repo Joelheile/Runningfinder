@@ -1,11 +1,11 @@
 import { useState } from "react";
 import Link from "next/link";
 import ClubIconBar from "../Icons/ClubIconBar";
-import { useFetchClubBySlug, useFetchClubs } from "@/lib/hooks/useFetchClubs";
+import { useFetchClubs } from "@/lib/hooks/useFetchClubs";
 import { ChevronRight } from "lucide-react";
 import { Run } from "@/lib/types/Run";
-import toast from "react-hot-toast";
-import ClubHeadersSkeleton from "./ClubHeadersSkeleton";
+
+import ClubHeaderSkeleton from "./ClubHeaderSkeleton";
 
 export default function SelectedClubHeader({ run }: { run: Run }) {
   const { data, error, isLoading } = useFetchClubs();
@@ -17,7 +17,7 @@ export default function SelectedClubHeader({ run }: { run: Run }) {
   }
 
   if (isLoading) {
-    ClubHeadersSkeleton;
+    return <ClubHeaderSkeleton />;
   }
 
   const avatarUrl = club?.avatarUrl
