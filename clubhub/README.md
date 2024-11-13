@@ -19,7 +19,6 @@
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
 
-
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
@@ -87,14 +86,21 @@ This section should list any major frameworks/libraries used to bootstrap your p
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+<!-- USE CASES -->
+
+## Use cases
+- Runs
+  - are displayed on interactive map
+  - users can register for runs
+  - runs can be filtered by distance, weekday and difficulty
+- Clubs
+  - Discover: Get to know knew running clubs
+  - Members: Join and leave clubs, view club details and runs
+  - Admins: Add and manage club details and runs
+
 <!-- GETTING STARTED -->
 
 ## Getting Started
-
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
-
-### Prerequisites
 
 Download node.js and install pnpm
 
@@ -276,15 +282,15 @@ erDiagram
 - [x] Add club
 - [x] Add recurring runs (on weekly basis)
 - [x] Authentication
-- [ ] Fetch registered runs and display them on club page
+- [ ] Displaying runs a user has registered for on a profile page
 - [ ] Add one time runs based on date
-- [ ] Enhance club dashboard
+- [ ] Enhance club dashboard using roles
   - [ ] Page editing
   - [ ] Membership management
   - [ ] Registration management
 - [ ] Open plattform for other sport types
-
-See the [open issues](https://github.com/Joelheile/ClubHub/issues) for a full list of proposed features (and known issues).
+- [ ] Implement weather API to forecast conditions for runs
+- [ ] Implement Strava API to sync runs
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -358,4 +364,5 @@ Use this space to list resources you find helpful and would like to give credit 
 [Next-url]: https://nextjs.org/
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
 [React-url]: https://reactjs.org/
+
 [
