@@ -1,21 +1,16 @@
 "use client";
-import ClubIconBar from "@/components/Icons/ClubIconBar";
-import RunCard from "@/components/Runs/RunCard";
-import { Skeleton } from "@/components/UI/skeleton";
+
 import { useFetchClubBySlug } from "@/lib/hooks/useFetchClubs";
-import { useFetchRunsByClubId } from "@/lib/hooks/useFetchRuns";
 
-import { ChevronLeft, Pencil, Plus, Share } from "lucide-react";
-import { User } from "next-auth";
-import Image from "next/image";
+import { ChevronLeft, Plus, Share } from "lucide-react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
-import React from "react";
+import { useFetchRunsByClubId } from "@/lib/hooks/useFetchRunsByClubId";
 import toast from "react-hot-toast";
-import ClubCardSkeleton from "./ClubCardSkeleton";
+import RunCard from "../runs/RunCard";
 import ClubCard from "./ClubCard";
+import ClubCardSkeleton from "./ClubCardSkeleton";
 
 const ClubDetailPage = ({ userId }: { userId: string | undefined }) => {
   const router = useRouter();
@@ -52,7 +47,7 @@ const ClubDetailPage = ({ userId }: { userId: string | undefined }) => {
   };
 
   return (
-    <div className="flex flex-col bg-light w-screen h-full p-8">
+    <div className="flex flex-col bg-light w-screen  max-w-full h-screen p-8">
       <h1>id: {club.id}</h1>
       <nav className="flex justify-between">
         <Link href="/clubs/">
