@@ -2,7 +2,7 @@ import { v4 } from "uuid";
 import { DELETE, GET, POST } from "./route";
 
 let clubId: string;
-let runId =  v4();
+let runId = v4();
 
 describe("API Run Routes", () => {
   it("should return data with status 200", async () => {
@@ -12,7 +12,7 @@ describe("API Run Routes", () => {
     console.log("response", body);
     expect(response.status).toBe(200);
 
-    clubId = body[0].clubId; 
+    clubId = body[0].clubId;
     console.log("clubId", clubId);
   });
 
@@ -30,11 +30,12 @@ describe("API Run Routes", () => {
     } as any;
 
     const response = await POST(requestObj);
-console.log("testing response", response.json());
+    console.log("testing response", response.json());
     expect(response.status).toBe(201);
   });
-  it("should delete club after adding with status 200", async()=>{
-    const reponse = await DELETE({json: async () => ({ id: clubId })} as any);
+  it("should delete club after adding with status 200", async () => {
+    const reponse = await DELETE({ json: async () => ({ id: clubId }) } as any);
     expect(reponse.status).toBe(200);
-    console.log("run deleted", 
-    )});})
+    console.log("run deleted");
+  });
+});

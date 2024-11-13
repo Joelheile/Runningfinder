@@ -9,7 +9,10 @@ interface AvatarUploaderProps {
   onUploadChange: (isUploaded: boolean) => void;
 }
 
-const AvatarUploader: React.FC<AvatarUploaderProps> = ({ id, onUploadChange }) => {
+const AvatarUploader: React.FC<AvatarUploaderProps> = ({
+  id,
+  onUploadChange,
+}) => {
   const { uploadedUrl, isLoading, uploadAvatar } = useUploadAvatar();
 
   useEffect(() => {

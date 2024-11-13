@@ -26,7 +26,13 @@ export default function AddClub() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name || !description || !websiteUrl || !instagramUsername || !isUploaded) {
+    if (
+      !name ||
+      !description ||
+      !websiteUrl ||
+      !instagramUsername ||
+      !isUploaded
+    ) {
       isUploaded
         ? toast.error("Please fill out all fields")
         : toast.error("Please upload an avatar");
