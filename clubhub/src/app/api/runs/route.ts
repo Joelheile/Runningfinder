@@ -116,3 +116,14 @@ export async function POST(request: Request) {
     return handleErrorResponse(error, "Error creating run");
   }
 }
+
+export async function DELETE(request: Request) {
+  const { id } = await request.json();
+
+  try {
+    await db.delete(runs).where(eq(runs.id, id)).execute();
+    return NextResponse.json({ message: "Run deleted successfully" });
+  } catch (error) {
+    return handleErrorResponse(error, "Error deleting run");
+  }
+}
