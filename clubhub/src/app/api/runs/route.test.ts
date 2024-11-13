@@ -2,8 +2,9 @@ import { v4 } from "uuid";
 import { GET, POST } from "./route";
 
 let clubId: string;
+let runId: string;
 
-describe("API Routes", () => {
+describe("API Run Routes", () => {
   it("should return data with status 200", async () => {
     const request = new Request("https://localhost:3000/api/runs");
     const response = await GET(request);
@@ -29,7 +30,7 @@ describe("API Routes", () => {
     } as any;
 
     const response = await POST(requestObj);
-
+console.log("testing response", response);
     expect(response.status).toBe(201);
   });
 });
