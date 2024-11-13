@@ -34,7 +34,7 @@ describe("API Run Routes", () => {
     expect(response.status).toBe(201);
   });
   it("should delete club after adding with status 200", async () => {
-    const reponse = await DELETE({ json: async () => ({ id: clubId }) } as any);
+    const reponse = await DELETE({ json: async () => ({ id: runId }) } as any);
     expect(reponse.status).toBe(200);
     console.log("run deleted");
   });
