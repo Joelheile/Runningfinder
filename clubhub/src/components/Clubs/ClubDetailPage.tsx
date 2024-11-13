@@ -53,8 +53,9 @@ const ClubDetailPage = ({ userId }: { userId: string | undefined }) => {
 
   return (
     <div className="flex flex-col bg-light w-screen h-full p-8">
+      <h1>id: {club.id}</h1>
       <nav className="flex justify-between">
-        <Link href="/">
+        <Link href="/clubs/">
           <div className="flex">
             <ChevronLeft className="stroke-primary stroke" />
             <span className="Back text-primary">Back</span>
@@ -84,19 +85,22 @@ const ClubDetailPage = ({ userId }: { userId: string | undefined }) => {
       <div className="mt-4 p-8">
         <h2 className="mb-2 text-lg sm:text-xl md:text-2xl">Upcoming runs</h2>
         {runs?.map((run) => (
-          <RunCard
-            userId={userId}
-            id={run.id}
-            key={run.id}
-            time={run.startTime}
-            intervalDay={run.intervalDay}
-            name={run.name}
-            startDescription={run.startDescription}
-            difficulty={run.difficulty}
-            distance={5}
-            location={run.location}
-            slug={slug}
-          />
+          <>
+            <h1>id: {run.clubId}</h1>
+            <RunCard
+              userId={userId}
+              id={run.id}
+              key={run.id}
+              time={run.startTime}
+              intervalDay={run.intervalDay}
+              name={run.name}
+              startDescription={run.startDescription}
+              difficulty={run.difficulty}
+              distance={5}
+              location={run.location}
+              slug={slug}
+            />
+          </>
         ))}
       </div>
     </div>

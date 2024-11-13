@@ -1,15 +1,37 @@
 import { db } from "@/lib/db/db";
 import { runs } from "@/lib/db/schema/runs";
-import { clubs } from "@/lib/db/schema/clubs";
 import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
-export async function GET({ clubId }: { clubId: string }) {
+export async function GET(
+  request: Request,
+  { params }: { params: { slug: string } },
+) {
+  const { slug } = params;
+  if (!slug) {
+    return NextResponse.json({ error: "slug is required" }, { status: 400 });
+  }
   try {
+    console.log("Fetching runs with club ID:", slug);
     const res = await db
-      .select()
+      .select({
+        id: runs.id,
+        name: runs.name,
+        clubId: runs.clubId,
+        difficulty: runs.difficulty,
+        date: runs.date,
+        interval: runs.interval,
+        intervalDay: runs.intervalDay,
+        startDescription: runs.startDescription,
+        startTime: runs.startTime,
+        distance: runs.distance,
+        location: {
+          lat: runs.locationLat,
+          lng: runs.locationLng,
+        },
+      })
       .from(runs)
-      .leftJoin(clubs, eq(clubs.id, runs.clubId))
+      .where(eq(runs.clubId, slug))
       .execute();
 
     return NextResponse.json(res);
