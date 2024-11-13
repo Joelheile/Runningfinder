@@ -38,6 +38,7 @@ export async function GET() {
 
 export async function POST(request: Request) {
   const {
+    id,
     name,
     location,
     description,
@@ -50,7 +51,7 @@ export async function POST(request: Request) {
     const res = await db
       .insert(club)
       .values({
-        id: uuidv4(),
+        id,
         name,
         description,
         locationLng: location.lng,
@@ -80,7 +81,6 @@ export async function DELETE(request: Request) {
 
   try {
     const res = await db.delete(club).where(eq(club.id, id)).execute();
-    console.log("Deleted club", res);
 
     return NextResponse.json({ message: "Club deleted successfully" });
   } catch (error) {

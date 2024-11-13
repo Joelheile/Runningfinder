@@ -13,6 +13,7 @@ const addClub = async (newClub: Club): Promise<Club> => {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       ...newClub,
+      id: v4(),
     }),
   });
 
