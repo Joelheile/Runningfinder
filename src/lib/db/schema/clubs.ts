@@ -1,15 +1,14 @@
 import {
-  pgTable,
-  uuid,
-  timestamp,
-  pgEnum,
   decimal,
-  text,
-  integer,
   index,
+  integer,
+  pgEnum,
+  pgTable,
+  text,
+  timestamp
 } from "drizzle-orm/pg-core";
-import { avatars, users } from "./users";
 import { statusEnum } from "./enums";
+import { avatars, users } from "./users";
 
 export const roleEnum = pgEnum("role", ["member", "admin", "manager"]);
 

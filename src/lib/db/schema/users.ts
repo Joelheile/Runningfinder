@@ -1,12 +1,10 @@
 import {
+  integer,
+  pgEnum,
   pgTable,
   text,
-  timestamp,
-  integer,
-  uuid,
-  pgEnum,
+  timestamp
 } from "drizzle-orm/pg-core";
-import { v4 } from "uuid";
 
 export const users = pgTable("users", {
   id: text("id")
