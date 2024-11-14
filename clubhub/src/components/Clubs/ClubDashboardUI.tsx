@@ -18,7 +18,7 @@ interface ClubDetailUIProps {
   noData?: boolean;
 }
 
-const ClubDashboardUI = ({
+export default function ClubDashboardUI({
   club,
   runs,
   userId,
@@ -28,7 +28,7 @@ const ClubDashboardUI = ({
   loading,
   error,
   noData,
-}: ClubDetailUIProps) => {
+}: ClubDetailUIProps) {
   if (loading) return <ClubCardSkeleton />;
   if (error) return <p>Error: {error}</p>;
   if (noData) return <p>No club data available.</p>;
@@ -91,6 +91,4 @@ const ClubDashboardUI = ({
       </div>
     </div>
   );
-};
-
-export default ClubDashboardUI;
+}

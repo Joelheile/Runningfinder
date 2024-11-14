@@ -6,7 +6,11 @@ import { useParams, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import ClubDashboardUI from "./ClubDashboardUI";
 
-const ClubDashboard = ({ userId }: { userId: string | undefined }) => {
+export default function ClubDashboard({
+  userId,
+}: {
+  userId: string | undefined;
+}) {
   const router = useRouter();
   const slug = useParams().slug.toString();
 
@@ -64,6 +68,4 @@ const ClubDashboard = ({ userId }: { userId: string | undefined }) => {
       onAddRun={() => router.push(`/clubs/${slug}/addrun`)}
     />
   );
-};
-
-export default ClubDashboard;
+}
