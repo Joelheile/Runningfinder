@@ -16,12 +16,6 @@ export default function MapLocationPicker({
   const [isScriptLoaded, setIsScriptLoaded] = useState(false);
   const mapRef = useRef<LocationPicker | null>(null);
 
-  useEffect(() => {
-    if (isScriptLoaded && typeof window !== "undefined") {
-      initializeMap();
-    }
-  }, [isScriptLoaded]);
-
   const initializeMap = () => {
     if (typeof google === "undefined") {
       console.error("Google Maps JavaScript API not loaded.");
@@ -53,6 +47,12 @@ export default function MapLocationPicker({
       google.maps.event.removeListener(idleListener);
     };
   };
+
+  useEffect(() => {
+    if (isScriptLoaded && typeof window !== "undefined") {
+      initializeMap();
+    }
+  }, [isScriptLoaded]);
 
   return (
     <div className="App mt-8">
