@@ -1,17 +1,15 @@
 import {
+  boolean,
+  foreignKey,
+  index,
+  integer,
+  numeric,
+  pgEnum,
   pgTable,
+  primaryKey,
   text,
   timestamp,
-  integer,
-  foreignKey,
-  numeric,
-  index,
-  interval,
-  primaryKey,
-  boolean,
-  pgEnum,
 } from "drizzle-orm/pg-core";
-import { sql } from "drizzle-orm";
 
 export const avatarType = pgEnum("avatarType", ["user", "club"]);
 export const interval = pgEnum("interval", [
