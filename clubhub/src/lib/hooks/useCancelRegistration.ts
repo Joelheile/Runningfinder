@@ -18,6 +18,7 @@ const cancelRegistration = async ({
     body: JSON.stringify({
       runId,
       userId,
+      status: "cancelled",
     }),
   });
 
@@ -26,7 +27,7 @@ const cancelRegistration = async ({
     throw new Error("Failed to deregister from run");
   }
 
-  toast.success("Successfully deregistered from run");
+  toast("Successfully deregistered from run", { icon: "🗑️" });
   return response.json();
 };
 
