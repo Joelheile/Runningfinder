@@ -1,23 +1,4 @@
-<!-- Improved compatibility of back to top link: See: https://github.com/Joelheile/ClubHub/pull/73 -->
-
 <a id="readme-top"></a>
-
-<!--
-*** Thanks for checking out the Best-README-Template. If you have a suggestion
-*** that would make this better, please fork the repo and create a pull request
-*** or simply open an issue with the tag "enhancement".
-*** Don't forget to give the project a star!
-*** Thanks again! Now go create something AMAZING! :D
--->
-
-<!-- PROJECT SHIELDS -->
-<!--
-*** I'm using markdown "reference style" links for readability.
-*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
-*** See the bottom of this document for the declaration of the reference variables
-*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
-*** https://www.markdownguide.org/basic-syntax/#reference-style-links
--->
 
 <!-- PROJECT LOGO -->
 <br />
@@ -116,7 +97,7 @@ Download node.js and install pnpm
 
 ### Installation
 
-_To skip the process of setting up different API Keys in Google and Github oAuth in this assessment, I've provided my env secrets to copy them into a .env.local file. <br> <Please do not share them_
+_To skip the process of setting up different API Keys in Google and Github oAuth in this assessment, I've provided my env secrets to copy them into a .env.local file. <br> Please do not share them_
 
 1. Clone the repo
    ```sh
