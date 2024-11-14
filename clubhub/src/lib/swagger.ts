@@ -9,6 +9,16 @@ export const getApiDocs = async () => {
         title: "Running Finder API Documentation",
         version: "1.0",
       },
+      tags:[
+        {
+          name: "clubs",
+          description: "Club operations"
+        },
+        {
+          name: "runs",
+          description: "Run operations"
+        }
+      ],
       components: {
        
       },
