@@ -4,7 +4,7 @@ import { useCancelRegistration } from "@/lib/hooks/registrations/useCancelRegist
 import { useRegisterRun } from "@/lib/hooks/registrations/useRegisterRun";
 import { weekdays } from "@/lib/weekdays";
 import { redirect } from "next/navigation";
-import LikeButton from "../icons/LikeButton";
+import LikeButton from "../Icons/LikeButton";
 import { Button } from "../UI/button";
 
 interface RunCardProps {

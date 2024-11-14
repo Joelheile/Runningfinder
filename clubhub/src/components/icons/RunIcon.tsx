@@ -1,6 +1,3 @@
-//GoogleLogo.js
-import React, { useState } from "react";
-
 interface RunIconProps {
   isSelected: boolean;
 }
