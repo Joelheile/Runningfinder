@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { useDropzone } from "react-dropzone";
 import { LoadingSpinner } from "../UI/loadingSpinner";
 
@@ -21,7 +22,9 @@ export default function AvatarUploaderUI({
         <p>Drag & drop a file here, or click to select one</p>
       ) : (
         <>
-          <img
+          <Image
+            width={500}
+            height={500}
             src={uploadedUrl}
             alt="Uploaded file"
             className="h-32 w-auto rounded-md"
