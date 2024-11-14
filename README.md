@@ -326,16 +326,19 @@ This way it is also possible to test the routes using only this dashboard.
 This module really helped me understanding the value of clean code and how important it is to not clean it once, but to maintain it.
 Especially avoiding overcomplex or too nested structures, to keep the code readable and understandable.
 
+### Committing
+
+Early into the process I recognized that naturally I was used to doing smaller commits. This is the reason why atomic commits came quite naturally and were easy to implement. I was familiar with using fix, chore and feat as commit prefixes. Using the [gitmoji commit guidelines](https://gitmoji.dev/) was a great way to keep the commit messages consistent. Although I like the consinstency it is too much work researching the right emoji for every commit. I'll therefore not use it in further projects.
+
+## Refactoring Workflow
+
+The branch "[refactoringExample](https://github.com/Joelheile/ClubHub/commits/refactoringExample/)" is an example of a refacotring workflow I implemented. I cherry picked the commit of a refactoring I did earlier and broke it further down using atomic commits.
+
 ### Testing
 
 The tests I currently have are mostly integration tests for the two most important routes: runs and clubs.
 These tests were crucial for refactoring and to make sure, that the API worked like intended.
 It helped me to understand the value of automated testing. In the next weeks I will further enhance testing on more routes, implement more E2E tests, it they make sense and most importantly build unit tests.
-
-### Committing
-
-Early into the process I recognized that naturally I was used to doing smaller commits
-//TODO
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 <!-- STATIC CODE ANALYSIS -->
