@@ -52,6 +52,7 @@
     "react-load-script": "^0.0.6",
     "resend": "link:next-auth/providers/resend",
     "supertest": "^7.0.0",
+    "swagger-ui-react": "^5.18.2",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
     "uuid": "^10.0.0"
@@ -64,6 +65,7 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@types/supertest": "^6.0.2",
+    "@types/swagger-ui-react": "^4.18.3",
     "@types/tailwindcss": "^3.0.11",
     "@types/uuid": "^10.0.0",
     "drizzle-kit": "^0.24.2",
