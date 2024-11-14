@@ -7,11 +7,11 @@ interface AvatarUploaderUIProps {
   uploadedUrl: string | null;
 }
 
-const AvatarUploaderUI: React.FC<AvatarUploaderUIProps> = ({
+export default function AvatarUploaderUI({
   onDrop,
   isLoading,
   uploadedUrl,
-}) => {
+}: AvatarUploaderUIProps) {
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
   return (
@@ -37,6 +37,4 @@ const AvatarUploaderUI: React.FC<AvatarUploaderUIProps> = ({
       )}
     </div>
   );
-};
-
-export default AvatarUploaderUI;
+}
