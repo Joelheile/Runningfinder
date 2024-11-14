@@ -2,7 +2,6 @@ import { Run } from "@/lib/types/Run";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
-
 const addRun = async (newRun: Run): Promise<Run> => {
   const response = await fetch("/api/runs", {
     method: "POST",
@@ -24,8 +23,8 @@ export function useAddRun() {
   const queryClient = useQueryClient();
   return useMutation<Run, Error, Run>({
     mutationFn: addRun,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["runs"] });
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["runs", data.clubId] });
     },
   });
 }

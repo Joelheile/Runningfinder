@@ -2,7 +2,6 @@ import { Run } from "@/lib/types/Run";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-
 const fetchRunsByClubId = async (clubId: string): Promise<Run[]> => {
   const response = await axios.get(`/api/runs/${clubId}`);
   if (response.status !== 200) {

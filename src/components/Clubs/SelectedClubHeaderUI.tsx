@@ -1,5 +1,6 @@
 import { Club } from "@/lib/types/Club";
 import { ChevronRight } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import ClubIconBar from "../Icons/ClubIconBar";
 
@@ -21,7 +22,9 @@ export default function SelectedClubHeaderUI({
       <Link href={`/clubs/${club.slug}`}>
         <div className="flex flex-col sm:flex-row justify-between items-start">
           <div className="flex flex-col sm:flex-row w-full">
-            <img
+            <Image
+              width={500}
+              height={500}
               src={avatarUrl}
               alt={club.name}
               className="rounded-md border w-auto max-w-48 sm:w-1/6 h-auto max-h-48 object-cover mb-4 sm:mb-0 sm:mr-6"
