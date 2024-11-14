@@ -5,6 +5,7 @@ import { useFetchRunsByClubId } from "@/lib/hooks/runs/useFetchRunsByClubId";
 import { useParams, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import ClubDashboardUI from "./ClubDashboardUI";
+import { useFetchRuns } from "@/lib/hooks/runs/useFetchRuns";
 
 export default function ClubDashboard({
   userId,
@@ -15,11 +16,14 @@ export default function ClubDashboard({
   const slug = useParams().slug.toString();
 
   const { data: club, isLoading, isError, error } = useFetchClubBySlug(slug);
+
   const {
-    data: runs,
+    data: unFilteredRuns,
     isLoading: runsLoading,
     isError: runsError,
-  } = useFetchRunsByClubId(club?.id || "");
+  } = useFetchRuns({});
+
+  const runs = unFilteredRuns?.filter((run) => run.clubId === club?.id);
 
   const handleShare = async () => {
     try {

@@ -5,7 +5,7 @@ import {
   pgEnum,
   pgTable,
   text,
-  timestamp
+  timestamp,
 } from "drizzle-orm/pg-core";
 import { statusEnum } from "./enums";
 import { avatars, users } from "./users";

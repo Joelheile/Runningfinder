@@ -3,6 +3,7 @@ import { Run } from "@/lib/types/Run";
 import { ChevronLeft, Plus, Share } from "lucide-react";
 import Link from "next/link";
 import RunCard from "../Runs/RunCardLogic";
+import { Button } from "../UI/button";
 import ClubCard from "./ClubCard";
 import ClubCardSkeleton from "./ClubCardSkeleton";
 
@@ -71,6 +72,15 @@ export default function ClubDashboardUI({
 
       <div className="mt-4 p-8">
         <h2 className="mb-2 text-lg sm:text-xl md:text-2xl">Upcoming runs</h2>
+        {runs?.length === 0 && (
+          <>
+            <p>
+              There are no upcoming runs for <strong>{name}</strong>.{" "}
+            </p>
+            <br />
+            <Button onClick={onAddRun}>Add first run 🏃‍♂️</Button>
+          </>
+        )}
         {runs
           ?.sort((a, b) => a.intervalDay - b.intervalDay)
           .map((run) => (
@@ -83,7 +93,7 @@ export default function ClubDashboardUI({
               name={run.name}
               startDescription={run.startDescription}
               difficulty={run.difficulty}
-              distance={5}
+              distance={run.distance}
               location={run.location}
               slug={slug}
             />
