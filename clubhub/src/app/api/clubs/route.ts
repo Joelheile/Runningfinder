@@ -1,10 +1,20 @@
+/**
+ * @swagger
+ * /api/hello:
+ *   get:
+ *     description: Returns the hello world
+ *     responses:
+ *       200:
+ *         description: Hello World!
+ */
+
+
 import { db } from "../../../lib/db/db";
 import { clubs as club } from "../../../lib/db/schema/clubs";
 import { avatars } from "../../../lib/db/schema/users";
 
 import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
-import { v4 as uuidv4 } from "uuid";
 
 export async function GET() {
   try {
