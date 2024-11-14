@@ -101,6 +101,6 @@ body {
     @apply font-bold text-lg;
   }
   strong {
-    @apply font-medium;
+    @apply font-semibold;
   }
 }
