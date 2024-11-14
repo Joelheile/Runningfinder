@@ -286,6 +286,43 @@ erDiagram
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+<!-- CLEAN CODE EXAMPLES -->
+
+# Clean Code examples
+
+### API Documentation
+
+As you can see in the [API documentation](http://localhost:3000/api-doc), I've used [Swagger](https://swagger.io/) to document my API.
+I found it much more understandable than adding docstrings to routes.
+This way it is also possible to test the routes using only this dashboard.
+
+### Readability and Cleanliness
+
+1. **DRY**
+   To keep the code consistent, I used exported types and constants.
+   The [types](./src/lib/types/) we're the most helpful ones, as I changed them often and it was easier to change them in one place.
+2. **Code formatting**
+   Enabling prettier on save in VSCode and enabling auto deletion for unused imports was a game changer for keeping the files clean.
+3. **Naming**
+   I renamed and moved files much more often than I was used to, to make sure that names were intention revealing.
+4. **Refactoring**  
+   When a feature was finished, I intended to refactor it as soon as possible. Complex components were broken into smaller ones and often refactored in one state and one UI component.
+   This opens the possibility to use UI testing libraries like [Storybook JS](https://storybook.js.org/)
+5. **Magic numbers**
+   I used magic numbers or strings often in my last projects, but tried to avoid them and use constants or enums instead.
+
+### Simplicity
+
+This module really helped me understanding the value of clean code and how important it is to not clean it once, but to maintain it.
+Especially avoiding overcomplex or too nested structures, to keep the code readable and understandable.
+
+### Testing
+
+The tests I currently have are mostly integration tests for the two most important routes: runs and clubs.
+These tests were crucial for refactoring and to make sure, that the API worked like intended.
+It helped me to understand the value of automated testing. In the next weeks I will further enhance testing on more routes, implement more E2E tests, it they make sense and most importantly build unit tests.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 <!-- STATIC CODE ANALYSIS -->
 
 ## Static Code Analysis
