@@ -12,11 +12,15 @@ export const getApiDocs = async () => {
       tags:[
         {
           name: "clubs",
-          description: "Club operations"
         },
         {
           name: "runs",
-          description: "Run operations"
+        },
+        {
+          name: "registrations",
+        },
+        {
+          name: "memberships",
         }
       ],
       components: {
