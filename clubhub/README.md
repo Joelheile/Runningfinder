@@ -286,7 +286,7 @@ erDiagram
 - [x] Setup database & API routes
 - [x] Add club
 - [x] Add recurring runs (on weekly basis)
-- [x] Authentication
+- [x] Authentication (when adding a run or club, you'll be redirected to /api/auth/signin)
 - [ ] Displaying runs a user has registered for on a profile page
 - [ ] Add one time runs based on date
 - [ ] Enhance club dashboard using roles
