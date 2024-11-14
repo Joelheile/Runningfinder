@@ -156,6 +156,10 @@ _To skip the process of setting up different API Keys in Google and Github oAuth
    ```sh
    pnpm run tests
    ```
+6. Get familiar with [API documentation](http://localhost:3000/api-doc)
+   ```sh
+   http://localhost:3000/api-doc
+   ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
