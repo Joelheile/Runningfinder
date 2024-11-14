@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 import { db } from "@/lib/db/db";
 import { avatars } from "@/lib/db/schema/users";
@@ -53,3 +53,49 @@ export async function DELETE(request: Request) {
     );
   }
 }
+
+/**
+ * @swagger
+ * /api/upload/avatar/user:
+ *   post:
+ *     summary: Upload a user avatar.
+ *     tags:
+ *       - upload
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               objectName:
+ *                 type: string
+ *               objectUrl:
+ *                 type: string
+ *               objectId:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Successfully uploaded the file.
+ *       500:
+ *         description: Failed to upload file.
+ *
+ *   delete:
+ *     summary: Delete a user avatar.
+ *     tags:
+*       - upload
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               objectId:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Successfully deleted the file.
+ *       500:
+ *         description: Failed to delete file.
+ */
