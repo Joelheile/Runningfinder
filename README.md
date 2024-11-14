@@ -283,6 +283,10 @@ erDiagram
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+<!-- STATIC CODE ANALYSIS -->
+
+For
+
 <!-- LICENSE -->
 
 ## License
