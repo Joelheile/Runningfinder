@@ -1,12 +1,3 @@
-/**
- * @swagger
- * /api/hello:
- *   get:
- *     description: Returns the hello world
- *     responses:
- *       200:
- *         description: Hello World!
- */
 
 
 import { db } from "../../../lib/db/db";
@@ -101,3 +92,95 @@ export async function DELETE(request: Request) {
     );
   }
 }
+
+/**
+ * @swagger
+ * /api/clubs:
+ *   get:
+ *     summary: Retrieve a list of clubs.
+ *     responses:
+ *       200:
+ *         description: A list of clubs.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                   name:
+ *                     type: string
+ *                   description:
+ *                     type: string
+ *                   locationLng:
+ *                     type: number
+ *                   locationLat:
+ *                     type: number
+ *                   avatarFileId:
+ *                     type: string
+ *                   creationDate:
+ *                     type: string
+ *                     format: date-time
+ *                   instagramUsername:
+ *                     type: string
+ *                   websiteUrl:
+ *                     type: string
+ *                   memberCount:
+ *                     type: integer
+ *                   slug:
+ *                     type: string
+ *                   avatarUrl:
+ *                     type: string
+ *       500:
+ *         description: Internal Server Error
+
+ *   post:
+ *     summary: Create a new club.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             properties:
+ *               id:
+ *                 type: string
+ *               name:
+ *                 type: string
+ *               location:
+ *                 type: object
+ *                 properties:
+ *                   lng:
+ *                     type: number
+ *                   lat:
+ *                     type: number
+ *               description:
+ *                 type: string
+ *               instagramUsername:
+ *                 type: string
+ *               websiteUrl:
+ *                 type: string
+ *               avatarFileId:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Club created successfully.
+ *       500:
+ *         description: Internal Server Error
+
+ *   delete:
+ *     summary: Delete a club.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             properties:
+ *               id:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Club deleted successfully.
+ *       500:
+ *         description: Internal Server Error
+ */
