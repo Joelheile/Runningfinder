@@ -1,4 +1,4 @@
-import ClubDetailPage from "@/components/Clubs/ClubDetailPage";
+import ClubDetailPage from "@/components/Clubs/ClubDashboardLogic";
 import { auth } from "@/lib/authentication/auth";
 
 export default async function ClubPage() {
