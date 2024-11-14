@@ -69,7 +69,7 @@ export default function MapLocationPicker({
         className="border rounded"
       />
       <p>
-        Location: {location.lat}, {location.lng}
+        <strong>Location:</strong> {location.lat}, {location.lng}
       </p>
     </div>
   );
