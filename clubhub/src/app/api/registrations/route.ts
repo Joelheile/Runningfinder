@@ -30,7 +30,25 @@ export async function GET({ request }: { request: Request }) {
 export async function POST(request: Request) {
   const { userId, runId, status } = await request.json();
   console.log("api run", userId, runId);
+
   try {
+    const existingRegistration = await db
+      .select()
+      .from(registrations)
+      .where(
+        and(eq(registrations.userId, userId), eq(registrations.runId, runId))
+      )
+      .execute();
+
+    if (existingRegistration.length > 0) {
+      console.log("Registration already exists");
+      return NextResponse.json(
+        { message: "Registration already exists" },
+        { status: 409 }
+      );
+    }
+
+
     const res = await db
       .insert(registrations)
       .values({
@@ -47,19 +65,18 @@ export async function POST(request: Request) {
     console.error("Error creating registration:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }
 
-export async function PUT(request: Request) {
-  const { id, status } = await request.json();
+export async function DELETE(request: Request) {
+  const { userId, runId, status } = await request.json();
 
   try {
     const res = await db
-      .update(registrations)
-      .set({ status })
-      .where(eq(registrations.id, id))
+      .delete(registrations)
+      .where(and(eq(registrations.userId, userId), eq(registrations.runId, runId)))
       .execute();
 
     return NextResponse.json(res);

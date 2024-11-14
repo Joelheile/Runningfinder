@@ -25,8 +25,6 @@ const ClubDetailPage = ({ userId }: { userId: string | undefined }) => {
     isError: runsError,
   } = useFetchRunsByClubId(club?.id || "");
 
-  console.log("fetched runs data:", runs);
-
   if (isLoading) {
     return <ClubCardSkeleton />;
   }
