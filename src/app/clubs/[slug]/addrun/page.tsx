@@ -24,7 +24,7 @@ export default function AddRunsPage() {
 
   return (
     <div className="flex-col p-10 items-center w-2/3 mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Add Runs to "{club.name}"</h1>
+      <h1 className="text-2xl font-bold mb-4">Add Runs to {club.name}</h1>
       <div className="flex flex-col gap-6 w-full">
         <AddRun club={club} />
       </div>
