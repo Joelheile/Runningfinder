@@ -1,8 +1,8 @@
-import { Input } from "@/components/UI/input";
-import { Label } from "@/components/UI/label";
-import { Button } from "../UI/button";
-import { MapLocationPicker } from "../Map/MapLocationPicker";
 import { weekdays } from "@/lib/weekdays";
+import { MapLocationPicker } from "../Map/MapLocationPicker";
+import { Button } from "../UI/button";
+import { Input } from "../UI/input";
+import { Label } from "../UI/label";
 
 interface AddRunUIProps {
   name: string;

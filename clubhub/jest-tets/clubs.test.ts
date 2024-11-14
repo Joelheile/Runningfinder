@@ -8,7 +8,6 @@ describe("API Club Routes", () => {
   it("should return data with status 200", async () => {
     const response = await GET();
     const body = await response.json();
-    console.log("response", body);
     expect(response.status).toBe(200);
   });
 
@@ -41,6 +40,5 @@ describe("API Club Routes", () => {
   it("should delete club after adding with status 200", async () => {
     const reponse = await DELETE({ json: async () => ({ id: clubId }) } as any);
     expect(reponse.status).toBe(200);
-    console.log("club deleted");
   });
 });

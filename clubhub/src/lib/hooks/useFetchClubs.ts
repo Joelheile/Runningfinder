@@ -7,7 +7,6 @@ const fetchClubs = async (): Promise<Club[]> => {
     throw new Error("Network response was not ok");
   }
   const data = await response.json();
-  console.log("Fetched clubs data:", data);
 
   return data.map((club: any) => ({
     ...club,
@@ -24,7 +23,6 @@ const fetchClubById = async (slug: string): Promise<Club> => {
     throw new Error("Network response was not ok");
   }
   const data = await response.json();
-  console.log("Fetched single club data:", data);
 
   return {
     ...data,
@@ -49,4 +47,5 @@ function useFetchClubBySlug(slug: string) {
   });
 }
 
-export { useFetchClubs, useFetchClubBySlug };
+export { useFetchClubBySlug, useFetchClubs };
+

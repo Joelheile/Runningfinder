@@ -1,12 +1,11 @@
 "use client";
-import { useFetchClubs } from "@/lib/hooks/useFetchClubs";
 import Map from "@/components/Map/MapLogic";
-import React, { useState } from "react";
+import { useFetchClubs } from "@/lib/hooks/useFetchClubs";
 import { useFetchRuns } from "@/lib/hooks/useFetchRuns";
-import FilterBar from "@/components/Runs/FilterBarLogic";
+import { useState } from "react";
+
 import { Session } from "next-auth";
-import { Plus } from "lucide-react";
-import Link from "next/link";
+import FilterBar from "../runs/FilterBarLogic";
 
 const MapPage = ({ session }: { session: Session | null }) => {
   const [filters, setFilters] = useState<{
@@ -15,7 +14,7 @@ const MapPage = ({ session }: { session: Session | null }) => {
     days?: number[];
     difficulty?: string;
   }>({}); // No filters at initial render
-  console.log("session", session);
+
   const { data: runs, isLoading, error } = useFetchRuns(filters);
 
   const handleFilterChange = (newFilters: {

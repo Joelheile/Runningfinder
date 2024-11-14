@@ -29,7 +29,6 @@ export async function GET({ request }: { request: Request }) {
 
 export async function POST(request: Request) {
   const { userId, runId, status } = await request.json();
-  console.log("api run", userId, runId);
 
   try {
     const existingRegistration = await db
@@ -41,7 +40,6 @@ export async function POST(request: Request) {
       .execute();
 
     if (existingRegistration.length > 0) {
-      console.log("Registration already exists");
       return NextResponse.json(
         { message: "Registration already exists" },
         { status: 409 },
@@ -57,7 +55,7 @@ export async function POST(request: Request) {
         status: status,
       })
       .execute();
-    console.log("registration", res);
+
 
     return NextResponse.json(res);
   } catch (error) {

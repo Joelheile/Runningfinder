@@ -1,12 +1,9 @@
-import { Avatar } from "@/lib/types/Avatar";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { v4 } from "uuid";
-import { useUploadAvatar } from "./useUploadAvatar";
 import { Club } from "../types/Club";
 
 const addClub = async (newClub: Club): Promise<Club> => {
-  console.log("hook addClub called");
 
   const response = await fetch("/api/clubs", {
     method: "POST",

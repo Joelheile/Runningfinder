@@ -32,7 +32,6 @@ export async function POST(request: Request) {
         status: status,
       })
       .execute();
-    console.log("memberships", res);
 
     return NextResponse.json(res);
   } catch (error) {

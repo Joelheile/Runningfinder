@@ -9,7 +9,6 @@ export async function GET(
   request: Request,
   { params }: { params: { slug: string } },
 ) {
-  console.log("Fetching club with slug:", params.slug);
   try {
     const res = await db
       .select({
@@ -27,14 +26,14 @@ export async function GET(
       .leftJoin(avatars, eq(club.avatarFileId, avatars.id))
       .where(eq(club.slug, params.slug));
 
-    console.log("Fetched club test:", res);
+
     if (res.length === 0) {
       return NextResponse.json({ error: "Club not found" }, { status: 404 });
     }
 
     return NextResponse.json(res[0]);
   } catch (error) {
-    console.error("Error fetching club:", error);
+
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 },
@@ -61,7 +60,6 @@ export async function PUT(
 
     return NextResponse.json(updatedClub);
   } catch (error) {
-    console.error("Error updating club:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 },

@@ -1,10 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Run } from "../types/Run";
-import { v4 } from "uuid";
 import toast from "react-hot-toast";
+import { Run } from "../types/Run";
 
 const addRun = async (newRun: Run): Promise<Run> => {
-  console.log("hook addRun called", newRun);
 
   const response = await fetch("/api/runs", {
     method: "POST",

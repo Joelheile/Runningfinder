@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react";
-import { v4 } from "uuid";
 import { useAddRun } from "@/lib/hooks/useAddRun";
-import { Run } from "@/lib/types/Run";
 import { Club } from "@/lib/types/Club";
-import toast from "react-hot-toast";
+import { Run } from "@/lib/types/Run";
 import { weekdays } from "@/lib/weekdays";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { v4 } from "uuid";
 import AddRunUI from "./AddRunUI";
 
 export default function AddRunState({ club }: { club: Club }) {
@@ -49,12 +49,10 @@ export default function AddRunState({ club }: { club: Club }) {
   };
 
   const handleSelect = (lat: number, lng: number) => {
-    console.log("Selected location:", lat, lng);
     setLocation({ lat, lng });
   };
 
   useEffect(() => {
-    console.log("Location updated:", location);
     toast.success(`${location.lat} ${location.lng}`);
   }, [location]);
 

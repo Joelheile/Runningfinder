@@ -1,12 +1,10 @@
 import AddClub from "@/components/Clubs/AddClub";
-import AddRun from "@/components/Runs/AddRun";
 import { auth } from "@/lib/authentication/auth";
 import { redirect } from "next/navigation";
 
 export default async function addClubPage() {
   const session = await auth();
 
-  console.log("session", session);
   if (!session?.user) {
     redirect("/api/auth/signin?callbackUrl=/clubs/add");
   }
