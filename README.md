@@ -46,12 +46,13 @@ Tired of running alone? Got overwhelmed with all the running clubs?
 
 ## About The Project
 
-Running finder is a plattform to display all runs in Berlin on a map. The user is able to filter all the runs by distance, weekday and difficulty. <br>
-Runs can be connected to clubs and users can register to runs by clicking.
+This semester, I started building **Running Finder** — a platform inspired by Berlin's growing community gathering trend.
+
+The mission is to centralize information about running clubs, events and display them on a dynamic Google Map. Users can filter through runs based on their needs (distance, weekday, or difficulty). Clicking on the run marker, the user is redirected to the club, where the user gets all the information needed and can register for a run.
+
+If a user is signed in, adding new runs or clubs is possible. Different authentication roles will be implemented in the future. Soon, managing runs and implementing recurring and single runs into the application will also be possible. Prioritizing recurring events was a strategic decision, as it saves space, and most running clubs are managed like this.
 
 ### Built With
-
-This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
 
 - [![Next][Next.js]][Next-url]
 - [![React][React.js]][React-url]
