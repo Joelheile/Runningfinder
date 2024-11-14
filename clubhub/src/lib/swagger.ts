@@ -22,13 +22,14 @@ export const getApiDocs = async () => {
         {
           name: "memberships",
         },
-        {
-          name: "upload",
-        },
 
       {
         name: "users",
       },
+        {
+          name: "upload",
+        },
+
       ],
       components: {
        

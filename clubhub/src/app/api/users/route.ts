@@ -16,3 +16,25 @@ export async function GET({ userId }: { userId: string }) {
     );
   }
 }
+
+/**
+ *  @swagger
+ * /api/users/:
+ *   get:
+ *     summary: Retrieve a user by userId.
+ *     tags:
+ *       - users
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Returns the user data.
+ *         content:
+ *           application/json:
+ *       500:
+ *         description: Internal Server Error.
+ */
