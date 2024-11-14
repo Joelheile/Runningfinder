@@ -5,7 +5,7 @@ import { and, eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 
-export async function GET({ request }: { request: Request }) {
+export async function GET(request: Request) {
   const { userId, runId } = await request.json();
 
   try {
