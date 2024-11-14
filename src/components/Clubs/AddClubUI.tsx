@@ -16,7 +16,7 @@ interface AddClubUIProps {
   handleDescriptionChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   handleWebsiteUrlChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleInstagramUsernameChange: (
-    e: React.ChangeEvent<HTMLInputElement>,
+    e: React.ChangeEvent<HTMLInputElement>
   ) => void;
   handleUploadChange: (uploaded: boolean) => void;
   handleSubmit: (e: React.FormEvent) => void;
