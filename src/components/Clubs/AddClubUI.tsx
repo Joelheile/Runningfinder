@@ -4,7 +4,27 @@ import { Label } from "../UI/label";
 import { Textarea } from "../UI/textarea";
 import AvatarUploader from "../Upload/AvatarUploaderLogic";
 
-export default function AddClubUI() {
+interface AddClubUIProps {
+  name: string;
+  description: string;
+  websiteUrl: string;
+  instagramUsername: string;
+  avatarFileId: string;
+  isUploaded: boolean;
+  handleUploadChange: (uploaded: boolean) => void;
+  handleSubmit: (e: React.FormEvent) => void;
+}
+
+export default function AddClubUI({
+  name,
+  isUploaded,
+  description,
+  websiteUrl,
+  instagramUsername,
+  avatarFileId,
+  handleUploadChange,
+  handleSubmit,
+}: AddClubUIProps) {
   return (
     <div>
       <div>

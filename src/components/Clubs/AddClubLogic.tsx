@@ -1,8 +1,4 @@
 "use client";
-import { Button } from "@/components/UI/button";
-import { Input } from "@/components/UI/input";
-import { Label } from "@/components/UI/label";
-import AvatarUploader from "@/components/Upload/AvatarUploaderLogic";
 
 import { Club } from "@/lib/types/Club";
 import { useState } from "react";
@@ -11,7 +7,7 @@ import { v4 } from "uuid";
 import { useAddClub } from "@/lib/hooks/clubs/useAddClub";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import { Textarea } from "../UI/textarea";
+import AddClubUI from "./AddClubUI";
 
 export default function AddClub() {
   const [name, setName] = useState("");
@@ -64,6 +60,15 @@ export default function AddClub() {
   };
 
   return (
-    
+    <AddClubUI
+      name={name}
+      description={description}
+      websiteUrl={websiteUrl}
+      instagramUsername={instagramUsername}
+      avatarFileId={avatarFileId}
+      isUploaded={isUploaded}
+      handleUploadChange={handleUploadChange}
+      handleSubmit={handleSubmit}
+    />
   );
 }
