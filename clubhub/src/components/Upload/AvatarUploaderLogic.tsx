@@ -9,10 +9,10 @@ interface AvatarUploaderProps {
   onUploadChange: (isUploaded: boolean) => void;
 }
 
-const AvatarUploader: React.FC<AvatarUploaderProps> = ({
+export default function AvatarUploader({
   id,
   onUploadChange,
-}) => {
+}: AvatarUploaderProps) {
   const { uploadedUrl, isLoading, uploadAvatar } = useUploadAvatar();
 
   useEffect(() => {
@@ -32,6 +32,4 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
       uploadedUrl={uploadedUrl}
     />
   );
-};
-
-export default AvatarUploader;
+}

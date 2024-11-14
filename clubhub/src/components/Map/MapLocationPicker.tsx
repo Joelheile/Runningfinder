@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from "react";
 import LocationPicker from "location-picker";
 import Script from "next/script";
+import { useEffect, useRef, useState } from "react";
 
 interface MapLocationPickerProps {
   onSelect: (lat: number, lng: number) => void;
@@ -8,11 +8,11 @@ interface MapLocationPickerProps {
   location: { lat: number; lng: number };
 }
 
-export const MapLocationPicker: React.FC<MapLocationPickerProps> = ({
+export default function MapLocationPicker({
   onSelect,
   onCancel,
   location,
-}) => {
+}: MapLocationPickerProps) {
   const [isScriptLoaded, setIsScriptLoaded] = useState(false);
   const mapRef = useRef<LocationPicker | null>(null);
 
@@ -37,7 +37,7 @@ export const MapLocationPicker: React.FC<MapLocationPickerProps> = ({
       },
       {
         zoom: 12,
-      },
+      }
     );
 
     const idleListener = google.maps.event.addListener(
@@ -46,7 +46,7 @@ export const MapLocationPicker: React.FC<MapLocationPickerProps> = ({
       function (event: google.maps.MapMouseEvent) {
         const currentLocation = mapRef.current!.getMarkerPosition();
         onSelect(currentLocation.lat, currentLocation.lng);
-      },
+      }
     );
 
     return () => {
@@ -73,4 +73,4 @@ export const MapLocationPicker: React.FC<MapLocationPickerProps> = ({
       </p>
     </div>
   );
-};
+}
