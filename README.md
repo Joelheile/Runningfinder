@@ -29,12 +29,12 @@ Tired of running alone? Got overwhelmed with all the running clubs?
     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
     <li><a href="#entity-relationship-er-diagram">ER Model</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
+       <li><a href="#static-code-analysis">Static Code Analysis</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
@@ -57,6 +57,8 @@ This section should list any major frameworks/libraries used to bootstrap your p
 - [![React][React.js]][React-url]
 - [![Drizzle][Drizzle]][Drizzle-url]
 - [![Jest][Jest]][Jest-url]
+- ![TailwindCSS][TailwindCSS]
+- [![Neon][Neon-tech]][Neon-tech-url]
 
 [Drizzle]: https://img.shields.io/badge/Drizzle-000000?style=for-the-badge&logo=drizzle&logoColor=white
 [Drizzle-url]: https://drizzle.team/
@@ -285,7 +287,16 @@ erDiagram
 
 <!-- STATIC CODE ANALYSIS -->
 
-For
+## Static Code Analysis
+
+I use ESLint for static code analysis. Mostly running it before pulling my branch, it has helped me to catch bugs and errors before they get merged into the main branch.
+It is also a great tool to stay consistent. For example having a consistent Image tag and not switching.
+
+**You can run it using:**
+
+```
+pnpm run lint
+```
 
 <!-- LICENSE -->
 
@@ -309,9 +320,9 @@ Project Link: [https://github.com/Joelheile/ClubHub](https://github.com/Joelheil
 
 ## Acknowledgments
 
-Use this space to list resources you find helpful and would like to give credit to. I've included a few of my favorites to kick things off!
+These are tools I used the most while developing:
 
-- [Choose an Open Source License](https://choosealicense.com)
+- [ShadCN UI components](https://choosealicense.com)
 - [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
 - [Malven's Flexbox Cheatsheet](https://flexbox.malven.co/)
 - [Malven's Grid Cheatsheet](https://grid.malven.co/)
@@ -342,5 +353,5 @@ Use this space to list resources you find helpful and would like to give credit 
 [Next-url]: https://nextjs.org/
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
 [React-url]: https://reactjs.org/
-
-[
+[TailwindCSS]: https://img.shields.io/badge/tailwindcss-000000?style=for-the-badge&logo=tailwindcss&logoColor=white
+[TailwindCSS-url]: https://tailwindcss.com/
