@@ -114,7 +114,7 @@ export async function PUT(
  *         description: Internal Server Error.
  *
  *   put:
-*     tags:
+ *     tags:
  *       - clubs
  *     summary: Update a club by slug.
  *     parameters:

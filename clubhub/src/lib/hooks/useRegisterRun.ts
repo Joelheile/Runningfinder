@@ -21,11 +21,10 @@ const registerRun = async ({ runId, userId }: UseRegisterRunParams) => {
 
   if (response.status == 409) {
     toast("Already registered for run", { icon: "👟" });
-  } else if (!response.ok){
+  } else if (!response.ok) {
     toast.error("Failed to register for run");
     throw new Error("Failed to register for run");
-  }else if (response.ok){
-
+  } else if (response.ok) {
     toast.success("Successfully registered for run");
   }
 

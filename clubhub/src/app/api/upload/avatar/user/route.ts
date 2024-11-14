@@ -83,7 +83,7 @@ export async function DELETE(request: Request) {
  *   delete:
  *     summary: Delete a user avatar.
  *     tags:
-*       - upload
+ *       - upload
  *     requestBody:
  *       required: true
  *       content:

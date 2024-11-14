@@ -198,7 +198,7 @@ export async function DELETE(request: Request) {
  *                         type: number
  *       500:
  *         description: Internal Server Error
- *   
+ *
  *   post:
  *     summary: Create a new run
  *     tags:
@@ -241,7 +241,7 @@ export async function DELETE(request: Request) {
  *         description: Run created successfully
  *       500:
  *         description: Internal Server Error
- * 
+ *
  *   delete:
  *     summary: Delete a run
  *     tags:
