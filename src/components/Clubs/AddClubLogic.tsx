@@ -67,6 +67,12 @@ export default function AddClub() {
       instagramUsername={instagramUsername}
       avatarFileId={avatarFileId}
       isUploaded={isUploaded}
+      handleNameChange={(e) => setName(e.target.value)}
+      handleDescriptionChange={(e) => setDescription(e.target.value)}
+      handleWebsiteUrlChange={(e) => setWebsiteUrl(e.target.value)}
+      handleInstagramUsernameChange={(e) =>
+        setInstagramUsername(e.target.value)
+      }
       handleUploadChange={handleUploadChange}
       handleSubmit={handleSubmit}
     />
