@@ -17,7 +17,6 @@ export default function ClubDashboard({
 
   const { data: club, isLoading, isError, error } = useFetchClubBySlug(slug);
 
-  console.log("club id", club?.id);
   const {
     data: unFilteredRuns,
     isLoading: runsLoading,
@@ -25,8 +24,6 @@ export default function ClubDashboard({
   } = useFetchRuns({});
 
   const runs = unFilteredRuns?.filter((run) => run.clubId === club?.id);
-  console.log("runs", runs);
-  toast.success(runs?.map((run) => run.name).join(", ") || "No runs found");
 
   const handleShare = async () => {
     try {
