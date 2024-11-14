@@ -322,14 +322,9 @@ Project Link: [https://github.com/Joelheile/ClubHub](https://github.com/Joelheil
 
 These are tools I used the most while developing:
 
-- [ShadCN UI components](https://choosealicense.com)
-- [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
-- [Malven's Flexbox Cheatsheet](https://flexbox.malven.co/)
-- [Malven's Grid Cheatsheet](https://grid.malven.co/)
-- [Img Shields](https://shields.io)
-- [GitHub Pages](https://pages.github.com)
-- [Font Awesome](https://fontawesome.com)
-- [React Icons](https://react-icons.github.io/react-icons/search)
+- [ShadCN UI components](https://ui.shadcn.com/docs/components/)
+- [Gitmoji commit guidelines](https://gitmoji.dev/)
+- [Lucide Icons](https://lucide.dev/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
