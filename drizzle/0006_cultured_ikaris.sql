@@ -1,0 +1,1 @@
+ALTER TABLE "club" RENAME COLUMN "profile_image_url" TO "avatar_url";
