@@ -27,7 +27,10 @@ export default function RunCardUI({
 }: RunCardUIProps) {
   return (
     <div className="mt-2">
-      <strong className="ml-1">{weekdays[intervalDay - 1].name}</strong>
+      {intervalDay ? (
+        <strong className="ml-1">{weekdays[intervalDay - 1].name}</strong>
+      ) : null}
+
       <div className="flex bg-white mt-2 border justify-between p-2 rounded-md">
         <div className="flex gap-x-5 items-center pl-2">
           <LikeButton onClick={handleClick} isFilled={likeFilled} />
