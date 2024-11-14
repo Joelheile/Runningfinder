@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { useDropzone } from "react-dropzone";
 import { LoadingSpinner } from "../UI/loadingSpinner";
 
@@ -15,18 +16,25 @@ export default function AvatarUploaderUI({
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
   return (
-    <div {...getRootProps()} className="p-6 border-2 border-dashed rounded-lg">
+    <div
+      {...getRootProps()}
+      className="p-6 w-full border-2 border-dashed rounded-lg"
+    >
       <input {...getInputProps()} />
       {!uploadedUrl ? (
         <p>Drag & drop a file here, or click to select one</p>
       ) : (
-        <>
-          <img
-            src={uploadedUrl}
-            alt="Uploaded file"
-            className="h-32 w-auto rounded-md"
-          />
-        </>
+        <div className="flex justify-center">
+          <div className="lg:w-80 sm:w-40">
+            <Image
+              width={500}
+              height={500}
+              src={uploadedUrl}
+              alt="Uploaded file"
+              className="h-32 w-auto object-cover rounded-md"
+            />
+          </div>
+        </div>
       )}
 
       {isLoading && (

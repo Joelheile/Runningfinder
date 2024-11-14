@@ -4,7 +4,7 @@ import {
   integer,
   pgTable,
   text,
-  timestamp
+  timestamp,
 } from "drizzle-orm/pg-core";
 import { clubs } from "./clubs";
 import { users } from "./users";

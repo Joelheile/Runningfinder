@@ -16,12 +16,6 @@ export default function MapLocationPicker({
   const [isScriptLoaded, setIsScriptLoaded] = useState(false);
   const mapRef = useRef<LocationPicker | null>(null);
 
-  useEffect(() => {
-    if (isScriptLoaded && typeof window !== "undefined") {
-      initializeMap();
-    }
-  }, [isScriptLoaded]);
-
   const initializeMap = () => {
     if (typeof google === "undefined") {
       console.error("Google Maps JavaScript API not loaded.");
@@ -37,7 +31,7 @@ export default function MapLocationPicker({
       },
       {
         zoom: 12,
-      }
+      },
     );
 
     const idleListener = google.maps.event.addListener(
@@ -46,13 +40,19 @@ export default function MapLocationPicker({
       function (event: google.maps.MapMouseEvent) {
         const currentLocation = mapRef.current!.getMarkerPosition();
         onSelect(currentLocation.lat, currentLocation.lng);
-      }
+      },
     );
 
     return () => {
       google.maps.event.removeListener(idleListener);
     };
   };
+
+  useEffect(() => {
+    if (isScriptLoaded && typeof window !== "undefined") {
+      initializeMap();
+    }
+  }, [isScriptLoaded]);
 
   return (
     <div className="App mt-8">
@@ -69,7 +69,7 @@ export default function MapLocationPicker({
         className="border rounded"
       />
       <p>
-        Location: {location.lat}, {location.lng}
+        <strong>Location:</strong> {location.lat}, {location.lng}
       </p>
     </div>
   );

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import ClubIconBar from "../Icons/ClubIconBar";
 
 interface ClubCardProps {
@@ -16,12 +17,14 @@ export default function ClubCard({
   websiteUrl,
 }: ClubCardProps) {
   return (
-    <div className="flex flex-col mt-5 max-w-full   sm:flex-row justify-center self-center">
-      <div className="flex flex-col sm:flex-row bg-white gap-x-5 border p-3 rounded-md ">
-        <img
+    <div className="flex flex-col mt-5 sm:flex-row justify-center self-center w-auto max-w-2xl rounded-lg  min-h-44">
+      <div className="flex flex-col lg:flex-row bg-white gap-x-5 border p-3 rounded-md w-full">
+        <Image
+          width={500}
+          height={500}
           src={avatarUrl || "/assets/default-fallback-image.png"}
           alt={name}
-          className="rounded-md border w-full sm:w-1/3 lg:w-1/5 h-auto object-cover mb-4 sm:mb-0 sm:mr-6"
+          className="rounded-md border w-full sm:w-1/3 lg:w-1/4 h-auto object-cover mb-4 sm:mb-0 sm:mr-6"
         />
         <div className="flex flex-col justify-between">
           <div>

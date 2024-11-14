@@ -4,7 +4,7 @@ import {
   pgTable,
   primaryKey,
   text,
-  timestamp
+  timestamp,
 } from "drizzle-orm/pg-core";
 import type { AdapterAccountType } from "next-auth/adapters";
 import { users } from "./users";
