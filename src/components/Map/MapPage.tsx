@@ -1,0 +1,42 @@
+"use client";
+import Map from "@/components/Map/MapLogic";
+import { useFetchClubs } from "@/lib/hooks/clubs/useFetchClubs";
+import { useFetchRuns } from "@/lib/hooks/runs/useFetchRuns";
+import { useState } from "react";
+
+import { Session } from "next-auth";
+import FilterBar from "../Runs/FilterBarLogic";
+
+const MapPage = ({ session }: { session: Session | null }) => {
+  const [filters, setFilters] = useState<{
+    minDistance?: number;
+    maxDistance?: number;
+    days?: number[];
+    difficulty?: string;
+  }>({}); // No filters at initial render
+
+  const { data: runs, isLoading, error } = useFetchRuns(filters);
+
+  const handleFilterChange = (newFilters: {
+    minDistance?: number;
+    maxDistance?: number;
+    days?: number[];
+    difficulty?: string;
+  }) => {
+    setFilters(newFilters);
+  };
+
+  const { data: clubs } = useFetchClubs();
+
+  return (
+    <div className="h-screen">
+      <FilterBar onFilterChange={handleFilterChange} />
+      <Map runs={runs || []} clubs={clubs || []} />
+      <script id="session-info" type="application/json">
+        {JSON.stringify(session)}
+      </script>
+    </div>
+  );
+};
+
+export default MapPage;

@@ -1,0 +1,1 @@
+ALTER TABLE "club" ADD COLUMN "slug" text NOT NULL;
