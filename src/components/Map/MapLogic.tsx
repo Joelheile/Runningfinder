@@ -1,6 +1,7 @@
 import { Club } from "@/lib/types/Club";
 import { Run } from "@/lib/types/Run";
 import { Loader } from "@googlemaps/js-api-loader";
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import ReactDOMServer from "react-dom/server";
@@ -19,13 +20,13 @@ const Map = ({ runs, clubs }: { runs: Run[]; clubs: Club[] }) => {
       });
 
       const { Map } = (await loader.importLibrary(
-        "maps",
+        "maps"
       )) as google.maps.MapsLibrary;
       const { Marker } = (await loader.importLibrary(
-        "marker",
+        "marker"
       )) as google.maps.MarkerLibrary;
       const { InfoWindow } = (await loader.importLibrary(
-        "maps",
+        "maps"
       )) as google.maps.MapsLibrary;
 
       const defaultCenter = { lat: 52.5155235, lng: 13.4049124 };
@@ -65,19 +66,23 @@ const Map = ({ runs, clubs }: { runs: Run[]; clubs: Club[] }) => {
             const club = clubs.find((club) => club.id === run.clubId);
             infoWindow.setContent(
               ReactDOMServer.renderToString(
-                <div className="cursor-pointer">
+                <div className="cursor-pointer center">
                   <Link href={`/clubs/${club?.slug}`}>
-                    <img
-                      src={club?.avatarUrl}
+                    <Image
+                      width={100}
+                      height={100}
+                      src={
+                        club?.avatarUrl || "/assets/default-fallback-image.png"
+                      }
                       alt={run.name}
-                      className="h-20 w-auto mb-2  object-cover rounded-sm"
+                      className=" mb-2  object-cover rounded-sm"
                     />
                     <strong>{run.name}</strong>
                     <p>{run.distance} km</p>
                     <p className="capitalize">{run.difficulty}</p>
                   </Link>
-                </div>,
-              ),
+                </div>
+              )
             );
             infoWindow.open(map, marker);
           });
