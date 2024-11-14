@@ -1,6 +1,6 @@
 "use client";
 import AddRun from "@/components/Runs/AddRunLogic";
-import AddRunSkeleton from "@/components/Runs/addRunSkeleton";
+import AddRunSkeleton from "@/components/Runs/AddRunSkeleton";
 
 import { useFetchClubBySlug } from "@/lib/hooks/clubs/useFetchClubs";
 import { useParams } from "next/navigation";
