@@ -8,7 +8,7 @@ import { useParams, useRouter } from "next/navigation";
 
 import { useFetchRunsByClubId } from "@/lib/hooks/runs/useFetchRunsByClubId";
 import toast from "react-hot-toast";
-import RunCard from "../Runs/RunCard";
+import RunCard from "../Runs/RunCardLogic";
 import ClubCard from "./ClubCard";
 import ClubCardSkeleton from "./ClubCardSkeleton";
 
