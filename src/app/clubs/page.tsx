@@ -25,7 +25,7 @@ export default function ClubsDashboard() {
       <Link href="/clubs/add">
         <Button>Add Club</Button>
       </Link>
-      <div className="grid grid-cols-3 gap-x-5 p-5">
+      <div className="grid grid-cols-3 gap-x-5 p-5s">
         {clubs?.map((club) => (
           <Link key={club.id} href={`/clubs/${club.slug}`}>
             <ClubCard
