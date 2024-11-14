@@ -36,7 +36,7 @@ export async function POST(request: Request) {
       .select()
       .from(registrations)
       .where(
-        and(eq(registrations.userId, userId), eq(registrations.runId, runId))
+        and(eq(registrations.userId, userId), eq(registrations.runId, runId)),
       )
       .execute();
 
@@ -44,10 +44,9 @@ export async function POST(request: Request) {
       console.log("Registration already exists");
       return NextResponse.json(
         { message: "Registration already exists" },
-        { status: 409 }
+        { status: 409 },
       );
     }
-
 
     const res = await db
       .insert(registrations)
@@ -65,7 +64,7 @@ export async function POST(request: Request) {
     console.error("Error creating registration:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -76,7 +75,9 @@ export async function DELETE(request: Request) {
   try {
     const res = await db
       .delete(registrations)
-      .where(and(eq(registrations.userId, userId), eq(registrations.runId, runId)))
+      .where(
+        and(eq(registrations.userId, userId), eq(registrations.runId, runId)),
+      )
       .execute();
 
     return NextResponse.json(res);

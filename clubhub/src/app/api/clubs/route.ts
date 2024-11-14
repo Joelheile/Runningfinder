@@ -1,5 +1,3 @@
-
-
 import { db } from "../../../lib/db/db";
 import { clubs as club } from "../../../lib/db/schema/clubs";
 import { avatars } from "../../../lib/db/schema/users";
