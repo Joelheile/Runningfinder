@@ -1,8 +1,8 @@
 "use client";
 
-import { useUploadAvatar } from "@/lib/hooks/useUploadAvatar";
-import AvatarUploaderUI from "./AvatarUploaderUI";
+import { useUploadAvatar } from "@/lib/hooks/avatars/useUploadAvatar";
 import { useEffect } from "react";
+import AvatarUploaderUI from "./AvatarUploaderUI";
 
 interface AvatarUploaderProps {
   id: string;

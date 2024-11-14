@@ -1,4 +1,4 @@
-import { useAddRun } from "@/lib/hooks/useAddRun";
+import { useAddRun } from "@/lib/hooks/runs/useAddRun";
 import { Club } from "@/lib/types/Club";
 import { Run } from "@/lib/types/Run";
 import { weekdays } from "@/lib/weekdays";

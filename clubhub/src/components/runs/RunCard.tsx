@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-import { useCancelRegistration } from "@/lib/hooks/useCancelRegistration";
-import { useRegisterRun } from "@/lib/hooks/useRegisterRun";
+import { useCancelRegistration } from "@/lib/hooks/registrations/useCancelRegistration";
+import { useRegisterRun } from "@/lib/hooks/registrations/useRegisterRun";
 import { weekdays } from "@/lib/weekdays";
 import { redirect } from "next/navigation";
 import LikeButton from "../icons/LikeButton";

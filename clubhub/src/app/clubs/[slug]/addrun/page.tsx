@@ -1,8 +1,8 @@
 "use client";
 import AddRun from "@/components/Runs/AddRun";
-import { useParams } from "next/navigation";
-import { useFetchClubBySlug } from "@/lib/hooks/useFetchClubs";
 import AddRunSkeleton from "@/components/Runs/AddRunSkeleton";
+import { useFetchClubBySlug } from "@/lib/hooks/clubs/useFetchClubs";
+import { useParams } from "next/navigation";
 
 export default function AddRunsPage() {
   const slug = useParams().slug.toString();

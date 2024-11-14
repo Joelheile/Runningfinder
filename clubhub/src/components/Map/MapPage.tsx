@@ -1,7 +1,7 @@
 "use client";
 import Map from "@/components/Map/MapLogic";
-import { useFetchClubs } from "@/lib/hooks/useFetchClubs";
-import { useFetchRuns } from "@/lib/hooks/useFetchRuns";
+import { useFetchClubs } from "@/lib/hooks/clubs/useFetchClubs";
+import { useFetchRuns } from "@/lib/hooks/runs/useFetchRuns";
 import { useState } from "react";
 
 import { Session } from "next-auth";

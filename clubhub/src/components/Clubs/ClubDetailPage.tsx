@@ -1,12 +1,12 @@
 "use client";
 
-import { useFetchClubBySlug } from "@/lib/hooks/useFetchClubs";
+import { useFetchClubBySlug } from "@/lib/hooks/clubs/useFetchClubs";
 
 import { ChevronLeft, Plus, Share } from "lucide-react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 
-import { useFetchRunsByClubId } from "@/lib/hooks/useFetchRunsByClubId";
+import { useFetchRunsByClubId } from "@/lib/hooks/runs/useFetchRunsByClubId";
 import toast from "react-hot-toast";
 import RunCard from "../runs/RunCard";
 import ClubCard from "./ClubCard";

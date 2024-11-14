@@ -1,9 +1,9 @@
-import { useState } from "react";
-import Link from "next/link";
-import ClubIconBar from "../Icons/ClubIconBar";
-import { useFetchClubs } from "@/lib/hooks/useFetchClubs";
-import { ChevronRight } from "lucide-react";
+import { useFetchClubs } from "@/lib/hooks/clubs/useFetchClubs";
 import { Run } from "@/lib/types/Run";
+import { ChevronRight } from "lucide-react";
+import Link from "next/link";
+import { useState } from "react";
+import ClubIconBar from "../Icons/ClubIconBar";
 
 import ClubHeaderSkeleton from "./ClubHeaderSkeleton";
 
