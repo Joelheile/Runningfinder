@@ -144,8 +144,6 @@ _To skip the process of setting up different API Keys in Google and Github oAuth
     AUTH_GITHUB_SECRET=7242a21ade85ff72b0f495f9bc7b79148cf8106c
 
     AUTH_SECRET="QXk7UrfIiNGtVeZmRqoIs40pBSrVJ4lOuftPg8sOROI="
-
-    NEXT_PUBLIC_TEST_PASSWORD="123456789"
    ```
 
 4. Run project

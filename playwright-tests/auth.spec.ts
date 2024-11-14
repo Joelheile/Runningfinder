@@ -1,8 +1,6 @@
 import { expect, test } from "@playwright/test";
 
 test("resend auth", async ({ page, browser }) => {
-  if (!process.env.NEXT_PUBLIC_TEST_PASSWORD)
-    throw new TypeError("Missing TEST_PASSWORD");
 
   await test.step("should send resend mail", async () => {
     await page.goto("http://localhost:3000/api/auth/signin");
