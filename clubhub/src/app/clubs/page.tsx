@@ -1,7 +1,7 @@
 "use client";
 import ClubCard from "@/components/Clubs/ClubCard";
 import { Button } from "@/components/UI/button";
-import { useFetchClubs } from "@/lib/hooks/useFetchClubs";
+import { useFetchClubs } from "@/lib/hooks/clubs/useFetchClubs";
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
