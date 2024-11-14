@@ -68,3 +68,75 @@ export async function PUT(
     );
   }
 }
+
+/**
+ * @swagger
+ * /api/clubs/{slug}:
+ *   get:
+ *     summary: Retrieve a club by slug.
+ *     parameters:
+ *       - in: path
+ *         name: slug
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Returns the club data.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                 name:
+ *                   type: string
+ *                 slug:
+ *                   type: string
+ *                 description:
+ *                   type: string
+ *                 locationLng:
+ *                   type: number
+ *                 locationLat:
+ *                   type: number
+ *                 instagramUsername:
+ *                   type: string
+ *                 websiteUrl:
+ *                   type: string
+ *                 avatarUrl:
+ *                   type: string
+ *       404:
+ *         description: Club not found.
+ *       500:
+ *         description: Internal Server Error.
+ *
+ *   put:
+ *     summary: Update a club by slug.
+ *     parameters:
+ *       - in: path
+ *         name: slug
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               locationLat:
+ *                 type: number
+ *               locationLng:
+ *                 type: number
+ *     responses:
+ *       200:
+ *         description: Club updated successfully.
+ *       500:
+ *         description: Internal Server Error.
+ */
