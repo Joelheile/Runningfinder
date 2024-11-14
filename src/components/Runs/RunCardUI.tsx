@@ -25,6 +25,13 @@ export default function RunCardUI({
   likeFilled,
   handleClick,
 }: RunCardUIProps) {
+  const difficultyColor =
+    difficulty == "easy"
+      ? "bg-green-300"
+      : difficulty == "intermediate"
+        ? "bg-yellow-300"
+        : "bg-red-300";
+
   return (
     <div className="mt-2">
       {intervalDay ? (
@@ -40,7 +47,9 @@ export default function RunCardUI({
           <p className="text-medium">|</p>
           <p>{distance} km</p>
           <p className="text-medium">|</p>
-          <p>{difficulty}</p>
+          <p className={`p-1 px-2 rounded-md ${difficultyColor}`}>
+            {difficulty}
+          </p>
         </div>
         <div>
           <Button
