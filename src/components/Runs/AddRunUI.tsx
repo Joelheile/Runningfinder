@@ -1,5 +1,6 @@
 import { weekdays } from "@/lib/weekdays";
-import { MapLocationPicker } from "../Map/MapLocationPicker";
+
+import MapLocationPicker from "../Map/MapLocationPicker";
 import { Button } from "../UI/button";
 import { Input } from "../UI/input";
 import { Label } from "../UI/label";
