@@ -1,12 +1,11 @@
+import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import NextAuth from "next-auth";
 import GitHub from "next-auth/providers/github";
-import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import Resend from "next-auth/providers/resend";
 import { db } from "../db/db";
-import { sendVerificationRequest } from "./sendMailRequest";
-import { users } from "../db/schema/users";
 import { accounts, sessions, verificationTokens } from "../db/schema/auth";
-import Credentials from "next-auth/providers/credentials";
+import { users } from "../db/schema/users";
+import { sendVerificationRequest } from "./sendMailRequest";
 
 const providers = [
   GitHub,

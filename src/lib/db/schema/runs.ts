@@ -1,16 +1,13 @@
 import {
-  pgTable,
-  uuid,
-  timestamp,
-  pgEnum,
-  decimal,
-  text,
-  integer,
   boolean,
-  time,
+  decimal,
+  integer,
+  pgTable,
+  text,
+  timestamp
 } from "drizzle-orm/pg-core";
-import { users } from "./users";
 import { clubs } from "./clubs";
+import { users } from "./users";
 
 export const registrations = pgTable("registrations", {
   id: text("id").primaryKey().notNull(),
