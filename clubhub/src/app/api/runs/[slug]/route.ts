@@ -8,12 +8,10 @@ export async function GET(
   { params }: { params: { slug: string } },
 ) {
   const { slug } = params;
-  console.log("api slug", slug);
   if (!slug) {
     return NextResponse.json({ error: "slug is required" }, { status: 400 });
   }
   try {
-    console.log("API: Fetching runs with club ID:", slug);
     const res = await db
       .select({
         id: runs.id,
@@ -34,7 +32,7 @@ export async function GET(
       .from(runs)
       .where(eq(runs.clubId, slug))
       .execute();
-    console.log("API: Fetched runs with club ID:", res);
+
     return NextResponse.json(res);
   } catch (error) {
     console.error("Error fetching runs with clubs:", error);

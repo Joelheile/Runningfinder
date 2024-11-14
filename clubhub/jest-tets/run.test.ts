@@ -9,11 +9,9 @@ describe("API Run Routes", () => {
     const request = new Request("https://localhost:3000/api/runs");
     const response = await GET(request);
     const body = await response.json();
-    console.log("response", body);
     expect(response.status).toBe(200);
 
     clubId = body[0].clubId;
-    console.log("clubId", clubId);
   });
 
   it("should add a run with status 200", async () => {
@@ -30,12 +28,10 @@ describe("API Run Routes", () => {
     } as any;
 
     const response = await POST(requestObj);
-    console.log("testing response", response.json());
     expect(response.status).toBe(201);
   });
   it("should delete club after adding with status 200", async () => {
     const reponse = await DELETE({ json: async () => ({ id: runId }) } as any);
     expect(reponse.status).toBe(200);
-    console.log("run deleted");
   });
 });

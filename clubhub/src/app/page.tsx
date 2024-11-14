@@ -5,7 +5,6 @@ import Link from "next/link";
 
 export default async function HomePage() {
   const session = await auth();
-  console.log("auth", session);
 
   return (
     <div>

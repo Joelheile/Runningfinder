@@ -52,7 +52,7 @@ export async function GET(request: Request) {
       })
       .from(runs);
 
-    // Initialize conditions array
+    // Initialize array
     const conditions = [eq(runs.membersOnly, false)];
 
     // Validate and add distance condition
@@ -75,13 +75,13 @@ export async function GET(request: Request) {
       conditions.push(inArray(runs.intervalDay, validDays));
     }
 
-    // Validate difficulty
+
     const validDifficulties = ["easy", "intermediate", "advanced"];
     if (difficulty && validDifficulties.includes(difficulty)) {
       conditions.push(eq(runs.difficulty, difficulty));
     }
 
-    // Apply conditions
+    // Query based on conditions
     if (conditions.length > 1) {
       baseQuery.where(and(...conditions));
     } else {
@@ -97,7 +97,6 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   const runData = await request.json();
-  console.log("runData", runData);
 
   try {
     const newRun = {

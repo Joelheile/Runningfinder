@@ -17,7 +17,6 @@ const ClubDetailPage = ({ userId }: { userId: string | undefined }) => {
   const slug = useParams().slug.toString();
 
   const { data: club, isLoading, isError, error } = useFetchClubBySlug(slug);
-  console.log("Fetched club data:", club);
 
   const {
     data: runs,
