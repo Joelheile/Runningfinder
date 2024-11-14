@@ -127,3 +127,137 @@ export async function DELETE(request: Request) {
     return handleErrorResponse(error, "Error deleting run");
   }
 }
+
+/**
+ * @swagger
+ * /api/runs:
+ *   get:
+ *     summary: Retrieve a list of runs
+ *     tags:
+ *       - runs
+ *     description: Fetch runs based on various query parameters such as distance, interval days, and difficulty.
+ *     parameters:
+ *       - in: query
+ *         name: minDistance
+ *         schema:
+ *           type: integer
+ *         description: Minimum distance of the run in meters
+ *       - in: query
+ *         name: maxDistance
+ *         schema:
+ *           type: integer
+ *         description: Maximum distance of the run in meters
+ *       - in: query
+ *         name: interval_day
+ *         schema:
+ *           type: string
+ *         description: Comma-separated list of interval days (1-7)
+ *       - in: query
+ *         name: difficulty
+ *         schema:
+ *           type: string
+ *           enum: [easy, intermediate, advanced]
+ *         description: Difficulty level of the run
+ *     responses:
+ *       200:
+ *         description: A list of runs
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                   name:
+ *                     type: string
+ *                   clubId:
+ *                     type: string
+ *                   difficulty:
+ *                     type: string
+ *                   date:
+ *                     type: string
+ *                     format: date-time
+ *                   interval:
+ *                     type: string
+ *                   intervalDay:
+ *                     type: integer
+ *                   startDescription:
+ *                     type: string
+ *                   startTime:
+ *                     type: string
+ *                   distance:
+ *                     type: number
+ *                   location:
+ *                     type: object
+ *                     properties:
+ *                       lat:
+ *                         type: number
+ *                       lng:
+ *                         type: number
+ *       500:
+ *         description: Internal Server Error
+ *   
+ *   post:
+ *     summary: Create a new run
+ *     tags:
+ *       - runs
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               clubId:
+ *                 type: string
+ *               difficulty:
+ *                 type: string
+ *               date:
+ *                 type: string
+ *                 format: date-time
+ *               interval:
+ *                 type: string
+ *               intervalDay:
+ *                 type: integer
+ *               startDescription:
+ *                 type: string
+ *               startTime:
+ *                 type: string
+ *               distance:
+ *                 type: number
+ *               location:
+ *                 type: object
+ *                 properties:
+ *                   lat:
+ *                     type: number
+ *                   lng:
+ *                     type: number
+ *     responses:
+ *       201:
+ *         description: Run created successfully
+ *       500:
+ *         description: Internal Server Error
+ * 
+ *   delete:
+ *     summary: Delete a run
+ *     tags:
+ *       - runs
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               id:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Run deleted successfully
+ *       500:
+ *         description: Internal Server Error
+ */

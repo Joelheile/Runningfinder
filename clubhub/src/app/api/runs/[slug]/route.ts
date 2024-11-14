@@ -44,3 +44,62 @@ export async function GET(
     );
   }
 }
+
+/**
+ * @swagger
+ * /api/runs/{slug}:
+ *   get:
+ *     summary: Retrieve runs for a specific club
+ *     tags:
+ *       - runs
+ *     description: Fetches all runs associated with a given club ID (slug).
+ *     parameters:
+ *       - in: path
+ *         name: slug
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The club ID (slug) to fetch runs for
+ *     responses:
+ *       200:
+ *         description: A list of runs for the specified club
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                   name:
+ *                     type: string
+ *                   clubId:
+ *                     type: string
+ *                   difficulty:
+ *                     type: string
+ *                   date:
+ *                     type: string
+ *                     format: date-time
+ *                   interval:
+ *                     type: string
+ *                   intervalDay:
+ *                     type: integer
+ *                   startDescription:
+ *                     type: string
+ *                   startTime:
+ *                     type: string
+ *                   distance:
+ *                     type: number
+ *                   location:
+ *                     type: object
+ *                     properties:
+ *                       lat:
+ *                         type: number
+ *                       lng:
+ *                         type: number
+ *       400:
+ *         description: Bad Request - slug is required
+ *       500:
+ *         description: Internal Server Error
+ */
