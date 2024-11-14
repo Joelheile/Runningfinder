@@ -73,6 +73,8 @@ export async function PUT(
  * @swagger
  * /api/clubs/{slug}:
  *   get:
+ *     tags:
+ *       - clubs
  *     summary: Retrieve a club by slug.
  *     parameters:
  *       - in: path
@@ -112,6 +114,8 @@ export async function PUT(
  *         description: Internal Server Error.
  *
  *   put:
+*     tags:
+ *       - clubs
  *     summary: Update a club by slug.
  *     parameters:
  *       - in: path

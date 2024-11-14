@@ -98,6 +98,8 @@ export async function DELETE(request: Request) {
  * /api/clubs:
  *   get:
  *     summary: Retrieve a list of clubs.
+ *     tags:
+ *       - clubs
  *     responses:
  *       200:
  *         description: A list of clubs.
@@ -137,6 +139,8 @@ export async function DELETE(request: Request) {
 
  *   post:
  *     summary: Create a new club.
+ *     tags:
+ *       - clubs
  *     requestBody:
  *       required: true
  *       content:
@@ -170,6 +174,8 @@ export async function DELETE(request: Request) {
 
  *   delete:
  *     summary: Delete a club.
+ *     tags:
+ *       - clubs
  *     requestBody:
  *       required: true
  *       content:
