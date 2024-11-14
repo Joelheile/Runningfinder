@@ -1,3 +1,9 @@
+import { Button } from "../UI/button";
+import { Input } from "../UI/input";
+import { Label } from "../UI/label";
+import { Textarea } from "../UI/textarea";
+import AvatarUploader from "../Upload/AvatarUploaderLogic";
+
 export default function AddClubUI() {
   return (
     <div>
