@@ -11,7 +11,6 @@ const fetchRunsByClubId = async (clubId: string): Promise<Run[]> => {
 };
 
 export function useFetchRunsByClubId(clubId: string) {
-
   return useQuery({
     queryKey: ["runs", clubId],
     queryFn: () => fetchRunsByClubId(clubId),

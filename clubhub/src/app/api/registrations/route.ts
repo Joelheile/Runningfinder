@@ -56,7 +56,6 @@ export async function POST(request: Request) {
       })
       .execute();
 
-
     return NextResponse.json(res);
   } catch (error) {
     console.error("Error creating registration:", error);
