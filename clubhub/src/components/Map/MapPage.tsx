@@ -5,7 +5,7 @@ import { useFetchRuns } from "@/lib/hooks/runs/useFetchRuns";
 import { useState } from "react";
 
 import { Session } from "next-auth";
-import FilterBar from "../runs/FilterBarLogic";
+import FilterBar from "../Runs/FilterBarLogic";
 
 const MapPage = ({ session }: { session: Session | null }) => {
   const [filters, setFilters] = useState<{
