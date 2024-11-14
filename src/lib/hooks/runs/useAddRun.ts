@@ -1,6 +1,7 @@
+import { Run } from "@/lib/types/Run";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import { Run } from "../../types/Run";
+
 
 const addRun = async (newRun: Run): Promise<Run> => {
   const response = await fetch("/api/runs", {

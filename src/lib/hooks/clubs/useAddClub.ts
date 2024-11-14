@@ -1,6 +1,7 @@
+import { Club } from "@/lib/types/Club";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { v4 } from "uuid";
-import { Club } from "../types/Club";
+
 
 const addClub = async (newClub: Club): Promise<Club> => {
   const response = await fetch("/api/clubs", {
