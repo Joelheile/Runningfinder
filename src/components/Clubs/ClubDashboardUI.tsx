@@ -93,7 +93,7 @@ export default function ClubDashboardUI({
               name={run.name}
               startDescription={run.startDescription}
               difficulty={run.difficulty}
-              distance={5}
+              distance={run.distance}
               location={run.location}
               slug={slug}
             />
