@@ -88,3 +88,102 @@ export async function DELETE(request: Request) {
     );
   }
 }
+
+/**
+ * @swagger
+ * /api/registrations:
+ *   get:
+ *     summary: Retrieve registrations.
+ *     tags:
+ *       - registrations
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               userId:
+ *                 type: string
+ *               runId:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: A list of registrations matching the provided userId and runId.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                   userId:
+ *                     type: string
+ *                   runId:
+ *                     type: string
+ *                   status:
+ *                     type: string
+ *       500:
+ *         description: Internal Server Error.
+ *
+ *   post:
+ *     summary: Create a new registration.
+ *     tags:
+ *       - registrations
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               userId:
+ *                 type: string
+ *               runId:
+ *                 type: string
+ *               status:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Registration created successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                 userId:
+ *                   type: string
+ *                 runId:
+ *                   type: string
+ *                 status:
+ *                   type: string
+ *       409:
+ *         description: Registration already exists.
+ *       500:
+ *         description: Internal Server Error.
+ *
+ *   delete:
+ *     summary: Delete a registration.
+ *     tags:
+ *       - registrations
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               userId:
+ *                 type: string
+ *               runId:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Registration deleted successfully.
+ *       500:
+ *         description: Internal Server Error.
+ */
