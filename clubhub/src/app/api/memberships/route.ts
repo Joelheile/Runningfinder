@@ -1,7 +1,6 @@
 import { db } from "@/lib/db/db";
 import { memberships } from "@/lib/db/schema/clubs";
 
-import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 
@@ -44,3 +43,45 @@ export async function POST(request: Request) {
     );
   }
 }
+/**
+ * @swagger
+ * /api/memberships:
+ *   get:
+ *     summary: Retrieve all memberships.
+ *     tags:
+ *       - memberships
+ *     responses:
+ *       200:
+ *         description: A list of memberships.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *       500:
+ *         description: Internal Server Error.
+ *
+ *   post:
+ *     summary: Create a new membership.
+ *     tags:
+ *       - memberships
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               user_id:
+ *                 type: string
+ *               club_id:
+ *                 type: string
+ *               status:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Membership created successfully.
+ *       500:
+ *         description: Internal Server Error.
+ */
