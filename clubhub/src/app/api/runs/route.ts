@@ -75,7 +75,6 @@ export async function GET(request: Request) {
       conditions.push(inArray(runs.intervalDay, validDays));
     }
 
-
     const validDifficulties = ["easy", "intermediate", "advanced"];
     if (difficulty && validDifficulties.includes(difficulty)) {
       conditions.push(eq(runs.difficulty, difficulty));

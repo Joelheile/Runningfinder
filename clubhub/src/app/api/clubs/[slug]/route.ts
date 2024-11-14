@@ -26,14 +26,12 @@ export async function GET(
       .leftJoin(avatars, eq(club.avatarFileId, avatars.id))
       .where(eq(club.slug, params.slug));
 
-
     if (res.length === 0) {
       return NextResponse.json({ error: "Club not found" }, { status: 404 });
     }
 
     return NextResponse.json(res[0]);
   } catch (error) {
-
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 },

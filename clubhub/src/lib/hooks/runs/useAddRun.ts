@@ -3,7 +3,6 @@ import toast from "react-hot-toast";
 import { Run } from "../../types/Run";
 
 const addRun = async (newRun: Run): Promise<Run> => {
-
   const response = await fetch("/api/runs", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
