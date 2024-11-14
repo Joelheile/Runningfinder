@@ -43,3 +43,4 @@ node_modules/
 
 # vs code
 /.vscode/
+node_modules
