@@ -58,10 +58,10 @@ export default function ClubDashboardUI({
           <button type="button" onClick={onAddRun}>
             <Plus className="stroke-primary hover:bg-slate-200 rounded-sm" />
           </button>
-          <button onClick={onShare}>
+          <button type="button" onClick={onShare}>
             <Share className="stroke-primary hover:bg-slate-200 rounded-sm" />
           </button>
-          <button onClick={onDelete}>
+          <button type="button" onClick={onDelete}>
             <Trash className="stroke-primary hover:bg-slate-200  rounded-sm"></Trash>
           </button>
         </div>
