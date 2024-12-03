@@ -12,8 +12,7 @@ test('Test homescreen to create Club page using oauth', async ({ page }) => {
   await page.getByLabel('Username or email address').press('ControlOrMeta+a');
   await page.getByLabel('Username or email address').fill('joels-test');
   await page.getByLabel('Username or email address').press('Tab');
-  const password = process.env.NEXT_PUBLIC_GITHUB_TEST_PASSWORD as string;
-  await page.getByLabel('Password').fill(password);
+  await page.getByLabel('Password').fill(process.env.NEXT_PUBLIC_GITHUB_TEST_PASSWORD as string);
   await page.getByRole('button', { name: 'Sign in', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'Add Club' })).toBeVisible();
 });
