@@ -1,4 +1,5 @@
 import { weekdays } from "@/lib/weekdays";
+import { Trash } from "lucide-react";
 import LikeButton from "../Icons/LikeButton";
 import { Button } from "../UI/button";
 
@@ -12,6 +13,7 @@ interface RunCardUIProps {
   googleMapsUrl: string;
   likeFilled: boolean;
   handleRegistration: () => void;
+  handleDeleteRun: () => void;
 }
 
 export default function RunCardUI({
@@ -24,6 +26,7 @@ export default function RunCardUI({
   googleMapsUrl,
   likeFilled,
   handleRegistration,
+  handleDeleteRun,
 }: RunCardUIProps) {
   const difficultyColor =
     difficulty == "easy"
@@ -51,13 +54,16 @@ export default function RunCardUI({
             {difficulty}
           </p>
         </div>
-        <div>
+        <div className="flex gap-x-2 items-center pl-2">
           <Button
             className="min-w-28 w-auto"
             onClick={() => window.open(googleMapsUrl, "_blank")}
           >
             {startDescription}
           </Button>
+          <button type="button" className="stroke-primary" onClick={handleDeleteRun}>
+            <Trash className="stroke-primary hover:bg-slate-200 rounded-sm" />
+          </button>
         </div>
       </div>
     </div>

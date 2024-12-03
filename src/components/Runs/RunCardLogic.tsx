@@ -1,3 +1,4 @@
+import { useDeleteRun } from "@/lib/hooks/runs/useDeleteRun";
 import { useCancelRegistration } from "@/lib/hooks/registrations/useCancelRegistration";
 import { useRegisterRun } from "@/lib/hooks/registrations/useRegisterRun";
 import { redirect } from "next/navigation";
@@ -48,6 +49,12 @@ export default function RunCard({
       setLikeFilled(!likeFilled);
     }
   };
+  const deleteRunMutation = useDeleteRun();
+
+  const handleDeleteRun = () => {
+    
+    deleteRunMutation.mutate(id);
+  };
 
   return (
     <RunCardUI
@@ -60,6 +67,7 @@ export default function RunCard({
       googleMapsUrl={googleMapsUrl}
       likeFilled={likeFilled}
       handleRegistration={handleRegistration}
+      handleDeleteRun={handleDeleteRun}
     />
   );
 }
