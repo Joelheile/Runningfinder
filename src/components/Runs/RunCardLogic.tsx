@@ -36,7 +36,7 @@ export default function RunCard({
   const registerMutation = useRegisterRun();
   const cancelRegistrationMutation = useCancelRegistration();
 
-  const handleClick = () => {
+  const handleRegistration = () => {
     if (!userId) {
       redirect(`/api/auth/signin?callbackUrl=/clubs/${slug}`);
     } else {
@@ -59,7 +59,7 @@ export default function RunCard({
       startDescription={startDescription}
       googleMapsUrl={googleMapsUrl}
       likeFilled={likeFilled}
-      handleClick={handleClick}
+      handleRegistration={handleRegistration}
     />
   );
 }
