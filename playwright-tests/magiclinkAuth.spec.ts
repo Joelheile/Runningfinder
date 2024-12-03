@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-test("resend auth", async ({ page, browser }) => {
+test("Test magiclink auth using Resend", async ({ page, browser }) => {
   await test.step("should send resend mail", async () => {
     await page.goto("http://localhost:3000/api/auth/signin");
     await page.getByPlaceholder("email@example").fill("test@runningfinder.de");
