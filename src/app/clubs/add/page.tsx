@@ -8,12 +8,10 @@ export default async function addClubPage() {
   if (!session?.user) {
     redirect("/api/auth/signin?callbackUrl=/clubs/add");
   }
+
   return (
-    <div className="flex-col p-10 items-center w-full mx-auto">
-      <h1 className="text-2xl font-bold mb-4 text-center">Add Club</h1>
-      <div className="flex justify-center">
-        <AddClub />
-      </div>
+    <div>
+      <AddClub />
     </div>
   );
 }
