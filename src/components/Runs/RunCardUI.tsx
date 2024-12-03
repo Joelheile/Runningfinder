@@ -11,7 +11,7 @@ interface RunCardUIProps {
   startDescription: string;
   googleMapsUrl: string;
   likeFilled: boolean;
-  handleClick: () => void;
+  handleRegistration: () => void;
 }
 
 export default function RunCardUI({
@@ -23,7 +23,7 @@ export default function RunCardUI({
   startDescription,
   googleMapsUrl,
   likeFilled,
-  handleClick,
+  handleRegistration,
 }: RunCardUIProps) {
   const difficultyColor =
     difficulty == "easy"
@@ -40,7 +40,7 @@ export default function RunCardUI({
 
       <div className="flex bg-white mt-2 border justify-between p-2 rounded-md">
         <div className="flex gap-x-5 items-center pl-2">
-          <LikeButton onClick={handleClick} isFilled={likeFilled} />
+          <LikeButton onClick={handleRegistration} isFilled={likeFilled} />
           <strong>{name}</strong>
           <p className="text-medium">|</p>
           <p>{time}</p>
