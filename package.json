@@ -3,14 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "NEXT_PUBLIC_TESTING=true next dev",
+    "build": "next build NEXT_PUBLIC_TESTING=false",
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write .",
     "db:generate": "npx drizzle-kit generate",
     "db:push": "npx drizzle-kit push",
-    "tests": "TESTING=true npx playwright test && jest"
+    "tests": "NEXT_PUBLIC_TESTING=true npx playwright test && jest"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.5.3",
