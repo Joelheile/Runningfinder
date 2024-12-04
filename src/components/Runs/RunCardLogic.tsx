@@ -52,7 +52,6 @@ export default function RunCard({
   const deleteRunMutation = useDeleteRun();
 
   const handleDeleteRun = () => {
-    
     deleteRunMutation.mutate(id);
   };
 

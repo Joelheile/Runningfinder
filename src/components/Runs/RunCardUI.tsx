@@ -61,7 +61,11 @@ export default function RunCardUI({
           >
             {startDescription}
           </Button>
-          <button type="button" className="stroke-primary" onClick={handleDeleteRun}>
+          <button
+            type="button"
+            className="stroke-primary"
+            onClick={handleDeleteRun}
+          >
             <Trash className="stroke-primary hover:bg-slate-200 rounded-sm" />
           </button>
         </div>
