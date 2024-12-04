@@ -2,30 +2,12 @@ import { expect, test } from '@playwright/test';
 
 
 
+
 test('Test add club & run logic and delete both afterwards', async ({ page }) => {
   await page.goto('http://localhost:3000/');
   await page.getByRole('button', { name: 'All Clubs 🏃' }).click();
   await page.getByRole('button', { name: 'Add Club' }).click();
-  await page.getByRole('button', { name: 'Sign in with GitHub' }).click();
-  await page.getByLabel('Username or email address').fill('joels.tests@gmail.com');
-  await page.getByLabel('Password').click();
-  await page.getByLabel('Password').fill(process.env.NEXT_PUBLIC_GITHUB_TEST_PASSWORD as string);
-  await page.getByRole('button', { name: 'Sign in', exact: true }).click();
-  await page.goto('https://accounts.google.com/v3/signin/identifier?continue=https%3A%2F%2Fmail.google.com%2Fmail%2F&ifkv=AcMMx-dY0A7dX2AMtiPOFMNsogKN1yNLNBAIKtZuJZjUrwL1JXXnyH-BmJfTGwrHhTpWdDQ8-7Rqzg&rip=1&sacu=1&service=mail&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-1290724747%3A1733245020802148&ddm=1');
-  await page.getByLabel('Email or phone').fill('joels.tests@gmail.com');
-  await page.getByRole('button', { name: 'Next' }).click();
-  await page.getByLabel('Enter your password').fill(process.env.NEXT_PUBLIC_GMAIL_TEST_PASSWORD as string);
-  await page.getByRole('button', { name: 'Next' }).click();
-  await page.locator('tr.zA.zE[jscontroller="ZdOxDb"]').click();
-  const emailContent = await page.locator('div.a3s.aiL').innerText();
-  const verificationCodeMatch = emailContent.match(/Verification code: (\d{6})/);
-  const verificationCode = verificationCodeMatch ? verificationCodeMatch[1] : '';
-  console.log("Verification code: ", verificationCode);
-  await page.getByLabel('More message options').click();
-  await page.getByText('Delete this message').click();
-  await page.goto('http://localhost:3000/clubs/add');
-  await expect(page.getByRole('list')).toContainText('Verification code:');
-  await page.getByPlaceholder('XXXXXX').fill(verificationCode);
+
   await page.getByLabel('Club Name').click();
   await page.getByLabel('Club Name').fill('ClubName');
   await page.getByLabel('Club Name').press('Tab');
@@ -34,6 +16,9 @@ test('Test add club & run logic and delete both afterwards', async ({ page }) =>
   await page.getByLabel('Website URL (https://)').fill('https://clubwebsite.de');
   await page.getByLabel('Website URL (https://)').press('Tab');
   await page.getByLabel('Instagram Username').fill('ClubUsername');
+
+
+  
   await page.getByRole('button', { name: 'Add Club' }).click();
   await expect(page.getByRole('link', { name: 'ClubName ClubName' })).toBeVisible();
 

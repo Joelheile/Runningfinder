@@ -10,7 +10,7 @@
     "format": "prettier --write .",
     "db:generate": "npx drizzle-kit generate",
     "db:push": "npx drizzle-kit push",
-    "tests": "jest && pnpm exec playwright test"
+    "tests": "TESTING=true npx playwright test && jest"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.5.3",
