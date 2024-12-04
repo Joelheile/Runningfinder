@@ -54,7 +54,7 @@ test('Test add club & run logic and delete both afterwards', async ({ page }) =>
   }
   await page.locator('div').filter({ hasText: /^FirstRun\|01:23\|48 km\|easy$/ }).getByRole('button').click();
 
-  if (height === 18) { // if the height is 19, the user is registered
+  if (height === 18) { // if the height is 18, the user is registered
     await page.getByRole('button', { name: 'Register' }).click();
   }
   await page.locator('div').filter({ hasText: /^Starting Point$/ }).getByRole('button').nth(1).click();
