@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import path from 'path';
 
 
 
@@ -9,20 +10,21 @@ test('Test add club & run logic and delete both afterwards', async ({ page }) =>
   await page.getByRole('button', { name: 'Add Club' }).click();
 
   await page.getByLabel('Club Name').click();
-  await page.getByLabel('Club Name').fill('ClubName');
+  await page.getByLabel('Club Name').fill('TestClub');
   await page.getByLabel('Club Name').press('Tab');
-  await page.getByLabel('Club Description').fill('ClubDescription');
+  await page.getByLabel('Club Description').fill('Test Description');
   await page.getByLabel('Club Description').press('Tab');
   await page.getByLabel('Website URL (https://)').fill('https://clubwebsite.de');
   await page.getByLabel('Website URL (https://)').press('Tab');
-  await page.getByLabel('Instagram Username').fill('ClubUsername');
+  await page.getByLabel('Instagram Username').fill('TestUsername');
+  const filePath = path.resolve(__dirname, "../public/assets/default-fallback-image.png");
+  await page.setInputFiles('input[type="file"]', filePath);
+  await expect(page.locator('img[alt="Uploaded file"]')).toBeVisible();
 
-
-  
   await page.getByRole('button', { name: 'Add Club' }).click();
-  await expect(page.getByRole('link', { name: 'ClubName ClubName' })).toBeVisible();
 
-  await page.getByRole('link', { name: 'ClubName ClubName' }).click();
+
+  await page.getByRole('link', { name: 'TestClub ' }).click();
 
   await page.getByRole('button', { name: 'Add first run 🏃‍♂️' }).click();
   await page.locator('div').filter({ hasText: /^Name$/ }).getByRole('textbox').click();
