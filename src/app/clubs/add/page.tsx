@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 export default async function addClubPage() {
   const session = await auth();
 
-  if (!session?.user && !process.env.TESTING) {
+  if (!session?.user && !process.env.NEXT_PUBLIC_TESTING) {
     redirect("/api/auth/signin?callbackUrl=/clubs/add");
   }
   return (
