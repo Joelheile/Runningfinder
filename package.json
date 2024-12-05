@@ -15,7 +15,7 @@
     "devdb:push": "cross-env NEXT_PUBLIC_TESTING=true npx drizzle-kit push",
     "proddb:studio": "cross-env NEXT_PUBLIC_TESTING=false npx drizzle-kit studio",
     "devdb:studio": "cross-env NEXT_PUBLIC_TESTING=true npx drizzle-kit studio",
-    "tests": "NEXT_PUBLIC_TESTING=true npx playwright test && jest"
+    "tests": "NEXT_PUBLIC_TESTING=false npx playwright test && jest"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.5.3",
