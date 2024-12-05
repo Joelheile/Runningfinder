@@ -2,6 +2,7 @@
  * @jest-environment node
  */
 
+// npx jest __tests__/integration/clubs.test.ts
 import { v4 } from "uuid";
 import { DELETE, GET, POST } from "../../src/app/api/clubs/route";
 describe("API Club Routes", () => {
