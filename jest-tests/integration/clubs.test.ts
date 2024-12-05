@@ -3,7 +3,7 @@
  */
 
 import { v4 } from "uuid";
-import { DELETE, GET, POST } from "../src/app/api/clubs/route";
+import { DELETE, GET, POST } from "../../src/app/api/clubs/route";
 describe("API Club Routes", () => {
   it("should return data with status 200", async () => {
     const response = await GET();
