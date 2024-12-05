@@ -20,13 +20,13 @@ const Map = ({ runs, clubs }: { runs: Run[]; clubs: Club[] }) => {
       });
 
       const { Map } = (await loader.importLibrary(
-        "maps",
+        "maps"
       )) as google.maps.MapsLibrary;
       const { Marker } = (await loader.importLibrary(
-        "marker",
+        "marker"
       )) as google.maps.MarkerLibrary;
       const { InfoWindow } = (await loader.importLibrary(
-        "maps",
+        "maps"
       )) as google.maps.MapsLibrary;
 
       const defaultCenter = { lat: 52.5155235, lng: 13.4049124 };
@@ -41,7 +41,7 @@ const Map = ({ runs, clubs }: { runs: Run[]; clubs: Club[] }) => {
       const map = new Map(mapRef.current as HTMLDivElement, {
         center,
         zoom: 12,
-        mapId: "55c1e732e0359b58",
+        mapId: process.env.NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID,
       });
 
       const infoWindow = new InfoWindow();
@@ -81,8 +81,8 @@ const Map = ({ runs, clubs }: { runs: Run[]; clubs: Club[] }) => {
                     <p>{run.distance} km</p>
                     <p className="capitalize">{run.difficulty}</p>
                   </Link>
-                </div>,
-              ),
+                </div>
+              )
             );
             infoWindow.open(map, marker);
           });
