@@ -57,7 +57,7 @@ export default function MapLocationPicker({
   return (
     <div className="App mt-8">
       <Script
-        src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS}`}
+        src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`}
         strategy="lazyOnload"
         onLoad={() => setIsScriptLoaded(true)}
         onError={() => console.error("Google Maps script failed to load.")}
