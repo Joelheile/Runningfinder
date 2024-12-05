@@ -7,6 +7,8 @@ export default defineConfig({
   dialect: "postgresql",
   schema: "./src/lib/db/schema",
   dbCredentials: {
-    url: isProdMode ? process.env.NEXT_PUBLIC_DB_PROD! : process.env.NEXT_PUBLIC_DB_DEV!,
+    url: isProdMode
+      ? process.env.NEXT_PUBLIC_DB_PROD!
+      : process.env.NEXT_PUBLIC_DB_DEV!,
   },
 });

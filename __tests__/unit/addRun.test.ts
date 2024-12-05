@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
-import AddRun from "@/components/Runs/AddRunLogic";
+import AddRunState from "@/components/Runs/AddRunLogic";
 import { Club } from "@/lib/types/Club";
 
 const mockClub: Club = {
@@ -22,7 +22,7 @@ const mockClub: Club = {
 
 describe("AddRunState Component", () => {
   it("should render the form with initial state", () => {
-    render(<AddRun club={mockClub} />);
+    render(<AddRunState club={mockClub} />);
     expect(screen.getByLabelText("Name")).toBeInTheDocument();
     expect(screen.getByLabelText("Difficulty")).toBeInTheDocument();
     expect(screen.getByLabelText("Start Description")).toBeInTheDocument();
@@ -32,14 +32,14 @@ describe("AddRunState Component", () => {
   });
 
   it("should update the name state on input change", () => {
-    render(<AddRun club={mockClub} />);
+    render(<AddRunState club={mockClub} />);
     const nameInput = screen.getByLabelText("Name");
     fireEvent.change(nameInput, { target: { value: "Morning Run" } });
     expect(nameInput).toHaveValue("Morning Run");
   });
 
   it("should show an error toast when submitting with empty fields", () => {
-    render(<AddRun club={mockClub} />);
+    render(<AddRunState club={mockClub} />);
     const submitButton = screen.getByText("Submit");
     fireEvent.click(submitButton);
     expect(screen.getByText("You are missing some important fields!")).toBeInTheDocument();

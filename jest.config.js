@@ -10,6 +10,7 @@ export default {
     "^.+\\.ts$": "ts-jest",
   },
   extensionsToTreatAsEsm: [".ts"],
+  testMatch: ["**/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[tj]s?(x)"],
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/src/$1",
   },

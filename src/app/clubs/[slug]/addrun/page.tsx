@@ -1,5 +1,5 @@
 "use client";
-import AddRun from "@/components/Runs/AddRunLogic";
+import AddRunState from "@/components/Runs/AddRunLogic";
 import AddRunSkeleton from "@/components/Runs/AddRunSkeleton";
 
 import { useFetchClubBySlug } from "@/lib/hooks/clubs/useFetchClubs";
@@ -30,7 +30,7 @@ export default function AddRunsPage() {
       </button>
       <h1 className="text-2xl font-bold mb-4">Add Runs 🏃 {club.name} 🏃‍♀️ </h1>
       <div className="flex flex-col gap-6 w-full">
-        <AddRun club={club} />
+        <AddRunState club={club} />
       </div>
     </div>
   );
