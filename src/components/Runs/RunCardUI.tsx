@@ -1,3 +1,4 @@
+import React from "react";
 import { weekdays } from "@/lib/weekdays";
 import { Trash } from "lucide-react";
 import LikeButton from "../Icons/LikeButton";

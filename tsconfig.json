@@ -25,13 +25,15 @@
       "@/*": ["src/*"]
     }
   },
+  "types": ["node", "jest", "@testing-library/jest-dom"],
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
     "drizzle-dev.drizzle.config",
-    "drizzle-prod.drizzle.config"
+    "drizzle-prod.drizzle.config",
+    "setupTests.js"
   ],
   "exclude": ["node_modules"]
 }
