@@ -18,10 +18,15 @@ test("Test magiclink auth using Resend", async ({ page, browser }) => {
   await page
     .getByRole("row", { name: /no-reply.*Ready for Your Next Run?/ })
     .click();
-  await page.getByLabel("Show trimmed content").click();
-  page.getByRole("link", { name: "Let's Go" }).click();
-  const [newPage] = await Promise.all([page.waitForEvent("popup")]);
-  await newPage.waitForLoadState();
+
+
+    const showTrimmedContent = await page.locator('div[role="button"][data-tooltip="Show trimmed content"]');
+
+      await showTrimmedContent.click();
+
+    page.getByRole("link", { name: "Let's Go" }).click();
+  const newPage = await page.waitForEvent("popup");
+  await page.waitForLoadState();
   await expect(newPage).toHaveURL("http://localhost:3000/");
   await expect(newPage.getByText("All Clubs 🏃")).toBeVisible();
 });
