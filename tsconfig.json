@@ -9,7 +9,7 @@
     "allowSyntheticDefaultImports": true,
     "module": "esnext",
     "target": "es2015",
-
+    "types": ["jest", "jest-fetch-mock", "node"],
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
