@@ -88,7 +88,7 @@ test("Test add club & run logic and delete both afterwards", async ({
   await page.getByRole("button").first().click();
   await page.waitForTimeout(5000);
   await page.reload();
-  await expect(page.getByText("FirstRun")).toBeVisible();  
+  await expect(page.getByText("FirstRun")).toBeVisible();
   await page
     .locator("div")
     .filter({ hasText: /^Starting Point$/ })

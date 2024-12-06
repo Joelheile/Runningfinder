@@ -32,7 +32,7 @@ export default function MapLocationPicker({
       },
       {
         zoom: 12,
-      }
+      },
     );
 
     const idleListener = google.maps.event.addListener(
@@ -41,7 +41,7 @@ export default function MapLocationPicker({
       function (event: google.maps.MapMouseEvent) {
         const currentLocation = mapRef.current!.getMarkerPosition();
         onSelect(currentLocation.lat, currentLocation.lng);
-      }
+      },
     );
 
     return () => {
