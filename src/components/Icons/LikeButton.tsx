@@ -15,7 +15,7 @@ export default function LikeButton({ onClick, isFilled }: LikeButtonProps) {
   }
 
   return (
-    <button onClick={handleClick}>
+    <button name="register" onClick={handleClick}>
       {isFilledState ? (
         <>
           <svg
