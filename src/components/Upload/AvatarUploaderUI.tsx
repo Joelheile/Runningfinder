@@ -1,3 +1,4 @@
+import React from "react";
 import Image from "next/image";
 import { useDropzone } from "react-dropzone";
 import { LoadingSpinner } from "../UI/loadingSpinner";

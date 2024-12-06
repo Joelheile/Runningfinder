@@ -2,7 +2,7 @@
 import { useAddClub } from "@/lib/hooks/clubs/useAddClub";
 import { Club } from "@/lib/types/Club";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { v4 as uuidv4 } from "uuid";
 import AddClubUI from "./AddClubUI";

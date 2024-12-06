@@ -1,6 +1,6 @@
-import { useDeleteRun } from "@/lib/hooks/runs/useDeleteRun";
 import { useCancelRegistration } from "@/lib/hooks/registrations/useCancelRegistration";
 import { useRegisterRun } from "@/lib/hooks/registrations/useRegisterRun";
+import { useDeleteRun } from "@/lib/hooks/runs/useDeleteRun";
 import { redirect } from "next/navigation";
 import { useState } from "react";
 import RunCardUI from "./RunCardUI";

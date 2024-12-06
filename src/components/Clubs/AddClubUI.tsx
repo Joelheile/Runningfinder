@@ -6,6 +6,7 @@ import { Textarea } from "@/components/UI/textarea";
 import AvatarUploader from "@/components/Upload/AvatarUploaderLogic";
 import { ChevronLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
+import React from "react";
 
 interface AddClubUIProps {
   name: string;
@@ -18,7 +19,7 @@ interface AddClubUIProps {
   handleDescriptionChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   handleWebsiteUrlChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleInstagramUsernameChange: (
-    e: React.ChangeEvent<HTMLInputElement>,
+    e: React.ChangeEvent<HTMLInputElement>
   ) => void;
   handleUploadChange: (uploaded: boolean) => void;
   handleSubmit: (e: React.FormEvent) => void;
