@@ -19,21 +19,21 @@ export default function AddRunState({
 }: AddRunStateProps) {
   const [name, setName] = useState(initialValues.name || "");
   const [difficulty, setDifficulty] = useState(
-    initialValues.difficulty || "easy"
+    initialValues.difficulty || "easy",
   );
   const [startDescription, setStartDescription] = useState(
-    initialValues.startDescription || ""
+    initialValues.startDescription || "",
   );
   const [weekday, setWeekday] = useState(
-    initialValues.intervalDay || weekdays[0].value
+    initialValues.intervalDay || weekdays[0].value,
   );
   const [startTime, setStartTime] = useState(initialValues.startTime || "");
   const [distance, setDistance] = useState(initialValues.distance || 0);
   const [location, setLocation] = useState(
-    initialValues.location || { lat: 52.52, lng: 13.405 }
+    initialValues.location || { lat: 52.52, lng: 13.405 },
   );
   const [membersOnly, setMembersOnly] = useState(
-    initialValues.membersOnly || false
+    initialValues.membersOnly || false,
   );
   const [interval, setInterval] = useState(initialValues.interval || "weekly");
 

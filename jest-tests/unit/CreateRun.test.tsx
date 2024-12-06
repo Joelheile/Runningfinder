@@ -42,7 +42,7 @@ describe("createRun function", () => {
     expect(result).toHaveProperty("intervalDay", 3);
     expect(result).toHaveProperty(
       "startDescription",
-      "Start your day with a run"
+      "Start your day with a run",
     );
     expect(result).toHaveProperty("startTime", "10:00 AM");
     expect(result).toHaveProperty("distance", 5);
