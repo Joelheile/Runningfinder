@@ -58,7 +58,7 @@ describe("useAddClub", () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: expect.any(String),
-      })
+      }),
     );
 
     expect(result.current.isSuccess).toBe(true);
@@ -87,7 +87,7 @@ describe("useAddClub", () => {
 
     await act(async () => {
       await expect(result.current.mutateAsync(newClub)).rejects.toThrow(
-        "Failed to add club"
+        "Failed to add club",
       );
     });
 

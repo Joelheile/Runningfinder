@@ -37,7 +37,7 @@ test("fetches clubs successfully", async () => {
           lng: 0,
         },
       },
-    ])
+    ]),
   );
 
   const { result } = renderHook(() => useFetchClubs(), { wrapper });
