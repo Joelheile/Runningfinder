@@ -1,11 +1,10 @@
 module.exports = {
-  presets: ["@babel/preset-env", "ts-jest"],
+  preset: "ts-jest",
   testEnvironment: "node",
   transform: {
-    "^.+\\.(ts|tsx)$": "babel-jest",
+    "^.+\\.(ts|tsx)$": "@swc/jest",
   },
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
-  transformIgnorePatterns: ["<rootDir>/node_modules/"],
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/src/$1",
   },
