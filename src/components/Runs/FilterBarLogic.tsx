@@ -21,7 +21,7 @@ export default function FilterBar({ onFilterChange }: FilterBarLogicProps) {
     setSelectedDays((prev) =>
       prev.includes(dayValue)
         ? prev.filter((d) => d !== dayValue)
-        : [...prev, dayValue],
+        : [...prev, dayValue]
     );
   };
 

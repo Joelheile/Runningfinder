@@ -2,6 +2,7 @@ import { weekdays } from "@/lib/weekdays";
 import { Trash } from "lucide-react";
 import LikeButton from "../Icons/LikeButton";
 import { Button } from "../UI/button";
+import calculateCalories from "./CaloriesCalculator";
 
 interface RunCardUIProps {
   intervalDay: number;
@@ -35,6 +36,8 @@ export default function RunCardUI({
         ? "bg-yellow-300"
         : "bg-red-300";
 
+  const caloriesBurned = calculateCalories(difficulty, distance);
+
   return (
     <div className="mt-2">
       {intervalDay ? (
@@ -53,6 +56,7 @@ export default function RunCardUI({
           <p className={`p-1 px-2 rounded-md ${difficultyColor}`}>
             {difficulty}
           </p>
+          <p className="  text-gray-400">~ {caloriesBurned} kcal</p>
         </div>
         <div className="flex gap-x-2 items-center pl-2">
           <Button
