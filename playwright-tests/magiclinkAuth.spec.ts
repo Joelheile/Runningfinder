@@ -20,7 +20,7 @@ test("Test magiclink auth using Resend", async ({ page, browser }) => {
       page.waitForEvent('popup'),
     ]);
     await newPage.waitForLoadState();
-    await expect(newPage.getByText('All Clubs')).toBeVisible();
+    await expect(newPage).toHaveURL('http://localhost:3000/');
     await page.goto("https://mail.google.com/mail/u/0/#inbox")
     await page.getByRole('row', { name: 'Ready for your Next Run?' }).click();
     await page.waitForLoadState();
