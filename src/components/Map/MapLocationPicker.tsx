@@ -1,3 +1,4 @@
+import React from "react";
 import LocationPicker from "location-picker";
 import Script from "next/script";
 import { useEffect, useRef, useState } from "react";
@@ -31,7 +32,7 @@ export default function MapLocationPicker({
       },
       {
         zoom: 12,
-      },
+      }
     );
 
     const idleListener = google.maps.event.addListener(
@@ -40,7 +41,7 @@ export default function MapLocationPicker({
       function (event: google.maps.MapMouseEvent) {
         const currentLocation = mapRef.current!.getMarkerPosition();
         onSelect(currentLocation.lat, currentLocation.lng);
-      },
+      }
     );
 
     return () => {
