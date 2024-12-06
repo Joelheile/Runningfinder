@@ -1,4 +1,4 @@
-import { createClub } from "@/components/Clubs/CreateClub";
+import { createClub } from "@/components/Testing/CreateClub";
 import { Club } from "@/lib/types/Club";
 
 describe("createClub function", () => {
