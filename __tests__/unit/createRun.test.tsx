@@ -1,4 +1,4 @@
-import { createRun } from "@/components/Runs/CreateRun";
+import { createRun } from "@/components/Testing/CreateRun";
 import { Run } from "@/lib/types/Run";
 
 describe("createRun function", () => {
