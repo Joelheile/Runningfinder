@@ -1,5 +1,5 @@
 module.exports = {
-  preset: "ts-jest",
+  presets: ["@babel/preset-env", "ts-jest"],
   testEnvironment: "node",
   transform: {
     "^.+\\.(ts|tsx)$": "babel-jest",
@@ -9,4 +9,5 @@ module.exports = {
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/src/$1",
   },
+  setupFilesAfterEnv: ["<rootDir>/setupTests.js"],
 };
