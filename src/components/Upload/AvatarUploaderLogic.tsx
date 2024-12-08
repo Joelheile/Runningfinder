@@ -1,5 +1,5 @@
 "use client";
-
+import React from "react";
 import { useUploadAvatar } from "@/lib/hooks/avatars/useUploadAvatar";
 import { useEffect } from "react";
 import AvatarUploaderUI from "./AvatarUploaderUI";

@@ -1,3 +1,4 @@
+import React from "react";
 import Link from "next/link";
 
 import { Globe, InstagramIcon } from "lucide-react";
