@@ -1,17 +1,12 @@
-/** @type {import('ts-jest').JestConfigWithTsJest} **/
-export default {
-  preset: "ts-jest/presets/default-esm",
-  globals: {
-    "ts-jest": {
-      useESM: true,
-    },
-  },
+module.exports = {
+  preset: "ts-jest",
+  testEnvironment: "node",
   transform: {
-    "^.+\\.ts$": "ts-jest",
+    "^.+\\.(ts|tsx)$": "@swc/jest",
   },
-  extensionsToTreatAsEsm: [".ts"],
+  moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/src/$1",
   },
-  testPathIgnorePatterns: ["<rootDir>/playwright-tests/"],
+  setupFilesAfterEnv: ["<rootDir>/setupTests.js"],
 };

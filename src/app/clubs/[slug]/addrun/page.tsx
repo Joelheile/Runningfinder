@@ -1,5 +1,5 @@
 "use client";
-import AddRun from "@/components/Runs/AddRunLogic";
+import AddRunState from "@/components/Runs/AddRunLogic";
 import AddRunSkeleton from "@/components/Runs/AddRunSkeleton";
 
 import { useFetchClubBySlug } from "@/lib/hooks/clubs/useFetchClubs";
@@ -8,9 +8,7 @@ import { useParams, useRouter } from "next/navigation";
 
 export default function AddRunsPage() {
   const slug = useParams().slug.toString();
-
   const router = useRouter();
-
   const {
     data: club,
     isLoading: clubsLoading,
@@ -30,9 +28,9 @@ export default function AddRunsPage() {
       <button onClick={() => router.back()} className="absolute top-12 left-12">
         <ChevronLeft className="stroke-primary stroke" />
       </button>
-      <h1 className="text-2xl font-bold mb-4">Add Runs to {club.name}</h1>
+      <h1 className="text-2xl font-bold mb-4">Add Runs 🏃 {club.name} 🏃‍♀️ </h1>
       <div className="flex flex-col gap-6 w-full">
-        <AddRun club={club} />
+        <AddRunState club={club} />
       </div>
     </div>
   );

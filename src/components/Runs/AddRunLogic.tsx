@@ -1,3 +1,4 @@
+import React from "react";
 import { useAddRun } from "@/lib/hooks/runs/useAddRun";
 import { Club } from "@/lib/types/Club";
 import { Run } from "@/lib/types/Run";
@@ -7,16 +8,34 @@ import toast from "react-hot-toast";
 import { v4 } from "uuid";
 import AddRunUI from "./AddRunUI";
 
-export default function AddRunState({ club }: { club: Club }) {
-  const [name, setName] = useState("");
-  const [difficulty, setDifficulty] = useState("easy");
-  const [startDescription, setStartDescription] = useState("");
-  const [weekday, setWeekday] = useState(weekdays[0].value);
-  const [startTime, setStartTime] = useState("");
-  const [distance, setDistance] = useState(0);
-  const [location, setLocation] = useState({ lat: 52.52, lng: 13.405 });
-  const [membersOnly, setMembersOnly] = useState(false);
-  const [interval, setInterval] = useState("weekly");
+interface AddRunStateProps {
+  club: Club;
+  initialValues?: Partial<Run>;
+}
+
+export default function AddRunState({
+  club,
+  initialValues = {},
+}: AddRunStateProps) {
+  const [name, setName] = useState(initialValues.name || "");
+  const [difficulty, setDifficulty] = useState(
+    initialValues.difficulty || "easy",
+  );
+  const [startDescription, setStartDescription] = useState(
+    initialValues.startDescription || "",
+  );
+  const [weekday, setWeekday] = useState(
+    initialValues.intervalDay || weekdays[0].value,
+  );
+  const [startTime, setStartTime] = useState(initialValues.startTime || "");
+  const [distance, setDistance] = useState(initialValues.distance || 0);
+  const [location, setLocation] = useState(
+    initialValues.location || { lat: 52.52, lng: 13.405 },
+  );
+  const [membersOnly, setMembersOnly] = useState(
+    initialValues.membersOnly || false,
+  );
+  const [interval, setInterval] = useState(initialValues.interval || "weekly");
 
   const mutation = useAddRun();
 
@@ -44,6 +63,7 @@ export default function AddRunState({ club }: { club: Club }) {
         date: null,
         membersOnly,
       };
+      console.log("Form submitted with data:", formData);
       mutation.mutate(formData);
     }
   };

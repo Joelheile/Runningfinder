@@ -1,11 +1,12 @@
 "use client";
 
+import { useDeleteClub } from "@/lib/hooks/clubs/useDeleteClub";
 import { useFetchClubBySlug } from "@/lib/hooks/clubs/useFetchClubs";
-import { useFetchRunsByClubId } from "@/lib/hooks/runs/useFetchRunsByClubId";
+import { useFetchRuns } from "@/lib/hooks/runs/useFetchRuns";
+import { Run } from "@/lib/types/Run";
 import { useParams, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import ClubDashboardUI from "./ClubDashboardUI";
-import { useFetchRuns } from "@/lib/hooks/runs/useFetchRuns";
 
 export default function ClubDashboard({
   userId,
@@ -23,7 +24,7 @@ export default function ClubDashboard({
     isError: runsError,
   } = useFetchRuns({});
 
-  const runs = unFilteredRuns?.filter((run) => run.clubId === club?.id);
+  const runs = unFilteredRuns?.filter((run: Run) => run.clubId === club?.id);
 
   const handleShare = async () => {
     try {
@@ -33,6 +34,13 @@ export default function ClubDashboard({
       console.error("Failed to copy: ", err);
     }
   };
+  const deleteClubMutation = useDeleteClub();
+
+  const handleDelete = async () => {
+    if (club?.id) {
+      deleteClubMutation.mutate(club.id);
+    }
+  };
 
   if (isLoading)
     return (
@@ -40,6 +48,7 @@ export default function ClubDashboard({
         loading
         slug={slug}
         onShare={handleShare}
+        onDelete={handleDelete}
         onAddRun={() => router.push(`/clubs/${slug}/addrun`)}
       />
     );
@@ -49,6 +58,7 @@ export default function ClubDashboard({
         error={error?.message}
         slug={slug}
         onShare={handleShare}
+        onDelete={handleDelete}
         onAddRun={() => router.push(`/clubs/${slug}/addrun`)}
       />
     );
@@ -58,6 +68,7 @@ export default function ClubDashboard({
         noData
         slug={slug}
         onShare={handleShare}
+        onDelete={handleDelete}
         onAddRun={() => router.push(`/clubs/${slug}/addrun`)}
       />
     );
@@ -69,6 +80,7 @@ export default function ClubDashboard({
       userId={userId}
       slug={slug}
       onShare={handleShare}
+      onDelete={handleDelete}
       onAddRun={() => router.push(`/clubs/${slug}/addrun`)}
     />
   );

@@ -1,5 +1,6 @@
 import { useCancelRegistration } from "@/lib/hooks/registrations/useCancelRegistration";
 import { useRegisterRun } from "@/lib/hooks/registrations/useRegisterRun";
+import { useDeleteRun } from "@/lib/hooks/runs/useDeleteRun";
 import { redirect } from "next/navigation";
 import { useState } from "react";
 import RunCardUI from "./RunCardUI";
@@ -36,7 +37,7 @@ export default function RunCard({
   const registerMutation = useRegisterRun();
   const cancelRegistrationMutation = useCancelRegistration();
 
-  const handleClick = () => {
+  const handleRegistration = () => {
     if (!userId) {
       redirect(`/api/auth/signin?callbackUrl=/clubs/${slug}`);
     } else {
@@ -47,6 +48,11 @@ export default function RunCard({
       }
       setLikeFilled(!likeFilled);
     }
+  };
+  const deleteRunMutation = useDeleteRun();
+
+  const handleDeleteRun = () => {
+    deleteRunMutation.mutate(id);
   };
 
   return (
@@ -59,7 +65,8 @@ export default function RunCard({
       startDescription={startDescription}
       googleMapsUrl={googleMapsUrl}
       likeFilled={likeFilled}
-      handleClick={handleClick}
+      handleRegistration={handleRegistration}
+      handleDeleteRun={handleDeleteRun}
     />
   );
 }

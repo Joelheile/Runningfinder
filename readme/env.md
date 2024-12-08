@@ -11,6 +11,7 @@ Copy secrets and paste in .env.local in root folder
     NEXT_PUBLIC_AWS_HOSTNAME=runningfinder.s3.eu-central-1.amazonaws.com
 
     NEXT_PUBLIC_AUTH_RESEND_KEY=re_cuZuLfEn_AJKP36qoUnWrGktJUBqF6tT7
+    NEXT_PUBLIC_GITHUB_TEST_PASSWORD="pPotCLju^YVtQIG9#Hs^"
 
     AUTH_GITHUB_ID=Ov23liKJjCL6DL4YYt0I
     AUTH_GITHUB_SECRET=7242a21ade85ff72b0f495f9bc7b79148cf8106c
