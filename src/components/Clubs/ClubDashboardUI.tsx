@@ -1,6 +1,6 @@
 import { Club } from "@/lib/types/Club";
 import { Run } from "@/lib/types/Run";
-import { ChevronLeft, Plus, Share } from "lucide-react";
+import { ChevronLeft, Plus, Share, Trash } from "lucide-react";
 import Link from "next/link";
 import RunCard from "../Runs/RunCardLogic";
 import { Button } from "../UI/button";
@@ -14,6 +14,7 @@ interface ClubDetailUIProps {
   slug: string;
   onShare: () => void;
   onAddRun: () => void;
+  onDelete: () => void;
   loading?: boolean;
   error?: string;
   noData?: boolean;
@@ -26,6 +27,7 @@ export default function ClubDashboardUI({
   slug,
   onShare,
   onAddRun,
+  onDelete,
   loading,
   error,
   noData,
@@ -54,10 +56,13 @@ export default function ClubDashboardUI({
         </Link>
         <div className="flex gap-2">
           <button type="button" onClick={onAddRun}>
-            <Plus className="stroke-primary" />
+            <Plus className="stroke-primary hover:bg-slate-200 rounded-sm" />
           </button>
-          <button onClick={onShare}>
-            <Share className="stroke-primary" />
+          <button type="button" onClick={onShare}>
+            <Share className="stroke-primary hover:bg-slate-200 rounded-sm" />
+          </button>
+          <button type="button" onClick={onDelete}>
+            <Trash className="stroke-primary hover:bg-slate-200  rounded-sm"></Trash>
           </button>
         </div>
       </nav>

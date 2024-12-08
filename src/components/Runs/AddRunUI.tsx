@@ -1,3 +1,4 @@
+import React from "react";
 import { weekdays } from "@/lib/weekdays";
 
 import MapLocationPicker from "../Map/MapLocationPicker";
@@ -56,16 +57,18 @@ export default function AddRunUI(props: AddRunUIProps) {
       <form onSubmit={handleSubmit}>
         <div className="grid gap-4">
           <div className="flex flex-col">
-            <Label>Name</Label>
+            <Label htmlFor="name">Name</Label>
             <Input
+              id="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
               className="mt-1 p-2 border rounded"
             />
           </div>
           <div className="flex flex-col">
-            <Label>Difficulty</Label>
+            <Label htmlFor="difficulty">Difficulty</Label>
             <select
+              id="difficulty"
               value={difficulty}
               onChange={(e) => setDifficulty(e.target.value)}
               className="mt-1 p-2 border rounded"
@@ -76,8 +79,9 @@ export default function AddRunUI(props: AddRunUIProps) {
             </select>
           </div>
           <div className="flex flex-col">
-            <Label>Interval</Label>
+            <Label htmlFor="interval">Interval</Label>
             <select
+              id="interval"
               value={interval}
               onChange={(e) => setInterval(e.target.value)}
               className="mt-1 p-2 border rounded"
@@ -89,8 +93,9 @@ export default function AddRunUI(props: AddRunUIProps) {
             </select>
           </div>
           <div className="flex flex-col">
-            <Label>Weekday</Label>
+            <Label htmlFor="weekday">Weekday</Label>
             <select
+              id="weekday"
               value={weekday}
               onChange={(e) => setWeekday(Number(e.target.value))}
               className="mt-1 p-2 border rounded"
@@ -103,8 +108,9 @@ export default function AddRunUI(props: AddRunUIProps) {
             </select>
           </div>
           <div className="flex flex-col">
-            <Label>Start Time</Label>
+            <Label htmlFor="startTime">Start Time</Label>
             <Input
+              id="startTime"
               type="time"
               value={startTime}
               onChange={(e) => setStartTime(e.target.value)}
@@ -112,8 +118,9 @@ export default function AddRunUI(props: AddRunUIProps) {
             />
           </div>
           <div className="flex flex-col">
-            <Label>Distance (km)</Label>
+            <Label htmlFor="distance">Distance (km)</Label>
             <Input
+              id="distance"
               type="number"
               value={distance}
               onChange={(e) => setDistance(Number(e.target.value))}
@@ -121,16 +128,18 @@ export default function AddRunUI(props: AddRunUIProps) {
             />
           </div>
           <div className="flex flex-col">
-            <Label>Where are you starting?</Label>
+            <Label htmlFor="startDescription">Where are you starting?</Label>
             <Input
+              id="startDescription"
               value={startDescription}
               onChange={(e) => setStartDescription(e.target.value)}
               className="mt-1 p-2 border rounded"
             />
           </div>
           <div className="flex items-center space-x-2">
-            <Label>MembersOnly</Label>
+            <Label htmlFor="membersOnly">MembersOnly</Label>
             <input
+              id="membersOnly"
               type="checkbox"
               checked={membersOnly}
               onChange={() => setMembersOnly(!membersOnly)}

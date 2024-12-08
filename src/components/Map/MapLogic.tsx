@@ -41,7 +41,7 @@ const Map = ({ runs, clubs }: { runs: Run[]; clubs: Club[] }) => {
       const map = new Map(mapRef.current as HTMLDivElement, {
         center,
         zoom: 12,
-        mapId: "55c1e732e0359b58",
+        mapId: process.env.NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID,
       });
 
       const infoWindow = new InfoWindow();
