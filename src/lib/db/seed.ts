@@ -29,7 +29,7 @@ async function main() {
 
   console.log("Seeding started!");
 
-  for (let i = 0; i < 50; i++) {
+  for (let i = 0; i < 500; i++) {
     const clubId = uuidv4();
 
     const clubCoordinates = faker.location.nearbyGPSCoordinate({
@@ -97,7 +97,7 @@ async function main() {
       startTime: faker.date.future().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       locationLng: runCoordinates[1].toString(),
       locationLat: runCoordinates[0].toString(),
-      distance: faker.number.float({ min: 1, max: 42 }).toString(),
+      distance: faker.number.int({ min: 1, max: 42 }).toString(),
     });
     console.log("Run seeded 🏃", runId);
   }}
