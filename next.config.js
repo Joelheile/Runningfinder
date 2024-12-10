@@ -12,7 +12,11 @@ const nextConfig = {
         port: "",
       },
     ],
-    domains: ["localhost", "runningfinder.s3.eu-central-1.amazonaws.com"],
+    domains: [
+      "localhost",
+      "runningfinder.s3.eu-central-1.amazonaws.com",
+      "avatars.githubusercontent.com",
+    ],
   },
 };
 
