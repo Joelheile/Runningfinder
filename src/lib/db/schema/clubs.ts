@@ -32,19 +32,27 @@ export const memberships = pgTable(
   }),
 );
 
-export const clubs = pgTable("clubs", {
-  id: text("id").primaryKey().notNull(),
-  name: text("name").notNull(),
-  slug: text("slug").notNull().unique(),
-  description: text("description"),
-  locationLng: decimal("location_lng").notNull(),
-  locationLat: decimal("location_lat").notNull(),
-  instagramUsername: text("instagram_username"),
-  stravaUsername: text("strava_username"),
-  websiteUrl: text("website_url"),
-  avatarFileId: text("avatar_file_id")
-    .unique()
-    .references(() => avatars.id),
-  creationDate: timestamp("creation_date").notNull(),
-  memberCount: integer("member_count"),
-});
+export const clubs = pgTable(
+  "clubs",
+  {
+    id: text("id").primaryKey().notNull(),
+    name: text("name").notNull(),
+    slug: text("slug").notNull().unique(),
+    description: text("description"),
+    locationLng: decimal("location_lng").notNull(),
+    locationLat: decimal("location_lat").notNull(),
+    instagramUsername: text("instagram_username"),
+    stravaUsername: text("strava_username"),
+    websiteUrl: text("website_url"),
+    avatarFileId: text("avatar_file_id")
+      .unique()
+      .references(() => avatars.id),
+    creationDate: timestamp("creation_date").notNull(),
+    memberCount: integer("member_count"),
+  },
+  (club) => ({
+    idIndex: index("club_id_index").on(club.id),
+    nameIndex: index("club_name_index").on(club.name),
+    slugIndex: index("club_slug_index").on(club.slug),
+  }),
+);
