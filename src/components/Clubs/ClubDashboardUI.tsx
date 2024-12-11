@@ -46,7 +46,7 @@ export default function ClubDashboardUI({
     };
 
   return (
-    <div className="flex flex-col bg-light w-screen max-w-full h-screen p-8">
+    <div className="flex flex-col bg-light w-screen  h-screen p-8">
       <nav className="flex justify-between">
         <Link href="/clubs/">
           <div className="flex">
