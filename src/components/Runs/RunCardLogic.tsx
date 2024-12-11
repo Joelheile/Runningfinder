@@ -1,12 +1,12 @@
 import { useCancelRegistration } from "@/lib/hooks/registrations/useCancelRegistration";
 import { useRegisterRun } from "@/lib/hooks/registrations/useRegisterRun";
 import { useDeleteRun } from "@/lib/hooks/runs/useDeleteRun";
-import { redirect } from "next/navigation";
 import { useState, useEffect } from "react";
 import RunCardUI from "./RunCardUI";
 import { Skeleton } from "@/components/UI/skeleton";
 import { getNextIntervalDate } from "@/lib/getNextIntervalDate";
 import { fetchWeatherData } from "@/lib/fetchWeatherData";
+import { useRouter } from "next/navigation";
 
 interface RunCardProps {
   id: string;
@@ -39,6 +39,8 @@ export default function RunCard({
   const [uvIndex, setUvIndex] = useState(0);
   const [loading, setLoading] = useState(true);
 
+  const router = useRouter();
+
   const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${location.lat},${location.lng}`;
 
   const registerMutation = useRegisterRun();
@@ -46,7 +48,7 @@ export default function RunCard({
 
   const handleRegistration = () => {
     if (!userId) {
-      redirect(`/api/auth/signin?callbackUrl=/clubs/${slug}`);
+      router.replace(`/api/auth/signin?callbackUrl=/clubs/${slug}`);
     } else {
       if (likeFilled) {
         cancelRegistrationMutation.mutate({ runId: id, userId });
