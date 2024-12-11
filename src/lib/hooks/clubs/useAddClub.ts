@@ -13,14 +13,13 @@ const addClub = async (newClub: Club): Promise<Club> => {
     }),
   });
 
-  
   if (response.status === 409) {
     toast.error("Slug already in use");
     throw new Error("Slug already in use");
-  } else if(!response.ok) {
+  } else if (!response.ok) {
     toast.error("Failed to add club");
     throw new Error("Failed to add club");
-  } else{
+  } else {
     toast.success("Club added successfully");
   }
   return response.json();
