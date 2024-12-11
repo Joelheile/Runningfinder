@@ -68,8 +68,8 @@ export default function RunCardUI({
           <p className="text-medium">{temperature}°C</p>
           <p className="text-medium">|</p>
           <p className="text-medium">{wind} km/h</p>
-          <p className="text-medium">|</p>
-          <p className="text-medium">UV Index: {uvIndex}</p>
+          {/* <p className="text-medium">|</p>
+          <p className="text-medium">UV Index: {uvIndex}</p> */}
         </div>
         <div className="flex gap-x-2 items-center pl-2">
           <Button
