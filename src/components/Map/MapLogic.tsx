@@ -6,113 +6,103 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import ReactDOMServer from "react-dom/server";
 import MapUI from "./MapUI";
+import mapboxgl from "mapbox-gl";
+import SelectedClubHeaderLogic from "../Clubs/SelectedClubHeaderLogic";
 
 const Map = ({ runs, clubs }: { runs: Run[]; clubs: Club[] }) => {
-  const mapRef = useRef<HTMLDivElement>(null);
+  const mapContainerRef = useRef(null);
+  const [zoom, setZoom] = useState(9);
+  const [lng, setLng] = useState(-87.65);
+  const [lt, setLt] = useState(41.84);
   const [selectedLocation, setSelectedLocation] = useState<Run | null>(null);
-  const [markers, setMarkers] = useState<google.maps.Marker[]>([]);
 
   useEffect(() => {
-    const initMap = async () => {
-      const loader = new Loader({
-        apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS!,
-        version: "weekly",
-      });
+    mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
 
-      const { Map } = (await loader.importLibrary(
-        "maps",
-      )) as google.maps.MapsLibrary;
-      const { Marker } = (await loader.importLibrary(
-        "marker",
-      )) as google.maps.MarkerLibrary;
-      const { InfoWindow } = (await loader.importLibrary(
-        "maps",
-      )) as google.maps.MapsLibrary;
+    const map = new mapboxgl.Map({
+      container: mapContainerRef.current,
+      style: "mapbox://styles/mapbox/streets-v11",
+      center: [lng, lt],
+      zoom: zoom,
+    });
 
-      const defaultCenter = { lat: 52.5155235, lng: 13.4049124 };
-      const center =
-        runs[0]?.location?.lat && runs[0]?.location?.lng
-          ? {
-              lat: Number(runs[0].location.lat),
-              lng: Number(runs[0].location.lng),
-            }
-          : defaultCenter;
+    map.on("load", function () {
+      map.loadImage(
+        "https://docs.mapbox.com/mapbox-gl-js/assets/custom_marker.png",
+        function (error, image) {
+          if (error) throw error;
+          map.addImage("custom-marker", image);
 
-      const map = new Map(mapRef.current as HTMLDivElement, {
-        center,
-        zoom: 12,
-        mapId: process.env.NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID,
-      });
-
-      const infoWindow = new InfoWindow();
-
-      const newMarkers = runs
-        .map((run: Run) => {
-          const lat = Number(run.location.lat);
-          const lng = Number(run.location.lng);
-
-          const marker = new Marker({
-            map,
-            position: { lat, lng },
-            title: run.id,
-            icon: {
-              url: "/icons/ClubUnselected.svg",
-              scaledSize: new google.maps.Size(50, 50),
+          map.addSource("points", {
+            type: "geojson",
+            data: {
+              type: "FeatureCollection",
+              features: geoJson.map((point) => ({
+                type: "Feature",
+                geometry: {
+                  type: "Point",
+                  coordinates: [point.long, point.lat],
+                },
+                properties: {
+                  title: `Point ${point.c + 1}`,
+                },
+              })),
             },
           });
 
-          marker.addListener("click", () => {
-            setSelectedLocation(run);
-            const club = clubs.find((club) => club.id === run.clubId);
-            infoWindow.setContent(
-              ReactDOMServer.renderToString(
-                <div className="cursor-pointer center">
-                  <Link href={`/clubs/${club?.slug}`}>
-                    <Image
-                      width={100}
-                      height={100}
-                      src={
-                        club?.avatarUrl || "/assets/default-fallback-image.png"
-                      }
-                      alt={run.name}
-                      className=" mb-2  object-cover rounded-sm"
-                    />
-                    <strong>{run.name}</strong>
-                    <p>{run.distance} km</p>
-                    <p className="capitalize">{run.difficulty}</p>
-                  </Link>
-                </div>,
-              ),
-            );
-            infoWindow.open(map, marker);
+          map.addSource("line", {
+            type: "geojson",
+            data: {
+              type: "Feature",
+              properties: {},
+              geometry: {
+                type: "LineString",
+                coordinates: geoJson.map((point) => [point.long, point.lat]),
+              },
+            },
           });
 
-          return marker;
-        })
-        .filter((marker) => marker !== null) as google.maps.Marker[];
+          map.addLayer({
+            id: "points",
+            type: "symbol",
+            source: "points",
+            layout: {
+              "icon-image": "custom-marker",
+              "text-field": ["get", "title"],
+              "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
+              "text-offset": [0, 1.25],
+              "text-anchor": "top",
+            },
+          });
 
-      setMarkers(newMarkers);
-    };
-
-    initMap();
-  }, [clubs, runs]);
-
-  useEffect(() => {
-    markers.forEach((marker) => {
-      const iconUrl =
-        selectedLocation && marker.getTitle() === selectedLocation.id
-          ? "/icons/ClubSelected.svg"
-          : "/icons/ClubUnselected.svg";
-      marker.setIcon({
-        url: iconUrl,
-        scaledSize: new google.maps.Size(50, 50),
-      });
+          map.addLayer({
+            id: "line",
+            type: "line",
+            source: "line",
+            layout: {},
+            paint: {
+              "line-color": "blue",
+              "line-width": 2,
+            },
+          });
+        }
+      );
     });
-  }, [selectedLocation, markers]);
+
+    return () => map.remove();
+  }, []);
 
   return (
     <div className="h-screen w-full">
-      <MapUI mapRef={mapRef} selectedLocation={selectedLocation} runs={runs} />
+      {selectedLocation && runs.length !== 0 && (
+        <SelectedClubHeaderLogic
+          run={runs.find((run) => run.id === selectedLocation.id)!}
+        />
+      )}
+      <div className="sidebar">
+        Longitude: {lng} | Latitude: {lt} | Zoom: {zoom}
+      </div>
+      <div className="map-container" ref={mapContainerRef} />
     </div>
   );
 };
