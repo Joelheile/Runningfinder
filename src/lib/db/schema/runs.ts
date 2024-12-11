@@ -25,7 +25,7 @@ export const registrations = pgTable(
   },
   (registration) => ({
     idIndex: index("registrations_id_index").on(registration.id),
-  })
+  }),
 );
 
 export const runs = pgTable(
@@ -52,5 +52,5 @@ export const runs = pgTable(
   },
   (run) => ({
     idIndex: index("runs_id_index").on(run.id),
-  })
+  }),
 );
