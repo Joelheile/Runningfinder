@@ -1,10 +1,11 @@
-import { integer, pgEnum, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import { index, integer, pgEnum, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
   id: text("id")
     .primaryKey()
     .$defaultFn(() => crypto.randomUUID()),
   name: text("name"),
+  username: text("username").unique(),
   email: text("email").unique(),
   emailVerified: timestamp("emailVerified", { mode: "date" }),
   bio: text("bio"),
@@ -13,7 +14,12 @@ export const users = pgTable("users", {
   lastLogin: timestamp("last_login", { mode: "date" }),
   attendedRuns: integer("attended_runs"),
   image: text("image"),
-});
+},
+(user) => ({
+  idIndex: index("users_id_index").on(user.id),
+  emailIndex: index("users_email_index").on(user.email),
+})
+);
 
 export const avatarTypeEnum = pgEnum("avatarType", ["user", "club"]);
 export const avatars = pgTable("avatars", {
