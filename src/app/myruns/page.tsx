@@ -1,4 +1,4 @@
-import UserRuns from "@/components/Runs/UserRuns";
+import UserRuns from "@/components/Runs/UserRunsLogic";
 import { auth } from "@/lib/authentication/auth";
 
 import { redirect } from "next/navigation";
