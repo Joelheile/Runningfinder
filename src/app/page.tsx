@@ -8,7 +8,6 @@ export default async function HomePage() {
 
   return (
     <div>
-      //TODO: Add like button
       <div className="absolute z-10 top-2 right-1/2 left-1/2   text-center">
         <Link href="/clubs">
           <Button variant={"outline"}>All Clubs 🏃</Button>
