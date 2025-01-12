@@ -14,6 +14,9 @@ interface RunCardUIProps {
   startDescription: string;
   googleMapsUrl: string;
   likeFilled: boolean;
+  temperature: number;
+  wind: number;
+  uvIndex: number;
   handleRegistration: () => void;
   handleDeleteRun: () => void;
 }
@@ -27,6 +30,9 @@ export default function RunCardUI({
   startDescription,
   googleMapsUrl,
   likeFilled,
+  temperature,
+  wind,
+  uvIndex,
   handleRegistration,
   handleDeleteRun,
 }: RunCardUIProps) {
@@ -57,7 +63,13 @@ export default function RunCardUI({
           <p className={`p-1 px-2 rounded-md ${difficultyColor}`}>
             {difficulty}
           </p>
-          <p className="  text-gray-400">~ {caloriesBurned} kcal</p>
+          <p className="  text-medium">~ {caloriesBurned} kcal</p>
+          <p className="text-medium">|</p>
+          <p className="text-medium">{temperature}°C</p>
+          <p className="text-medium">|</p>
+          <p className="text-medium">{wind} km/h</p>
+          {/* <p className="text-medium">|</p>
+          <p className="text-medium">UV Index: {uvIndex}</p> */}
         </div>
         <div className="flex gap-x-2 items-center pl-2">
           <Button

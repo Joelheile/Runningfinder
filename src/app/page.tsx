@@ -13,7 +13,6 @@ export default async function HomePage() {
           <Button variant={"outline"}>All Clubs 🏃</Button>
         </Link>
       </div>
-
       <MapPage session={session} />
     </div>
   );
