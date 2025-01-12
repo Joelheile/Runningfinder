@@ -1,9 +1,12 @@
 import { useCancelRegistration } from "@/lib/hooks/registrations/useCancelRegistration";
 import { useRegisterRun } from "@/lib/hooks/registrations/useRegisterRun";
 import { useDeleteRun } from "@/lib/hooks/runs/useDeleteRun";
-import { redirect } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import RunCardUI from "./RunCardUI";
+import { Skeleton } from "@/components/UI/skeleton";
+import { getNextIntervalDate } from "@/lib/getNextIntervalDate";
+import { fetchWeatherData } from "@/lib/fetchWeatherData";
+import { useRouter } from "next/navigation";
 
 interface RunCardProps {
   id: string;
@@ -31,6 +34,12 @@ export default function RunCard({
   slug,
 }: RunCardProps) {
   const [likeFilled, setLikeFilled] = useState(false);
+  const [temperature, setTemperature] = useState(0);
+  const [wind, setWind] = useState(0);
+  const [uvIndex, setUvIndex] = useState(0);
+  const [loading, setLoading] = useState(true);
+
+  const router = useRouter();
 
   const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${location.lat},${location.lng}`;
 
@@ -39,7 +48,7 @@ export default function RunCard({
 
   const handleRegistration = () => {
     if (!userId) {
-      redirect(`/api/auth/signin?callbackUrl=/clubs/${slug}`);
+      router.replace(`/api/auth/signin?callbackUrl=/clubs/${slug}`);
     } else {
       if (likeFilled) {
         cancelRegistrationMutation.mutate({ runId: id, userId });
@@ -55,6 +64,31 @@ export default function RunCard({
     deleteRunMutation.mutate(id);
   };
 
+  useEffect(() => {
+    const nextIntervalDate = getNextIntervalDate(intervalDay);
+    fetchWeatherData(location.lat, location.lng, nextIntervalDate)
+      .then((weatherData) => {
+        setTemperature(weatherData.temperature);
+        setWind(weatherData.wind);
+        setUvIndex(weatherData.uvIndex);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Failed to fetch weather data:", error);
+        setLoading(false);
+      });
+  }, [intervalDay, location]);
+
+  if (loading) {
+    return (
+      <div className="mt-2">
+        <Skeleton className="h-6 w-1/4 mb-2" />
+        <Skeleton className="h-6 w-1/4 mb-2" />
+        <Skeleton className="h-6 w-1/4 mb-2" />
+      </div>
+    );
+  }
+
   return (
     <RunCardUI
       intervalDay={intervalDay}
@@ -67,6 +101,9 @@ export default function RunCard({
       likeFilled={likeFilled}
       handleRegistration={handleRegistration}
       handleDeleteRun={handleDeleteRun}
+      temperature={temperature}
+      wind={wind}
+      uvIndex={uvIndex}
     />
   );
 }

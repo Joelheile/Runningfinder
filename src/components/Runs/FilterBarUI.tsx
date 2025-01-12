@@ -32,7 +32,7 @@ export default function FilterBarUI({
   const difficulties = ["easy", "intermediate", "advanced"];
 
   return (
-    <div className="bg-white/90 backdrop-blur-sm absolute bottom-0 left-0 z-10 w-full text-card-foreground shadow-lg p-6 space-y-6">
+    <div className="bg-white/90 backdrop-blur-sm absolute bottom-0 h-1/6 left-0 z-10 w-full text-card-foreground shadow-lg p-6 space-y-6">
       <div className=" flex-col space-y-4">
         <div className="flex flex-row gap-x-5 w-auto ">
           <div className="space-y-4 flex flex-col w-1/3">
@@ -100,35 +100,27 @@ export default function FilterBarUI({
               </div>
             </div>
           </div>
-        </div>
-        <div className="space-y-4">
-          <label className="font-semibold text-lg">Select Difficulty</label>
-          <div className="flex flex-col md:flex-row justify-between">
-            <div className="flex space-x-4 mb-2 md:mb-0">
-              {difficulties.map((level) => (
-                <button
-                  key={level}
-                  className={`py-2 px-4 rounded w-full md:w-auto ${
-                    difficulty === level
-                      ? "bg-blue-500 text-white"
-                      : "bg-gray-200"
-                  }`}
-                  onClick={() =>
-                    setDifficulty(difficulty === level ? null : level)
-                  }
-                >
-                  {level.charAt(0).toUpperCase() + level.slice(1)}
-                </button>
-              ))}
-            </div>
-            <div>
-              <Button
-                variant="outline"
-                onClick={resetFilters}
-                className="w-full md:w-auto"
-              >
-                Reset Filters
-              </Button>
+
+          <div className="space-y-4">
+            <label className="font-semibold text-lg">Select Difficulty</label>
+            <div className="flex flex-col md:flex-row justify-between">
+              <div className="flex space-x-4 mb-2 md:mb-0">
+                {difficulties.map((level) => (
+                  <button
+                    key={level}
+                    className={`py-2 px-4 rounded w-full md:w-auto ${
+                      difficulty === level
+                        ? "bg-blue-500 text-white"
+                        : "bg-gray-200"
+                    }`}
+                    onClick={() =>
+                      setDifficulty(difficulty === level ? null : level)
+                    }
+                  >
+                    {level.charAt(0).toUpperCase() + level.slice(1)}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </div>

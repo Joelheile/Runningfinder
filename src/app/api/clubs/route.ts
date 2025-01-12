@@ -45,8 +45,22 @@ export async function POST(request: Request) {
     websiteUrl,
     avatarFileId,
   } = await request.json();
+  const slug = name.toLowerCase().replace(/ /g, "-");
 
   try {
+    const existingClub = await db
+      .select()
+      .from(club)
+      .where(eq(club.slug, slug))
+      .execute();
+
+    if (existingClub.length > 0) {
+      return NextResponse.json(
+        { error: "Slug already in use" },
+        { status: 409 },
+      );
+    }
+
     const res = await db
       .insert(club)
       .values({
@@ -60,7 +74,7 @@ export async function POST(request: Request) {
         instagramUsername,
         websiteUrl,
         memberCount: 0,
-        slug: name.toLowerCase().replace(/ /g, "-"),
+        slug,
       })
       .execute();
 
