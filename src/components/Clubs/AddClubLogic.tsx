@@ -53,12 +53,7 @@ export default function AddClub() {
 
     mutation.mutate(formData, {
       onSuccess: () => {
-        toast.success("Club added successfully");
         router.push("/clubs");
-      },
-      onError: (error) => {
-        toast.error("Failed to add club");
-        console.error(error);
       },
     });
   };
