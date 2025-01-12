@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "prod": "cross-env NEXT_PUBLIC_TESTING=false next dev",
-    "build": "next build NEXT_PUBLIC_TESTING=false",
+    "build": " next build ",
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write .",
