@@ -16,6 +16,8 @@ interface RunCardProps {
   difficulty: string;
   userId: string | undefined;
   slug: string;
+  isRegistered: boolean;
+  isAdmin?: boolean;
 }
 
 export default function RunCard({
@@ -29,8 +31,11 @@ export default function RunCard({
   difficulty,
   userId,
   slug,
+  isRegistered,
+  isAdmin,
 }: RunCardProps) {
   const [likeFilled, setLikeFilled] = useState(false);
+  const [admin, setAdmin] = useState(false);
 
   const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${location.lat},${location.lng}`;
 
@@ -64,9 +69,10 @@ export default function RunCard({
       difficulty={difficulty}
       startDescription={startDescription}
       googleMapsUrl={googleMapsUrl}
-      likeFilled={likeFilled}
+      likeFilled={likeFilled || isRegistered}
       handleRegistration={handleRegistration}
       handleDeleteRun={handleDeleteRun}
+      isAdmin={admin || isAdmin}
     />
   );
 }
