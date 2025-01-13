@@ -58,7 +58,7 @@ export default function RunCardUI({
           <p className={`p-1 px-2 rounded-md ${difficultyColor}`}>
             {difficulty}
           </p>
-          <p className="  text-gray-400">~ {caloriesBurned} kcal</p>
+          {/* <p className="  text-gray-400">~ {caloriesBurned} kcal</p> */}
         </div>
         <div className="flex gap-x-2 items-center pl-2">
           <Button
