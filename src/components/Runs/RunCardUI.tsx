@@ -1,4 +1,3 @@
-import React from "react";
 import { weekdays } from "@/lib/weekdays";
 import { Trash } from "lucide-react";
 import LikeButton from "../Icons/LikeButton";
@@ -16,6 +15,7 @@ interface RunCardUIProps {
   likeFilled: boolean;
   handleRegistration: () => void;
   handleDeleteRun: () => void;
+  isAdmin?: boolean;
 }
 
 export default function RunCardUI({
@@ -29,6 +29,7 @@ export default function RunCardUI({
   likeFilled,
   handleRegistration,
   handleDeleteRun,
+  isAdmin,
 }: RunCardUIProps) {
   const difficultyColor =
     difficulty == "easy"
@@ -66,13 +67,15 @@ export default function RunCardUI({
           >
             {startDescription}
           </Button>
-          <button
-            type="button"
-            className="stroke-primary"
-            onClick={handleDeleteRun}
-          >
-            <Trash className="stroke-primary hover:bg-slate-200 rounded-sm" />
-          </button>
+          {isAdmin && (
+            <button
+              type="button"
+              className="stroke-primary"
+              onClick={handleDeleteRun}
+            >
+              <Trash className="stroke-primary hover:bg-slate-200 rounded-sm" />
+            </button>
+          )}
         </div>
       </div>
     </div>
