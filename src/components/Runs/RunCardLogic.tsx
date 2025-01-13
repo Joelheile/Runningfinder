@@ -2,7 +2,7 @@ import { useCancelRegistration } from "@/lib/hooks/registrations/useCancelRegist
 import { useRegisterRun } from "@/lib/hooks/registrations/useRegisterRun";
 import { useDeleteRun } from "@/lib/hooks/runs/useDeleteRun";
 import { redirect } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import RunCardUI from "./RunCardUI";
 
 interface RunCardProps {
@@ -34,8 +34,12 @@ export default function RunCard({
   isRegistered,
   isAdmin,
 }: RunCardProps) {
-  const [likeFilled, setLikeFilled] = useState(false);
+  const [isLiked, setIsLiked] = useState(isRegistered);
   const [admin, setAdmin] = useState(false);
+
+  useEffect(() => {
+    setIsLiked(isRegistered);
+  }, [isRegistered]);
 
   const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${location.lat},${location.lng}`;
 
@@ -46,12 +50,12 @@ export default function RunCard({
     if (!userId) {
       redirect(`/api/auth/signin?callbackUrl=/clubs/${slug}`);
     } else {
-      if (likeFilled) {
+      if (isLiked) {
         cancelRegistrationMutation.mutate({ runId: id, userId });
       } else {
         registerMutation.mutate({ runId: id, userId });
       }
-      setLikeFilled(!likeFilled);
+      setIsLiked(!isLiked);
     }
   };
   const deleteRunMutation = useDeleteRun();
@@ -69,7 +73,7 @@ export default function RunCard({
       difficulty={difficulty}
       startDescription={startDescription}
       googleMapsUrl={googleMapsUrl}
-      likeFilled={likeFilled || isRegistered}
+      likeFilled={isLiked || isRegistered}
       handleRegistration={handleRegistration}
       handleDeleteRun={handleDeleteRun}
       isAdmin={admin || isAdmin}
