@@ -15,9 +15,9 @@ export default async function HomePage() {
           <Link href="/clubs">
             <Button variant={"outline"}>All Clubs 🏃</Button>
           </Link>
-          <Link href="/myruns">
+          {/* <Link href="/myruns">
             <Button variant={"outline"}>My runs 🥳</Button>
-          </Link>
+          </Link> */}
         </div>
       </div>
 
