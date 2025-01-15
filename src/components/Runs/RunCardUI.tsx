@@ -1,6 +1,5 @@
 import { weekdays } from "@/lib/weekdays";
 import { Trash } from "lucide-react";
-import LikeButton from "../Icons/LikeButton";
 import { Button } from "../UI/button";
 import calculateCalories from "./CaloriesCalculator";
 
@@ -48,7 +47,7 @@ export default function RunCardUI({
 
       <div className="flex bg-white mt-2 border justify-between p-2 rounded-md">
         <div className="flex gap-x-5 items-center pl-2">
-          <LikeButton onClick={handleRegistration} isFilled={likeFilled} />
+          {/* <LikeButton onClick={handleRegistration} isFilled={likeFilled} /> */}
           <strong>{name}</strong>
           <p className="text-medium">|</p>
           <p>{time}</p>
