@@ -18,6 +18,7 @@ interface RunCardProps {
   slug: string;
   isRegistered: boolean;
   isAdmin?: boolean;
+  onUnregister: (runId: string) => void;
 }
 
 export default function RunCard({
@@ -33,6 +34,7 @@ export default function RunCard({
   slug,
   isRegistered,
   isAdmin,
+  onUnregister,
 }: RunCardProps) {
   const [isLiked, setIsLiked] = useState(isRegistered);
   const [admin, setAdmin] = useState(false);
@@ -65,18 +67,20 @@ export default function RunCard({
   };
 
   return (
-    <RunCardUI
-      intervalDay={intervalDay}
-      name={name}
-      time={time}
-      distance={distance}
-      difficulty={difficulty}
-      startDescription={startDescription}
-      googleMapsUrl={googleMapsUrl}
-      likeFilled={isLiked || isRegistered}
-      handleRegistration={handleRegistration}
-      handleDeleteRun={handleDeleteRun}
-      isAdmin={admin || isAdmin}
-    />
+    <div className="run-card">
+      <RunCardUI
+        intervalDay={intervalDay}
+        name={name}
+        time={time}
+        distance={distance}
+        difficulty={difficulty}
+        startDescription={startDescription}
+        googleMapsUrl={googleMapsUrl}
+        likeFilled={isLiked || isRegistered}
+        handleRegistration={handleRegistration}
+        handleDeleteRun={handleDeleteRun}
+        isAdmin={admin || isAdmin}
+      />
+    </div>
   );
 }
