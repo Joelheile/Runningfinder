@@ -9,9 +9,10 @@ import RunCardUISkeleton from "./RunCardUISkeleton";
 type UserRunsProps = {
   userRuns: Run[];
   userId: string;
+  onUnregister: (runId: string) => void;
 };
 
-export default function UserRunsUI({ userRuns, userId }: UserRunsProps) {
+export default function UserRunsUI({ userRuns, userId, onUnregister }: UserRunsProps) {
   const router = useRouter();
 
   return (
@@ -30,6 +31,7 @@ export default function UserRunsUI({ userRuns, userId }: UserRunsProps) {
         {userRuns &&
           userRuns.map((run) => (
             <RunCard
+              key={run?.id}
               id={run?.id || ""}
               time={run?.startTime || ""}
               distance={run?.distance || 0}
@@ -42,6 +44,7 @@ export default function UserRunsUI({ userRuns, userId }: UserRunsProps) {
               slug={run?.clubId || ""}
               isRegistered={true}
               isAdmin={false}
+              onUnregister={onUnregister}
             />
           ))}
       </div>
