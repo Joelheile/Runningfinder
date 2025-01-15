@@ -16,7 +16,6 @@ export async function GET(request: Request) {
         and(eq(registrations.userId, userId), eq(registrations.runId, runId)),
       )
       .execute();
-
     return NextResponse.json(res);
   } catch (error) {
     console.error("Error fetching registrations:", error);

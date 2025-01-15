@@ -1,6 +1,5 @@
 import { db } from "@/lib/db/db";
 import { registrations } from "@/lib/db/schema/runs";
-
 import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
@@ -8,15 +7,18 @@ export async function GET(
   request: Request,
   { params }: { params: { slug: string } },
 ) {
-console.log("params", params);
+  console.log("params", params);
   try {
-    const res = await db
+    const query = db
       .select()
       .from(registrations)
-      .where(
-        eq(registrations.userId, params.slug)
-      )
-      .execute();
+      .where(eq(registrations.userId, params.slug));
+    
+    console.log("Executing query:", query.toSQL());
+
+    const res = await query.execute();
+
+    console.log("Query result:", res);
 
     return NextResponse.json(res);
   } catch (error) {
