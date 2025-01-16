@@ -1,6 +1,6 @@
 import chromium from '@sparticuz/chromium-min';
 import puppeteer from 'puppeteer-core';
-
+export const maxDuration = 20; 
 export async function POST(request: Request) {
   const { siteUrl } = await request.json();
 
@@ -16,6 +16,9 @@ export async function POST(request: Request) {
   const page = await browser.newPage();
   await page.goto(siteUrl);
   const pageTitle = await page.title();
+  await page.click('button.text-primary.underline');
+  console.log("done")
+  
   await browser.close();
 
   return Response.json({
