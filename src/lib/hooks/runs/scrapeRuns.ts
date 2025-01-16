@@ -1,7 +1,7 @@
 export async function scrapeRuns() {
 
 
-  const results = await fetch("/api/runs/scrape", {
+  const scrapedData = await fetch("/api/runs/scrape", {
     method: "POST",
     body: JSON.stringify({
       siteUrl: "https://runningfomo.com",
@@ -9,7 +9,7 @@ export async function scrapeRuns() {
   }).then((r) => r.json());
 
   //  const addClubMutation = useAddClub();
-  for (const run of results.runData) {
+  for (const run of scrapedData.runData) {
     console.log("run", run);
     const clubSlug = run.clubName.toLowerCase().replace(/ /g, "-");
     console.log("clubSlug", clubSlug);
@@ -28,13 +28,25 @@ export async function scrapeRuns() {
 
   console.log(sendMessage)
 
-    // check if run is already in the database
+    // check if run is already in the database (filer)
+    const runs = await fetch("/api/runs/").then((r) => r.json());
+    
+    const existingRun = runs.find(
+      (existingRun: any) =>
+      existingRun.title === run.title && existingRun.date === run.date
+    );
+
+    if (!existingRun) {
+      // if not, add it
+      console.log("existing runs" , existingRun);
+    }else{
+      console.log("run already exists", existingRun);
+    }
 
 
 
-    // if not, add it
     // check for clubs and if not inside, add running club
   }
-
+const results = {scrapedData};
   return {results};
 }
