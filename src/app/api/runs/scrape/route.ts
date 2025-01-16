@@ -31,8 +31,8 @@ export async function POST(request: Request) {
       return {
         title: run.querySelector(".text-2xl.font-semibold.leading-none.tracking-tight")?.textContent?.trim() || "",
         clubName: run.querySelector(".font-medium")?.textContent?.trim() || "",
-        instagram: run.querySelector('a[href*="instagram.com"]')?.getAttribute("href") || "",
-        strava: run.querySelector('a[href*="strava.com"]')?.getAttribute("href") || "",
+        instagramUsername: run.querySelector('a[href*="instagram.com"]')?.getAttribute("href") || "",
+        stravaUsername: run.querySelector('a[href*="strava.com"]')?.getAttribute("href") || "",
         date,
         difficulty,
         distance
