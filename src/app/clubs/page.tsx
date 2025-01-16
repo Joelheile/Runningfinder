@@ -3,18 +3,14 @@ import ClubCard from "@/components/Clubs/ClubCard";
 import { Button } from "@/components/UI/button";
 import { useFetchClubs } from "@/lib/hooks/clubs/useFetchClubs";
 import { scrapeRuns } from "@/lib/hooks/runs/scrapeRuns";
+
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 
 export default function ClubsDashboard() {
   const { data: clubs, isLoading, isError, error } = useFetchClubs();
   const router = useRouter();
-
-  useEffect(() => {
-    scrapeRuns();
-  }, []);
 
   return (
     <div className="flex flex-col items-center p-5">
@@ -28,7 +24,9 @@ export default function ClubsDashboard() {
       <p className="text-center mb-2">
         Discover and connect with clubs that vibe with you
       </p>
-
+      <Button onClick={() => scrapeRuns()} variant={"outline"}>
+        Scrape 🏃
+      </Button>
       <Link href="/clubs/add">
         <Button>Add Club</Button>
       </Link>
