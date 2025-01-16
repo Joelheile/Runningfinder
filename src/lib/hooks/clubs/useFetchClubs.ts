@@ -44,6 +44,7 @@ function useFetchClubBySlug(slug: string) {
   return useQuery({
     queryKey: ["clubs", slug],
     queryFn: () => fetchClubById(slug),
+    
   });
 }
 
