@@ -1,3 +1,6 @@
+import { v4 } from "uuid";
+
+
 export async function scrapeRuns() {
   const scrapedData = await fetch("/api/runs/scrape", {
     method: "POST",
@@ -40,32 +43,39 @@ export async function scrapeRuns() {
       }).then((r) => r.json());
       console.log("instagramData", instagramData);
 
-      // const scrapedData = await fetch("/api/runs/scrape", {
-      //   method: "POST",
-      //   body: JSON.stringify({
-      //     id: "",
-      //     name: "",
-      //     location: { lat: 0, lng: 0 },
-      //     description: "",
-      //     instagramUsername: "",
-      //     websiteUrl: "",
-      //     avatarFileId: "",
-      //   }),
-      // }).then((r) => r.json());
-    }
+      if (instagramData.items.length > 0) {
+        const instagramUsername = instagramData.items[0].username;
 
-    // check if run is already in the database (filer)
-    const runs = await fetch("/api/runs/").then((r) => r.json());
-
-    const existingRun = runs.find(
-      (existingRun: any) =>
-        existingRun.title === run.title && existingRun.date === run.date
-    );
-
-    if (!existingRun) {
-      // if not, add it
-      console.log("existing runs", existingRun);
-    } else {
+        const addAvatar
+      }
+      
+      const addclubs = await fetch("/api/clubs", {
+          method: "POST",
+          body: JSON.stringify({
+              id: v4(),
+              name: "",
+              location: { lat: 0, lng: 0 },
+              description: "",
+              instagramUsername: "",
+              websiteUrl: "",
+              stravaUsername: "",
+              avatarFileId: "",
+            }),
+          }).then((r) => r.json());
+        }
+        
+        // check if run is already in the database (filer)
+        const runs = await fetch("/api/runs/").then((r) => r.json());
+        
+        const existingRun = runs.find(
+          (existingRun: any) =>
+            existingRun.title === run.title && existingRun.date === run.date
+        );
+        
+        if (!existingRun) {
+          // if not, add it
+          console.log("existing runs", existingRun);
+        } else {
       console.log("run already exists", existingRun);
     }
 

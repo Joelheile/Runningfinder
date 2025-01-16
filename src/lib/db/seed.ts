@@ -1,12 +1,11 @@
+import { faker } from "@faker-js/faker";
+import { config } from "dotenv";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
-import { v4 as uuidv4, v4 } from "uuid";
-import { avatars, users } from "./schema/users";
-import { runs } from "./schema/runs";
+import { v4 as uuidv4 } from "uuid";
 import { clubs } from "./schema/clubs";
-import { faker } from "@faker-js/faker";
-import { seed } from "drizzle-seed";
-import { config } from "dotenv";
+import { runs } from "./schema/runs";
+import { avatars } from "./schema/users";
 config({ path: ".env.local" });
 
 const databaseUrl = process.env.NEXT_PUBLIC_DB_DEV
@@ -94,7 +93,6 @@ async function main() {
       ]),
       intervalDay: faker.number.int({ min: 1, max: 7 }),
       startDescription: faker.location.street(),
-      startTime: faker.date.future().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       locationLng: runCoordinates[1].toString(),
       locationLat: runCoordinates[0].toString(),
       distance: faker.number.int({ min: 1, max: 42 }).toString(),

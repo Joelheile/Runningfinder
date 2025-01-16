@@ -32,7 +32,6 @@ export const runs = pgTable("runs", {
   interval: text("interval"),
   intervalDay: integer("interval_day"),
   startDescription: text("start_description"),
-  startTime: text("start_time"),
   locationLng: decimal("location_lng").notNull(),
   locationLat: decimal("location_lat").notNull(),
   distance: decimal("distance"),

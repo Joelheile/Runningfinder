@@ -22,7 +22,7 @@ export async function POST(request: Request) {
     const runs = Array.from(document.querySelectorAll(".rounded-lg.border.bg-card.text-card-foreground.shadow-sm.mb-4"));
     return runs.map((run) => {
       const rawDate = run.querySelector(".p-6.pt-0 div:nth-child(3)")?.textContent?.trim() || "";
-      const date = rawDate.replace("When:", "").trim();
+      const date = new Date(rawDate.replace("When:", "").trim()).toISOString();
       const rawDifficulty = run.querySelector(".p-6.pt-0 div:nth-child(4)")?.textContent?.trim() || "";
       const difficulty = rawDifficulty.replace("Difficulty:", "").trim();
       const rawDistance = run.querySelector(".p-6.pt-0 div:nth-child(5)")?.textContent?.trim() || "";
