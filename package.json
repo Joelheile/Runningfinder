@@ -59,6 +59,7 @@
     "next-swagger-doc": "^0.4.1",
     "nock": "^13.5.6",
     "nodemailer": "^6.9.16",
+    "openai": "^4.78.1",
     "pg": "^8.13.1",
     "poplib": "^0.1.7",
     "postgres": "^3.4.4",
