@@ -1,1 +1,0 @@
-ALTER TABLE "club" RENAME COLUMN "position_lang" TO "position_lng";
