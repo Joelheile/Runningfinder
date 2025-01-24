@@ -43,7 +43,7 @@ export async function GET(request: Request) {
         interval: runs.interval,
         intervalDay: runs.intervalDay,
         startDescription: runs.startDescription,
-        startTime: runs.startTime,
+        mapsLink: runs.mapsLink,
         distance: runs.distance,
         location: {
           lat: runs.locationLat,
