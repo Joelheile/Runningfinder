@@ -365,6 +365,27 @@
       "when": 1737047244520,
       "tag": "0051_exotic_hydra",
       "breakpoints": true
+    },
+    {
+      "idx": 52,
+      "version": "7",
+      "when": 1737714514917,
+      "tag": "0052_worthless_hitman",
+      "breakpoints": true
+    },
+    {
+      "idx": 53,
+      "version": "7",
+      "when": 1737728679860,
+      "tag": "0053_true_ultimo",
+      "breakpoints": true
+    },
+    {
+      "idx": 54,
+      "version": "7",
+      "when": 1737729033006,
+      "tag": "0054_curious_miss_america",
+      "breakpoints": true
     }
   ]
 }
