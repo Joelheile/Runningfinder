@@ -34,6 +34,7 @@ export const runs = pgTable("runs", {
   startDescription: text("start_description"),
   locationLng: decimal("location_lng").notNull(),
   locationLat: decimal("location_lat").notNull(),
+  mapsLink: text("mapsLink"),
   distance: decimal("distance"),
   temperature: decimal("temperature"),
   wind: decimal("wind"),
