@@ -1,2 +1,0 @@
-ALTER TABLE "avatars" ALTER COLUMN "id" SET DATA TYPE uuid;
-ALTER TABLE "avatars" ALTER COLUMN "id" SET DATA TYPE uuid USING id::uuid;

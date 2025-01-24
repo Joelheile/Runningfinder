@@ -1,1 +1,0 @@
-ALTER TABLE "runs" ADD COLUMN "is_private" boolean DEFAULT false;

@@ -1,1 +1,0 @@
-ALTER TABLE "avatars" ALTER COLUMN "id" SET DATA TYPE uuid;
