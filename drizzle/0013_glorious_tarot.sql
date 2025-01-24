@@ -1,1 +1,0 @@
-ALTER TABLE "club" ADD CONSTRAINT "club_avatar_file_id_unique" UNIQUE("avatar_file_id");

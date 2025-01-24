@@ -5,13 +5,13 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- CREATE TYPE "public"."interval" AS ENUM('daily', 'weekly', 'biweekly', 'monthly');
+ CREATE TYPE "public"."status" AS ENUM('pending', 'active', 'deactivated', 'banned');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- CREATE TYPE "public"."status" AS ENUM('pending', 'active', 'deactivated', 'banned');
+ CREATE TYPE "public"."avatarType" AS ENUM('user', 'club');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -40,8 +40,7 @@ CREATE TABLE IF NOT EXISTS "authenticator" (
 	"credentialDeviceType" text NOT NULL,
 	"credentialBackedUp" boolean NOT NULL,
 	"transports" text,
-	CONSTRAINT "authenticator_userId_credentialID_pk" PRIMARY KEY("userId","credentialID"),
-	CONSTRAINT "authenticator_credentialID_unique" UNIQUE("credentialID")
+	CONSTRAINT "authenticator_userId_credentialID_pk" PRIMARY KEY("userId","credentialID")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "session" (
@@ -58,15 +57,16 @@ CREATE TABLE IF NOT EXISTS "verificationToken" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "clubs" (
-	"id" uuid PRIMARY KEY NOT NULL,
+	"id" text PRIMARY KEY NOT NULL,
 	"name" text NOT NULL,
 	"slug" text NOT NULL,
 	"description" text,
 	"location_lng" numeric NOT NULL,
 	"location_lat" numeric NOT NULL,
 	"instagram_username" text,
+	"strava_username" text,
 	"website_url" text,
-	"avatar_file_id" uuid NOT NULL,
+	"avatar_file_id" text,
 	"creation_date" timestamp NOT NULL,
 	"member_count" integer,
 	CONSTRAINT "clubs_slug_unique" UNIQUE("slug"),
@@ -74,49 +74,52 @@ CREATE TABLE IF NOT EXISTS "clubs" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "memberships" (
-	"id" uuid PRIMARY KEY NOT NULL,
-	"user_id" uuid NOT NULL,
-	"club_id" uuid NOT NULL,
+	"id" text PRIMARY KEY NOT NULL,
+	"user_id" text NOT NULL,
+	"club_id" text NOT NULL,
 	"join_date" timestamp NOT NULL,
 	"status" "status" DEFAULT 'pending',
 	"role" "role" DEFAULT 'member'
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "registrations" (
-	"id" uuid PRIMARY KEY NOT NULL,
-	"run_id" uuid NOT NULL,
-	"user_id" uuid NOT NULL,
-	"registration_date" timestamp NOT NULL,
-	"status" "status" DEFAULT 'pending'
+	"id" text PRIMARY KEY NOT NULL,
+	"run_id" text NOT NULL,
+	"user_id" text NOT NULL,
+	"registration_date" timestamp,
+	"status" text
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "runs" (
-	"id" uuid PRIMARY KEY NOT NULL,
-	"club_id" uuid NOT NULL,
-	"date" timestamp NOT NULL,
-	"interval" interval NOT NULL,
-	"interval_day" integer NOT NULL,
-	"start_description" text NOT NULL,
-	"start_time" timestamp NOT NULL,
+	"id" text PRIMARY KEY NOT NULL,
+	"name" text,
+	"difficulty" text,
+	"club_id" text NOT NULL,
+	"date" timestamp,
+	"interval" text,
+	"interval_day" integer,
+	"start_description" text,
+	"start_time" text,
 	"location_lng" numeric NOT NULL,
 	"location_lat" numeric NOT NULL,
-	"distance" numeric NOT NULL,
+	"distance" numeric,
 	"temperature" numeric,
 	"wind" numeric,
-	"uv_index" numeric
+	"uv_index" numeric,
+	"members_only" boolean DEFAULT false
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "avatars" (
 	"id" text PRIMARY KEY NOT NULL,
 	"name" text,
 	"img_url" text NOT NULL,
-	"upload_date" timestamp NOT NULL
+	"upload_date" timestamp NOT NULL,
+	"type" "avatarType" NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "users" (
 	"id" text PRIMARY KEY NOT NULL,
-	"first_name" text,
-	"last_name" text,
+	"name" text,
 	"email" text,
 	"emailVerified" timestamp,
 	"bio" text,
@@ -182,5 +185,12 @@ EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "club_id_index" ON "clubs" USING btree ("id");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "club_name_index" ON "clubs" USING btree ("name");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "club_slug_index" ON "clubs" USING btree ("slug");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "membership_user_id_index" ON "memberships" USING btree ("user_id");--> statement-breakpoint
-CREATE INDEX IF NOT EXISTS "membership_club_id_index" ON "memberships" USING btree ("club_id");
+CREATE INDEX IF NOT EXISTS "membership_club_id_index" ON "memberships" USING btree ("club_id");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "registrations_id_index" ON "registrations" USING btree ("id");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "runs_id_index" ON "runs" USING btree ("id");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "users_id_index" ON "users" USING btree ("id");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "users_email_index" ON "users" USING btree ("email");

@@ -1,6 +1,6 @@
 {
-  "id": "2e77a0cf-dccb-45f8-ab36-8b71cc363e38",
-  "prevId": "0e18cd19-df90-4ff6-9709-e4b3eb821dc4",
+  "id": "36cc5e7c-6dac-4a18-8d47-61f3f4307b91",
+  "prevId": "6099b2d1-321e-4c4f-850c-a9c198e1158b",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -8,8 +8,8 @@
       "name": "account",
       "schema": "",
       "columns": {
-        "userId": {
-          "name": "userId",
+        "user_id": {
+          "name": "user_id",
           "type": "text",
           "primaryKey": false,
           "notNull": true
@@ -26,8 +26,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "providerAccountId": {
-          "name": "providerAccountId",
+        "provider_account_id": {
+          "name": "provider_account_id",
           "type": "text",
           "primaryKey": false,
           "notNull": true
@@ -77,20 +77,27 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "account_userId_users_id_fk": {
-          "name": "account_userId_users_id_fk",
+        "account_user_id_users_id_fk": {
+          "name": "account_user_id_users_id_fk",
           "tableFrom": "account",
           "tableTo": "users",
-          "columnsFrom": ["userId"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
-        "account_provider_providerAccountId_pk": {
-          "name": "account_provider_providerAccountId_pk",
-          "columns": ["provider", "providerAccountId"]
+        "account_provider_provider_account_id_pk": {
+          "name": "account_provider_provider_account_id_pk",
+          "columns": [
+            "provider",
+            "provider_account_id"
+          ]
         }
       },
       "uniqueConstraints": {}
@@ -99,26 +106,26 @@
       "name": "authenticator",
       "schema": "",
       "columns": {
-        "credentialID": {
-          "name": "credentialID",
+        "credential_id": {
+          "name": "credential_id",
           "type": "text",
           "primaryKey": false,
           "notNull": true
         },
-        "userId": {
-          "name": "userId",
+        "user_id": {
+          "name": "user_id",
           "type": "text",
           "primaryKey": false,
           "notNull": true
         },
-        "providerAccountId": {
-          "name": "providerAccountId",
+        "provider_account_id": {
+          "name": "provider_account_id",
           "type": "text",
           "primaryKey": false,
           "notNull": true
         },
-        "credentialPublicKey": {
-          "name": "credentialPublicKey",
+        "credential_public_key": {
+          "name": "credential_public_key",
           "type": "text",
           "primaryKey": false,
           "notNull": true
@@ -129,14 +136,14 @@
           "primaryKey": false,
           "notNull": true
         },
-        "credentialDeviceType": {
-          "name": "credentialDeviceType",
+        "credential_device_type": {
+          "name": "credential_device_type",
           "type": "text",
           "primaryKey": false,
           "notNull": true
         },
-        "credentialBackedUp": {
-          "name": "credentialBackedUp",
+        "credential_backed_up": {
+          "name": "credential_backed_up",
           "type": "boolean",
           "primaryKey": false,
           "notNull": true
@@ -150,20 +157,27 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "authenticator_userId_users_id_fk": {
-          "name": "authenticator_userId_users_id_fk",
+        "authenticator_user_id_users_id_fk": {
+          "name": "authenticator_user_id_users_id_fk",
           "tableFrom": "authenticator",
           "tableTo": "users",
-          "columnsFrom": ["userId"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
-        "authenticator_userId_credentialID_pk": {
-          "name": "authenticator_userId_credentialID_pk",
-          "columns": ["userId", "credentialID"]
+        "authenticator_user_id_credential_id_pk": {
+          "name": "authenticator_user_id_credential_id_pk",
+          "columns": [
+            "user_id",
+            "credential_id"
+          ]
         }
       },
       "uniqueConstraints": {}
@@ -172,14 +186,14 @@
       "name": "session",
       "schema": "",
       "columns": {
-        "sessionToken": {
-          "name": "sessionToken",
+        "session_token": {
+          "name": "session_token",
           "type": "text",
           "primaryKey": true,
           "notNull": true
         },
-        "userId": {
-          "name": "userId",
+        "user_id": {
+          "name": "user_id",
           "type": "text",
           "primaryKey": false,
           "notNull": true
@@ -193,12 +207,16 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "session_userId_users_id_fk": {
-          "name": "session_userId_users_id_fk",
+        "session_user_id_users_id_fk": {
+          "name": "session_user_id_users_id_fk",
           "tableFrom": "session",
           "tableTo": "users",
-          "columnsFrom": ["userId"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -234,7 +252,10 @@
       "compositePrimaryKeys": {
         "verificationToken_identifier_token_pk": {
           "name": "verificationToken_identifier_token_pk",
-          "columns": ["identifier", "token"]
+          "columns": [
+            "identifier",
+            "token"
+          ]
         }
       },
       "uniqueConstraints": {}
@@ -301,7 +322,7 @@
           "name": "avatar_file_id",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "creation_date": {
           "name": "creation_date",
@@ -316,14 +337,64 @@
           "notNull": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "club_id_index": {
+          "name": "club_id_index",
+          "columns": [
+            {
+              "expression": "id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "club_name_index": {
+          "name": "club_name_index",
+          "columns": [
+            {
+              "expression": "name",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "club_slug_index": {
+          "name": "club_slug_index",
+          "columns": [
+            {
+              "expression": "slug",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
       "foreignKeys": {
         "clubs_avatar_file_id_avatars_id_fk": {
           "name": "clubs_avatar_file_id_avatars_id_fk",
           "tableFrom": "clubs",
           "tableTo": "avatars",
-          "columnsFrom": ["avatar_file_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "avatar_file_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -333,12 +404,16 @@
         "clubs_slug_unique": {
           "name": "clubs_slug_unique",
           "nullsNotDistinct": false,
-          "columns": ["slug"]
+          "columns": [
+            "slug"
+          ]
         },
         "clubs_avatar_file_id_unique": {
           "name": "clubs_avatar_file_id_unique",
           "nullsNotDistinct": false,
-          "columns": ["avatar_file_id"]
+          "columns": [
+            "avatar_file_id"
+          ]
         }
       }
     },
@@ -424,8 +499,12 @@
           "name": "memberships_user_id_users_id_fk",
           "tableFrom": "memberships",
           "tableTo": "users",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -433,8 +512,12 @@
           "name": "memberships_club_id_clubs_id_fk",
           "tableFrom": "memberships",
           "tableTo": "clubs",
-          "columnsFrom": ["club_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "club_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -468,25 +551,43 @@
           "name": "registration_date",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "status": {
           "name": "status",
-          "type": "status",
-          "typeSchema": "public",
+          "type": "text",
           "primaryKey": false,
-          "notNull": false,
-          "default": "'pending'"
+          "notNull": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "registrations_id_index": {
+          "name": "registrations_id_index",
+          "columns": [
+            {
+              "expression": "id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
       "foreignKeys": {
         "registrations_run_id_runs_id_fk": {
           "name": "registrations_run_id_runs_id_fk",
           "tableFrom": "registrations",
           "tableTo": "runs",
-          "columnsFrom": ["run_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "run_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -494,8 +595,12 @@
           "name": "registrations_user_id_users_id_fk",
           "tableFrom": "registrations",
           "tableTo": "users",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -605,14 +710,34 @@
           "default": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "runs_id_index": {
+          "name": "runs_id_index",
+          "columns": [
+            {
+              "expression": "id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
       "foreignKeys": {
         "runs_club_id_clubs_id_fk": {
           "name": "runs_club_id_clubs_id_fk",
           "tableFrom": "runs",
           "tableTo": "clubs",
-          "columnsFrom": ["club_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "club_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -726,14 +851,47 @@
           "notNull": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "users_id_index": {
+          "name": "users_id_index",
+          "columns": [
+            {
+              "expression": "id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "users_email_index": {
+          "name": "users_email_index",
+          "columns": [
+            {
+              "expression": "email",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "users_email_unique": {
           "name": "users_email_unique",
           "nullsNotDistinct": false,
-          "columns": ["email"]
+          "columns": [
+            "email"
+          ]
         }
       }
     }
@@ -742,17 +900,29 @@
     "public.role": {
       "name": "role",
       "schema": "public",
-      "values": ["member", "admin", "manager"]
+      "values": [
+        "member",
+        "admin",
+        "manager"
+      ]
     },
     "public.status": {
       "name": "status",
       "schema": "public",
-      "values": ["pending", "active", "deactivated", "banned"]
+      "values": [
+        "pending",
+        "active",
+        "deactivated",
+        "banned"
+      ]
     },
     "public.avatarType": {
       "name": "avatarType",
       "schema": "public",
-      "values": ["user", "club"]
+      "values": [
+        "user",
+        "club"
+      ]
     }
   },
   "schemas": {},

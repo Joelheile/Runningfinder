@@ -10,13 +10,14 @@
     "lint": "next lint",
     "format": "prettier --write .",
     "tests": "NEXT_PUBLIC_TESTING=true npx playwright test playwright-tests/clubRunFlow.spec.ts && npx jest integration && npx jest unit",
-    "proddb:generate": "cross-env NEXT_PUBLIC_TESTING=false npx drizzle-kit generate",
-    "devdb:generate": "npx drizzle-kit generate",
-    "proddb:push": "cross-env NEXT_PUBLIC_TESTING=false npx drizzle-kit push",
-    "devdb:push": "npx drizzle-kit push",
-    "proddb:studio": "cross-env NEXT_PUBLIC_TESTING=false npx drizzle-kit studio",
-    "devdb:studio": " npx drizzle-kit studio",
-    "devdb:seed": " npx node -r esbuild-register src/lib/db/seed.ts"
+    "prod:generate": "cross-env NEXT_PUBLIC_TESTING=false npx drizzle-kit generate",
+    "prod:migrate": "cross-env NEXT_PUBLIC_TESTING=false npx drizzle-kit migrate",
+    "dev:generate": "npx drizzle-kit generate",
+    "prod:push": "cross-env NEXT_PUBLIC_TESTING=false npx drizzle-kit push",
+    "dev:push": "npx drizzle-kit push",
+    "prod:studio": "cross-env NEXT_PUBLIC_TESTING=false npx drizzle-kit studio",
+    "dev:studio": " npx drizzle-kit studio",
+    "dev:seed": " npx node -r esbuild-register src/lib/db/seed.ts"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.5.3",
