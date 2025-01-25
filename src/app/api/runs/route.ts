@@ -1,5 +1,5 @@
 import { db } from "@/lib/db/db";
-import { runs } from "@/lib/db/schema/runs";
+import { runs } from "@/lib/db/schema";
 import { and, between, eq, inArray } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
