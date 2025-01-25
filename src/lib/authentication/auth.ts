@@ -3,7 +3,7 @@ import NextAuth from "next-auth";
 import GitHub from "next-auth/providers/github";
 import Resend from "next-auth/providers/resend";
 import { db } from "../db/db";
-import { accounts, sessions, verificationTokens } from "../db/schema/auth";
+import { accounts, sessions, verificationTokens } from "../db/schema";
 import { users } from "../db/schema/users";
 import { sendVerificationRequest } from "./sendMailRequest";
 

@@ -1,0 +1,191 @@
+
+import {
+  boolean,
+  decimal,
+  index,
+  integer,
+  pgEnum,
+  pgTable,
+  primaryKey,
+  text,
+  timestamp,
+} from "drizzle-orm/pg-core";
+import type { AdapterAccountType } from "next-auth/adapters";
+
+export const users = pgTable("users", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  name: text("name"),
+  email: text("email").unique(),
+  emailVerified: timestamp("emailVerified", { mode: "date" }),
+  bio: text("bio"),
+  createdAt: timestamp("created_at", { mode: "date" }),
+  updatedAt: timestamp("updated_at", { mode: "date" }),
+  lastLogin: timestamp("last_login", { mode: "date" }),
+  attendedRuns: integer("attended_runs"),
+  image: text("image"),
+});
+
+export const avatarTypeEnum = pgEnum("avatarType", ["user", "club"]);
+export const avatars = pgTable("avatars", {
+  id: text("id").primaryKey().notNull(),
+  name: text("name"),
+  img_url: text("img_url").notNull(),
+  uploadDate: timestamp("upload_date").notNull(),
+  type: avatarTypeEnum("type").notNull(),
+});
+
+
+
+export const accounts = pgTable(
+  "account",
+  {
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    type: text("type").$type<AdapterAccountType>().notNull(),
+    provider: text("provider").notNull(),
+    providerAccountId: text("provider_account_id").notNull(),
+    refresh_token: text("refresh_token"),
+    access_token: text("access_token"),
+    expires_at: integer("expires_at"),
+    token_type: text("token_type"),
+    scope: text("scope"),
+    id_token: text("id_token"),
+    session_state: text("session_state"),
+  },
+  (account) => ({
+    compound_key: primaryKey({
+      columns: [account.provider, account.providerAccountId],
+    }),
+  }),
+);
+
+export const sessions = pgTable("session", {
+  sessionToken: text("session_token").primaryKey(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  expires: timestamp("expires", { mode: "date" }).notNull(),
+});
+
+export const verificationTokens = pgTable(
+  "verification_token",
+  {
+    identifier: text("identifier").notNull(),
+    token: text("token").notNull(),
+    expires: timestamp("expires", { mode: "date" }).notNull(),
+  },
+  (verificationToken) => ({
+    composite_pk: primaryKey({
+      columns: [verificationToken.identifier, verificationToken.token],
+    }),
+  }),
+);
+
+export const authenticators = pgTable(
+  "authenticator",
+  {
+    credentialID: text("credential_id").notNull(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    providerAccountId: text("provider_account_id").notNull(),
+    credentialPublicKey: text("credential_public_key").notNull(),
+    credentialId: text("credential_id").notNull(),
+    counter: integer("counter").notNull(),
+    credentialDeviceType: text("credential_device_type").notNull(),
+    credentialBackedUp: boolean("credential_backed_up").notNull(),
+    transports: text("transports"),
+  },
+  (authenticator) => ({
+    composite_pk: primaryKey({
+      columns: [authenticator.userId, authenticator.credentialID],
+    }),
+  }),
+);
+
+
+export const statusEnum = pgEnum("status", [
+  "pending",
+  "active",
+  "deactivated",
+  "banned",
+]);
+
+
+export const roleEnum = pgEnum("role", ["member", "admin", "manager"]);
+
+
+export const registrations = pgTable("registrations", {
+  id: text("id").primaryKey().notNull(),
+  runId: text("run_id")
+    .notNull()
+    .references(() => runs.id),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id),
+  registrationDate: timestamp("registration_date"),
+  status: text("status"),
+});
+
+export const runs = pgTable("runs", {
+  id: text("id").primaryKey().notNull(),
+  name: text("name"),
+  difficulty: text("difficulty"),
+  clubId: text("club_id")
+    .notNull()
+    .references(() => clubs.id),
+  date: timestamp("date"),
+  interval: text("interval"),
+  intervalDay: integer("interval_day"),
+  startDescription: text("start_description"),
+  locationLng: decimal("location_lng").notNull(),
+  locationLat: decimal("location_lat").notNull(),
+  mapsLink: text("mapsLink"),
+  distance: text("distance"),
+  temperature: decimal("temperature"),
+  wind: decimal("wind"),
+  uv_index: decimal("uv_index"),
+  membersOnly: boolean("members_only").default(false),
+});
+
+
+export const memberships = pgTable(
+  "memberships",
+  {
+    id: text("id").primaryKey().notNull(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id),
+    clubId: text("club_id")
+      .notNull()
+      .references(() => clubs.id),
+    joinDate: timestamp("join_date").notNull(),
+    status: statusEnum("status").default("pending"),
+    role: roleEnum("role").default("member"),
+  },
+  (membership) => ({
+    userIdIndex: index("membership_user_id_index").on(membership.userId),
+    clubIdIndex: index("membership_club_id_index").on(membership.clubId),
+  }),
+);
+
+export const clubs = pgTable("clubs", {
+  id: text("id").primaryKey().notNull(),
+  name: text("name").notNull(),
+  slug: text("slug").notNull().unique(),
+  description: text("description"),
+  locationLng: decimal("location_lng").notNull(),
+  locationLat: decimal("location_lat").notNull(),
+  instagramUsername: text("instagram_username"),
+  stravaUsername: text("strava_username"),
+  websiteUrl: text("website_url"),
+  avatarFileId: text("avatar_file_id")
+    .unique()
+    .references(() => avatars.id),
+  creationDate: timestamp("creation_date").notNull(),
+  memberCount: integer("member_count"),
+});
+
