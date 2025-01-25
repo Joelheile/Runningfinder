@@ -1,12 +1,12 @@
-import { Checkbox } from "@/components/UI/checkbox";
 import { Button } from "@/components/UI/button";
+import { Checkbox } from "@/components/UI/checkbox";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/UI/popover";
-import { Slider } from "../UI/slider";
 import { weekdays } from "@/lib/weekdays";
+import { Slider } from "../UI/slider";
 
 interface FilterBarUIProps {
   allowedDistances: number[];
