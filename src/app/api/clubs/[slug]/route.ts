@@ -1,8 +1,10 @@
 import { db } from "@/lib/db/db";
-import { avatars, clubs as club } from "@/lib/db/schema";
+import { clubs as club } from "@/lib/db/schema";
 
 import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
+
+const DEFAULT_FALLBACK_IMAGE_URL = "/assets/default-fallback-image.png";
 
 export async function GET(
   request: Request,
@@ -19,17 +21,20 @@ export async function GET(
         locationLat: club.locationLat,
         instagramUsername: club.instagramUsername,
         websiteUrl: club.websiteUrl,
-        avatarUrl: avatars.img_url,
+        avatarUrl: club.avatarUrl,
       })
       .from(club)
-      .leftJoin(avatars, eq(club.avatarFileId, avatars.id))
+      // .leftJoin(avatars, eq(club.avatarFileId, avatars.id))
       .where(eq(club.slug, params.slug));
 
     if (res.length === 0) {
       return NextResponse.json({ error: "Club not found" }, { status: 404 });
     }
 
-    return NextResponse.json(res[0]);
+    const clubData = res[0];
+    clubData.avatarUrl = clubData.avatarUrl || DEFAULT_FALLBACK_IMAGE_URL;
+
+    return NextResponse.json(clubData);
   } catch (error) {
     return NextResponse.json(
       { error: "Internal Server Error" },

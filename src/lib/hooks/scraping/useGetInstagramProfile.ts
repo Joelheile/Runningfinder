@@ -1,4 +1,3 @@
-import { v4 } from 'uuid';
 import { useUploadAvatar } from '../avatars/useUploadAvatar';
 
 const useGetProfileImage = () => {
@@ -16,26 +15,16 @@ const useGetProfileImage = () => {
                 body: JSON.stringify({ usernames: [instagramUsername] }),
             });
 
-            if (!response.ok) {
-                throw new Error('Failed to fetch Instagram data');
-            }
-
             const instagramData = await response.json();
             console.log("instagramData", instagramData);
-            console.log("bio data", instagramData.items[0].biography);
-            if (instagramData.items && instagramData.items.length > 0) {
-                profileDescription = instagramData.items[0].biography;
-            }
-            if (instagramData.items.length > 0) {
-                const profilePicUrl = instagramData.items[0].profilePicUrl;
-                const avatarFile = await fetch(profilePicUrl).then((r) => r.blob());
 
-                const convertedFile = new File([avatarFile], "avatar.jpg", { type: avatarFile.type });
-
-                profileImageId = await uploadAvatar.uploadAvatar(convertedFile, v4());
-                console.log("avatarFileId", profileImageId);
-
-                profileImageUrl = profilePicUrl;
+            if (Array.isArray(instagramData) && instagramData.length > 0) {
+                const firstItem = instagramData[0];
+                profileDescription = firstItem?.biography || null;
+                profileImageUrl = firstItem?.profilePicUrlHD || null;
+                console.log("profileImageUrl", profileImageUrl);
+            } else {
+                console.error("No items found in instagramData");
             }
         } catch (error) {
             console.error("Error fetching profile image:", error);
