@@ -1,4 +1,3 @@
-
 import {
   boolean,
   decimal,
@@ -56,9 +55,7 @@ export const accounts = pgTable(
     session_state: text("session_state"),
   },
   (account) => ({
-    compound_key: primaryKey({
-      columns: [account.provider, account.providerAccountId],
-    }),
+    compound_key: primaryKey(account.provider, account.providerAccountId),
   }),
 );
 
@@ -78,9 +75,7 @@ export const verificationTokens = pgTable(
     expires: timestamp("expires", { mode: "date" }).notNull(),
   },
   (verificationToken) => ({
-    composite_pk: primaryKey({
-      columns: [verificationToken.identifier, verificationToken.token],
-    }),
+    composite_pk: primaryKey(verificationToken.identifier, verificationToken.token),
   }),
 );
 
@@ -100,9 +95,7 @@ export const authenticators = pgTable(
     transports: text("transports"),
   },
   (authenticator) => ({
-    composite_pk: primaryKey({
-      columns: [authenticator.userId, authenticator.credentialID],
-    }),
+    composite_pk: primaryKey(authenticator.userId, authenticator.credentialID),
   }),
 );
 

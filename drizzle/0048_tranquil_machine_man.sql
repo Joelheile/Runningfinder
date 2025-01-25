@@ -1,1 +1,0 @@
-ALTER TABLE "runs" ALTER COLUMN "interval" SET DATA TYPE text;
