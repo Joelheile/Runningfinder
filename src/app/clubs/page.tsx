@@ -2,7 +2,7 @@
 import ClubCard from "@/components/Clubs/ClubCard";
 import { Button } from "@/components/UI/button";
 import { useFetchClubs } from "@/lib/hooks/clubs/useFetchClubs";
-import { scrapeRuns } from "@/lib/hooks/runs/scrapeRuns";
+import { scrapeRuns } from "@/lib/hooks/scraping/useScrapeRuns";
 
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
