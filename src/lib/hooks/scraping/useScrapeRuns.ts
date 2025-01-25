@@ -1,65 +1,87 @@
-import { compareClubs } from "./useCompareClubs";
-import useGetProfileImage from "./useGetProfileImage";
+import { Club } from "@/lib/types/Club";
+import { useState } from "react";
+import toast from "react-hot-toast";
+import { v4 } from "uuid";
+import { useAddClub } from "../clubs/useAddClub";
+import useGetProfileImage from "./useGetInstagramProfile";
 
-export async function scrapeRuns() {
-  const scrapedData = await fetch("https://runningfinder.joel-heil-escobar.workers.dev/", {
-    method: "GET",
-  }).then((r) => r.json())
+export function useScrapeRuns() {
+  const [profileImageUrl, setProfileImageUrl] = useState<string | null>(null);
+  const [profileImageId, setProfileImageId] = useState<string | null>(null);
+  const [profileDescription, setProfileDescription] = useState<string | null>(null);
+  const getProfileImage = useGetProfileImage();
 
-  console.log("scrapedData", scrapedData);
+  const mutation = useAddClub();
 
-  let counter = 0;
-  for (const run of scrapedData) {
-    if (counter >= 1) break;
-    counter++;
+  const scrapeRuns = async () => {
+    const scrapedData = await fetch("https://runningfinder.joel-heil-escobar.workers.dev/", {
+      method: "GET",
+    }).then((r) => r.json());
 
-    console.log("run", run);
-    const message = await compareClubs({ clubName: run.clubName });
+    console.log("scrapedData", scrapedData);
 
-    if (message === "true") {
-      console.log("club already exists", run.clubName);
-    } else {
-      const { profileImageId, profileImageUrl } = await useGetProfileImage(run.instagramUsername);
-    }
-        // const addclubs = await fetch("/api/clubs", {
-        //   method: "POST",
-        //   body: JSON.stringify({
-        //       id: v4(),
-        //       name: run.name,
-        //       location: { lat: run.lat, lng: run.lng },
-        //       description: "",
-        //       instagramUsername: run.instagramUsername,
-        //       websiteUrl: run.locationLink,
-        //       stravaUsername: run.stravaUsername,
-        //       avatarFileId: "",
-        //     }),
-        //   }).then((r) => r.json());
+    let counter = 0;
+    for (const run of scrapedData) {
+      if (counter >= 1) break;
+      counter++;
+
+      const {
+        clubName,
+        instagramUsername,
+        eventName,
+        datetime,
+        location,
+        locationUrl,
+        difficulty,
+        distance,
+        isRecurrent,
+        location_latitude,
+        location_longitude,
+      } = run;
+      console.log("run", run);
+      
+
+      
+        if (instagramUsername !== null) {
+          const { profileImageId, profileImageUrl, profileDescription } = await getProfileImage({ instagramUsername });
+          setProfileDescription(profileDescription);
+          setProfileImageUrl(profileImageUrl);
+        } else {
+          // handle case where instagramUsername is null
         }
-      
-    
 
 
-      
-      
-    
-        
-    //     // check if run is already in the database (filer)
-    //     const runs = await fetch("/api/runs/").then((r) => r.json());
-        
-    //     const existingRun = runs.find(
-    //       (existingRun: any) =>
-    //         existingRun.title === run.title && existingRun.date === run.date
-    //     );
-        
-    //     if (!existingRun) {
-    //       // if not, add it
-    //       console.log("existing runs", existingRun);
-    //     } else {
-    //   console.log("run already exists", existingRun);
-    // }
 
-    // check for clubs and if not inside, add running club
-  
-  
-  return scrapedData;
+
+     
+
+      const formData: Club = {
+        name: clubName,
+        description: profileDescription || "",
+        location: { lat: location_latitude, lng: location_longitude },
+        instagramUsername: instagramUsername || "",
+        memberCount: 0,
+        avatarFileId: profileImageId || "",
+        avatarUrl: profileImageUrl || "",
+        websiteUrl: "",
+        id: v4(),
+        creationDate: new Date().toISOString(),
+        slug: clubName.toLowerCase().replace(/ /g, "-"),
+      };
+
+      mutation.mutate(formData, {
+        onSuccess: () => {
+          toast.success("Club added successfully");
+        },
+        onError: (error) => {
+          toast.error("Failed to add club");
+          console.error(error);
+        },
+      });      
+    }
+
+    return scrapedData;
+  };
+
+  return { scrapeRuns, profileImageUrl, profileImageId, profileDescription };
 }
