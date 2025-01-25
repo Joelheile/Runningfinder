@@ -174,9 +174,10 @@ export const clubs = pgTable("clubs", {
   instagramUsername: text("instagram_username"),
   stravaUsername: text("strava_username"),
   websiteUrl: text("website_url"),
-  avatarFileId: text("avatar_file_id")
-    .unique()
-    .references(() => avatars.id),
+  avatarUrl: text("avatar_url"),
+  // avatarFileId: text("avatar_file_id")
+  //   .unique()
+  //   .references(() => avatars.id),
   creationDate: timestamp("creation_date").notNull(),
   memberCount: integer("member_count"),
 });

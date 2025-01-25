@@ -9,6 +9,7 @@ export type Club = {
   description: string;
   creationDate: string;
   instagramUsername: string;
+  stravaUsername: string;
   memberCount: number;
   avatarFileId: string;
   avatarUrl: string;

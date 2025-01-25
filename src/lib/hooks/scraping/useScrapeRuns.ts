@@ -10,7 +10,6 @@ export function useScrapeRuns() {
   const [profileImageId, setProfileImageId] = useState<string | null>(null);
   const [profileDescription, setProfileDescription] = useState<string | null>(null);
   const getProfileImage = useGetProfileImage();
-
   const mutation = useAddClub();
 
   const scrapeRuns = async () => {
@@ -28,6 +27,7 @@ export function useScrapeRuns() {
       const {
         clubName,
         instagramUsername,
+        stravaUsername,
         eventName,
         datetime,
         location,
@@ -39,27 +39,19 @@ export function useScrapeRuns() {
         location_longitude,
       } = run;
       console.log("run", run);
-      
 
-      
-        if (instagramUsername !== null) {
-          const { profileImageId, profileImageUrl, profileDescription } = await getProfileImage({ instagramUsername });
-          setProfileDescription(profileDescription);
-          setProfileImageUrl(profileImageUrl);
-        } else {
-          // handle case where instagramUsername is null
-        }
-
-
-
-
-     
+      if (instagramUsername !== null) {
+        const { profileImageId, profileImageUrl, profileDescription } = await getProfileImage({ instagramUsername });
+        setProfileDescription(profileDescription);
+        setProfileImageUrl(profileImageUrl);
+      }
 
       const formData: Club = {
         name: clubName,
         description: profileDescription || "",
         location: { lat: location_latitude, lng: location_longitude },
         instagramUsername: instagramUsername || "",
+        stravaUsername: stravaUsername || "",
         memberCount: 0,
         avatarFileId: profileImageId || "",
         avatarUrl: profileImageUrl || "",
@@ -77,7 +69,7 @@ export function useScrapeRuns() {
           toast.error("Failed to add club");
           console.error(error);
         },
-      });      
+      });
     }
 
     return scrapedData;
