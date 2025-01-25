@@ -32,17 +32,20 @@ export default function ClubsDashboard() {
         <Button>Add Club</Button>
       </Link>
       <div className="grid grid-cols-3 gap-x-5 p-5s">
-        {clubs?.map((club) => (
-          <Link key={club.id} href={`/clubs/${club.slug}`}>
-            <ClubCard
-              avatarUrl={club.avatarUrl}
-              name={club.name}
-              description={club.description}
-              instagramUsername={club.instagramUsername}
-              websiteUrl={club.websiteUrl}
-            />
-          </Link>
-        ))}
+        {clubs?.map((club) => {
+          console.log("avatar", club.avatarUrl);
+          return (
+            <Link key={club.id} href={`/clubs/${club.slug}`}>
+              <ClubCard
+                avatarUrl={club.avatarUrl}
+                name={club.name}
+                description={club.description}
+                instagramUsername={club.instagramUsername}
+                websiteUrl={club.websiteUrl}
+              />
+            </Link>
+          );
+        })}
       </div>
     </div>
   );

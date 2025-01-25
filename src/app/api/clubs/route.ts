@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 import { db } from "../../../lib/db/db";
-import { avatars, clubs as club } from "../../../lib/db/schema";
+import { clubs as club } from "../../../lib/db/schema";
 
 const DEFAULT_FALLBACK_IMAGE_URL = "/assets/default-fallback-image.png";
 
@@ -14,20 +14,18 @@ export async function GET() {
         description: club.description,
         locationLng: club.locationLng,
         locationLat: club.locationLat,
-        avatarFileId: club.avatarFileId,
+        avatarUrl: club.avatarUrl,
         creationDate: club.creationDate,
         instagramUsername: club.instagramUsername,
         websiteUrl: club.websiteUrl,
         memberCount: club.memberCount,
         slug: club.slug,
-        avatarUrl: avatars.img_url,
       })
-      .from(club)
-      .leftJoin(avatars, eq(club.avatarFileId, avatars.id));
+      .from(club);
 
-    const clubsWithFallbackAvatar = res.map((club: { avatarFileId: any; avatarUrl: any; }) => ({
+    const clubsWithFallbackAvatar = res.map((club: { avatarUrl: any; }) => ({
       ...club,
-      avatarUrl: club.avatarFileId ? club.avatarUrl : DEFAULT_FALLBACK_IMAGE_URL,
+      avatarUrl: club.avatarUrl || DEFAULT_FALLBACK_IMAGE_URL,
     }));
 
     return NextResponse.json(clubsWithFallbackAvatar);
@@ -48,7 +46,8 @@ export async function POST(request: Request) {
     description,
     instagramUsername,
     websiteUrl,
-    avatarFileId,
+    // avatarFileId,
+    avatarUrl
   } = await request.json();
 
   try {
@@ -60,7 +59,8 @@ export async function POST(request: Request) {
         description,
         locationLng: location.lng,
         locationLat: location.lat,
-        avatarFileId: avatarFileId || null,
+        avatarUrl: avatarUrl || DEFAULT_FALLBACK_IMAGE_URL,
+        // avatarFileId: avatarFileId || null,
         creationDate: new Date(),
         instagramUsername,
         websiteUrl,
