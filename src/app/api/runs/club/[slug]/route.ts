@@ -1,5 +1,5 @@
 import { db } from "@/lib/db/db";
-import { runs } from "@/lib/db/schema/runs";
+import { runs } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
@@ -22,7 +22,6 @@ export async function GET(
         interval: runs.interval,
         intervalDay: runs.intervalDay,
         startDescription: runs.startDescription,
-        startTime: runs.startTime,
         distance: runs.distance,
         location: {
           lat: runs.locationLat,

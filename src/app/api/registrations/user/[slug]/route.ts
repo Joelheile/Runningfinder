@@ -1,5 +1,5 @@
 import { db } from "@/lib/db/db";
-import { registrations } from "@/lib/db/schema/runs";
+import { registrations } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
