@@ -2,7 +2,7 @@
 import ClubCard from "@/components/Clubs/ClubCard";
 import { Button } from "@/components/UI/button";
 import { useFetchClubs } from "@/lib/hooks/clubs/useFetchClubs";
-import { scrapeRuns } from "@/lib/hooks/scraping/useScrapeRuns";
+import { useScrapeRuns } from "@/lib/hooks/scraping/useScrapeRuns";
 
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 
 export default function ClubsDashboard() {
   const { data: clubs, isLoading, isError, error } = useFetchClubs();
+  const { scrapeRuns } = useScrapeRuns();
   const router = useRouter();
 
   return (
@@ -24,7 +25,7 @@ export default function ClubsDashboard() {
       <p className="text-center mb-2">
         Discover and connect with clubs that vibe with you
       </p>
-      <Button onClick={() => scrapeRuns()} variant={"outline"}>
+      <Button onClick={scrapeRuns} variant={"outline"}>
         Scrape 🏃
       </Button>
       <Link href="/clubs/add">

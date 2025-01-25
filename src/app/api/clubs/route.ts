@@ -1,8 +1,9 @@
+import { eq } from "drizzle-orm";
+import { NextResponse } from "next/server";
 import { db } from "../../../lib/db/db";
 import { avatars, clubs as club } from "../../../lib/db/schema";
 
-import { eq } from "drizzle-orm";
-import { NextResponse } from "next/server";
+const DEFAULT_FALLBACK_IMAGE_URL = "/assets/default-fallback-image.png";
 
 export async function GET() {
   try {
@@ -24,7 +25,12 @@ export async function GET() {
       .from(club)
       .leftJoin(avatars, eq(club.avatarFileId, avatars.id));
 
-    return NextResponse.json(res);
+    const clubsWithFallbackAvatar = res.map((club: { avatarFileId: any; avatarUrl: any; }) => ({
+      ...club,
+      avatarUrl: club.avatarFileId ? club.avatarUrl : DEFAULT_FALLBACK_IMAGE_URL,
+    }));
+
+    return NextResponse.json(clubsWithFallbackAvatar);
   } catch (error) {
     console.error("Error fetching clubs:", error);
     return NextResponse.json(
@@ -54,7 +60,7 @@ export async function POST(request: Request) {
         description,
         locationLng: location.lng,
         locationLat: location.lat,
-        avatarFileId: avatarFileId,
+        avatarFileId: avatarFileId || null,
         creationDate: new Date(),
         instagramUsername,
         websiteUrl,
