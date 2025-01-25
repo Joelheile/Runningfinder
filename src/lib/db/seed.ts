@@ -3,9 +3,9 @@ import { config } from "dotenv";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
 import { v4 as uuidv4 } from "uuid";
-import { clubs } from "./schema/clubs";
-import { runs } from "./schema/runs";
-import { avatars } from "./schema/users";
+import { avatars, clubs, runs } from "./schema";
+
+
 config({ path: ".env.local" });
 
 const databaseUrl = process.env.NEXT_PUBLIC_DB_DEV
