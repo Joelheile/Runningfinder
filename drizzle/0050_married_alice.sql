@@ -1,1 +1,0 @@
-ALTER TABLE "clubs" ALTER COLUMN "avatar_file_id" DROP NOT NULL;

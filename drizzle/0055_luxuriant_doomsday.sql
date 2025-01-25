@@ -1,1 +1,0 @@
-ALTER TABLE "runs" ALTER COLUMN "distance" SET DATA TYPE text;
