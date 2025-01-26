@@ -19,25 +19,33 @@ export default function ClubCard({
   websiteUrl,
 }: ClubCardProps) {
   return (
-    <div className="flex flex-col mt-5 sm:flex-row justify-center self-center w-auto max-w-2xl rounded-lg  min-h-44">
-      <div className="flex flex-col lg:flex-row bg-white gap-x-5 border p-3 rounded-md w-full">
-        <Image
-          width={500}
-          height={500}
-          src={avatarUrl || "/assets/default-fallback-image.png"}
-          alt={name}
-          className="rounded-md border w-full sm:w-1/3 lg:w-1/4 h-auto object-cover mb-4 sm:mb-0 sm:mr-6"
-        />
-        <div className="flex flex-col justify-between">
-          <div>
-            <h1 className="text-xl font-semibold">{name}</h1>
-            <p className="mt-2 text-gray-600">{description}</p>
+    <div className="w-full max-w-3xl mx-auto">
+      <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden border border-gray-100">
+        <div className="flex flex-col sm:flex-row h-full">
+          <div className="relative w-full sm:w-1/3 h-48 sm:h-auto">
+            <Image
+              width={500}
+              height={500}
+              src={avatarUrl || "/assets/default-fallback-image.png"}
+              alt={name}
+              className="absolute inset-0 w-full h-full object-cover"
+            />
           </div>
-          <ClubIconBar
-            instagramUsername={instagramUsername}
-            stravaUsername={stravaUsername}
-            websiteUrl={websiteUrl}
-          />
+          <div className="flex-1 p-5 sm:w-2/3">
+            <div className="flex flex-col h-full">
+              <div className="flex-grow">
+                <h1 className="text-xl font-bold text-gray-900 mb-3">{name}</h1>
+                <p className="text-gray-600 line-clamp-4">{description}</p>
+              </div>
+              <div className="pt-4 mt-auto border-t border-gray-100">
+                <ClubIconBar
+                  instagramUsername={instagramUsername}
+                  stravaUsername={stravaUsername}
+                  websiteUrl={websiteUrl}
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
