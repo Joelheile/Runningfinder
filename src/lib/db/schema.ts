@@ -136,6 +136,7 @@ export const runs = pgTable("runs", {
   locationLng: decimal("location_lng").notNull(),
   locationLat: decimal("location_lat").notNull(),
   mapsLink: text("mapsLink"),
+  isRecurrent: boolean("is_recurrent"),
   distance: text("distance"),
   temperature: decimal("temperature"),
   wind: decimal("wind"),

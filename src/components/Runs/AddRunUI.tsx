@@ -1,16 +1,20 @@
+import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
 import React from "react";
-import { weekdays } from "@/lib/weekdays";
+import toast from "react-hot-toast";
 import MapLocationPicker from "../Map/MapLocationPicker";
 import { Button } from "../UI/button";
+import { Checkbox } from "../UI/checkbox";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../UI/dialog";
 import { Input } from "../UI/input";
 import { Label } from "../UI/label";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "../UI/card";
+import { Progress } from "../UI/progress";
 import {
   Select,
   SelectContent,
@@ -18,225 +22,298 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../UI/select";
-import { Switch } from "../UI/switch";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface AddRunUIProps {
   name: string;
-  setName: (value: string) => void;
+  setName: (name: string) => void;
   difficulty: string;
-  setDifficulty: (value: string) => void;
-  startDescription: string;
-  setStartDescription: (value: string) => void;
+  setDifficulty: (difficulty: string) => void;
+  distance: string;
+  setDistance: (distance: string) => void;
+  showMap: boolean;
+
   weekday: number;
-  setWeekday: (value: number) => void;
-  startTime: string;
-  setStartTime: (value: string) => void;
-  distance: number;
-  setDistance: (value: number) => void;
-  location: { lat: number; lng: number };
-  setLocation: (location: { lat: number; lng: number }) => void;
-  membersOnly: boolean;
-  setMembersOnly: (value: boolean) => void;
-  interval: string;
-  setInterval: (value: string) => void;
+  setWeekday: (weekday: number) => void;
+  startDescription: string;
+  setStartDescription: (startDescription: string) => void;
+  locationLat: number;
+  locationLng: number;
+
+  isRecurrent: boolean;
+  setIsRecurrent: (isRecurrent: boolean) => void;
   handleSubmit: (e: React.FormEvent) => void;
-  handleSelect: (lat: number, lng: number) => void;
+  handleLocationSelect: (
+    lat: number,
+    lng: number,
+    placeUrl: string,
+    formattedAddress: string
+  ) => void;
 }
 
-export default function AddRunUI(props: AddRunUIProps) {
-  const {
-    name,
-    setName,
-    difficulty,
-    setDifficulty,
-    startDescription,
-    setStartDescription,
-    weekday,
-    setWeekday,
-    startTime,
-    setStartTime,
-    distance,
-    setDistance,
-    location,
-    membersOnly,
-    setMembersOnly,
-    interval,
-    setInterval,
-    handleSubmit,
-    handleSelect,
-  } = props;
+export default function AddRunUI({
+  name,
+  setName,
+  difficulty,
+  setDifficulty,
+  distance,
+  setDistance,
+  weekday,
+  setWeekday,
+  startDescription,
+  setStartDescription,
+  locationLat,
+  locationLng,
 
+  isRecurrent,
+  setIsRecurrent,
+  handleSubmit,
+  handleLocationSelect,
+}: AddRunUIProps) {
   const [step, setStep] = React.useState(1);
-  const totalSteps = 3;
+  const [isOpen, setIsOpen] = React.useState(false);
+  const totalSteps = 2;
 
-  const nextStep = () => setStep((prev) => Math.min(prev + 1, totalSteps));
-  const prevStep = () => setStep((prev) => Math.max(prev - 1, 1));
+  const validateStep1 = () => {
+    if (!name.trim()) {
+      toast.error("Please enter a name for the run");
+      return false;
+    }
+    if (!difficulty) {
+      toast.error("Please select a difficulty level");
+      return false;
+    }
+    if (!distance.trim() || isNaN(parseFloat(distance))) {
+      toast.error("Please enter a valid distance");
+      return false;
+    }
+    return true;
+  };
+
+  const validateStep2 = () => {
+    if (!weekday && weekday !== 0) {
+      toast.error("Please select a weekday");
+      return false;
+    }
+    if (!locationLat || !locationLng) {
+      toast.error("Please select a location on the map");
+      return false;
+    }
+    return true;
+  };
+
+  const nextStep = () => {
+    if (step === 1 && !validateStep1()) {
+      return;
+    }
+    setStep((prev) => Math.min(prev + 1, totalSteps));
+  };
+
+  const prevStep = () => {
+    setStep((prev) => Math.max(prev - 1, 1));
+  };
+
+  const handleClose = () => {
+    setStep(1);
+    setIsOpen(false);
+  };
+
+  const handleOpenChange = (open: boolean) => {
+    if (!open) {
+      handleClose();
+    }
+    setIsOpen(open);
+  };
+
+  const progress = ((step - 1) / (totalSteps - 1)) * 100;
 
   return (
-    <div className="max-w-2xl mx-auto p-6">
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-2xl font-bold">Add New Run</CardTitle>
-          <CardDescription>
-            Step {step} of {totalSteps}: {
-              step === 1 ? "Basic Information" :
-              step === 2 ? "Schedule & Location" :
-              "Additional Details"
+    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
+      <DialogTrigger asChild>
+        <Button className="w-full sm:w-auto">
+          <Plus className="w-4 h-4 mr-2" />
+          Add New Run
+        </Button>
+      </DialogTrigger>
+
+      <DialogContent className="sm:max-w-[800px] max-h-[80vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle>Add New Run</DialogTitle>
+          <DialogDescription className="space-y-2">
+            <div className="flex items-center justify-between text-sm">
+              <span>
+                Step {step} of {totalSteps}:
+              </span>
+              <span className="font-medium">
+                {step === 1
+                  ? "Basic Information"
+                  : step === 2
+                    ? "Schedule & Location"
+                    : ""}
+              </span>
+            </div>
+            <Progress value={progress} className="h-2" />
+          </DialogDescription>
+        </DialogHeader>
+
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (step === totalSteps && validateStep2()) {
+              handleSubmit(e);
+              handleClose();
             }
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {step === 1 && (
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="name">Run Name</Label>
-                  <Input
-                    id="name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="e.g., Morning Trail Run"
-                    className="w-full"
-                  />
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="difficulty">Difficulty Level</Label>
-                  <Select value={difficulty} onValueChange={setDifficulty}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select difficulty" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="easy">Easy</SelectItem>
-                      <SelectItem value="intermediate">Intermediate</SelectItem>
-                      <SelectItem value="advanced">Advanced</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="distance">Distance (km)</Label>
-                  <Input
-                    id="distance"
-                    type="number"
-                    value={distance}
-                    onChange={(e) => setDistance(Number(e.target.value))}
-                    placeholder="5"
-                    className="w-full"
-                  />
-                </div>
+          }}
+          className="space-y-8"
+        >
+          {step === 1 && (
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label>Name of the run</Label>
+                <Input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Sunday coffee run"
+                  className="w-full"
+                />
               </div>
-            )}
 
-            {step === 2 && (
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="interval">Run Frequency</Label>
-                  <Select value={interval} onValueChange={setInterval}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select frequency" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="daily">Daily</SelectItem>
-                      <SelectItem value="weekly">Weekly</SelectItem>
-                      <SelectItem value="biweekly">Biweekly</SelectItem>
-                      <SelectItem value="monthly">Monthly</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="weekday">Day of the Week</Label>
-                  <Select 
-                    value={weekday.toString()} 
-                    onValueChange={(val) => setWeekday(Number(val))}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select day" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {weekdays.map((day) => (
-                        <SelectItem key={day.value} value={day.value.toString()}>
-                          {day.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="startTime">Start Time</Label>
-                  <Input
-                    id="startTime"
-                    type="time"
-                    value={startTime}
-                    onChange={(e) => setStartTime(e.target.value)}
-                    className="w-full"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label>Meeting Point</Label>
-                  <div className="h-[200px] w-full rounded-md overflow-hidden border">
-                    <MapLocationPicker
-                      onSelect={handleSelect}
-                      initialLocation={location}
-                    />
-                  </div>
-                </div>
+              <div className="space-y-2">
+                <Label>Difficulty</Label>
+                <Select value={difficulty} onValueChange={setDifficulty}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select difficulty" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="easy">🟢 Easy</SelectItem>
+                    <SelectItem value="intermediate">
+                      🟡 Intermediate
+                    </SelectItem>
+                    <SelectItem value="advanced">🔴 Advanced</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
-            )}
 
-            {step === 3 && (
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="startDescription">Meeting Point Description</Label>
-                  <Input
-                    id="startDescription"
-                    value={startDescription}
-                    onChange={(e) => setStartDescription(e.target.value)}
-                    placeholder="e.g., In front of the coffee shop"
-                    className="w-full"
-                  />
-                </div>
-
-                <div className="flex items-center space-x-2">
-                  <Switch
-                    id="membersOnly"
-                    checked={membersOnly}
-                    onCheckedChange={setMembersOnly}
-                  />
-                  <Label htmlFor="membersOnly">Members Only Run</Label>
-                </div>
+              <div className="space-y-2">
+                <Label>Distance (km)</Label>
+                <Input
+                  type="number"
+                  value={distance}
+                  onChange={(e) => setDistance(e.target.value)}
+                  placeholder="Distance in kilometers"
+                  className="w-full"
+                  step="0.1"
+                  min="0"
+                />
               </div>
-            )}
 
-            <div className="flex justify-between pt-4">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={prevStep}
-                disabled={step === 1}
-              >
-                <ChevronLeft className="w-4 h-4 mr-2" />
-                Previous
-              </Button>
-
-              {step < totalSteps ? (
+              <div className="flex justify-between pt-4 border-t">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={prevStep}
+                  disabled={step === 1}
+                >
+                  <ChevronLeft className="w-4 h-4 mr-2" />
+                  Previous
+                </Button>
                 <Button type="button" onClick={nextStep}>
                   Next
                   <ChevronRight className="w-4 h-4 ml-2" />
                 </Button>
-              ) : (
-                <Button type="submit">
-                  Create Run
-                </Button>
-              )}
+              </div>
             </div>
-          </form>
-        </CardContent>
-      </Card>
-    </div>
+          )}
+
+          {step === 2 && (
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-6 mb-6">
+                <div className="flex flex-col justify-center space-y-2">
+                  <Label className="text-sm font-medium">Select Weekday</Label>
+                  <Select
+                    value={weekday.toString()}
+                    onValueChange={(value) => setWeekday(parseInt(value))}
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select weekday" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="1">Monday</SelectItem>
+                      <SelectItem value="2">Tuesday</SelectItem>
+                      <SelectItem value="3">Wednesday</SelectItem>
+                      <SelectItem value="4">Thursday</SelectItem>
+                      <SelectItem value="5">Friday</SelectItem>
+                      <SelectItem value="6">Saturday</SelectItem>
+                      <SelectItem value="0">Sunday</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="flex items-center justify-center">
+                  <div className="flex items-center space-x-3 hover:bg-gray-50 px-4 py-3 rounded-lg">
+                    <Checkbox
+                      id="isRecurrent"
+                      checked={isRecurrent}
+                      onCheckedChange={setIsRecurrent}
+                      className="border-gray-400 data-[state=unchecked]:bg-gray-100"
+                    />
+                    <Label htmlFor="isRecurrent" className="font-medium">
+                      Is this a weekly run?
+                    </Label>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <div className="w-full h-[300px] rounded-md overflow-hidden">
+                  <MapLocationPicker
+                    onSelect={(lat, lng, placeUrl, formattedAddress) =>
+                      handleLocationSelect(lat, lng, placeUrl, formattedAddress)
+                    }
+                    onCancel={() => {
+                      setIsOpen(true);
+                    }}
+                    location={{
+                      lat: locationLat || 52.52,
+                      lng: locationLng || 13.405,
+                    }}
+                  />
+                </div>
+                {locationLat !== 0 && locationLng !== 0 && (
+                  <div className="text-sm text-muted-foreground">
+                    Drag the pin to change the meeting point
+                  </div>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <div className="flex flex-col space-y-1">
+                  <Label>Start Description</Label>
+                  <span className="text-sm text-muted-foreground">
+                    Where are you meeting? Enter the name of the location or a
+                    specific detail (e.g. In front of the main entrance)
+                  </span>
+                </div>
+                <Input
+                  type="text"
+                  value={startDescription}
+                  onChange={(e) => setStartDescription(e.target.value)}
+                  placeholder="E.g., In front of the main entrance"
+                  className="w-full"
+                />
+              </div>
+
+              <div className="flex justify-between pt-4 border-t">
+                <Button type="button" variant="outline" onClick={prevStep}>
+                  <ChevronLeft className="w-4 h-4 mr-2" />
+                  Previous
+                </Button>
+                <Button type="submit">Create Run</Button>
+              </div>
+            </div>
+          )}
+        </form>
+      </DialogContent>
+    </Dialog>
   );
 }
