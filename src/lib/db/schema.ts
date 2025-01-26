@@ -10,11 +10,12 @@ import {
   timestamp,
 } from "drizzle-orm/pg-core";
 import type { AdapterAccountType } from "next-auth/adapters";
+import { v4 } from "uuid";
 
 export const users = pgTable("users", {
   id: text("id")
     .primaryKey()
-    .$defaultFn(() => crypto.randomUUID()),
+    .$defaultFn(() => v4()),
   name: text("name"),
   email: text("email").unique(),
   emailVerified: timestamp("emailVerified", { mode: "date" }),
@@ -24,6 +25,7 @@ export const users = pgTable("users", {
   lastLogin: timestamp("last_login", { mode: "date" }),
   attendedRuns: integer("attended_runs"),
   image: text("image"),
+  isAdmin: boolean("is_admin").default(false),
 });
 
 export const avatarTypeEnum = pgEnum("avatarType", ["user", "club"]);
