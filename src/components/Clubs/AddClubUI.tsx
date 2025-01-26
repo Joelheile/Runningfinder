@@ -7,6 +7,13 @@ import AvatarUploader from "@/components/Upload/AvatarUploaderLogic";
 import { ChevronLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../UI/card";
 
 interface AddClubUIProps {
   name: string;
@@ -18,9 +25,7 @@ interface AddClubUIProps {
   handleNameChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleDescriptionChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   handleWebsiteUrlChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleInstagramUsernameChange: (
-    e: React.ChangeEvent<HTMLInputElement>,
-  ) => void;
+  handleInstagramUsernameChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleUploadChange: (uploaded: boolean) => void;
   handleSubmit: (e: React.FormEvent) => void;
 }
@@ -42,68 +47,101 @@ export default function AddClubUI({
   const router = useRouter();
 
   return (
-    <div className="flex-col p-10 items-center w-2/3 mx-auto">
-      <button onClick={() => router.back()} className="absolute top-12 left-12">
-        <ChevronLeft className="stroke-primary stroke" />
-      </button>
-      <h1 className="text-2xl font-bold mb-4 text-center">Add Club</h1>
-      <div className="flex justify-center">
-        <form onSubmit={handleSubmit}>
-          <div className="grid gap-4">
-            <div className="flex flex-col">
-              <Label htmlFor="name">Club Name</Label>
-              <Input
-                id="name"
-                value={name}
-                onChange={handleNameChange}
-                className="mt-1 p-2 border rounded"
-                required
-              />
+    <div className="max-w-2xl mx-auto p-6">
+      <Button
+        variant="ghost"
+        onClick={() => router.back()}
+        className="mb-4"
+      >
+        <ChevronLeft className="mr-2 h-4 w-4" />
+        Back to Search
+      </Button>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-2xl font-bold">Create New Club</CardTitle>
+          <CardDescription>
+            Add your running club to help others find and join your community
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="avatar" className="block">Club Logo</Label>
+                <div className="mt-1">
+                  <AvatarUploader
+                    id={avatarFileId}
+                    onUploadChange={handleUploadChange}
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="name">Club Name</Label>
+                <Input
+                  id="name"
+                  value={name}
+                  onChange={handleNameChange}
+                  placeholder="e.g., Berlin Running Crew"
+                  className="w-full"
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="description">Club Description</Label>
+                <Textarea
+                  id="description"
+                  value={description}
+                  onChange={handleDescriptionChange}
+                  placeholder="Tell us about your club, your community, and what makes you unique..."
+                  className="w-full min-h-[100px]"
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="websiteUrl">Website URL</Label>
+                <Input
+                  id="websiteUrl"
+                  type="url"
+                  value={websiteUrl}
+                  onChange={handleWebsiteUrlChange}
+                  placeholder="https://your-club-website.com"
+                  className="w-full"
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="instagramUsername">Instagram Username</Label>
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">
+                    @
+                  </span>
+                  <Input
+                    id="instagramUsername"
+                    value={instagramUsername}
+                    onChange={handleInstagramUsernameChange}
+                    className="w-full pl-8"
+                    placeholder="your.club.handle"
+                    required
+                  />
+                </div>
+              </div>
             </div>
-            <div className="flex flex-col">
-              <Label htmlFor="description">Club Description</Label>
-              <Textarea
-                id="description"
-                value={description}
-                onChange={handleDescriptionChange}
-                className="mt-1 p-2 border rounded"
-                required
-              />
-            </div>
-            <div className="flex flex-col">
-              <Label htmlFor="websiteUrl">Website URL (https://)</Label>
-              <Input
-                id="websiteUrl"
-                type="url"
-                value={websiteUrl}
-                onChange={handleWebsiteUrlChange}
-                className="mt-1 p-2 border rounded"
-                required
-              />
-            </div>
-            <div className="flex flex-col">
-              <Label htmlFor="instagramUsername">Instagram Username</Label>
-              <Input
-                id="instagramUsername"
-                value={instagramUsername}
-                onChange={handleInstagramUsernameChange}
-                className="mt-1 p-2 border rounded"
-                required
-              />
-            </div>
-            <AvatarUploader
-              id={avatarFileId}
-              onUploadChange={handleUploadChange}
-            />
+
             <Button
               type="submit"
-              className="mt-4 p-2 bg-blue-500 text-white rounded"
+              className="w-full"
+              disabled={!isUploaded}
             >
-              Add Club
+              Create Club
             </Button>
-          </div>
-        </form>
-      </div>
+          </form>
+        </CardContent>
+      </Card>
     </div>
   );
 }
