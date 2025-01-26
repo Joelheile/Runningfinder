@@ -7,6 +7,7 @@ interface ClubCardProps {
   description: string;
   instagramUsername: string;
   websiteUrl: string;
+  stravaUsername: string;
 }
 
 export default function ClubCard({
@@ -14,6 +15,7 @@ export default function ClubCard({
   name,
   description,
   instagramUsername,
+  stravaUsername,
   websiteUrl,
 }: ClubCardProps) {
   return (
@@ -33,6 +35,7 @@ export default function ClubCard({
           </div>
           <ClubIconBar
             instagramUsername={instagramUsername}
+            stravaUsername={stravaUsername}
             websiteUrl={websiteUrl}
           />
         </div>
