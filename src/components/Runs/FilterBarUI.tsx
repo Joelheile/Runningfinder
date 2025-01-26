@@ -78,10 +78,10 @@ export default function FilterBarUI({
                           : [...selectedDays, day.value]
                       )
                     }
-                    className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all ${
+                    className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all border ${
                       selectedDays.includes(day.value)
-                        ? "bg-blue-100 text-blue-700 border border-blue-300"
-                        : "bg-gray-100 text-gray-700 hover:bg-gray-200 border border-transparent"
+                        ? "bg-primary text-white border-primary"
+                        : "bg-gray-100 text-gray-700 hover:bg-gray-300 border-gray-200"
                     }`}
                   >
                     {day.name}

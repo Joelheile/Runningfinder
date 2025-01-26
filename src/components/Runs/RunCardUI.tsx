@@ -18,39 +18,40 @@ interface RunCardUIProps {
   mapsLink?: string | null;
   handleDeleteRun?: () => void;
   isAdmin?: boolean;
+  isCompact?: boolean;
 }
 
-const mapContainerStyle = {
+const getMapContainerStyle = (isCompact: boolean) => ({
   width: "100%",
-  height: "250px",
-};
+  height: isCompact ? "150px" : "250px",
+});
 
 const getDifficultyInfo = (difficulty: string) => {
   switch (difficulty.toLowerCase()) {
     case "easy":
       return {
-        icon: "🟢",
+        icon: "",
         description:
           "Social run, perfect for beginners. Usually under 10km at a conversational pace.",
         className: "bg-green-100 text-green-700",
       };
     case "intermediate":
       return {
-        icon: "🟡",
+        icon: "",
         description:
           "More structured run, typically 10-15km. Good for regular runners looking for a challenge.",
         className: "bg-yellow-100 text-yellow-700",
       };
     case "advanced":
       return {
-        icon: "🔴",
+        icon: "",
         description:
           "Technical workout (intervals, hills) or long distance run (>15km). For experienced runners.",
         className: "bg-red-100 text-red-700",
       };
     default:
       return {
-        icon: "⚪",
+        icon: "",
         description: "Difficulty level not specified",
         className: "bg-gray-100 text-gray-700",
       };
@@ -68,6 +69,7 @@ export default function RunCardUI({
   mapsLink,
   handleDeleteRun,
   isAdmin,
+  isCompact = false,
 }: RunCardUIProps) {
   const [isScriptLoaded, setIsScriptLoaded] = useState(false);
   const [map, setMap] = useState<google.maps.Map | null>(null);
@@ -80,7 +82,6 @@ export default function RunCardUI({
 
     const initMap = async () => {
       try {
-        // Validate location coordinates and use fallback if invalid
         const validLocation = {
           lat:
             typeof locationLat === "number" && isFinite(locationLat)
@@ -145,22 +146,26 @@ export default function RunCardUI({
   };
 
   return (
-    <div className="w-full mx-auto mb-4">
+    <div className={`w-full mx-auto ${isCompact ? 'mb-2' : 'mb-4'}`}>
       <div className="bg-white rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-all duration-200">
-        <div className="flex flex-col lg:flex-row">
-          <div className="flex-1 p-6">
-            <div className="text-gray-500 text-sm mb-3">{formatDate(date)}</div>
-            <div className="space-y-4">
-              <div className="flex flex-wrap items-center gap-3">
-                <h3 className="font-semibold text-xl text-gray-900">{name}</h3>
-                <div className="flex items-center gap-3 text-gray-600">
+        <div className={`flex ${isCompact ? 'flex-col' : 'flex-col lg:flex-row'}`}>
+          <div className={`flex-1 ${isCompact ? 'p-3' : 'p-6'}`}>
+            <div className={`text-gray-500 ${isCompact ? 'text-xs' : 'text-sm'} mb-2`}>
+              {formatDate(date)}
+            </div>
+            <div className={`space-y-${isCompact ? '2' : '4'}`}>
+              <div className="flex flex-wrap items-center gap-2">
+                <h3 className={`font-semibold ${isCompact ? 'text-base' : 'text-xl'} text-gray-900`}>
+                  {name}
+                </h3>
+                <div className="flex items-center gap-2 text-gray-600">
                   <span className="flex items-center">
                     {distance ? `${distance} km` : "N/A"}
                   </span>
                   <Tooltip>
                     <TooltipTrigger>
                       <span
-                        className={`px-3 py-1.5 rounded-full text-sm font-medium ${difficultyInfo.className}`}
+                        className={`px-2 py-1 rounded-full ${isCompact ? 'text-xs' : 'text-sm'} font-medium ${difficultyInfo.className}`}
                       >
                         {difficultyInfo.icon} {difficulty}
                       </span>
@@ -173,10 +178,11 @@ export default function RunCardUI({
               </div>
 
               <div className="flex items-center gap-2">
-                <MapPin className="w-4 h-4 text-gray-500" />
+                <MapPin className={`${isCompact ? 'w-3 h-3' : 'w-4 h-4'} text-gray-500`} />
                 <Button
                   variant="outline"
-                  className="text-sm"
+                  size={isCompact ? "sm" : "default"}
+                  className={`${isCompact ? 'text-xs' : 'text-sm'}`}
                   onClick={() => mapsLink && window.open(mapsLink, "_blank")}
                 >
                   {startDescription}
@@ -195,20 +201,24 @@ export default function RunCardUI({
             </div>
           </div>
 
-          <div className="w-full lg:w-[500px] h-64 lg:h-auto relative">
-            <div
-              ref={mapRef}
-              style={mapContainerStyle}
-              className="rounded-b-lg lg:rounded-r-lg lg:rounded-bl-none"
-            />
-          </div>
+          {!isCompact && (
+            <div className="w-full lg:w-[500px] h-64 lg:h-auto relative">
+              <div
+                ref={mapRef}
+                style={getMapContainerStyle(false)}
+                className="rounded-b-lg lg:rounded-r-lg lg:rounded-bl-none"
+              />
+            </div>
+          )}
         </div>
       </div>
 
-      <Script
-        src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`}
-        onLoad={() => setIsScriptLoaded(true)}
-      />
+      {!isCompact && (
+        <Script
+          src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`}
+          onLoad={() => setIsScriptLoaded(true)}
+        />
+      )}
     </div>
   );
 }
