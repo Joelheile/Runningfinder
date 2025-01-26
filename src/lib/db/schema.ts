@@ -161,8 +161,6 @@ export const clubs = pgTable("clubs", {
   name: text("name").notNull(),
   slug: text("slug").notNull().unique(),
   description: text("description"),
-  locationLng: decimal("location_lng").notNull(),
-  locationLat: decimal("location_lat").notNull(),
   instagramUsername: text("instagram_username"),
   stravaUsername: text("strava_username"),
   websiteUrl: text("website_url"),
