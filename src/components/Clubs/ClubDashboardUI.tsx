@@ -54,7 +54,7 @@ export default function ClubDashboardUI({
   console.log("runs", runs);
 
   return (
-    <div className="flex flex-col bg-light w-screen max-w-full h-screen p-8">
+    <div className="flex flex-col w-screen max-w-full h-screen p-8">
       <nav className="flex justify-between items-center">
         <Link href="/clubs/">
           <div className="flex items-center hover:bg-slate-100 rounded-md px-2 py-1 transition-colors">
