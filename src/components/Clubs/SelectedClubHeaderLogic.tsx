@@ -20,12 +20,5 @@ export default function SelectedClubHeaderLogic({ run }: { run: Run }) {
 
   const avatarUrl = club.avatarUrl || "/assets/default-fallback-image.png";
 
-  return (
-    <SelectedClubHeaderUI
-      club={club}
-      avatarUrl={avatarUrl}
-      instagramSelected={instagramSelected}
-      setInstagramSelected={setInstagramSelected}
-    />
-  );
+  return <SelectedClubHeaderUI club={club} avatarUrl={avatarUrl} />;
 }

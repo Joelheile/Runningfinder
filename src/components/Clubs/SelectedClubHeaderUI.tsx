@@ -1,50 +1,91 @@
+import useGetProfileImage from "@/lib/hooks/scraping/useGetInstagramProfile";
 import { Club } from "@/lib/types/Club";
 import { ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import ClubIconBar from "../Icons/ClubIconBar";
+
+interface InstagramPost {
+  url: string;
+  displayUrl: string;
+  caption?: string;
+}
 
 interface SelectedClubHeaderUIProps {
   club: Club;
   avatarUrl: string;
-  instagramSelected: boolean;
-  setInstagramSelected: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function SelectedClubHeaderUI({
   club,
   avatarUrl,
-  instagramSelected,
-  setInstagramSelected,
 }: SelectedClubHeaderUIProps) {
+  const { getProfileImage } = useGetProfileImage();
+  const [instagramPosts, setInstagramPosts] = useState<InstagramPost[]>([]);
+
+  useEffect(() => {
+    const fetchInstagramData = async () => {
+      if (club.instagramUsername) {
+        const data = await getProfileImage({
+          instagramUsername: club.instagramUsername,
+        });
+        setInstagramPosts(data.recentPosts);
+      }
+    };
+    fetchInstagramData();
+  }, [club.instagramUsername]);
+
   return (
-    <div className="bg-white/80 backdrop-blur-sm absolute top-0 left-0 z-10 w-full text-card-foreground shadow-sm lg:p-6 sm:p-4 space-y-4">
-      <Link href={`/clubs/${club.slug}`}>
-        <div className="flex flex-col sm:flex-row justify-between items-start">
-          <div className="flex flex-col sm:flex-row w-full">
-            <Image
-              width={500}
-              height={500}
-              src={avatarUrl}
-              alt={club.name}
-              className="rounded-md border w-auto max-w-48 sm:w-1/6 h-auto max-h-48 object-cover mb-4 sm:mb-0 sm:mr-6"
-            />
-            <div className="flex flex-col justify-between w-full sm:w-2/3">
-              <div>
-                <h2 className="text-lg sm:text-xl font-semibold">
+    <div className="fixed top-16 right-0 z-10 w-[400px] h-[calc(100vh-4rem)] bg-white shadow-lg flex flex-col">
+      <Link
+        href={`/clubs/${club.slug}`}
+        className="block transition-colors hover:bg-gray-50 flex-1 min-h-0"
+      >
+        <div className="h-full flex flex-col overflow-hidden">
+          {/* Static Header Content */}
+          <div className="flex-none p-6 space-y-6">
+            {/* Club Image */}
+            <div className="relative w-full h-48">
+              <Image
+                src={avatarUrl}
+                alt={club.name}
+                fill
+                className="object-cover rounded-lg"
+              />
+            </div>
+
+            {/* Club Name and Description */}
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h2 className="text-2xl font-bold text-gray-900">
                   {club.name}
                 </h2>
-                <p className="lg:w-1/3 mt-2">{club.description}</p>
+                <ChevronRight className="h-6 w-6 text-gray-400" />
               </div>
+              <p className="text-gray-600 leading-relaxed">
+                {club.description}
+              </p>
+            </div>
+
+            {/* Click for Runs Hint */}
+            <div className="bg-blue-50 p-4 rounded-lg">
+              <p className="text-blue-700 text-sm font-medium">
+                Click to view all runs by this club →
+              </p>
+            </div>
+
+            {/* Social Links */}
+            <div className="pt-2">
+              <h3 className="text-sm font-medium text-gray-500 mb-3">
+                Connect with us
+              </h3>
               <ClubIconBar
                 instagramUsername={club.instagramUsername || ""}
+                stravaUsername={club.stravaUsername || ""}
                 websiteUrl={club.websiteUrl || ""}
               />
             </div>
-          </div>
-          <div className="flex md:self-center mt-4">
-            <strong className="text-primary"> Club</strong>
-            <ChevronRight className="stroke-primary" />
           </div>
         </div>
       </Link>
