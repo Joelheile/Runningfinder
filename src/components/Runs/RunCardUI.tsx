@@ -146,16 +146,22 @@ export default function RunCardUI({
   };
 
   return (
-    <div className={`w-full mx-auto ${isCompact ? 'mb-2' : 'mb-4'}`}>
+    <div className={`w-full mx-auto ${isCompact ? "mb-2" : "mb-4"}`}>
       <div className="bg-white rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-all duration-200">
-        <div className={`flex ${isCompact ? 'flex-col' : 'flex-col lg:flex-row'}`}>
-          <div className={`flex-1 ${isCompact ? 'p-3' : 'p-6'}`}>
-            <div className={`text-gray-500 ${isCompact ? 'text-xs' : 'text-sm'} mb-2`}>
+        <div
+          className={`flex ${isCompact ? "flex-col" : "flex-col lg:flex-row"}`}
+        >
+          <div className={`flex-1 ${isCompact ? "p-3" : "p-6"}`}>
+            <div
+              className={`text-gray-500 ${isCompact ? "text-xs" : "text-sm"} mb-2`}
+            >
               {formatDate(date)}
             </div>
-            <div className={`space-y-${isCompact ? '2' : '4'}`}>
+            <div className={`space-y-${isCompact ? "2" : "4"}`}>
               <div className="flex flex-wrap items-center gap-2">
-                <h3 className={`font-semibold ${isCompact ? 'text-base' : 'text-xl'} text-gray-900`}>
+                <h3
+                  className={`font-semibold ${isCompact ? "text-base" : "text-xl"} text-gray-900`}
+                >
                   {name}
                 </h3>
                 <div className="flex items-center gap-2 text-gray-600">
@@ -165,7 +171,7 @@ export default function RunCardUI({
                   <Tooltip>
                     <TooltipTrigger>
                       <span
-                        className={`px-2 py-1 rounded-full ${isCompact ? 'text-xs' : 'text-sm'} font-medium ${difficultyInfo.className}`}
+                        className={`px-2 py-1 rounded-full ${isCompact ? "text-xs" : "text-sm"} font-medium ${difficultyInfo.className}`}
                       >
                         {difficultyInfo.icon} {difficulty}
                       </span>
@@ -178,15 +184,26 @@ export default function RunCardUI({
               </div>
 
               <div className="flex items-center gap-2">
-                <MapPin className={`${isCompact ? 'w-3 h-3' : 'w-4 h-4'} text-gray-500`} />
-                <Button
-                  variant="outline"
-                  size={isCompact ? "sm" : "default"}
-                  className={`${isCompact ? 'text-xs' : 'text-sm'}`}
-                  onClick={() => mapsLink && window.open(mapsLink, "_blank")}
+                <MapPin
+                  className={`${isCompact ? "w-3 h-3" : "w-4 h-4"} text-gray-500`}
+                />
+                <span
+                  className={`${isCompact ? "text-xs" : "text-sm"} text-gray-700`}
                 >
                   {startDescription}
-                </Button>
+                </span>
+                {mapsLink && (
+                  <Button
+                    variant="ghost"
+                    size={isCompact ? "sm" : "default"}
+                    className="ml-2"
+                    onClick={() => window.open(mapsLink, "_blank")}
+                  >
+                    <MapPin
+                      className={`${isCompact ? "w-3 h-3" : "w-4 h-4"}`}
+                    />
+                  </Button>
+                )}
                 {isAdmin && handleDeleteRun && (
                   <Button
                     variant="ghost"
