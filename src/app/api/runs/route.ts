@@ -62,12 +62,20 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   const runData = await request.json();
-  const newRun = { ...runData, locationLng: runData.location.lng, locationLat: runData.location.lat };
+  
+  // Extract location data and ensure date is a proper Date object
+  const newRun = {
+    ...runData,
+    locationLng: runData.location.lng,
+    locationLat: runData.location.lat,
+    date: runData.date ? new Date(runData.date) : null
+  };
 
   try {
     await db.insert(runs).values(newRun).execute();
     return NextResponse.json({ message: "Run created successfully", run: newRun }, { status: 201 });
   } catch (error) {
+    console.error("Error details:", error);
     return handleErrorResponse(error, "Error creating run");
   }
 }

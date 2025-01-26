@@ -136,7 +136,6 @@ export default function ClubDashboardUI({
                 difficulty={run.difficulty}
                 distance={run.distance}
                 location={run.location}
-                weekday={run.weekday}
               />
             ))}
         </div>

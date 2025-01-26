@@ -1,4 +1,3 @@
-import { weekdays } from "@/lib/weekdays";
 import { Trash } from "lucide-react";
 import { Button } from "../UI/button";
 import calculateCalories from "./CaloriesCalculator";
@@ -8,7 +7,6 @@ interface RunCardUIProps {
   id: string;
   key: string;
   date: Date | null;
-  weekday: number;
   name: string;
   distance: string;
   difficulty: string;
@@ -21,13 +19,12 @@ interface RunCardUIProps {
 }
 
 export default function RunCardUI({
-  weekday,
+  date,
   name,
   distance,
   difficulty,
   startDescription,
   mapsLink,
-  // handleRegistration,
   handleDeleteRun,
   isAdmin,
 }: RunCardUIProps) {
@@ -40,15 +37,22 @@ export default function RunCardUI({
 
   const caloriesBurned = calculateCalories(difficulty, parseFloat(distance));
 
+  const formatDate = (date: Date | null) => {
+    if (!date) return '';
+    return new Intl.DateTimeFormat('de-DE', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    }).format(new Date(date));
+  };
+
   return (
     <div className="mt-2">
-      {weekday ? (
-        <strong className="ml-1">{weekdays[weekday - 1].name}</strong>
-      ) : null}
-
       <div className="flex bg-white mt-2 border justify-between p-2 rounded-md">
         <div className="flex gap-x-5 items-center pl-2">
-          {/* <LikeButton onClick={handleRegistration} isFilled={likeFilled} /> */}
           <strong>{name}</strong>
           <p className="text-medium">|</p>
           <p>{distance} km</p>
@@ -76,6 +80,7 @@ export default function RunCardUI({
           )}
         </div>
       </div>
+      <p className="text-gray-600 mb-2">{formatDate(date)}</p>
     </div>
   );
 }
