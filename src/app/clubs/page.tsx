@@ -32,12 +32,15 @@ export default function ClubsDashboard() {
     <div className=" mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex items-center mb-8">
         <nav className="flex justify-between items-center">
-          <Link href="/clubs/">
+          <button
+            onClick={() => router.back()}
+            className="flex items-center hover:bg-slate-100 rounded-md px-2 py-1 transition-colors"
+          >
             <div className="flex items-center hover:bg-slate-100 rounded-md px-2 py-1 transition-colors">
               <ChevronLeft className="stroke-primary" />
               <span className="text-primary">Back</span>
             </div>
-          </Link>
+          </button>
         </nav>
       </div>
 
