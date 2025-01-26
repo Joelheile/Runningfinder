@@ -4,14 +4,17 @@ export type Run = {
   difficulty: string;
   clubId: string;
   date: Date | null;
+  weekday: number;
+  startDescription: string;
   location: {
     lat: number;
     lng: number;
   };
-  interval: string;
-  intervalDay: number;
-  startDescription: string;
-  startTime: string;
-  distance: number;
+  mapsLink: string | null;
+  distance: string;
+  temperature: number | null;
+  isRecurrent: boolean;
+  wind: number | null;
+  uv_index: number | null;
   membersOnly: boolean;
 };
