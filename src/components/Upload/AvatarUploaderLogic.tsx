@@ -6,7 +6,7 @@ import AvatarUploaderUI from "./AvatarUploaderUI";
 
 interface AvatarUploaderProps {
   id: string;
-  onUploadChange: (isUploaded: boolean) => void;
+  onUploadChange: (isUploaded: boolean, url: string | null) => void;
 }
 
 export default function AvatarUploader({
@@ -16,7 +16,7 @@ export default function AvatarUploader({
   const { uploadedUrl, isLoading, uploadAvatar } = useUploadAvatar();
 
   useEffect(() => {
-    onUploadChange(!!uploadedUrl);
+    onUploadChange(!!uploadedUrl, uploadedUrl);
   }, [uploadedUrl, onUploadChange]);
 
   const handleDrop = (files: File[]) => {

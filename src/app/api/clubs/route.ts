@@ -12,13 +12,10 @@ export async function GET() {
         id: club.id,
         name: club.name,
         description: club.description,
-        locationLng: club.locationLng,
-        locationLat: club.locationLat,
         avatarUrl: club.avatarUrl,
         creationDate: club.creationDate,
         instagramUsername: club.instagramUsername,
         websiteUrl: club.websiteUrl,
-        memberCount: club.memberCount,
         slug: club.slug,
       })
       .from(club);
@@ -39,33 +36,32 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const {
-    id,
-    name,
-    location,
-    description,
-    instagramUsername,
-    websiteUrl,
-    // avatarFileId,
-    avatarUrl
-  } = await request.json();
-
   try {
+    const {
+      id,
+      name,
+
+      description,
+      instagramUsername,
+      stravaUsername,
+      avatarFileId,
+      avatarUrl
+    } = await request.json();
+
     const res = await db
       .insert(club)
       .values({
         id,
         name,
         description,
-        locationLng: location.lng,
-        locationLat: location.lat,
+
         avatarUrl: avatarUrl || DEFAULT_FALLBACK_IMAGE_URL,
-        // avatarFileId: avatarFileId || null,
+        avatarFileId,
         creationDate: new Date(),
-        instagramUsername,
-        websiteUrl,
-        memberCount: 0,
+        instagramUsername: instagramUsername || null,
+        stravaUsername: stravaUsername || null,
         slug: name.toLowerCase().replace(/ /g, "-"),
+        isApproved: false
       })
       .execute();
 
@@ -73,8 +69,8 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error("Error creating club:", error);
     return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 },
+      { error: "Failed to create club" },
+      { status: 500 }
     );
   }
 }
