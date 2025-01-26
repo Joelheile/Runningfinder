@@ -31,14 +31,12 @@ interface AddRunUIProps {
   distance: string;
   setDistance: (distance: string) => void;
   showMap: boolean;
-
-  weekday: number;
-  setWeekday: (weekday: number) => void;
+  date: Date;
+  setDate: (date: Date) => void;
   startDescription: string;
   setStartDescription: (startDescription: string) => void;
   locationLat: number;
   locationLng: number;
-
   isRecurrent: boolean;
   setIsRecurrent: (isRecurrent: boolean) => void;
   handleSubmit: (e: React.FormEvent) => void;
@@ -57,13 +55,12 @@ export default function AddRunUI({
   setDifficulty,
   distance,
   setDistance,
-  weekday,
-  setWeekday,
+  date,
+  setDate,
   startDescription,
   setStartDescription,
   locationLat,
   locationLng,
-
   isRecurrent,
   setIsRecurrent,
   handleSubmit,
@@ -90,8 +87,8 @@ export default function AddRunUI({
   };
 
   const validateStep2 = () => {
-    if (!weekday && weekday !== 0) {
-      toast.error("Please select a weekday");
+    if (!date) {
+      toast.error("Please select a date and time");
       return false;
     }
     if (!locationLat || !locationLng) {
@@ -229,24 +226,34 @@ export default function AddRunUI({
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-6 mb-6">
                 <div className="flex flex-col justify-center space-y-2">
-                  <Label className="text-sm font-medium">Select Weekday</Label>
-                  <Select
-                    value={weekday.toString()}
-                    onValueChange={(value) => setWeekday(parseInt(value))}
-                  >
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Select weekday" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="1">Monday</SelectItem>
-                      <SelectItem value="2">Tuesday</SelectItem>
-                      <SelectItem value="3">Wednesday</SelectItem>
-                      <SelectItem value="4">Thursday</SelectItem>
-                      <SelectItem value="5">Friday</SelectItem>
-                      <SelectItem value="6">Saturday</SelectItem>
-                      <SelectItem value="0">Sunday</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <Label className="text-sm font-medium">
+                    Datum und Uhrzeit auswählen
+                  </Label>
+                  <input
+                    type="datetime-local"
+                    value={
+                      date instanceof Date
+                        ? new Date(
+                            date.getTime() - date.getTimezoneOffset() * 60000
+                          )
+                            .toISOString()
+                            .slice(0, 16)
+                        : new Date(
+                            Date.now() - new Date().getTimezoneOffset() * 60000
+                          )
+                            .toISOString()
+                            .slice(0, 16)
+                    }
+                    onChange={(e) => {
+                      const newDate = new Date(e.target.value);
+                      if (!isNaN(newDate.getTime())) {
+                        // Adjust for timezone
+                        const tzOffset = newDate.getTimezoneOffset() * 60000;
+                        setDate(new Date(newDate.getTime() + tzOffset));
+                      }
+                    }}
+                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                  />
                 </div>
 
                 <div className="flex items-center justify-center">
