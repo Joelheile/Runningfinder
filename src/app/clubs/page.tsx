@@ -2,16 +2,8 @@
 import AddClub from "@/components/Clubs/AddClubLogic";
 import ClubCard from "@/components/Clubs/ClubCard";
 import { Button } from "@/components/UI/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/UI/card";
 import { Input } from "@/components/UI/input";
 import { useFetchClubs } from "@/lib/hooks/clubs/useFetchClubs";
-import { useScrapeRuns } from "@/lib/hooks/scraping/useScrapeRuns";
 import { ChevronLeft, Search } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -19,7 +11,7 @@ import { useState } from "react";
 
 export default function ClubsDashboard() {
   const { data: clubs = [], isLoading, isError } = useFetchClubs();
-  const { scrapeRuns } = useScrapeRuns();
+
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -45,43 +37,32 @@ export default function ClubsDashboard() {
         </nav>
       </div>
 
-      <div className="space-y-6">
-        <div className="text-center space-y-2">
-          <h1 className="text-3xl font-bold tracking-tight">
-            Ready for your next run?
-          </h1>
-          <p className="text-lg text-muted-foreground">
-            Discover and connect with clubs that vibe with you
-          </p>
-        </div>
+      <div className="space-y-8">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between max-w-6xl mx-auto gap-6 ">
+          <div className="flex-shrink-0">
+            <h1 className="text-3xl font-bold tracking-tight">
+              Ready for your next run?
+            </h1>
+            <p className="text-lg text-muted-foreground mt-1">
+              Discover and connect with clubs that vibe with you
+            </p>
+          </div>
 
-        <div className="flex justify-center gap-4 mb-8">
-          <Button onClick={scrapeRuns} variant="outline" className="gap-2">
-            <Search className="w-4 h-4" />
-            Scrape Runs
-          </Button>
-          <AddClub />
-        </div>
-
-        <Card className="border-none shadow-none max-w-3xl mx-auto">
-          <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl">Find Your Club</CardTitle>
-            <CardDescription>
-              Search by club name or description
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="relative">
+          <div className="flex gap-4 items-center">
+            <div className="relative flex-1 min-w-[300px]">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
-                placeholder="Type to search clubs..."
+                placeholder="Search clubs..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-9"
+                className="pl-9 w-full"
               />
             </div>
-          </CardContent>
-        </Card>
+            <div className="flex gap-2">
+              <AddClub />
+            </div>
+          </div>
+        </div>
 
         {isLoading ? (
           <div className="text-center py-8">
@@ -108,12 +89,12 @@ export default function ClubsDashboard() {
             </Button>
           </div>
         ) : (
-          <div className="mx-auto px-20 py-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl pt-5 mx-auto">
             {filteredClubs.map((club) => (
               <Link
                 key={club.id}
                 href={`/clubs/${club.slug}`}
-                className="block"
+                className="block h-full"
               >
                 <ClubCard
                   avatarUrl={club.avatarUrl}
