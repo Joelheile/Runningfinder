@@ -72,6 +72,7 @@ export default function AddRunState({
       clubId: club.id,
       date: date instanceof Date ? date : new Date(),
       startDescription,
+      weekday: date ? new Date(date).getDay() : null,
       location: {
         lat: locationLat,
         lng: locationLng,

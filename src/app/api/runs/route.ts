@@ -1,14 +1,18 @@
 import { db } from "@/lib/db/db";
 import { runs } from "@/lib/db/schema";
-import { and, between, eq, inArray } from "drizzle-orm";
+import { and, asc, eq, gt, inArray } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
+const VALID_DIFFICULTIES = ["easy", "intermediate", "advanced"] as const;
+type Difficulty = typeof VALID_DIFFICULTIES[number];
+
 function parseQueryParams(searchParams: URLSearchParams) {
+  const weekdays = searchParams.get("weekdays")?.split(",").map(Number) || [];
+  const difficulty = searchParams.get("difficulty") as Difficulty | null;
+  
   return {
-    minDistance: parseInt(searchParams.get("minDistance") || "", 10) || null,
-    maxDistance: parseInt(searchParams.get("maxDistance") || "", 10) || null,
-    intervalDays: searchParams.get("interval_day")?.split(",").map(Number) || [],
-    difficulty: searchParams.get("difficulty") || null,
+    weekdays: weekdays.filter(day => Number.isInteger(day) && day >= 1 && day <= 7),
+    difficulty: VALID_DIFFICULTIES.includes(difficulty as Difficulty) ? difficulty : null,
   };
 }
 
@@ -18,75 +22,74 @@ function handleErrorResponse(error: unknown, message = "Internal Server Error", 
 }
 
 export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const { minDistance, maxDistance, intervalDays, difficulty } = parseQueryParams(searchParams);
-
   try {
-    const conditions = [eq(runs.membersOnly, false)];
+    const { searchParams } = new URL(request.url);
+    const { weekdays, difficulty } = parseQueryParams(searchParams);
 
-    if (minDistance !== null && maxDistance !== null && minDistance >= 0 && maxDistance >= minDistance) {
-      conditions.push(between(runs.distance, minDistance.toString(), maxDistance.toString()));
-    } else if (minDistance !== null && minDistance >= 0) {
-      conditions.push(eq(runs.distance, minDistance.toString()));
+    // Get current date at the start of the day
+    const now = new Date();
+    now.setHours(0, 0, 0, 0);
+
+    // Build query conditions
+    const conditions = [
+      eq(runs.membersOnly, false),
+      gt(runs.date, now) // Use the start of today for date comparison
+    ];
+
+    // Add weekday filter if provided
+    if (weekdays.length > 0) {
+      conditions.push(inArray(runs.weekday, weekdays));
     }
 
-    const validDays = intervalDays.filter(day => Number.isInteger(day) && day >= 1 && day <= 7);
-    if (validDays.length > 0) {
-      conditions.push(inArray(runs.weekday, validDays));
-    }
-
-    const validDifficulties = ["easy", "intermediate", "advanced"];
-    if (difficulty && validDifficulties.includes(difficulty)) {
+    // Add difficulty filter if provided
+    if (difficulty) {
       conditions.push(eq(runs.difficulty, difficulty));
     }
 
-    const baseQuery = db.select({
-      id: runs.id,
-      name: runs.name,
-      clubId: runs.clubId,
-      difficulty: runs.difficulty,
-      date: runs.date,
-      weekday: runs.weekday,
-      startDescription: runs.startDescription,
-      mapsLink: runs.mapsLink,
-      distance: runs.distance,
-      location: { lat: runs.locationLat, lng: runs.locationLng },
-    }).from(runs).where(and(...conditions));
+    // Execute optimized query with all conditions
+    const result = await db
+      .select({
+        id: runs.id,
+        name: runs.name,
+        date: runs.date,
+        weekday: runs.weekday,
+        difficulty: runs.difficulty,
+        distance: runs.distance,
+        startDescription: runs.startDescription,
+        location: {
+          lat: runs.locationLat,
+          lng: runs.locationLng,
+        },
+        clubId: runs.clubId,
+        membersOnly: runs.membersOnly,
+      })
+      .from(runs)
+      .where(and(...conditions))
+      .orderBy(asc(runs.date)) // Order by date ascending
+      .execute();
 
-    const result = await baseQuery.execute();
     return NextResponse.json(result);
   } catch (error) {
-    return handleErrorResponse(error, "Error fetching runs");
+    return handleErrorResponse(error);
   }
 }
 
 export async function POST(request: Request) {
-  const runData = await request.json();
-  
-  // Extract location data and ensure date is a proper Date object
-  const newRun = {
-    ...runData,
-    locationLng: runData.location.lng,
-    locationLat: runData.location.lat,
-    date: runData.date ? new Date(runData.date) : null
-  };
-
   try {
-    await db.insert(runs).values(newRun).execute();
-    return NextResponse.json({ message: "Run created successfully", run: newRun }, { status: 201 });
+    const body = await request.json();
+    const result = await db.insert(runs).values(body);
+    return NextResponse.json(result);
   } catch (error) {
-    console.error("Error details:", error);
-    return handleErrorResponse(error, "Error creating run");
+    return handleErrorResponse(error);
   }
 }
 
 export async function DELETE(request: Request) {
-  const { id } = await request.json();
-
   try {
-    await db.delete(runs).where(eq(runs.id, id)).execute();
-    return NextResponse.json({ message: "Run deleted successfully" });
+    const body = await request.json();
+    const result = await db.delete(runs).where(eq(runs.id, body.id));
+    return NextResponse.json(result);
   } catch (error) {
-    return handleErrorResponse(error, "Error deleting run");
+    return handleErrorResponse(error);
   }
 }
