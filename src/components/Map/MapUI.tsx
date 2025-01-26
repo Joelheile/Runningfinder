@@ -1,5 +1,5 @@
 import { Run } from "@/lib/types/Run";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import SelectedClubHeader from "../Clubs/SelectedClubHeaderLogic";
 
 interface MapViewProps {
@@ -9,14 +9,38 @@ interface MapViewProps {
 }
 
 const MapUI = ({ mapRef, selectedLocation, runs }: MapViewProps) => {
+  const [isClubHeaderVisible, setIsClubHeaderVisible] = useState(false);
+
+  // Show header when a new location is selected
+  useEffect(() => {
+    if (selectedLocation) {
+      setIsClubHeaderVisible(true);
+    }
+  }, [selectedLocation]);
+
+  const handleMapClick = (e: React.MouseEvent) => {
+    // Only hide if clicking directly on the map container, not its children
+    if (e.target === e.currentTarget) {
+      setIsClubHeaderVisible(false);
+    }
+  };
+
   return (
     <div className="fixed inset-0 w-full h-full">
-      {selectedLocation && runs.length !== 0 && (
-        <SelectedClubHeader
-          run={runs.find((run) => run.id === selectedLocation.id)!}
-        />
-      )}
-      <div className="absolute inset-0" ref={mapRef} />
+      {selectedLocation && runs.length !== 0 && isClubHeaderVisible && (() => {
+        const selectedRun = runs.find((run) => run.id === selectedLocation.id);
+        return selectedRun ? (
+          <SelectedClubHeader 
+            run={selectedRun} 
+            onClose={() => setIsClubHeaderVisible(false)}
+          />
+        ) : null;
+      })()}
+      <div 
+        className="absolute inset-0" 
+        ref={mapRef} 
+        onClick={handleMapClick}
+      />
     </div>
   );
 };
