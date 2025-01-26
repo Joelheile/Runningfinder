@@ -28,10 +28,7 @@ export async function GET(
           lng: runs.locationLng,
         },
         mapsLink: runs.mapsLink,
-        temperature: runs.temperature,
-        wind: runs.wind,
-        uv_index: runs.uv_index,
-        membersOnly: runs.membersOnly,
+
         isRecurrent: runs.isRecurrent,
       })
       .from(runs)
