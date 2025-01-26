@@ -7,6 +7,7 @@ import { TooltipProvider } from "@/components/UI/tooltip";
 import { Analytics } from "@vercel/analytics/react";
 import { Toaster } from "react-hot-toast";
 import ReactQueryProvider from "../components/ReactQuery/ReactQueryProvider";
+import AuthProvider from "@/components/Auth/AuthProvider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -21,15 +22,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <ReactQueryProvider>
-        <body className={inter.className}>
-          <TooltipProvider>
-            <Toaster position="bottom-center" />
-            {children} <Metrics />
-            <Analytics />
-          </TooltipProvider>
-        </body>
-      </ReactQueryProvider>
+      <body className={inter.className}>
+        <ReactQueryProvider>
+          <AuthProvider>
+            <TooltipProvider>
+              <Toaster position="bottom-center" />
+              {children}
+              <Metrics />
+              <Analytics />
+            </TooltipProvider>
+          </AuthProvider>
+        </ReactQueryProvider>
+      </body>
     </html>
   );
 }

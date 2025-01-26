@@ -1,8 +1,27 @@
 "use client";
 import MapTest from "@/components/Map/MapTest";
 import { TestScraper } from "@/components/Scraper/TestScraper";
+import { signIn, useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
+import toast from "react-hot-toast";
 
-export default function TestPage() {
+export default function AdminPage() {
+  const { data: session, status } = useSession({
+    required: true,
+    onUnauthenticated() {
+      signIn(undefined, { callbackUrl: "/admin" });
+    },
+  });
+
+  if (status === "loading") {
+    return <div>Loading...</div>;
+  }
+
+  if (!session?.user?.isAdmin) {
+    toast.error("You need to be logged in as an admin to access this page");
+    redirect("/");
+  }
+
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">Test Page</h1>
