@@ -180,9 +180,7 @@ export function useScrapeRuns() {
             }
 
             // Create a descriptive start location
-            const startDescription = location ? 
-              `Starting point: ${location}${locationUrl ? ` (${locationUrl})` : ''}` : 
-              'Location details will be provided';
+            const startDescription = location
 
             const runData = {
               id: v4(),
