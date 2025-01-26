@@ -30,9 +30,7 @@ export default function AddRunState({
   const [locationLng, setLocationLng] = useState(
     initialValues.location?.lng || 13.405
   );
-  const [membersOnly, setMembersOnly] = useState(
-    initialValues.membersOnly || false
-  );
+
   const [isRecurrent, setIsRecurrent] = useState(
     initialValues.isRecurrent || false
   );
@@ -79,10 +77,8 @@ export default function AddRunState({
       },
       mapsLink: null,
       distance,
-      temperature: null,
-      wind: null,
-      uv_index: null,
-      membersOnly,
+
+      isApproved: false,
       isRecurrent,
     };
 
