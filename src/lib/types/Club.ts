@@ -14,4 +14,5 @@ export type Club = {
   avatarFileId: string;
   avatarUrl: string;
   websiteUrl: string;
+  isApproved: boolean;
 };

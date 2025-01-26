@@ -12,9 +12,6 @@ export interface Run {
   };
   mapsLink: string | null;
   distance: string;
-  temperature: number | null;
-  wind: number | null;
-  uv_index: number | null;
-  membersOnly: boolean;
   isRecurrent: boolean;
+  isAccepted: boolean;
 }

@@ -132,11 +132,8 @@ export const runs = pgTable("runs", {
   locationLat: decimal("location_lat").notNull(),
   mapsLink: text("mapsLink"),
   isRecurrent: boolean("is_recurrent"),
+  isApproved: boolean("is_approved"),
   distance: text("distance"),
-  temperature: decimal("temperature"),
-  wind: decimal("wind"),
-  uv_index: decimal("uv_index"),
-  membersOnly: boolean("members_only").default(false),
 });
 
 export const memberships = pgTable(
@@ -170,6 +167,6 @@ export const clubs = pgTable("clubs", {
   stravaUsername: text("strava_username"),
   websiteUrl: text("website_url"),
   avatarUrl: text("avatar_url"),
+  isApproved: boolean("is_approved"),
   creationDate: timestamp("creation_date").notNull(),
-  memberCount: integer("member_count"),
 });
