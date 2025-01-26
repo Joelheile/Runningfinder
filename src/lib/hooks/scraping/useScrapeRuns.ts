@@ -46,6 +46,8 @@ export function useScrapeRuns() {
         setProfileImageUrl(profileImageUrl);
       }
 
+      const createClub = async () => {
+
       const formData: Club = {
         name: clubName,
         description: profileDescription || "",
@@ -70,6 +72,11 @@ export function useScrapeRuns() {
           console.error(error);
         },
       });
+    }
+    createClub();}
+    
+    const createRun = async () => {
+      // check if run already exists in db
     }
 
     return scrapedData;
