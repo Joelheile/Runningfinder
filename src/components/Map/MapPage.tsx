@@ -33,12 +33,11 @@ const MapPage = ({ session }: { session: Session | null }) => {
   return (
     <div className="h-screen">
       <FilterBar onFilterChange={handleFilterChange} />
-       <Link href="/clubs">
+      <div className="absolute z-10 top-20 right-1/2 left-1/2 grid-flow-row text-center">
+        <div className="flex flex-row gap-2 justify-center">
+          <Link href="/clubs">
             <Button variant={"outline"}>Search Clubs 🏃</Button>
           </Link>
-      <div className="absolute z-10 top-2 right-1/2 left-1/2 grid-flow-row text-center">
-        <div className="flex flex-row gap-2 justify-center">
-         
 
           {/* <Link href="/myruns">
             <Button variant={"outline"}>My runs 🥳</Button>
