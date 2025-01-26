@@ -6,8 +6,10 @@ export interface Run {
   date: Date;
   weekday: number | null;
   startDescription: string;
-  locationLat: number;
-  locationLng: number;
+  location: {
+    lat: number;
+    lng: number;
+  };
   mapsLink: string | null;
   distance: string;
   isRecurrent: boolean;
