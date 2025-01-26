@@ -8,7 +8,7 @@ interface RunCardProps {
   distance: string;
   locationLat: number;
   locationLng: number;
-  weekday: number;
+
   date: Date | null;
   startDescription: string;
   difficulty: string;
@@ -25,7 +25,7 @@ export default function RunCard({
   distance,
   locationLat,
   locationLng,
-  weekday,
+
   date,
   startDescription,
   difficulty,
@@ -47,30 +47,37 @@ export default function RunCard({
   //   register({ runId: id, userId });
   // };
 
-  const handleDeleteRun = () => {
-    if (!isAdmin) return;
-    deleteRun(id);
-  };
+  // const handleDeleteRun = () => {
+  //   if (!isAdmin) return;
+  //   if (window.confirm("Are you sure you want to delete this run?")) {
+  //     deleteRun(
+  //       { id },
+  //       {
+  //         onSuccess: () => {
+  //           router.refresh();
+  //         },
+  //       }
+  //     );
+  //   }
+  // };
 
-  const mapsLink = `https://www.google.com/maps/search/?api=1&query=${locationLat},${locationLng}`;
+  // Create a more descriptive maps link with both coordinates and location name
+  const mapsLink = `https://www.google.com/maps/search/${encodeURIComponent(startDescription)}/@${locationLat},${locationLng},15z`;
 
   return (
-    <div className="run-card">
-      <RunCardUI
-        id={id}
-        key={id}
-        weekday={weekday}
-        date={date}
-        name={name}
-        distance={distance}
-        difficulty={difficulty}
-        startDescription={startDescription}
-        mapsLink={mapsLink}
-        location={{ lat: locationLat, lng: locationLng }}
-        // handleRegistration={handleRegistration}
-        handleDeleteRun={isAdmin ? handleDeleteRun : undefined}
-        isAdmin={isAdmin}
-      />
-    </div>
+    <RunCardUI
+      userId={userId}
+      id={id}
+      key={id}
+      date={date}
+      name={name}
+      startDescription={startDescription}
+      difficulty={difficulty}
+      distance={distance}
+      locationLat={locationLat}
+      locationLng={locationLng}
+      mapsLink={mapsLink}
+      isAdmin={isAdmin}
+    />
   );
 }
