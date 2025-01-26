@@ -188,8 +188,10 @@ export function useScrapeRuns() {
               id: v4(),
               name: eventName,
               date: dateObject,
-              locationLat,
-              locationLng,
+              location: {
+                lat: locationLat,
+                lng: locationLng
+              },
               difficulty,
               distance: distance || "0",
               isRecurrent,

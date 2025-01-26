@@ -1,6 +1,6 @@
 import { db } from "@/lib/db/db";
 import { runs } from "@/lib/db/schema";
-import { and, asc, eq, gt, inArray } from "drizzle-orm";
+import { and, asc, eq, gt, inArray, or } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
 const VALID_DIFFICULTIES = ["easy", "intermediate", "advanced"] as const;
@@ -28,15 +28,21 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const { weekdays, difficulty, clubId } = parseQueryParams(searchParams);
 
+    console.log('Query params:', { weekdays, difficulty, clubId });
+    
     // Get current date
     const now = new Date();
+    console.log('Current date:', now);
 
-    // Build query conditions
+
     const conditions = [
       eq(runs.isApproved, true),
-      and(
-        eq(runs.isRecurrent, false),
-        gt(runs.date, now)
+      or(
+        eq(runs.isRecurrent, true),
+        and(
+          eq(runs.isRecurrent, false),
+          gt(runs.date, now)
+        )
       )
     ];
 
@@ -55,30 +61,29 @@ export async function GET(request: Request) {
       conditions.push(eq(runs.difficulty, difficulty));
     }
 
-    // Execute optimized query with all conditions
-    const result = await db
-      .select({
-        id: runs.id,
-        name: runs.name,
-        date: runs.date,
-        weekday: runs.weekday,
-        difficulty: runs.difficulty,
-        distance: runs.distance,
-        startDescription: runs.startDescription,
-        location: {
-          lat: runs.locationLat,
-          lng: runs.locationLng,
-        },
-        clubId: runs.clubId,
-        isRecurrent: runs.isRecurrent,
-        isApproved: runs.isApproved,
-      })
-      .from(runs)
-      .where(and(...conditions))
-      .orderBy(asc(runs.date)) // Order by date ascending
-      .execute();
+    console.log('Query conditions:', conditions);
 
-    return NextResponse.json(result);
+    // First get all runs to see what's in the database
+    const allRuns = await db.select().from(runs);
+    console.log('All runs in database:', allRuns);
+
+    const runsData = conditions.length > 0 
+      ? await db.select().from(runs).where(and(...conditions)).orderBy(asc(runs.date))
+      : allRuns;
+    
+    console.log('Fetched runs from database:', runsData);
+    // Transform the data to include a location object
+    const transformedRuns = runsData.map((run: any) => ({
+      ...run,
+      location: {
+        lat: run.locationLat,
+        lng: run.locationLng
+      }
+    }));
+
+    console.log('Transformed runs:', transformedRuns);
+    
+    return NextResponse.json(transformedRuns);
   } catch (error) {
     return handleErrorResponse(error);
   }
@@ -105,9 +110,13 @@ export async function POST(request: Request) {
       return handleErrorResponse(error, "Invalid date format", 400);
     }
 
+    // Transform the location object into separate fields
+    const { location, ...restBody } = body;
     const result = await db.insert(runs).values({
-      ...body,
-      date: dateValue
+      ...restBody,
+      date: dateValue,
+      locationLat: location?.lat,
+      locationLng: location?.lng
     });
     
     return NextResponse.json(result);
