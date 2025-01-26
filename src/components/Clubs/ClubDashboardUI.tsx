@@ -54,7 +54,9 @@ export default function ClubDashboardUI({
     websiteUrl: "",
     stravaUsername: "",
   };
-  console.log("runs", runs);
+
+  const futureRuns = runs?.filter((run) => run.date > new Date()) || [];
+  const pastRuns = runs?.filter((run) => run.date <= new Date()) || [];
 
   return (
     <div className="flex flex-col w-screen max-w-full h-screen p-8">
@@ -118,9 +120,9 @@ export default function ClubDashboardUI({
           {club && runs && runs.length > 0 && <AddRunState club={club} />}
         </div>
 
-        {runs && runs.length > 0 ? (
+        {futureRuns.length > 0 ? (
           <div className="grid grid-cols-1 gap-6 p-6">
-            {runs
+            {futureRuns
               ?.sort((a, b) =>
                 a.date && b.date ? a.date.getTime() - b.date.getTime() : 0
               )

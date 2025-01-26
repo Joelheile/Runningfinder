@@ -10,7 +10,10 @@ interface SelectedClubHeaderProps {
   onClose?: () => void;
 }
 
-export default function SelectedClubHeaderLogic({ run, onClose }: SelectedClubHeaderProps) {
+export default function SelectedClubHeaderLogic({
+  run,
+  onClose,
+}: SelectedClubHeaderProps) {
   const { data, error, isLoading } = useFetchClubs();
   const [instagramSelected, setInstagramSelected] = useState(false);
 
@@ -39,10 +42,10 @@ export default function SelectedClubHeaderLogic({ run, onClose }: SelectedClubHe
   const avatarUrl = club.avatarUrl || "/assets/default-fallback-image.png";
 
   return (
-    <SelectedClubHeaderUI 
-      club={club} 
-      avatarUrl={avatarUrl} 
-      runs={runs || []} 
+    <SelectedClubHeaderUI
+      club={club}
+      avatarUrl={avatarUrl}
+      runs={runs || []}
       onClose={onClose}
     />
   );

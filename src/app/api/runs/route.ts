@@ -28,14 +28,16 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const { weekdays, difficulty, clubId } = parseQueryParams(searchParams);
 
-    // Get current date at the start of the day
+    // Get current date
     const now = new Date();
-    now.setHours(0, 0, 0, 0);
 
     // Build query conditions
     const conditions = [
-      eq(runs.membersOnly, false),
-      gt(runs.date, now) // Use the start of today for date comparison
+      eq(runs.isApproved, true),
+      and(
+        eq(runs.isRecurrent, false),
+        gt(runs.date, now)
+      )
     ];
 
     // Add clubId filter if provided
@@ -68,7 +70,8 @@ export async function GET(request: Request) {
           lng: runs.locationLng,
         },
         clubId: runs.clubId,
-        membersOnly: runs.membersOnly,
+        isRecurrent: runs.isRecurrent,
+        isApproved: runs.isApproved,
       })
       .from(runs)
       .where(and(...conditions))
@@ -84,9 +87,32 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const result = await db.insert(runs).values(body);
+    
+    // Validate the date field
+    if (!body.date) {
+      return handleErrorResponse(new Error("Date is required"), "Date is required", 400);
+    }
+
+    // Ensure date is a valid Date object
+    let dateValue: Date;
+    try {
+      dateValue = new Date(body.date);
+      if (isNaN(dateValue.getTime())) {
+        throw new Error("Invalid date value");
+      }
+    } catch (error) {
+      console.error("Date parsing error:", error);
+      return handleErrorResponse(error, "Invalid date format", 400);
+    }
+
+    const result = await db.insert(runs).values({
+      ...body,
+      date: dateValue
+    });
+    
     return NextResponse.json(result);
   } catch (error) {
+    console.error("Error details:", error);
     return handleErrorResponse(error);
   }
 }
