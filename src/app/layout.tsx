@@ -2,10 +2,11 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
-import ReactQueryProvider from "../components/ReactQuery/ReactQueryProvider";
-import { Toaster } from "react-hot-toast";
-import { Analytics } from "@vercel/analytics/react";
 import Metrics from "@/components/metrics";
+import { TooltipProvider } from "@/components/UI/tooltip";
+import { Analytics } from "@vercel/analytics/react";
+import { Toaster } from "react-hot-toast";
+import ReactQueryProvider from "../components/ReactQuery/ReactQueryProvider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -22,9 +23,11 @@ export default function RootLayout({
     <html lang="en">
       <ReactQueryProvider>
         <body className={inter.className}>
-          <Toaster position="bottom-center" />
-          {children} <Metrics />
-          <Analytics />
+          <TooltipProvider>
+            <Toaster position="bottom-center" />
+            {children} <Metrics />
+            <Analytics />
+          </TooltipProvider>
         </body>
       </ReactQueryProvider>
     </html>
