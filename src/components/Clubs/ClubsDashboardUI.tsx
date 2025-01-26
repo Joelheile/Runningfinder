@@ -1,5 +1,4 @@
 "use client";
-import ClubCard from "@/components/Clubs/ClubCard";
 import { Button } from "@/components/UI/button";
 import {
   Card,
@@ -9,36 +8,42 @@ import {
   CardTitle,
 } from "@/components/UI/card";
 import { Input } from "@/components/UI/input";
-import { useFetchClubs } from "@/lib/hooks/clubs/useFetchClubs";
-import { useScrapeRuns } from "@/lib/hooks/scraping/useScrapeRuns";
 import { ChevronLeft, Plus, Search } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import ClubCard from "./ClubCard";
 
-export default function ClubsDashboard() {
-  const { data: clubs = [], isLoading, isError, error } = useFetchClubs();
-  const { scrapeRuns } = useScrapeRuns();
+interface ClubsDashboardUIProps {
+  clubs: any[];
+  isLoading: boolean;
+  isError: boolean;
+  error: Error | null;
+  searchQuery: string;
+  setSearchQuery: (query: string) => void;
+  scrapeRuns: () => void;
+}
+
+export default function ClubsDashboardUI({
+  clubs,
+  isLoading,
+  isError,
+  error,
+  searchQuery,
+  setSearchQuery,
+  scrapeRuns,
+}: ClubsDashboardUIProps) {
   const router = useRouter();
-  const [searchQuery, setSearchQuery] = useState("");
-
-  const filteredClubs = clubs.filter(
-    (club) =>
-      club.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (club.description || "").toLowerCase().includes(searchQuery.toLowerCase())
-  );
 
   return (
-    <div className=" mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex items-center mb-8">
-        <nav className="flex justify-between items-center">
-          <Link href="/clubs/">
-            <div className="flex items-center hover:bg-slate-100 rounded-md px-2 py-1 transition-colors">
-              <ChevronLeft className="stroke-primary" />
-              <span className="text-primary">Back</span>
-            </div>
-          </Link>
-        </nav>
+        <button
+          onClick={() => router.push("/")}
+          className="inline-flex items-center text-sm font-medium text-gray-500 hover:text-gray-700"
+        >
+          <ChevronLeft className="w-4 h-4 mr-1" />
+          Back
+        </button>
       </div>
 
       <div className="space-y-6">
@@ -64,12 +69,10 @@ export default function ClubsDashboard() {
           </Link>
         </div>
 
-        <Card className="border-none shadow-none max-w-3xl mx-auto">
+        <Card className="border-none shadow-none">
           <CardHeader className="space-y-1">
             <CardTitle className="text-2xl">Find Your Club</CardTitle>
-            <CardDescription>
-              Search by club name or description
-            </CardDescription>
+            <CardDescription>Search by club name or description</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="relative">
@@ -90,11 +93,9 @@ export default function ClubsDashboard() {
           </div>
         ) : isError ? (
           <div className="text-center py-8">
-            <p className="text-red-500">
-              Error loading clubs: {error?.message}
-            </p>
+            <p className="text-red-500">Error loading clubs: {error?.message}</p>
           </div>
-        ) : filteredClubs.length === 0 ? (
+        ) : clubs.length === 0 ? (
           <div className="text-center py-8">
             <p className="text-muted-foreground">
               No clubs found. Why not create one?
@@ -104,13 +105,9 @@ export default function ClubsDashboard() {
             </Link>
           </div>
         ) : (
-          <div className=" mx-auto px-20 py-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredClubs.map((club) => (
-              <Link
-                key={club.id}
-                href={`/clubs/${club.slug}`}
-                className="block"
-              >
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {clubs.map((club) => (
+              <Link key={club.id} href={`/clubs/${club.slug}`} className="block">
                 <ClubCard
                   avatarUrl={club.avatarUrl}
                   name={club.name}
