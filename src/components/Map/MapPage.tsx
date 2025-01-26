@@ -31,7 +31,7 @@ const MapPage = ({ session }: { session: Session | null }) => {
   const { data: clubs } = useFetchClubs();
 
   return (
-    <div className="h-screen">
+    <div className="fixed inset-0 overflow-hidden">
       <FilterBar onFilterChange={handleFilterChange} />
       <div className="absolute z-10 top-20 right-1/2 left-1/2 grid-flow-row text-center">
         <div className="flex flex-row gap-2 justify-center">

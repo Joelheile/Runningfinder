@@ -8,21 +8,8 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "runningfinder.s3.eu-central-1.amazonaws.com",
-        port: "",
+        hostname: "**",
       },
-      {
-        protocol: "https",
-        hostname: "scontent-itm1-1.cdninstagram.com",
-        port: "",
-      },
-    ],
-    domains: [
-      "localhost",
-      "runningfinder.s3.eu-central-1.amazonaws.com",
-      "avatars.githubusercontent.com",
-      "cdninstagram.com",
-      "scontent-itm1-1.cdninstagram.com",
     ],
   },
   webpack: (config) => {
