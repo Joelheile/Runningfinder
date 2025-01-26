@@ -20,7 +20,7 @@ export default function AddRunState({
   const [name, setName] = useState(initialValues.name || "");
   const [difficulty, setDifficulty] = useState(initialValues.difficulty || "");
   const [distance, setDistance] = useState(initialValues.distance || "");
-  const [weekday, setWeekday] = useState(initialValues.weekday || 1);
+  const [date, setDate] = useState<Date>(initialValues.date || new Date());
   const [startDescription, setStartDescription] = useState(
     initialValues.startDescription || ""
   );
@@ -36,7 +36,6 @@ export default function AddRunState({
   const [isRecurrent, setIsRecurrent] = useState(
     initialValues.isRecurrent || false
   );
-  const [date, setDate] = useState<Date | null>(initialValues.date || null);
   const [showMap, setShowMap] = useState(false);
 
   const mutation = useAddRun();
@@ -57,10 +56,6 @@ export default function AddRunState({
       toast.error("Please enter a distance");
       return;
     }
-    if (!weekday) {
-      toast.error("Please select a weekday");
-      return;
-    }
     if (!startDescription) {
       toast.error("Please enter a start description");
       return;
@@ -75,8 +70,7 @@ export default function AddRunState({
       name,
       difficulty,
       clubId: club.id,
-      date,
-      weekday,
+      date: date instanceof Date ? date : new Date(),
       startDescription,
       location: {
         lat: locationLat,
@@ -104,7 +98,6 @@ export default function AddRunState({
     setLocationLat(lat);
     setLocationLng(lng);
     setStartDescription(formattedAddress);
-    setShowMap(false);
   };
 
   return (
@@ -115,8 +108,8 @@ export default function AddRunState({
       setDifficulty={setDifficulty}
       distance={distance}
       setDistance={setDistance}
-      weekday={weekday}
-      setWeekday={setWeekday}
+      date={date}
+      setDate={setDate}
       startDescription={startDescription}
       setStartDescription={setStartDescription}
       locationLat={locationLat}
@@ -124,7 +117,6 @@ export default function AddRunState({
       isRecurrent={isRecurrent}
       setIsRecurrent={setIsRecurrent}
       showMap={showMap}
-      setShowMap={setShowMap}
       handleSubmit={handleSubmit}
       handleLocationSelect={handleLocationSelect}
     />

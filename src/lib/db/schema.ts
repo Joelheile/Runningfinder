@@ -35,8 +35,6 @@ export const avatars = pgTable("avatars", {
   type: avatarTypeEnum("type").notNull(),
 });
 
-
-
 export const accounts = pgTable(
   "account",
   {
@@ -99,7 +97,6 @@ export const authenticators = pgTable(
   }),
 );
 
-
 export const statusEnum = pgEnum("status", [
   "pending",
   "active",
@@ -107,9 +104,7 @@ export const statusEnum = pgEnum("status", [
   "banned",
 ]);
 
-
 export const roleEnum = pgEnum("role", ["member", "admin", "manager"]);
-
 
 export const registrations = pgTable("registrations", {
   id: text("id").primaryKey().notNull(),
@@ -130,7 +125,7 @@ export const runs = pgTable("runs", {
   clubId: text("club_id")
     .notNull()
     .references(() => clubs.id),
-  date: timestamp("date"),
+  date: timestamp("date", { mode: "date" }),
   weekday: integer("weekday"),
   startDescription: text("start_description"),
   locationLng: decimal("location_lng").notNull(),
@@ -143,7 +138,6 @@ export const runs = pgTable("runs", {
   uv_index: decimal("uv_index"),
   membersOnly: boolean("members_only").default(false),
 });
-
 
 export const memberships = pgTable(
   "memberships",
@@ -176,10 +170,6 @@ export const clubs = pgTable("clubs", {
   stravaUsername: text("strava_username"),
   websiteUrl: text("website_url"),
   avatarUrl: text("avatar_url"),
-  // avatarFileId: text("avatar_file_id")
-  //   .unique()
-  //   .references(() => avatars.id),
   creationDate: timestamp("creation_date").notNull(),
   memberCount: integer("member_count"),
 });
-
