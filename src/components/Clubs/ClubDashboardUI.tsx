@@ -2,6 +2,7 @@ import { Club } from "@/lib/types/Club";
 import { Run } from "@/lib/types/Run";
 import { ChevronLeft, Share, Trash } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import AddRunState from "../Runs/AddRunLogic";
 import RunCard from "../Runs/RunCardLogic";
 import { Button } from "../UI/button";
@@ -36,6 +37,8 @@ export default function ClubDashboardUI({
   if (error) return <p>Error: {error}</p>;
   if (noData) return <p>No club data available.</p>;
 
+  const router = useRouter();
+
   const {
     name,
     description,
@@ -56,12 +59,15 @@ export default function ClubDashboardUI({
   return (
     <div className="flex flex-col w-screen max-w-full h-screen p-8">
       <nav className="flex justify-between items-center">
-        <Link href="/clubs/">
+        <button
+          onClick={() => router.back()}
+          className="flex items-center hover:bg-slate-100 rounded-md px-2 py-1 transition-colors"
+        >
           <div className="flex items-center hover:bg-slate-100 rounded-md px-2 py-1 transition-colors">
             <ChevronLeft className="stroke-primary" />
             <span className="text-primary">Back</span>
           </div>
-        </Link>
+        </button>
         <div className="flex gap-3">
           {club && <AddRunState club={club} />}
 
