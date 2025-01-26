@@ -2,7 +2,7 @@
 import Map from "@/components/Map/MapLogic";
 import { useFetchClubs } from "@/lib/hooks/clubs/useFetchClubs";
 import { useFetchRuns } from "@/lib/hooks/runs/useFetchRuns";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 import { Session } from "next-auth";
 import Link from "next/link";
@@ -19,24 +19,27 @@ const MapPage = ({ session }: { session: Session | null }) => {
 
   const { data: runs, isLoading, error } = useFetchRuns(filters);
 
-  const handleFilterChange = (newFilters: {
-    minDistance?: number;
-    maxDistance?: number;
-    days?: number[];
-    difficulty?: string;
-  }) => {
-    setFilters(newFilters);
-  };
+  const handleFilterChange = useCallback(
+    (newFilters: {
+      minDistance?: number;
+      maxDistance?: number;
+      days?: number[];
+      difficulty?: string;
+    }) => {
+      setFilters(newFilters);
+    },
+    []
+  ); // Empty dependency array since we only need setFilters which is stable
 
   const { data: clubs } = useFetchClubs();
 
   return (
     <div className="fixed inset-0 overflow-hidden">
       <FilterBar onFilterChange={handleFilterChange} />
-      <div className="absolute z-10 top-20 right-1/2 left-1/2 grid-flow-row text-center">
+      <div className="absolute z-10 bottom-5 right-1/2 left-1/2 grid-flow-row text-center">
         <div className="flex flex-row gap-2 justify-center">
           <Link href="/clubs">
-            <Button variant={"outline"}>Search Clubs 🏃</Button>
+            <Button variant={"default"}>Search Clubs 🏃</Button>
           </Link>
 
           {/* <Link href="/myruns">

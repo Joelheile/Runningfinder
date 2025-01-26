@@ -4,6 +4,7 @@ export interface Run {
   difficulty: string;
   clubId: string;
   date: Date;
+  weekday: number | null;
   startDescription: string;
   location: {
     lat: number;
