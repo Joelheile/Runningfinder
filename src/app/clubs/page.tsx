@@ -1,4 +1,5 @@
 "use client";
+import AddClub from "@/components/Clubs/AddClubLogic";
 import ClubCard from "@/components/Clubs/ClubCard";
 import { Button } from "@/components/UI/button";
 import {
@@ -11,13 +12,13 @@ import {
 import { Input } from "@/components/UI/input";
 import { useFetchClubs } from "@/lib/hooks/clubs/useFetchClubs";
 import { useScrapeRuns } from "@/lib/hooks/scraping/useScrapeRuns";
-import { ChevronLeft, Plus, Search } from "lucide-react";
+import { ChevronLeft, Search } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function ClubsDashboard() {
-  const { data: clubs = [], isLoading, isError, error } = useFetchClubs();
+  const { data: clubs = [], isLoading, isError } = useFetchClubs();
   const { scrapeRuns } = useScrapeRuns();
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
@@ -29,7 +30,7 @@ export default function ClubsDashboard() {
   );
 
   return (
-    <div className=" mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex items-center mb-8">
         <nav className="flex justify-between items-center">
           <button
@@ -59,12 +60,7 @@ export default function ClubsDashboard() {
             <Search className="w-4 h-4" />
             Scrape Runs
           </Button>
-          <Link href="/clubs/add">
-            <Button className="gap-2">
-              <Plus className="w-4 h-4" />
-              Add Club
-            </Button>
-          </Link>
+          <AddClub />
         </div>
 
         <Card className="border-none shadow-none max-w-3xl mx-auto">
@@ -94,7 +90,7 @@ export default function ClubsDashboard() {
         ) : isError ? (
           <div className="text-center py-8">
             <p className="text-red-500">
-              Error loading clubs: {error?.message}
+              There was an error loading clubs - there are no clubs :)
             </p>
           </div>
         ) : filteredClubs.length === 0 ? (
@@ -102,12 +98,17 @@ export default function ClubsDashboard() {
             <p className="text-muted-foreground">
               No clubs found. Why not create one?
             </p>
-            <Link href="/clubs/add">
-              <Button className="mt-4">Create New Club</Button>
-            </Link>
+            <Button
+              onClick={() =>
+                document.getElementById("add-club-trigger")?.click()
+              }
+              className="mt-4"
+            >
+              Create New Club
+            </Button>
           </div>
         ) : (
-          <div className=" mx-auto px-20 py-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="mx-auto px-20 py-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredClubs.map((club) => (
               <Link
                 key={club.id}
@@ -118,9 +119,9 @@ export default function ClubsDashboard() {
                   avatarUrl={club.avatarUrl}
                   name={club.name}
                   description={club.description}
-                  instagramUsername={club.instagramUsername}
-                  websiteUrl={club.websiteUrl}
-                  stravaUsername={club.stravaUsername}
+                  instagramUsername={club.instagramUsername || ""}
+                  websiteUrl={club.websiteUrl || ""}
+                  stravaUsername={club.stravaUsername || ""}
                 />
               </Link>
             ))}
