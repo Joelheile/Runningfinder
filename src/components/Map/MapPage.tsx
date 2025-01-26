@@ -5,7 +5,9 @@ import { useFetchRuns } from "@/lib/hooks/runs/useFetchRuns";
 import { useState } from "react";
 
 import { Session } from "next-auth";
+import Link from "next/link";
 import FilterBar from "../Runs/FilterBarLogic";
+import { Button } from "../UI/button";
 
 const MapPage = ({ session }: { session: Session | null }) => {
   const [filters, setFilters] = useState<{
@@ -31,6 +33,18 @@ const MapPage = ({ session }: { session: Session | null }) => {
   return (
     <div className="h-screen">
       <FilterBar onFilterChange={handleFilterChange} />
+       <Link href="/clubs">
+            <Button variant={"outline"}>Search Clubs 🏃</Button>
+          </Link>
+      <div className="absolute z-10 top-2 right-1/2 left-1/2 grid-flow-row text-center">
+        <div className="flex flex-row gap-2 justify-center">
+         
+
+          {/* <Link href="/myruns">
+            <Button variant={"outline"}>My runs 🥳</Button>
+          </Link> */}
+        </div>
+      </div>
       <Map runs={runs || []} clubs={clubs || []} />
       <script id="session-info" type="application/json">
         {JSON.stringify(session)}

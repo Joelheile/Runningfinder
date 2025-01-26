@@ -51,6 +51,7 @@ export default function ClubDashboardUI({
     websiteUrl: "",
     stravaUsername: "",
   };
+  console.log("runs", runs);
 
   return (
     <div className="flex flex-col bg-light w-screen max-w-full h-screen p-8">
@@ -103,7 +104,7 @@ export default function ClubDashboardUI({
         websiteUrl={websiteUrl}
       />
 
-      <div className="mt-4 p-8">
+      <div className="mt-4 px-32">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-lg sm:text-xl md:text-2xl font-semibold">
             Upcoming runs
@@ -111,34 +112,43 @@ export default function ClubDashboardUI({
           {club && runs && runs.length > 0 && <AddRunState club={club} />}
         </div>
 
-        {runs?.length === 0 && (
-          <div className="text-center py-8">
-            <p className="text-gray-600 mb-4">
-              There are no upcoming runs for <strong>{name}</strong>.
-            </p>
-            {club && <AddRunState club={club} />}
+        {runs && runs.length > 0 ? (
+          <div className="grid grid-cols-1 gap-6 p-6">
+            {runs
+              ?.sort((a, b) =>
+                a.date && b.date ? a.date.getTime() - b.date.getTime() : 0
+              )
+              .map((run) => (
+                <RunCard
+                  userId={userId}
+                  id={run.id}
+                  key={run.id}
+                  date={run.date}
+                  name={run.name}
+                  startDescription={run.startDescription}
+                  difficulty={run.difficulty}
+                  distance={run.distance}
+                  locationLat={run.location.lat}
+                  locationLng={run.location.lng}
+                  slug={slug}
+                />
+              ))}
+          </div>
+        ) : (
+          <div className="text-center py-12">
+            <p className="text-gray-500">No runs found for this club yet.</p>
+            {userId && (
+              <p className="mt-2">
+                <Link
+                  href={`/clubs/${slug}/runs/new`}
+                  className="text-blue-500 hover:underline"
+                >
+                  Create the first run
+                </Link>
+              </p>
+            )}
           </div>
         )}
-
-        <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-          {runs
-            ?.sort((a, b) =>
-              a.date && b.date ? a.date.getTime() - b.date.getTime() : 0
-            )
-            .map((run) => (
-              <RunCard
-                userId={userId}
-                id={run.id}
-                key={run.id}
-                date={run.date}
-                name={run.name}
-                startDescription={run.startDescription}
-                difficulty={run.difficulty}
-                distance={run.distance}
-                location={run.location}
-              />
-            ))}
-        </div>
       </div>
     </div>
   );
