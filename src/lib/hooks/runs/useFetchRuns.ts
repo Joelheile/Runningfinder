@@ -19,7 +19,7 @@ export const useFetchRuns = (filters: {
         params.append("maxDistance", filters.maxDistance.toString());
       }
       if (filters.days && filters.days.length > 0) {
-        params.append("interval_day", filters.days.join(","));
+        params.append("weekdays", filters.days.join(","));
       }
       if (filters.difficulty) {
         params.append("difficulty", filters.difficulty);
@@ -30,5 +30,8 @@ export const useFetchRuns = (filters: {
 
       return axios.get(url).then((res) => res.data);
     },
+
+
+
   });
 };
