@@ -3,17 +3,22 @@ import { Run } from "@/lib/types/Run";
 import { Loader } from "@googlemaps/js-api-loader";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, memo } from "react";
 import ReactDOMServer from "react-dom/server";
 import MapUI from "./MapUI";
 
-const Map = ({ runs, clubs }: { runs: Run[]; clubs: Club[] }) => {
+const Map = memo(({ runs, clubs }: { runs: Run[]; clubs: Club[] }) => {
   const mapRef = useRef<HTMLDivElement>(null);
+  const mapInstanceRef = useRef<google.maps.Map | null>(null);
+  const infoWindowRef = useRef<google.maps.InfoWindow | null>(null);
   const [selectedLocation, setSelectedLocation] = useState<Run | null>(null);
   const [markers, setMarkers] = useState<google.maps.Marker[]>([]);
 
+  // Initialize map only once
   useEffect(() => {
     const initMap = async () => {
+      if (mapInstanceRef.current) return;
+
       const loader = new Loader({
         apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS!,
         version: "weekly",
@@ -22,9 +27,6 @@ const Map = ({ runs, clubs }: { runs: Run[]; clubs: Club[] }) => {
       const { Map } = (await loader.importLibrary(
         "maps"
       )) as google.maps.MapsLibrary;
-      const { Marker } = (await loader.importLibrary(
-        "marker"
-      )) as google.maps.MarkerLibrary;
       const { InfoWindow } = (await loader.importLibrary(
         "maps"
       )) as google.maps.MapsLibrary;
@@ -38,13 +40,34 @@ const Map = ({ runs, clubs }: { runs: Run[]; clubs: Club[] }) => {
             }
           : defaultCenter;
 
-      const map = new Map(mapRef.current as HTMLDivElement, {
+      mapInstanceRef.current = new Map(mapRef.current as HTMLDivElement, {
         center,
         zoom: 12,
         mapId: process.env.NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID,
       });
 
-      const infoWindow = new InfoWindow();
+      infoWindowRef.current = new InfoWindow();
+    };
+
+    initMap();
+  }, []); // Empty dependency array means this only runs once
+
+  // Update markers when runs or clubs change
+  useEffect(() => {
+    const updateMarkers = async () => {
+      if (!mapInstanceRef.current || !infoWindowRef.current) return;
+
+      // Clear existing markers
+      markers.forEach(marker => marker.setMap(null));
+
+      const loader = new Loader({
+        apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS!,
+        version: "weekly",
+      });
+
+      const { Marker } = (await loader.importLibrary(
+        "marker"
+      )) as google.maps.MarkerLibrary;
 
       const newMarkers = runs
         .map((run: Run) => {
@@ -52,7 +75,7 @@ const Map = ({ runs, clubs }: { runs: Run[]; clubs: Club[] }) => {
           const lng = Number(run.location.lng);
 
           const marker = new Marker({
-            map,
+            map: mapInstanceRef.current,
             position: { lat, lng },
             title: run.id,
             icon: {
@@ -64,7 +87,7 @@ const Map = ({ runs, clubs }: { runs: Run[]; clubs: Club[] }) => {
           marker.addListener("click", () => {
             setSelectedLocation(run);
             const club = clubs.find((club) => club.id === run.clubId);
-            infoWindow.setContent(
+            infoWindowRef.current?.setContent(
               ReactDOMServer.renderToString(
                 <div className="cursor-pointer center">
                   <Link href={`/clubs/${club?.slug}`}>
@@ -84,7 +107,7 @@ const Map = ({ runs, clubs }: { runs: Run[]; clubs: Club[] }) => {
                 </div>
               )
             );
-            infoWindow.open(map, marker);
+            infoWindowRef.current?.open(mapInstanceRef.current, marker);
           });
 
           return marker;
@@ -94,7 +117,7 @@ const Map = ({ runs, clubs }: { runs: Run[]; clubs: Club[] }) => {
       setMarkers(newMarkers);
     };
 
-    initMap();
+    updateMarkers();
   }, [clubs, runs]);
 
   useEffect(() => {
@@ -110,11 +133,9 @@ const Map = ({ runs, clubs }: { runs: Run[]; clubs: Club[] }) => {
     });
   }, [selectedLocation, markers]);
 
-  return (
-    <div className="h-screen w-full">
-      <MapUI mapRef={mapRef} selectedLocation={selectedLocation} runs={runs} />
-    </div>
-  );
-};
+  return <MapUI mapRef={mapRef} selectedLocation={selectedLocation} runs={runs} />;
+});
+
+Map.displayName = 'Map';
 
 export default Map;
