@@ -105,9 +105,9 @@ export default function ClubDashboardUI({
         avatarUrl={avatarUrl}
         name={name}
         description={description}
-        instagramUsername={instagramUsername}
-        stravaUsername={stravaUsername}
-        websiteUrl={websiteUrl}
+        instagramUsername={instagramUsername ?? ""}
+        stravaUsername={stravaUsername ?? ""}
+        websiteUrl={websiteUrl ?? ""}
       />
 
       <div className="mt-4 px-32">

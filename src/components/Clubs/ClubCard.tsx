@@ -19,7 +19,7 @@ export default function ClubCard({
   websiteUrl,
 }: ClubCardProps) {
   return (
-    <div className="w-full max-w-3xl mx-auto">
+    <div className="w-full h-full">
       <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden border border-gray-100 h-40">
         <div className="flex flex-row h-full">
           <div className="relative w-1/3 h-full">
@@ -34,8 +34,10 @@ export default function ClubCard({
           <div className="flex-1 p-5 w-2/3">
             <div className="flex flex-col h-full">
               <div className="flex-grow">
-                <h1 className="text-xl font-bold text-gray-900 mb-2">{name}</h1>
-                <p className="text-gray-600 line-clamp-3">{description}</p>
+                <h1 className="text-xl font-bold text-gray-900 mb-2 line-clamp-1">
+                  {name}
+                </h1>
+                <p className="text-gray-600 line-clamp-2">{description}</p>
               </div>
               <div className="mt-auto">
                 <ClubIconBar
