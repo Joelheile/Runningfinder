@@ -107,7 +107,7 @@ const Map = memo(({ runs, clubs }: { runs: Run[]; clubs: Club[] }) => {
                             "/assets/default-fallback-image.png"
                           }
                           alt={run.name}
-                          className="mb-4 rounded-full object-cover"
+                          className="mb-4 rounded-lg object-cover"
                         />
                         <strong className="block">{run.name}</strong>
                         <p className="mt-2">

@@ -9,35 +9,40 @@ export async function GET(
 ) {
   const { slug } = params;
   if (!slug) {
-    return NextResponse.json({ error: "slug is required" }, { status: 400 });
+    return NextResponse.json({ error: "Club ID is required" }, { status: 400 });
   }
+
   try {
-    const res = await db
+    const runsData = await db
       .select({
         id: runs.id,
         name: runs.name,
         clubId: runs.clubId,
         difficulty: runs.difficulty,
         date: runs.date,
-        interval: runs.interval,
-        intervalDay: runs.intervalDay,
+        weekday: runs.weekday,
         startDescription: runs.startDescription,
         distance: runs.distance,
         location: {
           lat: runs.locationLat,
           lng: runs.locationLng,
         },
+        mapsLink: runs.mapsLink,
+        temperature: runs.temperature,
+        wind: runs.wind,
+        uv_index: runs.uv_index,
+        membersOnly: runs.membersOnly,
+        isRecurrent: runs.isRecurrent,
       })
       .from(runs)
-      .where(eq(runs.clubId, slug))
-      .execute();
+      .where(eq(runs.clubId, slug));
 
-    return NextResponse.json(res);
+    return NextResponse.json(runsData);
   } catch (error) {
-    console.error("Error fetching runs with clubs:", error);
+    console.error("Error fetching runs:", error);
     return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 },
+      { error: "Failed to fetch runs" },
+      { status: 500 }
     );
   }
 }

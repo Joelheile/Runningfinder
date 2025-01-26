@@ -9,10 +9,12 @@ type Difficulty = typeof VALID_DIFFICULTIES[number];
 function parseQueryParams(searchParams: URLSearchParams) {
   const weekdays = searchParams.get("weekdays")?.split(",").map(Number) || [];
   const difficulty = searchParams.get("difficulty") as Difficulty | null;
+  const clubId = searchParams.get("clubId");
   
   return {
     weekdays: weekdays.filter(day => Number.isInteger(day) && day >= 1 && day <= 7),
     difficulty: VALID_DIFFICULTIES.includes(difficulty as Difficulty) ? difficulty : null,
+    clubId,
   };
 }
 
@@ -24,7 +26,7 @@ function handleErrorResponse(error: unknown, message = "Internal Server Error", 
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
-    const { weekdays, difficulty } = parseQueryParams(searchParams);
+    const { weekdays, difficulty, clubId } = parseQueryParams(searchParams);
 
     // Get current date at the start of the day
     const now = new Date();
@@ -35,6 +37,11 @@ export async function GET(request: Request) {
       eq(runs.membersOnly, false),
       gt(runs.date, now) // Use the start of today for date comparison
     ];
+
+    // Add clubId filter if provided
+    if (clubId) {
+      conditions.push(eq(runs.clubId, clubId));
+    }
 
     // Add weekday filter if provided
     if (weekdays.length > 0) {
