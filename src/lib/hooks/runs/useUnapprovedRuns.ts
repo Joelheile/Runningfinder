@@ -24,9 +24,9 @@ async function fetchUnapprovedRuns(): Promise<RunWithClub[]> {
     throw new Error("Failed to fetch unapproved runs");
   }
   const data = await response.json();
-  console.log("API Response:", data); 
+
   return data.map((run: any) => {
-    console.log("Processing run:", run); 
+
     return {
       ...run,
       datetime: new Date(run.datetime),
