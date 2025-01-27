@@ -102,6 +102,7 @@ export default function UnapprovedClubs() {
                     variant="outline"
                     size="sm"
                     onClick={() => approveClub.mutate(club.slug)}
+                    className="bg-green-600 hover:bg-green-700 text-white"
                   >
                     Approve
                   </Button>

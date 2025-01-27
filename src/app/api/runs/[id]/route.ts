@@ -53,16 +53,20 @@ export async function PATCH(
     // Create an update object with only the fields that are present
     const updateData: Partial<typeof runs.$inferSelect> = {};
     
+    // Only allow updating these specific fields during normal updates
     if (body.name !== undefined) updateData.name = body.name;
     if (body.datetime !== undefined) updateData.datetime = new Date(body.datetime);
     if (body.difficulty !== undefined) updateData.difficulty = body.difficulty;
     if (body.distance !== undefined) updateData.distance = body.distance;
     if (body.startDescription !== undefined) updateData.startDescription = body.startDescription;
-    if (body.isApproved !== undefined) updateData.isApproved = body.isApproved;
     if (body.isRecurrent !== undefined) updateData.isRecurrent = body.isRecurrent;
     if (body.locationLat !== undefined) updateData.locationLat = body.locationLat;
     if (body.locationLng !== undefined) updateData.locationLng = body.locationLng;
     if (body.mapsLink !== undefined) updateData.mapsLink = body.mapsLink;
+
+    // Only allow setting isApproved if it's explicitly passed and true
+    // This ensures isApproved can only be set through the approve endpoint
+    if (body.isApproved === true) updateData.isApproved = true;
 
     if (Object.keys(updateData).length === 0) {
       return NextResponse.json(existingRun);
