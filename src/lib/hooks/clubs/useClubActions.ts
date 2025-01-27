@@ -31,7 +31,10 @@ export function useClubActions() {
       return response.json();
     },
     onSuccess: () => {
+      // Invalidate all club-related queries to ensure fresh data
       queryClient.invalidateQueries({ queryKey: ["unapprovedClubs"] });
+      queryClient.invalidateQueries({ queryKey: ["clubs"] });
+      queryClient.invalidateQueries({ queryKey: ["club"] });
       toast.success("Club updated successfully");
     },
     onError: (error: Error) => {
@@ -51,7 +54,10 @@ export function useClubActions() {
       return response.json();
     },
     onSuccess: () => {
+      // Invalidate all club-related queries to ensure fresh data
       queryClient.invalidateQueries({ queryKey: ["unapprovedClubs"] });
+      queryClient.invalidateQueries({ queryKey: ["clubs"] });
+      queryClient.invalidateQueries({ queryKey: ["club"] });
       toast.success("Club approved successfully");
     },
     onError: (error: Error) => {
@@ -68,15 +74,53 @@ export function useClubActions() {
         const error = await response.json();
         throw new Error(error.message || "Failed to delete club");
       }
-      return response.json();
+      return { slug };
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["unapprovedClubs"] });
-      toast.success("Club deleted successfully");
+    onMutate: async (slug: string) => {
+      // Cancel any outgoing refetches
+      await queryClient.cancelQueries({ 
+        queryKey: ["unapprovedClubs"],
+        exact: true 
+      });
+
+      // Snapshot the previous value
+      const previousClubs = queryClient.getQueryData<Club[]>(["unapprovedClubs"]);
+
+      // Optimistically update to the new value
+      queryClient.setQueryData<Club[]>(["unapprovedClubs"], (old) => {
+        return old?.filter(club => club.slug !== slug) ?? [];
+      });
+
+      // Return a context object with the snapshotted value
+      return { previousClubs };
     },
-    onError: (error: Error) => {
-      toast.error(error.message);
+    onError: (err, slug, context) => {
+      // If the mutation fails, use the context returned from onMutate to roll back
+      queryClient.setQueryData(["unapprovedClubs"], context?.previousClubs);
+      toast.error(err instanceof Error ? err.message : "Failed to delete club");
     },
+    onSettled: async (data, error, variables, context) => {
+      if (!error) {
+        // Update the cache without triggering a refetch
+        queryClient.setQueryData<Club[]>(["unapprovedClubs"], (old) => {
+          return old?.filter(club => club.slug !== variables) ?? [];
+        });
+        
+        // Invalidate other queries but not unapprovedClubs
+        await Promise.all([
+          queryClient.invalidateQueries({ 
+            queryKey: ["clubs"],
+            refetchType: 'none' 
+          }),
+          queryClient.invalidateQueries({ 
+            queryKey: ["club"],
+            refetchType: 'none'
+          })
+        ]);
+        
+        toast.success("Club deleted successfully");
+      }
+    }
   });
 
   return {
