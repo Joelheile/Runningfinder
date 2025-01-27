@@ -3,7 +3,7 @@ export interface Run {
   name: string;
   difficulty: string;
   clubId: string;
-  date: Date;
+  datetime: Date;
   weekday: number | null;
   startDescription: string;
   location: {

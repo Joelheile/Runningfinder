@@ -20,7 +20,7 @@ export default function AddRunState({
   const [name, setName] = useState(initialValues.name || "");
   const [difficulty, setDifficulty] = useState(initialValues.difficulty || "");
   const [distance, setDistance] = useState(initialValues.distance || "");
-  const [date, setDate] = useState<Date>(initialValues.date || new Date());
+  const [datetime, setDatetime] = useState<Date>(initialValues.datetime || new Date());
   const [startDescription, setStartDescription] = useState(
     initialValues.startDescription || ""
   );
@@ -68,9 +68,9 @@ export default function AddRunState({
       name,
       difficulty,
       clubId: club.id,
-      date: date instanceof Date ? date : new Date(),
+      datetime: datetime instanceof Date ? datetime : new Date(),
       startDescription,
-      weekday: date ? new Date(date).getDay() : null,
+      weekday: datetime ? new Date(datetime).getDay() : null,
       location: {
         lat: locationLat,
         lng: locationLng,
@@ -105,8 +105,8 @@ export default function AddRunState({
       setDifficulty={setDifficulty}
       distance={distance}
       setDistance={setDistance}
-      date={date}
-      setDate={setDate}
+      datetime={datetime}
+      setDatetime={setDatetime}
       startDescription={startDescription}
       setStartDescription={setStartDescription}
       locationLat={locationLat}
