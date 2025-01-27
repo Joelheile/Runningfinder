@@ -42,16 +42,35 @@ export async function PATCH(
     }
 
     const body = await request.json();
+    console.log("Received update request for club:", { slug, body });
     
     // Create an update object with only the fields that are present
     const updateData: any = {};
-    if (body.name !== undefined) updateData.name = body.name;
-    if (body.description !== undefined) updateData.description = body.description;
-    if (body.locationLat !== undefined) updateData.locationLat = body.locationLat;
-    if (body.locationLng !== undefined) updateData.locationLng = body.locationLng;
-    if (body.instagramUsername !== undefined) updateData.instagramUsername = body.instagramUsername;
-    if (body.stravaUsername !== undefined) updateData.stravaUsername = body.stravaUsername;
-    if (body.avatarUrl !== undefined) updateData.avatarUrl = body.avatarUrl;
+    
+    // Explicitly list allowed fields for update
+    const allowedFields = ['name', 'description', 'instagramUsername', 'stravaUsername', 'avatarUrl'];
+    
+    // Only update allowed fields
+    for (const field of allowedFields) {
+      if (body[field] !== undefined) {
+        updateData[field] = body[field];
+      }
+    }
+
+    // Explicitly prevent approval through this endpoint
+    if (body.isApproved !== undefined) {
+      console.log("Attempt to update isApproved field detected and blocked");
+      return NextResponse.json(
+        { error: "isApproved cannot be modified through this endpoint" },
+        { status: 400 }
+      );
+    }
+
+    console.log("Final update data:", updateData);
+
+    if (Object.keys(updateData).length === 0) {
+      return NextResponse.json({ error: "No valid fields to update" }, { status: 400 });
+    }
 
     const updatedClub = await db
       .update(clubs)
