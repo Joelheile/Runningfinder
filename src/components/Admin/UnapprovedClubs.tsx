@@ -18,11 +18,13 @@ import {
   TableHeader,
   TableRow,
 } from "../UI/table";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function UnapprovedClubs() {
   const { data: clubs, isLoading, error } = useUnapprovedClubs();
   const { updateClub, approveClub, deleteClub } = useClubActions();
   const getProfileImage = useGetProfileImage();
+  const queryClient = useQueryClient();
 
   const handleUpdateClub = async (club: Club, data: Partial<Club>) => {
     // Debug toast for what's being updated
@@ -71,6 +73,20 @@ export default function UnapprovedClubs() {
   };
 
   const debouncedUpdateClub = debounce(handleUpdateClub, 500);
+
+  const handleApproveClub = (slug: string) => {
+    // Optimistically update the UI
+    queryClient.setQueryData<Club[]>(
+      ["clubs", "unapproved"],
+      (old) => old?.filter((club) => club.slug !== slug) ?? []
+    );
+    approveClub.mutate(slug, {
+      onError: () => {
+        // On error, refetch to restore the correct state
+        queryClient.invalidateQueries({ queryKey: ["clubs", "unapproved"] });
+      },
+    });
+  };
 
   useEffect(() => {
     if (clubs) {
@@ -158,7 +174,7 @@ export default function UnapprovedClubs() {
               <TableCell className="align-top p-4">
                 <div className="flex flex-col gap-2">
                   <Button
-                    onClick={() => approveClub.mutate(club.slug)}
+                    onClick={() => handleApproveClub(club.slug)}
                     className="w-full bg-green-600 hover:bg-green-700"
                   >
                     Approve
