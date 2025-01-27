@@ -9,6 +9,7 @@ import Link from "next/link";
 import FilterBar from "../Runs/FilterBarLogic";
 import { Button } from "../UI/button";
 import { RunDisclaimer } from "../UI/disclaimer";
+import { OnboardingGuide } from "../Onboarding/OnboardingGuide";
 
 const MapPage = ({ session }: { session: Session | null }) => {
   const [filters, setFilters] = useState<{
@@ -36,6 +37,7 @@ const MapPage = ({ session }: { session: Session | null }) => {
 
   return (
     <div className="fixed inset-0 overflow-hidden">
+      <OnboardingGuide />
       <FilterBar onFilterChange={handleFilterChange} />
       <div className="absolute z-10 bottom-5 right-1/2 left-1/2 grid-flow-row text-center">
         <div className="flex flex-row gap-2 justify-center">
