@@ -26,24 +26,20 @@ export default function AdminPage() {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-8">Admin Dashboard</h1>
+      <div className="flex flex-row ">
+        <h1 className="text-2xl font-bold mb-8">Admin Dashboard</h1>
+        <TestScraper />
+      </div>
       <div className="space-y-8">
         <section>
-          <h2 className="text-xl font-semibold mb-4">Scraper Test</h2>
-          <TestScraper />
+          <UnapprovedClubs />
         </section>
-
-        <section>
-          <h2 className="text-xl font-semibold mb-4">Google Maps API Test</h2>
-          <MapTest />
-        </section>
-
         <section>
           <UnapprovedRuns />
         </section>
-
         <section>
-          <UnapprovedClubs />
+          <h2 className="text-xl font-semibold mb-4">Google Maps API Test</h2>
+          <MapTest />
         </section>
       </div>
     </div>

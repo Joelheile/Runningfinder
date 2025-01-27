@@ -10,6 +10,7 @@ export async function GET() {
       .select()
       .from(clubs)
       .where(eq(clubs.isApproved, false))
+      .orderBy(clubs.creationDate)  // Order by creation date to maintain consistent order
       .execute();
 
     // Ensure all required fields are present with default values if needed
