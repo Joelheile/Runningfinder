@@ -126,7 +126,7 @@ export const runs = pgTable("runs", {
   difficulty: text("difficulty"),
   clubId: text("club_id")
     .notNull()
-    .references(() => clubs.id),
+    .references(() => clubs.id, { onDelete: "cascade" }),
   datetime: timestamp("datetime"),
   weekday: integer("weekday"),
   startDescription: text("start_description"),
