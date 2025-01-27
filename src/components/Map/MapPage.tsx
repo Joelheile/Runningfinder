@@ -4,12 +4,11 @@ import { useFetchClubs } from "@/lib/hooks/clubs/useFetchClubs";
 import { useFetchRuns } from "@/lib/hooks/runs/useFetchRuns";
 import { useCallback, useState } from "react";
 
-import { AlertCircle } from "lucide-react";
 import { Session } from "next-auth";
 import Link from "next/link";
 import FilterBar from "../Runs/FilterBarLogic";
-import { Alert, AlertDescription } from "../UI/alert";
 import { Button } from "../UI/button";
+import { RunDisclaimer } from "../UI/disclaimer";
 
 const MapPage = ({ session }: { session: Session | null }) => {
   const [filters, setFilters] = useState<{
@@ -49,15 +48,9 @@ const MapPage = ({ session }: { session: Session | null }) => {
           </Link> */}
         </div>
       </div>
-      <div className="absolute bottom-5 right-5 z-10 max-w-sm">
-        <Alert variant="default" className="bg-white/80 backdrop-blur-sm">
-          <AlertCircle className="h-4 w-4" />
-          <AlertDescription className="text-xs">
-            Verify each run before attending, as we can't ensure the event will
-            occur as specified. Please report any mistakes
-          </AlertDescription>
-        </Alert>
-      </div>
+
+      <RunDisclaimer />
+
       <Map runs={runs || []} clubs={clubs || []} />
       <script id="session-info" type="application/json">
         {JSON.stringify(session)}
