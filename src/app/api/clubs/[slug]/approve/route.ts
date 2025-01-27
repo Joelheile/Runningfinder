@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(
   request: Request,
-  { params }: { params: { slug: string } }
+  { params }: { params: { slug: string } },
 ) {
   try {
     const updatedClub = await db
@@ -15,10 +15,7 @@ export async function POST(
       .returning();
 
     if (!updatedClub.length) {
-      return NextResponse.json(
-        { error: "Club not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Club not found" }, { status: 404 });
     }
 
     return NextResponse.json(updatedClub[0]);
@@ -26,7 +23,7 @@ export async function POST(
     console.error("Error approving club:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

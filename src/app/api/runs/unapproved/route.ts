@@ -31,34 +31,33 @@ export async function GET() {
       })
       .from(runs)
       .leftJoin(clubs, eq(runs.clubId, clubs.id))
-      .where(
-      
-          eq(runs.isApproved, false),
-      
-        
-      );
+      .where(eq(runs.isApproved, false));
 
     // Filter out any runs with invalid data
     const validRuns = unapprovedRuns.filter((run: any) => {
-      const hasValidLocation = run.locationLat != null && run.locationLng != null;
+      const hasValidLocation =
+        run.locationLat != null && run.locationLng != null;
       const hasValidBasics = run.id && run.name && run.clubId;
-      const hasValidTiming = run.isRecurrent ? run.weekday != null : run.datetime != null;
-      
+      const hasValidTiming = run.isRecurrent
+        ? run.weekday != null
+        : run.datetime != null;
+
       return hasValidBasics && hasValidLocation && hasValidTiming;
     });
 
     return NextResponse.json(validRuns, {
       headers: {
-        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
-        'Pragma': 'no-cache',
-        'Expires': '0',
+        "Cache-Control":
+          "no-store, no-cache, must-revalidate, proxy-revalidate",
+        Pragma: "no-cache",
+        Expires: "0",
       },
     });
   } catch (error) {
     console.error("Error fetching unapproved runs:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

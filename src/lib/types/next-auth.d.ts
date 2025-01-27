@@ -14,6 +14,6 @@ declare module "next-auth" {
       isAdmin: boolean;
     } & DefaultSession["user"];
   }
-  
+
   interface User extends AdapterUser {}
 }

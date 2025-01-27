@@ -33,23 +33,32 @@ export async function GET(
 
 export async function PATCH(
   request: Request,
-  { params }: { params: { slug: string } }
+  { params }: { params: { slug: string } },
 ) {
   try {
     const { slug } = params;
     if (!slug) {
-      return NextResponse.json({ error: "Club slug is required" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Club slug is required" },
+        { status: 400 },
+      );
     }
 
     const body = await request.json();
     console.log("Received update request for club:", { slug, body });
-    
+
     // Create an update object with only the fields that are present
     const updateData: any = {};
-    
+
     // Explicitly list allowed fields for update
-    const allowedFields = ['name', 'description', 'instagramUsername', 'stravaUsername', 'avatarUrl'];
-    
+    const allowedFields = [
+      "name",
+      "description",
+      "instagramUsername",
+      "stravaUsername",
+      "avatarUrl",
+    ];
+
     // Only update allowed fields
     for (const field of allowedFields) {
       if (body[field] !== undefined) {
@@ -62,14 +71,17 @@ export async function PATCH(
       console.log("Attempt to update isApproved field detected and blocked");
       return NextResponse.json(
         { error: "isApproved cannot be modified through this endpoint" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     console.log("Final update data:", updateData);
 
     if (Object.keys(updateData).length === 0) {
-      return NextResponse.json({ error: "No valid fields to update" }, { status: 400 });
+      return NextResponse.json(
+        { error: "No valid fields to update" },
+        { status: 400 },
+      );
     }
 
     const updatedClub = await db
@@ -79,10 +91,7 @@ export async function PATCH(
       .returning();
 
     if (!updatedClub.length) {
-      return NextResponse.json(
-        { error: "Club not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Club not found" }, { status: 404 });
     }
 
     return NextResponse.json(updatedClub[0]);
@@ -90,19 +99,22 @@ export async function PATCH(
     console.error("Error updating club:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { slug: string } }
+  { params }: { params: { slug: string } },
 ) {
   try {
     const { slug } = params;
     if (!slug) {
-      return NextResponse.json({ error: "Club slug is required" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Club slug is required" },
+        { status: 400 },
+      );
     }
 
     const deletedClub = await db
@@ -111,10 +123,7 @@ export async function DELETE(
       .returning();
 
     if (!deletedClub.length) {
-      return NextResponse.json(
-        { error: "Club not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Club not found" }, { status: 404 });
     }
 
     return NextResponse.json(deletedClub[0]);
@@ -122,7 +131,7 @@ export async function DELETE(
     console.error("Error deleting club:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

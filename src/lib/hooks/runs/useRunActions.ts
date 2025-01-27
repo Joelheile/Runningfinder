@@ -20,19 +20,26 @@ export function useRunActions() {
       // Cancel any outgoing refetches
       await Promise.all([
         queryClient.cancelQueries({ queryKey: ["runs"], exact: true }),
-        queryClient.cancelQueries({ queryKey: ["unapprovedRuns"], exact: true })
+        queryClient.cancelQueries({
+          queryKey: ["unapprovedRuns"],
+          exact: true,
+        }),
       ]);
 
       // Snapshot the previous values
       const previousRuns = queryClient.getQueryData<Run[]>(["runs"]);
-      const previousUnapprovedRuns = queryClient.getQueryData<Run[]>(["unapprovedRuns"]);
+      const previousUnapprovedRuns = queryClient.getQueryData<Run[]>([
+        "unapprovedRuns",
+      ]);
 
       // Optimistically update both caches
-      queryClient.setQueryData<Run[]>(["runs"], old => 
-        old?.filter(run => run.id !== runId) ?? []
+      queryClient.setQueryData<Run[]>(
+        ["runs"],
+        (old) => old?.filter((run) => run.id !== runId) ?? [],
       );
-      queryClient.setQueryData<Run[]>(["unapprovedRuns"], old => 
-        old?.filter(run => run.id !== runId) ?? []
+      queryClient.setQueryData<Run[]>(
+        ["unapprovedRuns"],
+        (old) => old?.filter((run) => run.id !== runId) ?? [],
       );
 
       return { previousRuns, previousUnapprovedRuns };
@@ -43,7 +50,10 @@ export function useRunActions() {
         queryClient.setQueryData(["runs"], context.previousRuns);
       }
       if (context?.previousUnapprovedRuns) {
-        queryClient.setQueryData(["unapprovedRuns"], context.previousUnapprovedRuns);
+        queryClient.setQueryData(
+          ["unapprovedRuns"],
+          context.previousUnapprovedRuns,
+        );
       }
       toast.error(err instanceof Error ? err.message : "Failed to delete run");
     },
@@ -51,18 +61,18 @@ export function useRunActions() {
       if (!error) {
         // Invalidate affected queries but prevent automatic refetches
         await Promise.all([
-          queryClient.invalidateQueries({ 
+          queryClient.invalidateQueries({
             queryKey: ["runs"],
-            refetchType: 'none'
+            refetchType: "none",
           }),
-          queryClient.invalidateQueries({ 
+          queryClient.invalidateQueries({
             queryKey: ["unapprovedRuns"],
-            refetchType: 'none'
-          })
+            refetchType: "none",
+          }),
         ]);
         toast.success("Run deleted successfully");
       }
-    }
+    },
   });
 
   const updateRun = useMutation({
@@ -84,21 +94,23 @@ export function useRunActions() {
       await Promise.all([
         queryClient.cancelQueries({ queryKey: ["runs", newRun.id] }),
         queryClient.cancelQueries({ queryKey: ["runs"] }),
-        queryClient.cancelQueries({ queryKey: ["unapprovedRuns"] })
+        queryClient.cancelQueries({ queryKey: ["unapprovedRuns"] }),
       ]);
 
       // Snapshot previous values
       const previousRun = queryClient.getQueryData<Run>(["runs", newRun.id]);
       const previousRuns = queryClient.getQueryData<Run[]>(["runs"]);
-      const previousUnapprovedRuns = queryClient.getQueryData<Run[]>(["unapprovedRuns"]);
+      const previousUnapprovedRuns = queryClient.getQueryData<Run[]>([
+        "unapprovedRuns",
+      ]);
 
       // Optimistically update
       if (newRun.id) {
-        queryClient.setQueryData<Run>(["runs", newRun.id], old => {
+        queryClient.setQueryData<Run>(["runs", newRun.id], (old) => {
           if (!old) return old;
           return {
             ...old,
-            ...newRun
+            ...newRun,
           } as Run;
         });
       }
@@ -106,13 +118,15 @@ export function useRunActions() {
       // Update run lists
       const updateRunInList = (runs: Run[] | undefined) => {
         if (!runs) return [];
-        return runs.map(run => 
-          run.id === newRun.id ? { ...run, ...newRun } : run
+        return runs.map((run) =>
+          run.id === newRun.id ? { ...run, ...newRun } : run,
         );
       };
 
-      queryClient.setQueryData<Run[]>(["runs"], old => updateRunInList(old));
-      queryClient.setQueryData<Run[]>(["unapprovedRuns"], old => updateRunInList(old));
+      queryClient.setQueryData<Run[]>(["runs"], (old) => updateRunInList(old));
+      queryClient.setQueryData<Run[]>(["unapprovedRuns"], (old) =>
+        updateRunInList(old),
+      );
 
       return { previousRun, previousRuns, previousUnapprovedRuns };
     },
@@ -125,7 +139,10 @@ export function useRunActions() {
         queryClient.setQueryData(["runs"], context.previousRuns);
       }
       if (context?.previousUnapprovedRuns) {
-        queryClient.setQueryData(["unapprovedRuns"], context.previousUnapprovedRuns);
+        queryClient.setQueryData(
+          ["unapprovedRuns"],
+          context.previousUnapprovedRuns,
+        );
       }
       toast.error(err instanceof Error ? err.message : "Failed to update run");
     },
@@ -133,22 +150,23 @@ export function useRunActions() {
       if (!error) {
         // Invalidate affected queries but prevent automatic refetches
         await Promise.all([
-          queryClient.invalidateQueries({ 
+          queryClient.invalidateQueries({
             queryKey: ["runs"],
-            refetchType: 'none'
+            refetchType: "none",
           }),
-          queryClient.invalidateQueries({ 
+          queryClient.invalidateQueries({
             queryKey: ["unapprovedRuns"],
-            refetchType: 'none'
+            refetchType: "none",
           }),
-          variables.id && queryClient.invalidateQueries({ 
-            queryKey: ["runs", variables.id],
-            refetchType: 'none'
-          })
+          variables.id &&
+            queryClient.invalidateQueries({
+              queryKey: ["runs", variables.id],
+              refetchType: "none",
+            }),
         ]);
         toast.success("Run updated successfully");
       }
-    }
+    },
   });
 
   const approveRun = useMutation({
@@ -165,22 +183,28 @@ export function useRunActions() {
     onMutate: async (runId: string) => {
       await Promise.all([
         queryClient.cancelQueries({ queryKey: ["runs"] }),
-        queryClient.cancelQueries({ queryKey: ["unapprovedRuns"] })
+        queryClient.cancelQueries({ queryKey: ["unapprovedRuns"] }),
       ]);
 
       const previousRuns = queryClient.getQueryData<Run[]>(["runs"]);
-      const previousUnapprovedRuns = queryClient.getQueryData<Run[]>(["unapprovedRuns"]);
+      const previousUnapprovedRuns = queryClient.getQueryData<Run[]>([
+        "unapprovedRuns",
+      ]);
 
       // Optimistically move run from unapproved to approved
-      queryClient.setQueryData<Run[]>(["unapprovedRuns"], old => 
-        old?.filter(run => run.id !== runId) ?? []
+      queryClient.setQueryData<Run[]>(
+        ["unapprovedRuns"],
+        (old) => old?.filter((run) => run.id !== runId) ?? [],
       );
 
-      const runToApprove = previousUnapprovedRuns?.find(run => run.id === runId);
+      const runToApprove = previousUnapprovedRuns?.find(
+        (run) => run.id === runId,
+      );
       if (runToApprove) {
-        queryClient.setQueryData<Run[]>(["runs"], old => 
-          [...(old ?? []), { ...runToApprove, isApproved: true }]
-        );
+        queryClient.setQueryData<Run[]>(["runs"], (old) => [
+          ...(old ?? []),
+          { ...runToApprove, isApproved: true },
+        ]);
       }
 
       return { previousRuns, previousUnapprovedRuns };
@@ -190,25 +214,28 @@ export function useRunActions() {
         queryClient.setQueryData(["runs"], context.previousRuns);
       }
       if (context?.previousUnapprovedRuns) {
-        queryClient.setQueryData(["unapprovedRuns"], context.previousUnapprovedRuns);
+        queryClient.setQueryData(
+          ["unapprovedRuns"],
+          context.previousUnapprovedRuns,
+        );
       }
       toast.error(err instanceof Error ? err.message : "Failed to approve run");
     },
     onSettled: async (data, error) => {
       if (!error) {
         await Promise.all([
-          queryClient.invalidateQueries({ 
+          queryClient.invalidateQueries({
             queryKey: ["runs"],
-            refetchType: 'none'
+            refetchType: "none",
           }),
-          queryClient.invalidateQueries({ 
+          queryClient.invalidateQueries({
             queryKey: ["unapprovedRuns"],
-            refetchType: 'none'
-          })
+            refetchType: "none",
+          }),
         ]);
         toast.success("Run approved successfully");
       }
-    }
+    },
   });
 
   return {

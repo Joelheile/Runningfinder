@@ -46,7 +46,7 @@ export default function UnapprovedRuns() {
       if (error instanceof Error && error.message.includes("404")) {
         queryClient.setQueryData<RunWithClub[]>(
           ["runs", "unapproved"],
-          (old) => old?.filter((run) => run.id !== runId) ?? []
+          (old) => old?.filter((run) => run.id !== runId) ?? [],
         );
       }
     }
@@ -56,7 +56,7 @@ export default function UnapprovedRuns() {
     // Optimistically update the UI
     queryClient.setQueryData<RunWithClub[]>(
       ["runs", "unapproved"],
-      (old) => old?.filter((run) => run.id !== runId) ?? []
+      (old) => old?.filter((run) => run.id !== runId) ?? [],
     );
     approveRun.mutate(runId, {
       onError: () => {
@@ -70,7 +70,7 @@ export default function UnapprovedRuns() {
     // Optimistically update the UI
     queryClient.setQueryData<RunWithClub[]>(
       ["runs", "unapproved"],
-      (old) => old?.filter((run) => run.id !== runId) ?? []
+      (old) => old?.filter((run) => run.id !== runId) ?? [],
     );
     deleteRun.mutate(runId, {
       onError: (error) => {

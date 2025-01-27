@@ -1,10 +1,7 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Club } from "../../types/Club";
 
-
-
 const fetchClubs = async (): Promise<Club[]> => {
-
   const response = await fetch("/api/clubs");
   if (!response.ok) {
     throw new Error("Network response was not ok");
@@ -47,15 +44,13 @@ function useFetchClubBySlug(slug: string) {
   const queryClient = useQueryClient();
 
   queryClient.invalidateQueries({
-    queryKey: ['clubs'],
-    refetchType: 'all'
-   });
-
+    queryKey: ["clubs"],
+    refetchType: "all",
+  });
 
   return useQuery({
     queryKey: ["clubs", slug],
     queryFn: () => fetchClubById(slug),
-    
   });
 }
 

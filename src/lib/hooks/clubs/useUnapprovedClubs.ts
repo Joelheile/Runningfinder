@@ -1,16 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
-import { Club } from '@/lib/types/Club';
+import { Club } from "@/lib/types/Club";
 
 async function fetchUnapprovedClubs(): Promise<Club[]> {
   const response = await fetch("/api/clubs/unapproved", {
-    cache: 'no-store',
+    cache: "no-store",
     headers: {
-      'Pragma': 'no-cache',
-      'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
-      'Expires': '0'
-    }
+      Pragma: "no-cache",
+      "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+      Expires: "0",
+    },
   });
-  
+
   if (!response.ok) {
     throw new Error("Failed to fetch unapproved clubs");
   }
@@ -27,6 +27,6 @@ export function useUnapprovedClubs() {
     refetchOnMount: "always",
     refetchOnWindowFocus: true,
     refetchOnReconnect: "always",
-    retry: 3
+    retry: 3,
   });
 }

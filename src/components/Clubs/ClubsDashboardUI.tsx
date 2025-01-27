@@ -72,7 +72,9 @@ export default function ClubsDashboardUI({
         <Card className="border-none shadow-none">
           <CardHeader className="space-y-1">
             <CardTitle className="text-2xl">Find Your Club</CardTitle>
-            <CardDescription>Search by club name or description</CardDescription>
+            <CardDescription>
+              Search by club name or description
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="relative">
@@ -93,7 +95,9 @@ export default function ClubsDashboardUI({
           </div>
         ) : isError ? (
           <div className="text-center py-8">
-            <p className="text-red-500">Error loading clubs: {error?.message}</p>
+            <p className="text-red-500">
+              Error loading clubs: {error?.message}
+            </p>
           </div>
         ) : clubs.length === 0 ? (
           <div className="text-center py-8">
@@ -107,7 +111,11 @@ export default function ClubsDashboardUI({
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {clubs.map((club) => (
-              <Link key={club.id} href={`/clubs/${club.slug}`} className="block">
+              <Link
+                key={club.id}
+                href={`/clubs/${club.slug}`}
+                className="block"
+              >
                 <ClubCard
                   avatarUrl={club.avatarUrl}
                   name={club.name}

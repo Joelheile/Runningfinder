@@ -5,7 +5,11 @@ import { useCallback, useEffect, useState } from "react";
 import FilterBarUI from "./FilterBarUI";
 
 interface FilterBarLogicProps {
-  onFilterChange: (filters: { days?: number[]; difficulty?: string; query?: string }) => void;
+  onFilterChange: (filters: {
+    days?: number[];
+    difficulty?: string;
+    query?: string;
+  }) => void;
 }
 
 export default function FilterBar({ onFilterChange }: FilterBarLogicProps) {
@@ -30,7 +34,7 @@ export default function FilterBar({ onFilterChange }: FilterBarLogicProps) {
     setSelectedDays((prev) =>
       prev.includes(dayValue)
         ? prev.filter((d) => d !== dayValue)
-        : [...prev, dayValue].sort((a, b) => a - b)
+        : [...prev, dayValue].sort((a, b) => a - b),
     );
   }, []);
 

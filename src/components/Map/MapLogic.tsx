@@ -25,10 +25,10 @@ const Map = memo(({ runs, clubs }: { runs: Run[]; clubs: Club[] }) => {
       });
 
       const { Map } = (await loader.importLibrary(
-        "maps"
+        "maps",
       )) as google.maps.MapsLibrary;
       const { InfoWindow } = (await loader.importLibrary(
-        "maps"
+        "maps",
       )) as google.maps.MapsLibrary;
 
       const defaultCenter = { lat: 52.5155235, lng: 13.4049124 };
@@ -76,7 +76,7 @@ const Map = memo(({ runs, clubs }: { runs: Run[]; clubs: Club[] }) => {
         });
 
         const { Marker } = (await loader.importLibrary(
-          "marker"
+          "marker",
         )) as google.maps.MarkerLibrary;
 
         const newMarkers = runs
@@ -138,8 +138,8 @@ const Map = memo(({ runs, clubs }: { runs: Run[]; clubs: Club[] }) => {
                           {run.difficulty}
                         </span>
                       </Link>
-                    </div>
-                  )
+                    </div>,
+                  ),
                 );
                 infoWindowRef.current.open(mapInstanceRef.current, marker);
               }
