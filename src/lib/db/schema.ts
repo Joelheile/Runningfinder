@@ -128,6 +128,7 @@ export const runs = pgTable("runs", {
     .notNull()
     .references(() => clubs.id),
   date: timestamp("date"),
+  time: text("time"),
   weekday: integer("weekday"),
   startDescription: text("start_description"),
   locationLng: decimal("location_lng").notNull(),
