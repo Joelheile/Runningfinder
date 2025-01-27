@@ -8,7 +8,7 @@ interface RunCardUIProps {
   userId?: string;
   id: string;
   key: string;
-  date: Date | null;
+  datetime: Date | null;
   name: string;
   distance: string;
   difficulty: string;
@@ -59,7 +59,7 @@ const getDifficultyInfo = (difficulty: string) => {
 };
 
 export default function RunCardUI({
-  date,
+  datetime,
   name,
   distance,
   difficulty,
@@ -122,9 +122,9 @@ export default function RunCardUI({
     initMap();
   }, [isScriptLoaded, locationLat, locationLng, name]);
 
-  const formatDate = (date: Date | null) => {
-    if (!date) return "";
-    const d = new Date(date);
+  const formatDate = (datetime: Date | null) => {
+    if (!datetime) return "";
+    const d = new Date(datetime);
     const weekday = new Intl.DateTimeFormat("en-US", {
       weekday: "long",
     }).format(d);
@@ -155,7 +155,7 @@ export default function RunCardUI({
             <div
               className={`text-gray-500 ${isCompact ? "text-xs" : "text-sm"} mb-2`}
             >
-              {formatDate(date)}
+              {formatDate(datetime)}
             </div>
             <div className={`space-y-${isCompact ? "2" : "4"}`}>
               <div className="flex flex-wrap items-center gap-2">

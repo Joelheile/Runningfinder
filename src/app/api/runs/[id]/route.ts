@@ -5,14 +5,14 @@ import { NextResponse } from "next/server";
 
 export async function GET(
   request: Request,
-  { params }: { params: { slug: string } }
+  { params }: { params: { id: string } }
 ) {
-  const { slug } = params;
-  if (!slug) {
+  const { id } = params;
+  if (!id) {
     return NextResponse.json({ error: "ID is required" }, { status: 400 });
   }
   try {
-    const [result] = await db.select().from(runs).where(eq(runs.id, slug)).limit(1);
+    const [result] = await db.select().from(runs).where(eq(runs.id, id)).limit(1);
 
     if (!result) {
       return NextResponse.json({ error: "Run not found" }, { status: 404 });
@@ -30,23 +30,23 @@ export async function GET(
 
 export async function PATCH(
   request: Request,
-  { params }: { params: { slug: string } }
+  { params }: { params: { id: string } }
 ) {
   try {
-    const { slug } = params;
-    if (!slug) {
+    const { id } = params;
+    if (!id) {
       return NextResponse.json({ error: "ID is required" }, { status: 400 });
     }
 
     const body = await request.json();
     
     // First check if the run exists
-    const [existingRun] = await db.select().from(runs).where(eq(runs.id, slug)).limit(1);
+    const [existingRun] = await db.select().from(runs).where(eq(runs.id, id)).limit(1);
 
     if (!existingRun) {
       return NextResponse.json(
-        { error: "Run not found" },
-        { status: 404 }
+        { success: false, message: "Run not found" },
+        { status: 200 }  
       );
     }
 
@@ -54,13 +54,15 @@ export async function PATCH(
     const updateData: Partial<typeof runs.$inferSelect> = {};
     
     if (body.name !== undefined) updateData.name = body.name;
-
-    if (body.datetime !== undefined) updateData.datetime = new Date(body.date);
+    if (body.datetime !== undefined) updateData.datetime = new Date(body.datetime);
     if (body.difficulty !== undefined) updateData.difficulty = body.difficulty;
     if (body.distance !== undefined) updateData.distance = body.distance;
     if (body.startDescription !== undefined) updateData.startDescription = body.startDescription;
     if (body.isApproved !== undefined) updateData.isApproved = body.isApproved;
     if (body.isRecurrent !== undefined) updateData.isRecurrent = body.isRecurrent;
+    if (body.locationLat !== undefined) updateData.locationLat = body.locationLat;
+    if (body.locationLng !== undefined) updateData.locationLng = body.locationLng;
+    if (body.mapsLink !== undefined) updateData.mapsLink = body.mapsLink;
 
     if (Object.keys(updateData).length === 0) {
       return NextResponse.json(existingRun);
@@ -69,7 +71,7 @@ export async function PATCH(
     const [updatedRun] = await db
       .update(runs)
       .set(updateData)
-      .where(eq(runs.id, slug))
+      .where(eq(runs.id, id))
       .returning();
 
     return NextResponse.json(updatedRun);
@@ -84,31 +86,35 @@ export async function PATCH(
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { slug: string } }
+  { params }: { params: { id: string } }
 ) {
   try {
-    const { slug } = params;
-    if (!slug) {
+    const { id } = params;
+    if (!id) {
       return NextResponse.json({ error: "ID is required" }, { status: 400 });
     }
 
-    const deletedRuns = await db
-      .delete(runs)
-      .where(eq(runs.id, slug))
-      .returning({
-        id: runs.id,
-        name: runs.name,
-        isApproved: runs.isApproved
-      });
+    // First check if the run exists
+    const [existingRun] = await db
+      .select()
+      .from(runs)
+      .where(eq(runs.id, id))
+      .limit(1);
 
-    if (!deletedRuns.length) {
-      return NextResponse.json(
-        { error: "Run not found" },
-        { status: 404 }
-      );
+    if (!existingRun) {
+      // Return 200 if run doesn't exist, as the end state is what the client wanted
+      return NextResponse.json({ 
+        success: true, 
+        message: "Run already deleted" 
+      });
     }
 
-    return NextResponse.json(deletedRuns[0]);
+    const [deletedRun] = await db
+      .delete(runs)
+      .where(eq(runs.id, id))
+      .returning();
+
+    return NextResponse.json(deletedRun);
   } catch (error) {
     console.error("Error deleting run:", error);
     return NextResponse.json(

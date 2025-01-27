@@ -60,8 +60,6 @@ export async function GET(request: Request) {
       conditions.push(eq(runs.difficulty, difficulty));
     }
 
-    console.log('Query conditions:', conditions);
-
     // Get all runs with the specified conditions
     const runsData = await db
       .select({
