@@ -19,7 +19,7 @@ const providers = [
     },
   }),
   Resend({
-    apiKey: process.env.NEXT_PUBLIC_AUTH_RESEND_KEY,
+    apiKey: process.env.AUTH_RESEND_API_KEY,
     from: "no-reply@runningfinder.de",
     sendVerificationRequest: sendVerificationRequest,
   }),

@@ -28,13 +28,13 @@ const useGetProfileImage = () => {
       throw new Error("Instagram username is required");
     }
 
-    if (!process.env.NEXT_PUBLIC_APIFY_KEY) {
+    if (!process.env.APIFY_KEY) {
       throw new Error("APIFY_KEY is not configured");
     }
 
     try {
       const response = await fetch(
-        `https://api.apify.com/v2/acts/apify~instagram-profile-scraper/run-sync-get-dataset-items?token=${process.env.NEXT_PUBLIC_APIFY_KEY}`,
+        `https://api.apify.com/v2/acts/apify~instagram-profile-scraper/run-sync-get-dataset-items?token=${process.env.APIFY_KEY}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
