@@ -182,22 +182,28 @@ export function useScrapeRuns() {
             // Create a descriptive start location
             const startDescription = location
 
+            // Extract time from dateObject if it exists
+            const time = dateObject ? 
+              dateObject.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false }) 
+              : null;
+
             const runData = {
               id: v4(),
               name: eventName,
               date: dateObject,
+              time,
               location: {
                 lat: locationLat,
                 lng: locationLng
               },
-              difficulty,
+              difficulty: difficulty.toLowerCase() ,
               distance: distance || "0",
               isRecurrent,
               clubId,
               weekday: dateObject.getDay() || 0,
               startDescription,
               mapsLink: locationUrl,
-              isApproved: false
+              isApproved: true
             };
 
             try {

@@ -34,7 +34,6 @@ export async function GET(request: Request) {
     const now = new Date();
     console.log('Current date:', now);
 
-
     const conditions = [
       eq(runs.isApproved, true),
       or(
@@ -63,15 +62,29 @@ export async function GET(request: Request) {
 
     console.log('Query conditions:', conditions);
 
-    // First get all runs to see what's in the database
-    const allRuns = await db.select().from(runs);
-    console.log('All runs in database:', allRuns);
-
-    const runsData = conditions.length > 0 
-      ? await db.select().from(runs).where(and(...conditions)).orderBy(asc(runs.date))
-      : allRuns;
+    // Get all runs with the specified conditions
+    const runsData = await db
+      .select({
+        id: runs.id,
+        name: runs.name,
+        difficulty: runs.difficulty,
+        clubId: runs.clubId,
+        date: runs.date,
+        weekday: runs.weekday,
+        startDescription: runs.startDescription,
+        locationLng: runs.locationLng,
+        locationLat: runs.locationLat,
+        mapsLink: runs.mapsLink,
+        isRecurrent: runs.isRecurrent,
+        isApproved: runs.isApproved,
+        distance: runs.distance,
+      })
+      .from(runs)
+      .where(and(...conditions))
+      .orderBy(asc(runs.date));
     
     console.log('Fetched runs from database:', runsData);
+
     // Transform the data to include a location object
     const transformedRuns = runsData.map((run: any) => ({
       ...run,
@@ -99,38 +112,60 @@ export async function POST(request: Request) {
     }
 
     // Ensure date is a valid Date object
-    let dateValue: Date;
-    try {
-      dateValue = new Date(body.date);
-      if (isNaN(dateValue.getTime())) {
-        throw new Error("Invalid date value");
-      }
-    } catch (error) {
-      console.error("Date parsing error:", error);
-      return handleErrorResponse(error, "Invalid date format", 400);
+    const date = new Date(body.date);
+    if (isNaN(date.getTime())) {
+      return handleErrorResponse(new Error("Invalid date"), "Invalid date", 400);
     }
 
-    // Transform the location object into separate fields
-    const { location, ...restBody } = body;
-    const result = await db.insert(runs).values({
-      ...restBody,
-      date: dateValue,
-      locationLat: location?.lat,
-      locationLng: location?.lng
+    // Extract time in HH:mm format
+    const time = date.toLocaleTimeString('en-US', { 
+      hour12: false, 
+      hour: '2-digit', 
+      minute: '2-digit' 
     });
-    
-    return NextResponse.json(result);
+
+    // Calculate weekday (1-7, where 1 is Monday)
+    const weekday = ((date.getDay() + 6) % 7) + 1;
+
+    // Create the run with both date and time
+    const run = await db
+      .insert(runs)
+      .values({
+        ...body,
+        date,
+        time,
+        weekday,
+      })
+      .returning();
+
+    return NextResponse.json(run[0]);
   } catch (error) {
-    console.error("Error details:", error);
     return handleErrorResponse(error);
   }
 }
 
 export async function DELETE(request: Request) {
   try {
-    const body = await request.json();
-    const result = await db.delete(runs).where(eq(runs.id, body.id));
-    return NextResponse.json(result);
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get("id");
+
+    if (!id) {
+      return handleErrorResponse(new Error("ID is required"), "ID is required", 400);
+    }
+
+    const deletedRun = await db
+      .delete(runs)
+      .where(eq(runs.id, id))
+      .returning();
+
+    if (!deletedRun.length) {
+      return NextResponse.json(
+        { error: "Run not found" },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json(deletedRun[0]);
   } catch (error) {
     return handleErrorResponse(error);
   }
