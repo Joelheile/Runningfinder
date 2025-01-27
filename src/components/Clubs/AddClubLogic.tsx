@@ -141,7 +141,7 @@ export default function AddClub() {
         description,
         instagramUsername: instagramUsername.trim() || "",
         stravaUsername: stravaUsername.trim() || "",
-        avatarFileId: isUploaded ? avatarFileId : null, // Only use avatarFileId for manual uploads
+        avatarFileId: isUploaded ? avatarFileId : "", // Only use avatarFileId for manual uploads
         avatarUrl: avatarUrl || "", // Use avatarUrl state which already contains Instagram URL if available
         creationDate: "",
         slug: "",

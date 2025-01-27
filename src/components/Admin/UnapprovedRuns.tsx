@@ -1,24 +1,11 @@
 "use client";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/UI/avatar";
 import { Button } from "@/components/UI/button";
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@/components/UI/hover-card";
 import { Input } from "@/components/UI/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/UI/select";
 import { useRunActions } from "@/lib/hooks/runs/useRunActions";
 import { useUnapprovedRuns } from "@/lib/hooks/runs/useUnapprovedRuns";
-import { Run } from "@/lib/types/Run";
 import { Club } from "@/lib/types/Club";
+import { Run } from "@/lib/types/Run";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { UpdateRunData } from "@/lib/hooks/runs/useUpdateRun";
@@ -41,16 +28,28 @@ interface RunWithClub extends Run {
 
 export default function UnapprovedRuns() {
   const { data: runs, isLoading, error } = useUnapprovedRuns();
-  const queryClient = useQueryClient();
   const { updateRun, approveRun, deleteRun } = useRunActions();
+  const queryClient = useQueryClient();
 
   const handleUpdateRun = async (runId: string, data: UpdateRunData) => {
     const updateData = {
       ...data,
       datetime: data.datetime ? new Date(data.datetime) : undefined,
-      slug: runId,
+      id: runId,
     };
-    updateRun.mutate(updateData);
+
+    try {
+      await updateRun.mutateAsync(updateData);
+    } catch (error) {
+      console.error("Failed to update run:", error);
+      // If the run doesn't exist (404), remove it from the cache
+      if (error instanceof Error && error.message.includes("404")) {
+        queryClient.setQueryData<RunWithClub[]>(
+          ["runs", "unapproved"],
+          (old) => old?.filter((run) => run.id !== runId) ?? []
+        );
+      }
+    }
   };
 
   const handleApproveRun = (runId: string) => {
@@ -59,8 +58,12 @@ export default function UnapprovedRuns() {
       ["runs", "unapproved"],
       (old) => old?.filter((run) => run.id !== runId) ?? []
     );
-
-    approveRun.mutate(runId);
+    approveRun.mutate(runId, {
+      onError: () => {
+        // On error, refetch to restore the correct state
+        queryClient.invalidateQueries({ queryKey: ["runs", "unapproved"] });
+      },
+    });
   };
 
   const handleDeleteRun = (runId: string) => {
@@ -69,8 +72,14 @@ export default function UnapprovedRuns() {
       ["runs", "unapproved"],
       (old) => old?.filter((run) => run.id !== runId) ?? []
     );
-
-    deleteRun.mutate(runId);
+    deleteRun.mutate(runId, {
+      onError: (error) => {
+        // Only restore the UI state if it's not a 404 error
+        if (!error.message?.includes("404")) {
+          queryClient.invalidateQueries({ queryKey: ["runs", "unapproved"] });
+        }
+      },
+    });
   };
 
   const debouncedUpdateRun = debounce(handleUpdateRun, 500);
@@ -80,16 +89,17 @@ export default function UnapprovedRuns() {
   if (!runs?.length) return <div>No unapproved runs</div>;
 
   return (
-    <div>
-      <h2 className="text-xl font-semibold mb-4">Unapproved Runs</h2>
+    <div className="space-y-6">
+      <h2 className="text-xl font-semibold">Unapproved Runs</h2>
       <Table>
         <TableHeader>
           <TableRow>
             <TableHead>Name</TableHead>
             <TableHead>Club</TableHead>
             <TableHead>Date</TableHead>
-            <TableHead>Difficulty</TableHead>
             <TableHead>Distance</TableHead>
+            <TableHead>Difficulty</TableHead>
+            <TableHead>Start Description</TableHead>
             <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -100,75 +110,21 @@ export default function UnapprovedRuns() {
                 <Input
                   defaultValue={run.name}
                   onChange={(e) =>
-                    debouncedUpdateRun(run.id, {
-                      name: e.target.value,
-                    })
+                    debouncedUpdateRun(run.id, { name: e.target.value })
                   }
                 />
               </TableCell>
+              <TableCell>{run.club?.name}</TableCell>
               <TableCell>
-                <HoverCard>
-                  <HoverCardTrigger>
-                    <Avatar className="h-8 w-8">
-                      <AvatarImage
-                        src={run.club.avatarUrl}
-                        alt={run.club.name}
-                      />
-                      <AvatarFallback>
-                        {run.club.name.charAt(0) || "C"}
-                      </AvatarFallback>
-                    </Avatar>
-                  </HoverCardTrigger>
-                  <HoverCardContent>
-                    <div>
-                      <h4 className="font-semibold">{run.club.name}</h4>
-                      <p className="text-sm">{run.club.description}</p>
-                    </div>
-                  </HoverCardContent>
-                </HoverCard>
-              </TableCell>
-              <TableCell>
-                <div className="space-y-2">
-                  <Input
-                    type="datetime-local"
-                    defaultValue={run.datetime.toISOString().slice(0, 16)}
-                    onChange={(e) => {
-                      console.log("New date value:", e.target.value);
-                      console.log(
-                        "Converted to Date:",
-                        new Date(e.target.value)
-                      );
-                      debouncedUpdateRun(run.id, {
-                        datetime: new Date(e.target.value),
-                      });
-                    }}
-                  />
-                </div>
-              </TableCell>
-              <TableCell>
-                <Select
-                  value={DIFFICULTIES.find(
-                    (d) => d.toLowerCase() === run.difficulty?.toLowerCase()
-                  )}
-                  onValueChange={(value) =>
-                    debouncedUpdateRun(run.id, { difficulty: value })
+                <Input
+                  type="datetime-local"
+                  defaultValue={run.datetime?.toISOString().slice(0, 16)}
+                  onChange={(e) =>
+                    debouncedUpdateRun(run.id, {
+                      datetime: new Date(e.target.value),
+                    })
                   }
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {DIFFICULTIES.map((difficulty) => (
-                      <SelectItem key={difficulty} value={difficulty}>
-                        {difficulty === "EASY"
-                          ? "🟢 Easy"
-                          : difficulty === "INTERMEDIATE"
-                            ? "🟡 Intermediate"
-                            : "🔴 Advanced"}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                />
               </TableCell>
               <TableCell>
                 <Input
@@ -179,18 +135,36 @@ export default function UnapprovedRuns() {
                 />
               </TableCell>
               <TableCell>
-                <div className="flex space-x-2">
+                <Input
+                  defaultValue={run.difficulty}
+                  onChange={(e) =>
+                    debouncedUpdateRun(run.id, { difficulty: e.target.value })
+                  }
+                />
+              </TableCell>
+              <TableCell>
+                <Input
+                  defaultValue={run.startDescription}
+                  onChange={(e) =>
+                    debouncedUpdateRun(run.id, {
+                      startDescription: e.target.value,
+                    })
+                  }
+                />
+              </TableCell>
+              <TableCell>
+                <div className="flex gap-2">
                   <Button
+                    onClick={() => handleApproveRun(run.id)}
                     variant="outline"
                     size="sm"
-                    onClick={() => handleApproveRun(run.id)}
                   >
                     Approve
                   </Button>
                   <Button
+                    onClick={() => handleDeleteRun(run.id)}
                     variant="destructive"
                     size="sm"
-                    onClick={() => handleDeleteRun(run.id)}
                   >
                     Delete
                   </Button>
