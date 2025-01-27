@@ -5,9 +5,9 @@ export type Club = {
 
   description: string;
   creationDate: string;
-  instagramUsername: string | null;
-  stravaUsername: string | null;
-  avatarFileId: string | null;
+  instagramUsername?: string;
+  stravaUsername?: string;
+  avatarFileId?: string;
   avatarUrl: string;
   websiteUrl?: string;
   isApproved: boolean;
