@@ -1,69 +1,9 @@
+import { Club } from "@/lib/types/Club";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
-interface Club {
-  id: string;
-  name: string;
-  description: string;
-  instagramUsername?: string;
-  stravaUsername?: string;
-  websiteUrl?: string;
-  isApproved: boolean;
-  slug: string;
-}
-
 export function useClubActions() {
   const queryClient = useQueryClient();
-
-  const updateClub = useMutation({
-    mutationFn: async (data: Partial<Club>) => {
-      const response = await fetch(`/api/clubs/${data.slug}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || "Failed to update club");
-      }
-      return response.json();
-    },
-    onSuccess: () => {
-      // Invalidate all club-related queries to ensure fresh data
-      queryClient.invalidateQueries({ queryKey: ["unapprovedClubs"] });
-      queryClient.invalidateQueries({ queryKey: ["clubs"] });
-      queryClient.invalidateQueries({ queryKey: ["club"] });
-      toast.success("Club updated successfully");
-    },
-    onError: (error: Error) => {
-      toast.error(error.message);
-    },
-  });
-
-  const approveClub = useMutation({
-    mutationFn: async (slug: string) => {
-      const response = await fetch(`/api/clubs/${slug}/approve`, {
-        method: "POST",
-      });
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || "Failed to approve club");
-      }
-      return response.json();
-    },
-    onSuccess: () => {
-      // Invalidate all club-related queries to ensure fresh data
-      queryClient.invalidateQueries({ queryKey: ["unapprovedClubs"] });
-      queryClient.invalidateQueries({ queryKey: ["clubs"] });
-      queryClient.invalidateQueries({ queryKey: ["club"] });
-      toast.success("Club approved successfully");
-    },
-    onError: (error: Error) => {
-      toast.error(error.message);
-    },
-  });
 
   const deleteClub = useMutation({
     mutationFn: async (slug: string) => {
@@ -106,7 +46,7 @@ export function useClubActions() {
           return old?.filter(club => club.slug !== variables) ?? [];
         });
         
-        // Invalidate other queries but not unapprovedClubs
+        // Invalidate other queries but prevent automatic refetches
         await Promise.all([
           queryClient.invalidateQueries({ 
             queryKey: ["clubs"],
@@ -123,9 +63,107 @@ export function useClubActions() {
     }
   });
 
+  const updateClub = useMutation({
+    mutationFn: async (data: Partial<Club>) => {
+      const response = await fetch(`/api/clubs/${data.slug}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || "Failed to update club");
+      }
+      return response.json();
+    },
+    onMutate: async (newClub: Partial<Club>) => {
+      await queryClient.cancelQueries({ queryKey: ["clubs", newClub.slug] });
+      await queryClient.cancelQueries({ queryKey: ["unapprovedClubs"] });
+
+      // Snapshot the previous values
+      const previousClub = queryClient.getQueryData<Club>(["clubs", newClub.slug]);
+      const previousUnapprovedClubs = queryClient.getQueryData<Club[]>(["unapprovedClubs"]);
+
+      // Optimistically update
+      if (newClub.slug) {
+        queryClient.setQueryData<Club>(["clubs", newClub.slug], old => {
+          if (!old) return old;
+          return {
+            ...old,
+            ...newClub
+          } as Club;
+        });
+      }
+
+      queryClient.setQueryData<Club[]>(["unapprovedClubs"], old => {
+        if (!old) return [];
+        return old.map(club => 
+          club.slug === newClub.slug ? { ...club, ...newClub } : club
+        );
+      });
+
+      return { previousClub, previousUnapprovedClubs };
+    },
+    onError: (err, newClub, context) => {
+      // Revert optimistic updates on error
+      if (newClub.slug && context?.previousClub) {
+        queryClient.setQueryData(["clubs", newClub.slug], context.previousClub);
+      }
+      if (context?.previousUnapprovedClubs) {
+        queryClient.setQueryData(["unapprovedClubs"], context.previousUnapprovedClubs);
+      }
+      toast.error(err instanceof Error ? err.message : "Failed to update club");
+    },
+    onSettled: async (data, error, variables) => {
+      if (!error) {
+        // Invalidate affected queries but prevent automatic refetches
+        await Promise.all([
+          queryClient.invalidateQueries({ 
+            queryKey: ["clubs"],
+            refetchType: 'none'
+          }),
+          queryClient.invalidateQueries({ 
+            queryKey: ["unapprovedClubs"],
+            refetchType: 'none'
+          }),
+          variables.slug && queryClient.invalidateQueries({ 
+            queryKey: ["clubs", variables.slug],
+            refetchType: 'none'
+          })
+        ]);
+        toast.success("Club updated successfully");
+      }
+    },
+  });
+
+  const approveClub = useMutation({
+    mutationFn: async (slug: string) => {
+      const response = await fetch(`/api/clubs/${slug}/approve`, {
+        method: "POST",
+      });
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || "Failed to approve club");
+      }
+      return response.json();
+    },
+    onSuccess: () => {
+      // Invalidate all club-related queries to ensure fresh data
+      queryClient.invalidateQueries({ queryKey: ["unapprovedClubs"] });
+      queryClient.invalidateQueries({ queryKey: ["clubs"] });
+      queryClient.invalidateQueries({ queryKey: ["club"] });
+      toast.success("Club approved successfully");
+    },
+    onError: (error: Error) => {
+      toast.error(error.message);
+    },
+  });
+
   return {
+    deleteClub,
     updateClub,
     approveClub,
-    deleteClub,
   };
 }
