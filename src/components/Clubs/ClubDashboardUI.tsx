@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import AddRunState from "../Runs/AddRunLogic";
 import RunCard from "../Runs/RunCardLogic";
 import { Button } from "../UI/button";
+import { RunDisclaimer } from "../UI/disclaimer";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../UI/tooltip";
 import ClubCard from "./ClubCard";
 import ClubCardSkeleton from "./ClubCardSkeleton";
@@ -55,8 +56,8 @@ export default function ClubDashboardUI({
     stravaUsername: "",
   };
 
-  const futureRuns = runs?.filter((run) => run.date > new Date()) || [];
-  const pastRuns = runs?.filter((run) => run.date <= new Date()) || [];
+  const futureRuns = runs?.filter((run) => run.datetime > new Date()) || [];
+  const pastRuns = runs?.filter((run) => run.datetime <= new Date()) || [];
 
   return (
     <div className="flex flex-col w-screen max-w-full h-screen p-8">
@@ -124,14 +125,61 @@ export default function ClubDashboardUI({
           <div className="grid grid-cols-1 gap-6 p-6">
             {futureRuns
               ?.sort((a, b) =>
-                a.date && b.date ? a.date.getTime() - b.date.getTime() : 0
+                a.datetime && b.datetime
+                  ? a.datetime.getTime() - b.datetime.getTime()
+                  : 0
               )
               .map((run) => (
                 <RunCard
                   userId={userId}
                   id={run.id}
                   key={run.id}
-                  date={run.date}
+                  datetime={run.datetime}
+                  name={run.name}
+                  startDescription={run.startDescription}
+                  difficulty={run.difficulty}
+                  distance={run.distance}
+                  locationLat={run.location.lat}
+                  locationLng={run.location.lng}
+                  slug={slug}
+                />
+              ))}
+          </div>
+        ) : (
+          <div className="text-center py-12">
+            <p className="text-gray-500">No runs found for this club yet.</p>
+            {userId && (
+              <p className="mt-2">
+                <Link
+                  href={`/clubs/${slug}/runs/new`}
+                  className="text-blue-500 hover:underline"
+                >
+                  Create the first run
+                </Link>
+              </p>
+            )}
+          </div>
+        )}
+      </div>
+
+      <RunDisclaimer />
+
+      <div className="mt-8">
+        <h2 className="text-2xl font-bold mb-4">Upcoming Runs</h2>
+        {futureRuns.length > 0 ? (
+          <div className="grid grid-cols-1 gap-6 p-6">
+            {futureRuns
+              ?.sort((a, b) =>
+                a.datetime && b.datetime
+                  ? a.datetime.getTime() - b.datetime.getTime()
+                  : 0
+              )
+              .map((run) => (
+                <RunCard
+                  userId={userId}
+                  id={run.id}
+                  key={run.id}
+                  datetime={run.datetime}
                   name={run.name}
                   startDescription={run.startDescription}
                   difficulty={run.difficulty}
