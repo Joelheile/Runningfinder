@@ -44,6 +44,14 @@ const Map = memo(({ runs, clubs }: { runs: Run[]; clubs: Club[] }) => {
         center,
         zoom: 12,
         mapId: process.env.NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID,
+        disableDefaultUI: true, // Disable all default UI elements
+        zoomControl: false, // Keep zoom control
+        mapTypeControl: false,
+        scaleControl: false,
+        streetViewControl: false,
+        rotateControl: false,
+        fullscreenControl: false,
+        gestureHandling: "cooperative", // Makes it easier to scroll on mobile
       });
 
       infoWindowRef.current = new InfoWindow();
