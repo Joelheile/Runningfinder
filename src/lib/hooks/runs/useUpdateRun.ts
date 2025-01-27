@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 export interface UpdateRunData {
   name?: string;
   description?: string;
-  date?: Date;
+  datetime?: Date;
   difficulty?: string;
   distance?: string;
   startDescription?: string;

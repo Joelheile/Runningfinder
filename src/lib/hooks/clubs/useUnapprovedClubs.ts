@@ -1,14 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
-interface Club {
-  id: string;
-  name: string;
-  description: string;
-  instagramUsername?: string;
-  stravaUsername?: string;
-  websiteUrl?: string;
-  isApproved: boolean;
-}
+import { Club } from '@/lib/types/Club';
 
 export function useUnapprovedClubs() {
   return useQuery<Club[]>({
