@@ -196,8 +196,8 @@ export function useScrapeRuns() {
                 lat: locationLat,
                 lng: locationLng
               },
-              difficulty: difficulty.toLowerCase() ,
-              distance: distance || "0",
+              difficulty: difficulty.toLowerCase(),
+              distance: distance === "0" || distance === "" ? "N/A" : distance,
               isRecurrent,
               clubId,
               weekday: dateObject.getDay() || 0,
