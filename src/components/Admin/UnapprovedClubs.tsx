@@ -5,6 +5,7 @@ import { Input } from "@/components/UI/input";
 import { Textarea } from "@/components/UI/textarea";
 import { useClubActions } from "@/lib/hooks/clubs/useClubActions";
 import { useUnapprovedClubs } from "@/lib/hooks/clubs/useUnapprovedClubs";
+import { Club } from "@/lib/types/Club";
 import { debounce } from "lodash";
 import {
   Table,
@@ -14,17 +15,6 @@ import {
   TableHeader,
   TableRow,
 } from "../UI/table";
-
-interface Club {
-  id: string;
-  name: string;
-  description: string;
-  instagramUsername?: string;
-  stravaUsername?: string;
-  websiteUrl?: string;
-  isApproved: boolean;
-  slug: string;
-}
 
 export default function UnapprovedClubs() {
   const { data: clubs, isLoading, error } = useUnapprovedClubs();
@@ -41,8 +31,8 @@ export default function UnapprovedClubs() {
   if (!clubs?.length) return <div>No unapproved clubs</div>;
 
   return (
-    <div>
-      <h2 className="text-xl font-semibold mb-4">Unapproved Clubs</h2>
+    <div className="space-y-6">
+      <h2 className="text-xl font-semibold">Unapproved Clubs</h2>
       <Table>
         <TableHeader>
           <TableRow>
@@ -75,25 +65,34 @@ export default function UnapprovedClubs() {
               </TableCell>
               <TableCell>
                 <Input
-                  defaultValue={club.instagramUsername}
+                  defaultValue={club.instagramUsername || ""}
+                  placeholder="Instagram username"
                   onChange={(e) =>
-                    debouncedUpdateClub(club, { instagramUsername: e.target.value })
+                    debouncedUpdateClub(club, {
+                      instagramUsername: e.target.value || "",
+                    })
                   }
                 />
               </TableCell>
               <TableCell>
                 <Input
-                  defaultValue={club.stravaUsername}
+                  defaultValue={club.stravaUsername || ""}
+                  placeholder="Strava username"
                   onChange={(e) =>
-                    debouncedUpdateClub(club, { stravaUsername: e.target.value })
+                    debouncedUpdateClub(club, {
+                      stravaUsername: e.target.value || "",
+                    })
                   }
                 />
               </TableCell>
               <TableCell>
                 <Input
-                  defaultValue={club.websiteUrl}
+                  defaultValue={club.websiteUrl || ""}
+                  placeholder="Website URL"
                   onChange={(e) =>
-                    debouncedUpdateClub(club, { websiteUrl: e.target.value })
+                    debouncedUpdateClub(club, {
+                      websiteUrl: e.target.value || undefined,
+                    })
                   }
                 />
               </TableCell>

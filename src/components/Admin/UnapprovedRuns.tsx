@@ -17,10 +17,11 @@ import {
 } from "@/components/UI/select";
 import { useRunActions } from "@/lib/hooks/runs/useRunActions";
 import { useUnapprovedRuns } from "@/lib/hooks/runs/useUnapprovedRuns";
+import { Run } from "@/lib/types/Run";
+import { Club } from "@/lib/types/Club";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { UpdateRunData } from "@/lib/hooks/runs/useUpdateRun";
-import { Run } from "@/lib/types/Run";
 import { debounce } from "lodash";
 import {
   Table,
@@ -31,8 +32,12 @@ import {
   TableRow,
 } from "../UI/table";
 
-const DIFFICULTIES = ["easy", "intermediate", "advanced"] as const;
+const DIFFICULTIES = ["EASY", "INTERMEDIATE", "ADVANCED"] as const;
 type Difficulty = (typeof DIFFICULTIES)[number];
+
+interface RunWithClub extends Run {
+  club: Club;
+}
 
 export default function UnapprovedRuns() {
   const { data: runs, isLoading, error } = useUnapprovedRuns();
@@ -42,7 +47,7 @@ export default function UnapprovedRuns() {
   const handleUpdateRun = async (runId: string, data: UpdateRunData) => {
     const updateData = {
       ...data,
-      date: data.date ? new Date(data.date) : undefined,
+      datetime: data.datetime ? new Date(data.datetime) : undefined,
       slug: runId,
     };
     updateRun.mutate(updateData);
@@ -50,7 +55,7 @@ export default function UnapprovedRuns() {
 
   const handleApproveRun = (runId: string) => {
     // Optimistically update the UI
-    queryClient.setQueryData<Run[]>(
+    queryClient.setQueryData<RunWithClub[]>(
       ["runs", "unapproved"],
       (old) => old?.filter((run) => run.id !== runId) ?? []
     );
@@ -60,7 +65,7 @@ export default function UnapprovedRuns() {
 
   const handleDeleteRun = (runId: string) => {
     // Optimistically update the UI
-    queryClient.setQueryData<Run[]>(
+    queryClient.setQueryData<RunWithClub[]>(
       ["runs", "unapproved"],
       (old) => old?.filter((run) => run.id !== runId) ?? []
     );
@@ -106,51 +111,60 @@ export default function UnapprovedRuns() {
                   <HoverCardTrigger>
                     <Avatar className="h-8 w-8">
                       <AvatarImage
-                        src={run.club?.avatarUrl}
-                        alt={run.club?.name}
+                        src={run.club.avatarUrl}
+                        alt={run.club.name}
                       />
                       <AvatarFallback>
-                        {run.club?.name?.charAt(0) || "C"}
+                        {run.club.name.charAt(0) || "C"}
                       </AvatarFallback>
                     </Avatar>
                   </HoverCardTrigger>
                   <HoverCardContent>
                     <div>
-                      <h4 className="font-semibold">{run.club?.name}</h4>
-                      <p className="text-sm">{run.club?.description}</p>
+                      <h4 className="font-semibold">{run.club.name}</h4>
+                      <p className="text-sm">{run.club.description}</p>
                     </div>
                   </HoverCardContent>
                 </HoverCard>
               </TableCell>
               <TableCell>
-                <Input
-                  type="datetime-local"
-                  defaultValue={
-                    run.date
-                      ? new Date(run.date).toISOString().slice(0, 16)
-                      : undefined
-                  }
-                  onChange={(e) =>
-                    debouncedUpdateRun(run.id, {
-                      date: new Date(e.target.value),
-                    })
-                  }
-                />
+                <div className="space-y-2">
+                  <Input
+                    type="datetime-local"
+                    defaultValue={run.datetime.toISOString().slice(0, 16)}
+                    onChange={(e) => {
+                      console.log("New date value:", e.target.value);
+                      console.log(
+                        "Converted to Date:",
+                        new Date(e.target.value)
+                      );
+                      debouncedUpdateRun(run.id, {
+                        datetime: new Date(e.target.value),
+                      });
+                    }}
+                  />
+                </div>
               </TableCell>
               <TableCell>
                 <Select
-                  value={run.difficulty}
+                  value={DIFFICULTIES.find(
+                    (d) => d.toLowerCase() === run.difficulty?.toLowerCase()
+                  )}
                   onValueChange={(value) =>
                     debouncedUpdateRun(run.id, { difficulty: value })
                   }
                 >
                   <SelectTrigger>
-                    <SelectValue defaultValue={run.difficulty} />
+                    <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
                     {DIFFICULTIES.map((difficulty) => (
                       <SelectItem key={difficulty} value={difficulty}>
-                        {difficulty}
+                        {difficulty === "EASY"
+                          ? "🟢 Easy"
+                          : difficulty === "INTERMEDIATE"
+                            ? "🟡 Intermediate"
+                            : "🔴 Advanced"}
                       </SelectItem>
                     ))}
                   </SelectContent>

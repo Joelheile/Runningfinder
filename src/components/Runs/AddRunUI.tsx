@@ -177,16 +177,14 @@ export default function AddRunUI({
 
               <div className="space-y-2">
                 <Label>Difficulty</Label>
-                <Select value={difficulty} onValueChange={setDifficulty}>
+                <Select value={difficulty.toUpperCase()} onValueChange={(val) => setDifficulty(val.toUpperCase())}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select difficulty" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="easy">🟢 Easy</SelectItem>
-                    <SelectItem value="intermediate">
-                      🟡 Intermediate
-                    </SelectItem>
-                    <SelectItem value="advanced">🔴 Advanced</SelectItem>
+                    <SelectItem value="EASY">🟢 Easy</SelectItem>
+                    <SelectItem value="INTERMEDIATE">🟡 Intermediate</SelectItem>
+                    <SelectItem value="ADVANCED">🔴 Advanced</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -233,23 +231,13 @@ export default function AddRunUI({
                     type="datetime-local"
                     value={
                       datetime instanceof Date
-                        ? new Date(
-                            datetime.getTime() - datetime.getTimezoneOffset() * 60000
-                          )
-                            .toISOString()
-                            .slice(0, 16)
-                        : new Date(
-                            Date.now() - new Date().getTimezoneOffset() * 60000
-                          )
-                            .toISOString()
-                            .slice(0, 16)
+                        ? datetime.toISOString().slice(0, 16)
+                        : new Date().toISOString().slice(0, 16)
                     }
                     onChange={(e) => {
                       const newDate = new Date(e.target.value);
                       if (!isNaN(newDate.getTime())) {
-                        // Adjust for timezone
-                        const tzOffset = newDate.getTimezoneOffset() * 60000;
-                        setDatetime(new Date(newDate.getTime() + tzOffset));
+                        setDatetime(newDate);
                       }
                     }}
                     className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
