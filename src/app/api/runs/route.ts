@@ -40,7 +40,7 @@ export async function GET(request: Request) {
         eq(runs.isRecurrent, true),
         and(
           eq(runs.isRecurrent, false),
-          gt(runs.date, now)
+          gt(runs.datetime, now)
         )
       )
     ];
@@ -69,7 +69,7 @@ export async function GET(request: Request) {
         name: runs.name,
         difficulty: runs.difficulty,
         clubId: runs.clubId,
-        date: runs.date,
+        datetime: runs.datetime,
         weekday: runs.weekday,
         startDescription: runs.startDescription,
         locationLng: runs.locationLng,
@@ -81,7 +81,7 @@ export async function GET(request: Request) {
       })
       .from(runs)
       .where(and(...conditions))
-      .orderBy(asc(runs.date));
+      .orderBy(asc(runs.datetime));
     
     console.log('Fetched runs from database:', runsData);
 

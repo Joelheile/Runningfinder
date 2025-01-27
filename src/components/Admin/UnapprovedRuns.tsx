@@ -17,8 +17,10 @@ import {
 } from "@/components/UI/select";
 import { useRunActions } from "@/lib/hooks/runs/useRunActions";
 import { useUnapprovedRuns } from "@/lib/hooks/runs/useUnapprovedRuns";
+import { useQueryClient } from "@tanstack/react-query";
 
 import { UpdateRunData } from "@/lib/hooks/runs/useUpdateRun";
+import { Run } from "@/lib/types/Run";
 import { debounce } from "lodash";
 import {
   Table,
@@ -34,6 +36,7 @@ type Difficulty = (typeof DIFFICULTIES)[number];
 
 export default function UnapprovedRuns() {
   const { data: runs, isLoading, error } = useUnapprovedRuns();
+  const queryClient = useQueryClient();
   const { updateRun, approveRun, deleteRun } = useRunActions();
 
   const handleUpdateRun = async (runId: string, data: UpdateRunData) => {
@@ -43,6 +46,26 @@ export default function UnapprovedRuns() {
       slug: runId,
     };
     updateRun.mutate(updateData);
+  };
+
+  const handleApproveRun = (runId: string) => {
+    // Optimistically update the UI
+    queryClient.setQueryData<Run[]>(
+      ["runs", "unapproved"],
+      (old) => old?.filter((run) => run.id !== runId) ?? []
+    );
+
+    approveRun.mutate(runId);
+  };
+
+  const handleDeleteRun = (runId: string) => {
+    // Optimistically update the UI
+    queryClient.setQueryData<Run[]>(
+      ["runs", "unapproved"],
+      (old) => old?.filter((run) => run.id !== runId) ?? []
+    );
+
+    deleteRun.mutate(runId);
   };
 
   const debouncedUpdateRun = debounce(handleUpdateRun, 500);
@@ -146,14 +169,14 @@ export default function UnapprovedRuns() {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => approveRun.mutate(run.id)}
+                    onClick={() => handleApproveRun(run.id)}
                   >
                     Approve
                   </Button>
                   <Button
                     variant="destructive"
                     size="sm"
-                    onClick={() => deleteRun.mutate(run.id)}
+                    onClick={() => handleDeleteRun(run.id)}
                   >
                     Delete
                   </Button>

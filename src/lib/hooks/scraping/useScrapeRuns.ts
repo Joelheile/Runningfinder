@@ -148,7 +148,7 @@ export function useScrapeRuns() {
             const existingRun = existingRuns?.find((r: Run) => 
               r.name === eventName && 
               r.clubId === clubId && 
-              new Date(r.date).toDateString() === dateObject.toDateString()
+              new Date(r.datetime).toDateString() === dateObject.toDateString()
             );
 
             if (existingRun) {
@@ -190,7 +190,7 @@ export function useScrapeRuns() {
             const runData = {
               id: v4(),
               name: eventName,
-              date: dateObject,
+              datetime: dateObject,
               time,
               location: {
                 lat: locationLat,
@@ -254,10 +254,24 @@ export function useScrapeRuns() {
     }
   }
 
-  return { scrapeRuns, profileImageUrl, profileImageId, profileDescription };
-}
+  const parseDate = (dateString: string): Date | null => {
+    try {
+      const [datePart, timePart] = dateString.split(" ");
+      const [day, month, year] = datePart.split(".");
+      const [hours, minutes] = timePart.split(":");
+      const datetime = new Date(
+        parseInt(year),
+        parseInt(month) - 1,
+        parseInt(day),
+        parseInt(hours),
+        parseInt(minutes)
+      );
+      return datetime;
+    } catch (error) {
+      console.error("Error parsing date:", error);
+      return null;
+    }
+  };
 
-function parseDate(dateString: string): Date | null {
-  const dateObject = new Date(dateString);
-  return isNaN(dateObject.getTime()) ? null : dateObject;
+  return { scrapeRuns, profileImageUrl, profileImageId, profileDescription };
 }
