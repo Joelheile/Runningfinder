@@ -9,7 +9,7 @@ interface RunCardProps {
   locationLat: number;
   locationLng: number;
 
-  date: Date | null;
+  datetime: Date | null;
   startDescription: string;
   difficulty: string;
   userId?: string;
@@ -26,7 +26,7 @@ export default function RunCard({
   locationLat,
   locationLng,
 
-  date,
+  datetime,
   startDescription,
   difficulty,
   userId,
@@ -69,7 +69,7 @@ export default function RunCard({
       userId={userId}
       id={id}
       key={id}
-      date={date}
+      datetime={datetime}
       name={name}
       startDescription={startDescription}
       difficulty={difficulty}

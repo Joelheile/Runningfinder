@@ -30,15 +30,15 @@ interface AddRunUIProps {
   setDifficulty: (difficulty: string) => void;
   distance: string;
   setDistance: (distance: string) => void;
-  showMap: boolean;
-  date: Date;
-  setDate: (date: Date) => void;
+  datetime: Date;
+  setDatetime: (datetime: Date) => void;
   startDescription: string;
   setStartDescription: (startDescription: string) => void;
   locationLat: number;
   locationLng: number;
   isRecurrent: boolean;
   setIsRecurrent: (isRecurrent: boolean) => void;
+  showMap: boolean;
   handleSubmit: (e: React.FormEvent) => void;
   handleLocationSelect: (
     lat: number,
@@ -55,8 +55,8 @@ export default function AddRunUI({
   setDifficulty,
   distance,
   setDistance,
-  date,
-  setDate,
+  datetime,
+  setDatetime,
   startDescription,
   setStartDescription,
   locationLat,
@@ -87,7 +87,7 @@ export default function AddRunUI({
   };
 
   const validateStep2 = () => {
-    if (!date) {
+    if (!datetime) {
       toast.error("Please select a date and time");
       return false;
     }
@@ -232,9 +232,9 @@ export default function AddRunUI({
                   <input
                     type="datetime-local"
                     value={
-                      date instanceof Date
+                      datetime instanceof Date
                         ? new Date(
-                            date.getTime() - date.getTimezoneOffset() * 60000
+                            datetime.getTime() - datetime.getTimezoneOffset() * 60000
                           )
                             .toISOString()
                             .slice(0, 16)
@@ -249,7 +249,7 @@ export default function AddRunUI({
                       if (!isNaN(newDate.getTime())) {
                         // Adjust for timezone
                         const tzOffset = newDate.getTimezoneOffset() * 60000;
-                        setDate(new Date(newDate.getTime() + tzOffset));
+                        setDatetime(new Date(newDate.getTime() + tzOffset));
                       }
                     }}
                     className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"

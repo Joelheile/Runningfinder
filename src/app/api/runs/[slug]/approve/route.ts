@@ -24,7 +24,7 @@ export async function POST(
         name: runs.name,
 
         clubId: runs.clubId,
-        date: runs.date,
+        datetime: runs.datetime,
 
         weekday: runs.weekday,
         startDescription: runs.startDescription,

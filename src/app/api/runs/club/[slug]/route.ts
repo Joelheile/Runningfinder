@@ -19,7 +19,7 @@ export async function GET(
         name: runs.name,
         clubId: runs.clubId,
         difficulty: runs.difficulty,
-        date: runs.date,
+        datetime: runs.datetime,
         weekday: runs.weekday,
         startDescription: runs.startDescription,
         distance: runs.distance,

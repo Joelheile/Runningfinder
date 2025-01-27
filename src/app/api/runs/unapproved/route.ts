@@ -19,7 +19,7 @@ export async function GET() {
           stravaUsername: clubs.stravaUsername,
           avatarUrl: clubs.avatarUrl,
         },
-        date: runs.date,
+        datetime: runs.datetime,
         weekday: runs.weekday,
         startDescription: runs.startDescription,
         locationLng: runs.locationLng,
