@@ -8,7 +8,7 @@ export default defineConfig({
   schema: "./src/lib/db/schema.ts",
   dbCredentials: {
     url: isTesting
-      ? process.env.NEXT_PUBLIC_DB_DEV!
-      : process.env.NEXT_PUBLIC_DB_PROD!,
+      ? process.env.DB_DEV!
+      : process.env.DB_PROD!,
   },
 });
