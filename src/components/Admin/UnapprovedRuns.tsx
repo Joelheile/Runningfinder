@@ -156,8 +156,9 @@ export default function UnapprovedRuns() {
                 <div className="flex gap-2">
                   <Button
                     onClick={() => handleApproveRun(run.id)}
-                    variant="outline"
+                    variant="secondary"
                     size="sm"
+                    className="bg-green-600 hover:bg-green-700 text-white"
                   >
                     Approve
                   </Button>
