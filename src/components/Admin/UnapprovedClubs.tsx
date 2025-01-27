@@ -24,12 +24,9 @@ export default function UnapprovedClubs() {
   const { updateClub, approveClub, deleteClub } = useClubActions();
   const getProfileImage = useGetProfileImage();
 
-  console.log("Received clubs data:", clubs);
-
   const handleUpdateClub = async (club: Club, data: Partial<Club>) => {
     // Debug toast for what's being updated
     toast("🔄 Updating field: " + Object.keys(data).join(", "));
-    console.log("Update data:", data);
 
     // If Instagram username is being updated, fetch profile data
     if (data.instagramUsername !== undefined) {
@@ -40,7 +37,6 @@ export default function UnapprovedClubs() {
         });
 
         toast("📥 Got Instagram profile, updating club data...");
-        console.log("Instagram profile data:", profile);
 
         // Update with Instagram data
         data = {
@@ -49,7 +45,6 @@ export default function UnapprovedClubs() {
           description: profile.profileDescription || data.description,
         };
 
-        console.log("Updated data with Instagram profile:", data);
         // Show toast notification
         toast.success("✨ Instagram profile data retrieved!");
       } catch (error) {

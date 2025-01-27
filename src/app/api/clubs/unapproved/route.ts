@@ -13,8 +13,6 @@ export async function GET() {
       .orderBy(clubs.creationDate)  // Order by creation date to maintain consistent order
       .execute();
 
-    console.log("Raw clubs from DB:", unapprovedClubs);
-
     // Ensure all required fields are present with default values if needed
     const clubsWithDefaults = unapprovedClubs.map((club: Club) => {
       const clubWithDefaults = {
@@ -23,13 +21,18 @@ export async function GET() {
         creationDate: club.creationDate || new Date().toISOString(),
         avatarUrl: club.avatarUrl || '/assets/default-club-avatar.png'
       };
-      console.log(`Club ${club.name} avatar URL:`, clubWithDefaults.avatarUrl);
+
       return clubWithDefaults;
     });
 
-    console.log("Processed clubs with defaults:", clubsWithDefaults);
-
-    return NextResponse.json(clubsWithDefaults);
+    return NextResponse.json(clubsWithDefaults, {
+      headers: {
+        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+        'Surrogate-Control': 'no-store'
+      }
+    });
   } catch (error) {
     console.error("Error fetching unapproved clubs:", error);
     return NextResponse.json(
