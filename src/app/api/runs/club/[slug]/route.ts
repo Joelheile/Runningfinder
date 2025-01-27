@@ -39,7 +39,7 @@ export async function GET(
     console.error("Error fetching runs:", error);
     return NextResponse.json(
       { error: "Failed to fetch runs" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

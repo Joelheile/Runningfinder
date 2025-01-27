@@ -27,20 +27,21 @@ const MapUI = ({ mapRef, selectedLocation, runs }: MapViewProps) => {
 
   return (
     <div className="fixed inset-0 w-full h-full">
-      {selectedLocation && runs.length !== 0 && isClubHeaderVisible && (() => {
-        const selectedRun = runs.find((run) => run.id === selectedLocation.id);
-        return selectedRun ? (
-          <SelectedClubHeader 
-            run={selectedRun} 
-            onClose={() => setIsClubHeaderVisible(false)}
-          />
-        ) : null;
-      })()}
-      <div 
-        className="absolute inset-0" 
-        ref={mapRef} 
-        onClick={handleMapClick}
-      />
+      {selectedLocation &&
+        runs.length !== 0 &&
+        isClubHeaderVisible &&
+        (() => {
+          const selectedRun = runs.find(
+            (run) => run.id === selectedLocation.id,
+          );
+          return selectedRun ? (
+            <SelectedClubHeader
+              run={selectedRun}
+              onClose={() => setIsClubHeaderVisible(false)}
+            />
+          ) : null;
+        })()}
+      <div className="absolute inset-0" ref={mapRef} onClick={handleMapClick} />
     </div>
   );
 };

@@ -18,17 +18,19 @@ export function useClubActions() {
     },
     onMutate: async (slug: string) => {
       // Cancel any outgoing refetches
-      await queryClient.cancelQueries({ 
+      await queryClient.cancelQueries({
         queryKey: ["unapprovedClubs"],
-        exact: true 
+        exact: true,
       });
 
       // Snapshot the previous value
-      const previousClubs = queryClient.getQueryData<Club[]>(["unapprovedClubs"]);
+      const previousClubs = queryClient.getQueryData<Club[]>([
+        "unapprovedClubs",
+      ]);
 
       // Optimistically update to the new value
       queryClient.setQueryData<Club[]>(["unapprovedClubs"], (old) => {
-        return old?.filter(club => club.slug !== slug) ?? [];
+        return old?.filter((club) => club.slug !== slug) ?? [];
       });
 
       // Return a context object with the snapshotted value
@@ -43,24 +45,24 @@ export function useClubActions() {
       if (!error) {
         // Update the cache without triggering a refetch
         queryClient.setQueryData<Club[]>(["unapprovedClubs"], (old) => {
-          return old?.filter(club => club.slug !== variables) ?? [];
+          return old?.filter((club) => club.slug !== variables) ?? [];
         });
-        
+
         // Invalidate other queries but prevent automatic refetches
         await Promise.all([
-          queryClient.invalidateQueries({ 
+          queryClient.invalidateQueries({
             queryKey: ["clubs"],
-            refetchType: 'none' 
+            refetchType: "none",
           }),
-          queryClient.invalidateQueries({ 
+          queryClient.invalidateQueries({
             queryKey: ["club"],
-            refetchType: 'none'
-          })
+            refetchType: "none",
+          }),
         ]);
-        
+
         toast.success("Club deleted successfully");
       }
-    }
+    },
   });
 
   const updateClub = useMutation({
@@ -83,24 +85,29 @@ export function useClubActions() {
       await queryClient.cancelQueries({ queryKey: ["unapprovedClubs"] });
 
       // Snapshot the previous values
-      const previousClub = queryClient.getQueryData<Club>(["clubs", newClub.slug]);
-      const previousUnapprovedClubs = queryClient.getQueryData<Club[]>(["unapprovedClubs"]);
+      const previousClub = queryClient.getQueryData<Club>([
+        "clubs",
+        newClub.slug,
+      ]);
+      const previousUnapprovedClubs = queryClient.getQueryData<Club[]>([
+        "unapprovedClubs",
+      ]);
 
       // Optimistically update
       if (newClub.slug) {
-        queryClient.setQueryData<Club>(["clubs", newClub.slug], old => {
+        queryClient.setQueryData<Club>(["clubs", newClub.slug], (old) => {
           if (!old) return old;
           return {
             ...old,
-            ...newClub
+            ...newClub,
           } as Club;
         });
       }
 
-      queryClient.setQueryData<Club[]>(["unapprovedClubs"], old => {
+      queryClient.setQueryData<Club[]>(["unapprovedClubs"], (old) => {
         if (!old) return [];
-        return old.map(club => 
-          club.slug === newClub.slug ? { ...club, ...newClub } : club
+        return old.map((club) =>
+          club.slug === newClub.slug ? { ...club, ...newClub } : club,
         );
       });
 
@@ -112,7 +119,10 @@ export function useClubActions() {
         queryClient.setQueryData(["clubs", newClub.slug], context.previousClub);
       }
       if (context?.previousUnapprovedClubs) {
-        queryClient.setQueryData(["unapprovedClubs"], context.previousUnapprovedClubs);
+        queryClient.setQueryData(
+          ["unapprovedClubs"],
+          context.previousUnapprovedClubs,
+        );
       }
       toast.error(err instanceof Error ? err.message : "Failed to update club");
     },
@@ -120,18 +130,19 @@ export function useClubActions() {
       if (!error) {
         // Invalidate affected queries but prevent automatic refetches
         await Promise.all([
-          queryClient.invalidateQueries({ 
+          queryClient.invalidateQueries({
             queryKey: ["clubs"],
-            refetchType: 'none'
+            refetchType: "none",
           }),
-          queryClient.invalidateQueries({ 
+          queryClient.invalidateQueries({
             queryKey: ["unapprovedClubs"],
-            refetchType: 'none'
+            refetchType: "none",
           }),
-          variables.slug && queryClient.invalidateQueries({ 
-            queryKey: ["clubs", variables.slug],
-            refetchType: 'none'
-          })
+          variables.slug &&
+            queryClient.invalidateQueries({
+              queryKey: ["clubs", variables.slug],
+              refetchType: "none",
+            }),
         ]);
         toast.success("Club updated successfully");
       }

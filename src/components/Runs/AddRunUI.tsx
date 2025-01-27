@@ -44,7 +44,7 @@ interface AddRunUIProps {
     lat: number,
     lng: number,
     placeUrl: string,
-    formattedAddress: string
+    formattedAddress: string,
   ) => void;
 }
 
@@ -177,13 +177,18 @@ export default function AddRunUI({
 
               <div className="space-y-2">
                 <Label>Difficulty</Label>
-                <Select value={difficulty.toUpperCase()} onValueChange={(val) => setDifficulty(val.toUpperCase())}>
+                <Select
+                  value={difficulty.toUpperCase()}
+                  onValueChange={(val) => setDifficulty(val.toUpperCase())}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="Select difficulty" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="EASY">🟢 Easy</SelectItem>
-                    <SelectItem value="INTERMEDIATE">🟡 Intermediate</SelectItem>
+                    <SelectItem value="INTERMEDIATE">
+                      🟡 Intermediate
+                    </SelectItem>
                     <SelectItem value="ADVANCED">🔴 Advanced</SelectItem>
                   </SelectContent>
                 </Select>

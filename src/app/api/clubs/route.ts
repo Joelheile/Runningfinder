@@ -20,7 +20,7 @@ export async function GET() {
       })
       .from(club);
 
-    const clubsWithFallbackAvatar = res.map((club: { avatarUrl: any; }) => ({
+    const clubsWithFallbackAvatar = res.map((club: { avatarUrl: any }) => ({
       ...club,
       avatarUrl: club.avatarUrl || DEFAULT_FALLBACK_IMAGE_URL,
     }));
@@ -44,14 +44,14 @@ export async function POST(request: Request) {
       instagramUsername,
       stravaUsername,
       avatarFileId,
-      avatarUrl
+      avatarUrl,
     } = await request.json();
 
     // Validate required fields
     if (!id || !name) {
       return NextResponse.json(
         { error: "Missing required fields: id and name are required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -67,7 +67,7 @@ export async function POST(request: Request) {
         instagramUsername: instagramUsername || null,
         stravaUsername: stravaUsername || null,
         slug: name.toLowerCase().replace(/ /g, "-"),
-        isApproved: false
+        isApproved: false,
       })
       .returning(); // Return the inserted record
 
@@ -75,25 +75,25 @@ export async function POST(request: Request) {
       console.error("Club creation failed: No record returned");
       return NextResponse.json(
         { error: "Failed to create club" },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
     return NextResponse.json(res[0]);
   } catch (error: any) {
     console.error("Error creating club:", error);
-    
+
     // Handle unique constraint violations
-    if (error.code === '23505') {
+    if (error.code === "23505") {
       return NextResponse.json(
         { error: "A club with this name already exists" },
-        { status: 409 }
+        { status: 409 },
       );
     }
 
     return NextResponse.json(
       { error: "Failed to create club", details: error.message },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

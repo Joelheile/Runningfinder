@@ -18,7 +18,7 @@ export default function MapTest() {
 
         if (mapRef.current) {
           const map = new google.maps.Map(mapRef.current, {
-            center: { lat: 52.5200, lng: 13.4050 }, // Berlin coordinates
+            center: { lat: 52.52, lng: 13.405 }, // Berlin coordinates
             zoom: 12,
           });
           console.log("Map instance created successfully!");

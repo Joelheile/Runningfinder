@@ -4,7 +4,11 @@ export function useUploadAvatar() {
   const [uploadedUrl, setUploadedUrl] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const uploadAvatar = async (file: File, avatarId: string): Promise<string> => { // Ensure it returns a Promise<string>
+  const uploadAvatar = async (
+    file: File,
+    avatarId: string,
+  ): Promise<string> => {
+    // Ensure it returns a Promise<string>
     const reader = new FileReader();
     reader.readAsArrayBuffer(file);
 

@@ -29,7 +29,7 @@ const MapPage = ({ session }: { session: Session | null }) => {
     }) => {
       setFilters(newFilters);
     },
-    []
+    [],
   ); // Empty dependency array since we only need setFilters which is stable
 
   const { data: clubs } = useFetchClubs();

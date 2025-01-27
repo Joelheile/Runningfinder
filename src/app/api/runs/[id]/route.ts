@@ -5,14 +5,18 @@ import { NextResponse } from "next/server";
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ) {
   const { id } = params;
   if (!id) {
     return NextResponse.json({ error: "ID is required" }, { status: 400 });
   }
   try {
-    const [result] = await db.select().from(runs).where(eq(runs.id, id)).limit(1);
+    const [result] = await db
+      .select()
+      .from(runs)
+      .where(eq(runs.id, id))
+      .limit(1);
 
     if (!result) {
       return NextResponse.json({ error: "Run not found" }, { status: 404 });
@@ -23,14 +27,14 @@ export async function GET(
     console.error("Error fetching run by ID:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
 
 export async function PATCH(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ) {
   try {
     const { id } = params;
@@ -39,29 +43,38 @@ export async function PATCH(
     }
 
     const body = await request.json();
-    
+
     // First check if the run exists
-    const [existingRun] = await db.select().from(runs).where(eq(runs.id, id)).limit(1);
+    const [existingRun] = await db
+      .select()
+      .from(runs)
+      .where(eq(runs.id, id))
+      .limit(1);
 
     if (!existingRun) {
       return NextResponse.json(
         { success: false, message: "Run not found" },
-        { status: 200 }  
+        { status: 200 },
       );
     }
 
     // Create an update object with only the fields that are present
     const updateData: Partial<typeof runs.$inferSelect> = {};
-    
+
     // Only allow updating these specific fields during normal updates
     if (body.name !== undefined) updateData.name = body.name;
-    if (body.datetime !== undefined) updateData.datetime = new Date(body.datetime);
+    if (body.datetime !== undefined)
+      updateData.datetime = new Date(body.datetime);
     if (body.difficulty !== undefined) updateData.difficulty = body.difficulty;
     if (body.distance !== undefined) updateData.distance = body.distance;
-    if (body.startDescription !== undefined) updateData.startDescription = body.startDescription;
-    if (body.isRecurrent !== undefined) updateData.isRecurrent = body.isRecurrent;
-    if (body.locationLat !== undefined) updateData.locationLat = body.locationLat;
-    if (body.locationLng !== undefined) updateData.locationLng = body.locationLng;
+    if (body.startDescription !== undefined)
+      updateData.startDescription = body.startDescription;
+    if (body.isRecurrent !== undefined)
+      updateData.isRecurrent = body.isRecurrent;
+    if (body.locationLat !== undefined)
+      updateData.locationLat = body.locationLat;
+    if (body.locationLng !== undefined)
+      updateData.locationLng = body.locationLng;
     if (body.mapsLink !== undefined) updateData.mapsLink = body.mapsLink;
 
     // Only allow setting isApproved if it's explicitly passed and true
@@ -83,14 +96,14 @@ export async function PATCH(
     console.error("Error updating run:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ) {
   try {
     const { id } = params;
@@ -107,9 +120,9 @@ export async function DELETE(
 
     if (!existingRun) {
       // Return 200 if run doesn't exist, as the end state is what the client wanted
-      return NextResponse.json({ 
-        success: true, 
-        message: "Run already deleted" 
+      return NextResponse.json({
+        success: true,
+        message: "Run already deleted",
       });
     }
 
@@ -123,7 +136,7 @@ export async function DELETE(
     console.error("Error deleting run:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

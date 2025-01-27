@@ -14,9 +14,9 @@ const providers = [
       params: {
         prompt: "consent",
         access_type: "offline",
-        response_type: "code"
-      }
-    }
+        response_type: "code",
+      },
+    },
   }),
   Resend({
     apiKey: process.env.NEXT_PUBLIC_AUTH_RESEND_KEY,
@@ -30,16 +30,13 @@ export const { handlers, auth } = NextAuth({
   debug: true,
   secret: process.env.NEXTAUTH_SECRET,
   session: {
-    strategy: "jwt"
+    strategy: "jwt",
   },
   callbacks: {
     async signIn({ user, account, profile }) {
-
       return true;
     },
     async jwt({ token, user, account }) {
-
-      
       if (user) {
         token.id = user.id;
         token.isAdmin = Boolean(user.isAdmin);
@@ -47,8 +44,6 @@ export const { handlers, auth } = NextAuth({
       return token;
     },
     async session({ session, token }) {
-
-      
       if (token && session.user) {
         session.user.id = token.id as string;
         session.user.isAdmin = Boolean(token.isAdmin);
@@ -56,8 +51,6 @@ export const { handlers, auth } = NextAuth({
       return session;
     },
     redirect({ url, baseUrl }) {
-
-      
       if (url.startsWith("/")) return `${baseUrl}${url}`;
       else if (new URL(url).origin === baseUrl) return url;
       return baseUrl;

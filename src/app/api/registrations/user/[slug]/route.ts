@@ -13,7 +13,7 @@ export async function GET(
       .select()
       .from(registrations)
       .where(eq(registrations.userId, params.slug));
-    
+
     console.log("Executing query:", query.toSQL());
 
     const res = await query.execute();

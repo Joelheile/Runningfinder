@@ -12,7 +12,11 @@ type UserRunsProps = {
   onUnregister: (runId: string) => void;
 };
 
-export default function UserRunsUI({ userRuns, userId, onUnregister }: UserRunsProps) {
+export default function UserRunsUI({
+  userRuns,
+  userId,
+  onUnregister,
+}: UserRunsProps) {
   const router = useRouter();
 
   return (
