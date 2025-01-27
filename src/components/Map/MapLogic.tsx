@@ -111,8 +111,8 @@ const Map = memo(({ runs, clubs }: { runs: Run[]; clubs: Club[] }) => {
                         />
                         <strong className="block">{run.name}</strong>
                         <p className="mt-2">
-                          {new Date(run.date).toLocaleDateString()} -{" "}
-                          {new Date(run.date).toLocaleTimeString([], {
+                          {new Date(run.datetime).toLocaleDateString()} -{" "}
+                          {new Date(run.datetime).toLocaleTimeString([], {
                             hour: "2-digit",
                             minute: "2-digit",
                           })}

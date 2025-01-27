@@ -5,11 +5,11 @@ import { NextResponse } from "next/server";
 
 export async function POST(
   request: Request,
-  { params }: { params: { slug: string } }
+  { params }: { params: { id: string } }
 ) {
   try {
-    const { slug } = params;
-    if (!slug) {
+    const { id } = params;
+    if (!id) {
       return NextResponse.json({ error: "ID is required" }, { status: 400 });
     }
 
@@ -18,25 +18,23 @@ export async function POST(
       .set({
         isApproved: true,
       })
-      .where(eq(runs.id, slug))
+      .where(eq(runs.id, id))
       .returning({
         id: runs.id,
         name: runs.name,
-
         clubId: runs.clubId,
         datetime: runs.datetime,
-
         weekday: runs.weekday,
         startDescription: runs.startDescription,
         locationLng: runs.locationLng,
         locationLat: runs.locationLat,
-        mapsLink: runs.mapsLink,
-        isRecurrent: runs.isRecurrent,
-        isApproved: runs.isApproved,
         distance: runs.distance,
+        difficulty: runs.difficulty,
+        isApproved: runs.isApproved,
+        isRecurrent: runs.isRecurrent,
       });
 
-    if (!approvedRun.length) {
+    if (approvedRun.length === 0) {
       return NextResponse.json(
         { error: "Run not found" },
         { status: 404 }

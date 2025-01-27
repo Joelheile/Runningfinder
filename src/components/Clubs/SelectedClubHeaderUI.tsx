@@ -73,17 +73,16 @@ export default function SelectedClubHeaderUI({
         </Link>
 
         {/* Club Name and Description */}
-        <Link href={`/clubs/${club.slug}`} className="block hover:bg-gray-50 rounded-lg">
+        <Link
+          href={`/clubs/${club.slug}`}
+          className="block hover:bg-gray-50 rounded-lg"
+        >
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-gray-900">
-                {club.name}
-              </h2>
+              <h2 className="text-2xl font-bold text-gray-900">{club.name}</h2>
               <ChevronRight className="h-6 w-6 text-gray-400" />
             </div>
-            <p className="text-gray-600 leading-relaxed">
-              {club.description}
-            </p>
+            <p className="text-gray-600 leading-relaxed">{club.description}</p>
           </div>
         </Link>
 
@@ -111,7 +110,7 @@ export default function SelectedClubHeaderUI({
               <RunCardUI
                 key={run.id}
                 id={run.id}
-                date={run.date}
+                datetime={run.datetime}
                 name={run.name}
                 distance={run.distance}
                 difficulty={run.difficulty}
@@ -123,9 +122,11 @@ export default function SelectedClubHeaderUI({
               />
             ))}
             {runs.length === 0 && (
-              <p className="text-sm text-gray-500">No upcoming runs scheduled</p>
+              <p className="text-sm text-gray-500">
+                No upcoming runs scheduled
+              </p>
             )}
-            
+
             {/* View All Runs Link */}
             <div className="mt-6 pt-4 border-t border-gray-100">
               <div className="bg-blue-50 p-4 rounded-lg hover:bg-blue-100 transition-colors">

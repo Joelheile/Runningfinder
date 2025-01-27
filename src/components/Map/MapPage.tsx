@@ -53,9 +53,8 @@ const MapPage = ({ session }: { session: Session | null }) => {
         <Alert variant="default" className="bg-white/80 backdrop-blur-sm">
           <AlertCircle className="h-4 w-4" />
           <AlertDescription className="text-xs">
-            Please verify each run before attending, as we cannot ensure the
-            event will occur at the specified date, time, or location. If you
-            find any mistakes, please report them to us :)
+            Verify each run before attending, as we can't ensure the event will
+            occur as specified. Please report any mistakes
           </AlertDescription>
         </Alert>
       </div>
