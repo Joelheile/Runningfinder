@@ -74,7 +74,28 @@ export function useScrapeRuns() {
         const existingClub = existingClubs?.find((c) => c.name === clubName);
 
         if (existingClub) {
+          console.log(`Found existing club "${clubName}" with ID ${existingClub.id}`);
           clubId = existingClub.id;
+          
+          // Update club's Instagram profile if it exists but doesn't have an avatar
+          if (!existingClub.avatarUrl && instagramUsername) {
+            try {
+              const profileData = await getProfileImage({
+                instagramUsername,
+              });
+              if (profileData) {
+                const updatedClubData = {
+                  ...existingClub,
+                  avatarUrl: profileData.profileImageUrl || existingClub.avatarUrl,
+                  description: profileData.profileDescription || existingClub.description,
+                };
+                await clubMutation.mutateAsync(updatedClubData);
+                console.log(`Updated profile for existing club "${clubName}"`);
+              }
+            } catch (error) {
+              console.error(`Failed to update Instagram profile for ${clubName}:`, error);
+            }
+          }
         } else {
           // Fetch Instagram profile for new clubs
           // First try club level username, then check first event's username as fallback
@@ -161,6 +182,7 @@ export function useScrapeRuns() {
             }
 
             const dateObject = parseDate(datetime);
+            console.log(`Processing run "${eventName}" with datetime: ${datetime}, parsed as: ${dateObject}`);
             if (!dateObject) {
               console.error(
                 `Skipping run ${eventName} because datetime is invalid:`,
@@ -174,16 +196,24 @@ export function useScrapeRuns() {
               (r: Run) =>
                 r.name === eventName &&
                 r.clubId === clubId &&
-                new Date(r.datetime).toDateString() ===
-                  dateObject.toDateString(),
+                new Date(r.datetime).toDateString() === dateObject.toDateString() &&
+                new Date(r.datetime).getHours() === dateObject.getHours() &&
+                new Date(r.datetime).getMinutes() === dateObject.getMinutes()
             );
 
             if (existingRun) {
               console.log(
-                `Run ${eventName} already exists for date ${dateObject.toDateString()}, skipping...`,
+                `Run "${eventName}" already exists for club ${clubId} on date ${dateObject.toDateString()} at ${dateObject.toLocaleTimeString()}, skipping...`
               );
               continue;
             }
+            
+            console.log(`Creating new run "${eventName}" for club ${clubId} with:`, {
+              datetime: dateObject.toISOString(),
+              location: {lat: location_latitude, lng: location_longitude},
+              difficulty,
+              distance
+            });
 
             // Extract coordinates from URL if they're not provided
             let locationLat = location_latitude;
@@ -210,32 +240,32 @@ export function useScrapeRuns() {
               }
             }
 
-            // Skip events without valid coordinates
-            if (!locationLat || !locationLng) {
-              console.log(`Skipping run "${eventName}" - missing coordinates`);
+            // Ensure coordinates are numbers
+            const numLocationLat = Number(locationLat);
+            const numLocationLng = Number(locationLng);
+
+            // Validate coordinates
+            if (isNaN(numLocationLat) || isNaN(numLocationLng)) {
+              console.log(`Skipping run "${eventName}" - invalid coordinates`);
               continue;
             }
 
             // Create a descriptive start location
-            const startDescription = location;
+            const startDescription = location || "No location description available";
 
-            // Extract time from dateObject if it exists
-            const time = dateObject
-              ? dateObject.toLocaleTimeString("en-US", {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  hour12: false,
-                })
-              : null;
+            // Validate required fields
+            if (!eventName || !dateObject || !difficulty || !clubId) {
+              console.log(`Skipping run - missing required fields:`, { eventName, dateObject, difficulty, clubId });
+              continue;
+            }
 
-            const runData = {
+            const runData: Run = {
               id: v4(),
               name: eventName,
               datetime: dateObject,
-              time,
               location: {
-                lat: locationLat,
-                lng: locationLng,
+                lat: numLocationLat,
+                lng: numLocationLng,
               },
               difficulty: difficulty.toLowerCase(),
               distance: distance === "0" || distance === "" ? "N/A" : distance,
@@ -243,9 +273,11 @@ export function useScrapeRuns() {
               clubId,
               weekday: dateObject.getDay() || 0,
               startDescription,
-              mapsLink: locationUrl,
+              mapsLink: locationUrl || null,
               isApproved: true,
             };
+
+            console.log('Attempting to create run with data:', runData);
 
             try {
               const result = await runMutation.mutateAsync(runData);
@@ -301,17 +333,7 @@ export function useScrapeRuns() {
 
   const parseDate = (dateString: string): Date | null => {
     try {
-      const [datePart, timePart] = dateString.split(" ");
-      const [day, month, year] = datePart.split(".");
-      const [hours, minutes] = timePart.split(":");
-      const datetime = new Date(
-        parseInt(year),
-        parseInt(month) - 1,
-        parseInt(day),
-        parseInt(hours),
-        parseInt(minutes),
-      );
-      return datetime;
+      return new Date(dateString);
     } catch (error) {
       console.error("Error parsing date:", error);
       return null;

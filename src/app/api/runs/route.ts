@@ -110,7 +110,7 @@ export async function POST(request: Request) {
     const body = await request.json();
 
     // Validate the date field
-    if (!body.date) {
+    if (!body.datetime) {
       return handleErrorResponse(
         new Error("Date is required"),
         "Date is required",
@@ -119,8 +119,8 @@ export async function POST(request: Request) {
     }
 
     // Ensure date is a valid Date object
-    const date = new Date(body.date);
-    if (isNaN(date.getTime())) {
+    const datetime = new Date(body.datetime);
+    if (isNaN(datetime.getTime())) {
       return handleErrorResponse(
         new Error("Invalid date"),
         "Invalid date",
@@ -128,24 +128,35 @@ export async function POST(request: Request) {
       );
     }
 
-    // Extract time in HH:mm format
-    const time = date.toLocaleTimeString("en-US", {
-      hour12: false,
-      hour: "2-digit",
-      minute: "2-digit",
-    });
+    // Validate location coordinates
+    if (!body.location?.lat || !body.location?.lng) {
+      return handleErrorResponse(
+        new Error("Location coordinates are required"),
+        "Location coordinates are required",
+        400,
+      );
+    }
 
     // Calculate weekday (1-7, where 1 is Monday)
-    const weekday = ((date.getDay() + 6) % 7) + 1;
+    const weekday = ((datetime.getDay() + 6) % 7) + 1;
 
-    // Create the run with both date and time
+    // Create the run with flattened location fields
     const run = await db
       .insert(runs)
       .values({
-        ...body,
-        date,
-        time,
+        id: body.id,
+        name: body.name,
+        difficulty: body.difficulty,
+        clubId: body.clubId,
+        datetime,
         weekday,
+        startDescription: body.startDescription,
+        locationLat: body.location.lat,
+        locationLng: body.location.lng,
+        mapsLink: body.mapsLink,
+        isRecurrent: body.isRecurrent,
+        isApproved: body.isApproved,
+        distance: body.distance,
       })
       .returning();
 
