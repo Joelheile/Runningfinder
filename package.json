@@ -61,6 +61,7 @@
     "drizzle-seed": "^0.1.2",
     "esbuild-register": "^3.6.0",
     "extend-expect": "link:@testing-library/jest-dom/extend-expect",
+    "framer-motion": "^12.0.5",
     "fs": "0.0.1-security",
     "hono": "^4.6.4",
     "imap-simple": "^5.1.0",
