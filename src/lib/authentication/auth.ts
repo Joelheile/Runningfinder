@@ -34,13 +34,11 @@ export const { handlers, auth } = NextAuth({
   },
   callbacks: {
     async signIn({ user, account, profile }) {
-      console.log('SignIn Callback:', { user, account, profile });
+
       return true;
     },
     async jwt({ token, user, account }) {
-      console.log('JWT Callback - Token:', token);
-      console.log('JWT Callback - User:', user);
-      console.log('JWT Callback - Account:', account);
+
       
       if (user) {
         token.id = user.id;
@@ -49,8 +47,7 @@ export const { handlers, auth } = NextAuth({
       return token;
     },
     async session({ session, token }) {
-      console.log('Session Callback - Session:', session);
-      console.log('Session Callback - Token:', token);
+
       
       if (token && session.user) {
         session.user.id = token.id as string;
@@ -59,8 +56,7 @@ export const { handlers, auth } = NextAuth({
       return session;
     },
     redirect({ url, baseUrl }) {
-      console.log('Redirect Callback - URL:', url);
-      console.log('Redirect Callback - Base URL:', baseUrl);
+
       
       if (url.startsWith("/")) return `${baseUrl}${url}`;
       else if (new URL(url).origin === baseUrl) return url;

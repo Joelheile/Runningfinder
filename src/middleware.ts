@@ -13,7 +13,7 @@ export async function middleware(request: NextRequest) {
     secret: process.env.NEXTAUTH_SECRET 
   });
 
-  console.log('Token retrieved:', token);
+
 
   if (!token) {
     // Not logged in, redirect to login page with callback
