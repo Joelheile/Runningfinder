@@ -13,13 +13,21 @@ export async function GET() {
       .orderBy(clubs.creationDate)  // Order by creation date to maintain consistent order
       .execute();
 
+    console.log("Raw clubs from DB:", unapprovedClubs);
+
     // Ensure all required fields are present with default values if needed
-    const clubsWithDefaults = unapprovedClubs.map((club: Club) => ({
-      ...club,
-      slug: club.slug || club.name.toLowerCase().replace(/\s+/g, '-'),
-      creationDate: club.creationDate || new Date().toISOString(),
-      avatarUrl: club.avatarUrl || '/assets/default-club-avatar.png'
-    }));
+    const clubsWithDefaults = unapprovedClubs.map((club: Club) => {
+      const clubWithDefaults = {
+        ...club,
+        slug: club.slug || club.name.toLowerCase().replace(/\s+/g, '-'),
+        creationDate: club.creationDate || new Date().toISOString(),
+        avatarUrl: club.avatarUrl || '/assets/default-club-avatar.png'
+      };
+      console.log(`Club ${club.name} avatar URL:`, clubWithDefaults.avatarUrl);
+      return clubWithDefaults;
+    });
+
+    console.log("Processed clubs with defaults:", clubsWithDefaults);
 
     return NextResponse.json(clubsWithDefaults);
   } catch (error) {
