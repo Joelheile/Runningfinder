@@ -127,7 +127,7 @@ export default function ClubDashboardUI({
               ?.sort((a, b) =>
                 a.datetime && b.datetime
                   ? a.datetime.getTime() - b.datetime.getTime()
-                  : 0
+                  : 0,
               )
               .map((run) => (
                 <RunCard
@@ -172,7 +172,7 @@ export default function ClubDashboardUI({
               ?.sort((a, b) =>
                 a.datetime && b.datetime
                   ? a.datetime.getTime() - b.datetime.getTime()
-                  : 0
+                  : 0,
               )
               .map((run) => (
                 <RunCard

@@ -103,7 +103,7 @@ export default function RunCardUI({
             mapTypeControl: false,
             streetViewControl: false,
             fullscreenControl: false,
-          }
+          },
         );
 
         const markerInstance = new window.google.maps.Marker({

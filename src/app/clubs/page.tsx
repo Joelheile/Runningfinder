@@ -18,7 +18,9 @@ export default function ClubsDashboard() {
   const filteredClubs = clubs.filter(
     (club) =>
       club.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (club.description || "").toLowerCase().includes(searchQuery.toLowerCase())
+      (club.description || "")
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase()),
   );
 
   return (

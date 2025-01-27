@@ -25,7 +25,7 @@ export default function AddClub() {
   const { getProfileImage } = useGetProfileImage();
 
   const handleInstagramUsernameChange = async (
-    e: React.ChangeEvent<HTMLInputElement>
+    e: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const username = e.target.value;
     setInstagramUsername(username);
@@ -106,7 +106,7 @@ export default function AddClub() {
           if (data.profileImageUrl) {
             console.log(
               "🖼️ Setting avatar URL from Instagram:",
-              data.profileImageUrl
+              data.profileImageUrl,
             );
             setAvatarUrl(data.profileImageUrl);
             setIsUploaded(false); // We should set this to false for Instagram avatars

@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ) {
   try {
     const { id } = params;
@@ -35,10 +35,7 @@ export async function POST(
       });
 
     if (approvedRun.length === 0) {
-      return NextResponse.json(
-        { error: "Run not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Run not found" }, { status: 404 });
     }
 
     return NextResponse.json(approvedRun[0]);
@@ -46,7 +43,7 @@ export async function POST(
     console.error("Error approving run:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

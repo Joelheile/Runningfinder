@@ -10,16 +10,16 @@ export async function GET() {
       .select()
       .from(clubs)
       .where(eq(clubs.isApproved, false))
-      .orderBy(clubs.creationDate)  // Order by creation date to maintain consistent order
+      .orderBy(clubs.creationDate) // Order by creation date to maintain consistent order
       .execute();
 
     // Ensure all required fields are present with default values if needed
     const clubsWithDefaults = unapprovedClubs.map((club: Club) => {
       const clubWithDefaults = {
         ...club,
-        slug: club.slug || club.name.toLowerCase().replace(/\s+/g, '-'),
+        slug: club.slug || club.name.toLowerCase().replace(/\s+/g, "-"),
         creationDate: club.creationDate || new Date().toISOString(),
-        avatarUrl: club.avatarUrl || '/assets/default-club-avatar.png'
+        avatarUrl: club.avatarUrl || "/assets/default-club-avatar.png",
       };
 
       return clubWithDefaults;
@@ -27,17 +27,18 @@ export async function GET() {
 
     return NextResponse.json(clubsWithDefaults, {
       headers: {
-        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
-        'Pragma': 'no-cache',
-        'Expires': '0',
-        'Surrogate-Control': 'no-store'
-      }
+        "Cache-Control":
+          "no-store, no-cache, must-revalidate, proxy-revalidate",
+        Pragma: "no-cache",
+        Expires: "0",
+        "Surrogate-Control": "no-store",
+      },
     });
   } catch (error) {
     console.error("Error fetching unapproved clubs:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

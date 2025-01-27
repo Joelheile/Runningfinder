@@ -30,8 +30,5 @@ export const useFetchRuns = (filters: {
 
       return axios.get(url).then((res) => res.data);
     },
-
-
-
   });
 };

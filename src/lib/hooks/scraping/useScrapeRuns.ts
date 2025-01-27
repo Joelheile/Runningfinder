@@ -10,12 +10,15 @@ import { useFetchClubs } from "../clubs/useFetchClubs";
 import { useFetchRuns } from "../runs/useFetchRuns";
 import useGetProfileImage from "./useGetInstagramProfile";
 
-const SCRAPING_WORKER_URL = "https://runningfinder.joel-heil-escobar.workers.dev/";
+const SCRAPING_WORKER_URL =
+  "https://runningfinder.joel-heil-escobar.workers.dev/";
 
 export function useScrapeRuns() {
   const [profileImageUrl, setProfileImageUrl] = useState<string | null>(null);
   const [profileImageId, setProfileImageId] = useState<string | null>(null);
-  const [profileDescription, setProfileDescription] = useState<string | null>(null);
+  const [profileDescription, setProfileDescription] = useState<string | null>(
+    null,
+  );
   const { getProfileImage } = useGetProfileImage();
   const clubMutation = useAddClub();
   const runMutation = useAddRun();
@@ -31,7 +34,7 @@ export function useScrapeRuns() {
       }
 
       const text = await response.text();
-        
+
       if (!text.trim()) {
         throw new Error("Empty response from worker");
       }
@@ -44,7 +47,11 @@ export function useScrapeRuns() {
         throw error;
       }
 
-      if (!scrapedData || !scrapedData.clubs || !Array.isArray(scrapedData.clubs)) {
+      if (
+        !scrapedData ||
+        !scrapedData.clubs ||
+        !Array.isArray(scrapedData.clubs)
+      ) {
         throw new Error("Invalid data structure from worker");
       }
 
@@ -52,16 +59,19 @@ export function useScrapeRuns() {
         throw new Error("No clubs found in scraped data");
       }
 
-      for (const { clubName, instagramUsername, stravaUsername, events } of scrapedData.clubs) {
+      for (const {
+        clubName,
+        instagramUsername,
+        stravaUsername,
+        events,
+      } of scrapedData.clubs) {
         let clubId = null;
         let clubProfileDescription = null;
         let clubProfileImageUrl = null;
         let clubProfileImageId = null;
 
         // Check if club already exists
-        const existingClub = existingClubs?.find(
-          (c) => c.name === clubName
-        );
+        const existingClub = existingClubs?.find((c) => c.name === clubName);
 
         if (existingClub) {
           clubId = existingClub.id;
@@ -71,13 +81,18 @@ export function useScrapeRuns() {
           const username = instagramUsername || events[0]?.instagramUsername;
           if (username) {
             try {
-              const profileData = await getProfileImage({ instagramUsername: username });
+              const profileData = await getProfileImage({
+                instagramUsername: username,
+              });
               if (profileData) {
                 clubProfileDescription = profileData.profileDescription;
                 clubProfileImageUrl = profileData.profileImageUrl;
               }
             } catch (error) {
-              console.error(`Failed to fetch Instagram profile for ${clubName}:`, error);
+              console.error(
+                `Failed to fetch Instagram profile for ${clubName}:`,
+                error,
+              );
               // Continue with default values if Instagram fetch fails
             }
           }
@@ -91,18 +106,18 @@ export function useScrapeRuns() {
             avatarFileId: clubProfileImageId || "",
             instagramUsername: instagramUsername || null,
             stravaUsername: stravaUsername || null,
-            slug: clubName.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+            slug: clubName.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
             creationDate: new Date().toISOString(),
-            isApproved: false
+            isApproved: false,
           };
 
           try {
             const result = await clubMutation.mutateAsync(clubData);
-            
+
             if (!result || !result.id) {
-              throw new Error('Club creation failed: No club ID returned');
+              throw new Error("Club creation failed: No club ID returned");
             }
-            
+
             clubId = result.id;
           } catch (error: any) {
             console.error("Failed to add club:", error);
@@ -113,8 +128,13 @@ export function useScrapeRuns() {
 
         // Verify clubId before processing events
         if (!clubId) {
-          console.error(`No valid clubId for "${clubName}". Existing club:`, existingClub);
-          toast.error(`Failed to process runs for ${clubName}: Missing club ID`);
+          console.error(
+            `No valid clubId for "${clubName}". Existing club:`,
+            existingClub,
+          );
+          toast.error(
+            `Failed to process runs for ${clubName}: Missing club ID`,
+          );
           continue;
         }
 
@@ -134,25 +154,34 @@ export function useScrapeRuns() {
 
           try {
             if (!datetime) {
-              console.error(`Skipping run ${eventName} because datetime is missing`);
+              console.error(
+                `Skipping run ${eventName} because datetime is missing`,
+              );
               continue;
             }
 
             const dateObject = parseDate(datetime);
             if (!dateObject) {
-              console.error(`Skipping run ${eventName} because datetime is invalid:`, datetime);
+              console.error(
+                `Skipping run ${eventName} because datetime is invalid:`,
+                datetime,
+              );
               continue;
             }
 
             // Check if run already exists first
-            const existingRun = existingRuns?.find((r: Run) => 
-              r.name === eventName && 
-              r.clubId === clubId && 
-              new Date(r.datetime).toDateString() === dateObject.toDateString()
+            const existingRun = existingRuns?.find(
+              (r: Run) =>
+                r.name === eventName &&
+                r.clubId === clubId &&
+                new Date(r.datetime).toDateString() ===
+                  dateObject.toDateString(),
             );
 
             if (existingRun) {
-              console.log(`Run ${eventName} already exists for date ${dateObject.toDateString()}, skipping...`);
+              console.log(
+                `Run ${eventName} already exists for date ${dateObject.toDateString()}, skipping...`,
+              );
               continue;
             }
 
@@ -162,14 +191,22 @@ export function useScrapeRuns() {
 
             // If coordinates aren't in the event data, try to extract from URL
             if ((!locationLat || !locationLng) && locationUrl) {
-              console.log(`Attempting to extract coordinates for ${eventName} from URL:`, locationUrl);
+              console.log(
+                `Attempting to extract coordinates for ${eventName} from URL:`,
+                locationUrl,
+              );
               const coordinates = await extractCoordinatesFromUrl(locationUrl);
               if (coordinates) {
                 locationLat = coordinates.lat;
                 locationLng = coordinates.lng;
-                console.log(`Successfully extracted coordinates for ${eventName}:`, coordinates);
+                console.log(
+                  `Successfully extracted coordinates for ${eventName}:`,
+                  coordinates,
+                );
               } else {
-                console.log(`Failed to extract coordinates from URL for ${eventName}`);
+                console.log(
+                  `Failed to extract coordinates from URL for ${eventName}`,
+                );
               }
             }
 
@@ -180,11 +217,15 @@ export function useScrapeRuns() {
             }
 
             // Create a descriptive start location
-            const startDescription = location
+            const startDescription = location;
 
             // Extract time from dateObject if it exists
-            const time = dateObject ? 
-              dateObject.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false }) 
+            const time = dateObject
+              ? dateObject.toLocaleTimeString("en-US", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  hour12: false,
+                })
               : null;
 
             const runData = {
@@ -194,7 +235,7 @@ export function useScrapeRuns() {
               time,
               location: {
                 lat: locationLat,
-                lng: locationLng
+                lng: locationLng,
               },
               difficulty: difficulty.toLowerCase(),
               distance: distance === "0" || distance === "" ? "N/A" : distance,
@@ -203,7 +244,7 @@ export function useScrapeRuns() {
               weekday: dateObject.getDay() || 0,
               startDescription,
               mapsLink: locationUrl,
-              isApproved: true
+              isApproved: true,
             };
 
             try {
@@ -227,29 +268,33 @@ export function useScrapeRuns() {
     }
   };
 
-  async function extractCoordinatesFromUrl(url: string): Promise<{ lat: number; lng: number } | null> {
+  async function extractCoordinatesFromUrl(
+    url: string,
+  ): Promise<{ lat: number; lng: number } | null> {
     try {
       // Make a request to your worker endpoint with the location URL
-      const response = await fetch(`${SCRAPING_WORKER_URL}location?url=${encodeURIComponent(url)}`);
-      
+      const response = await fetch(
+        `${SCRAPING_WORKER_URL}location?url=${encodeURIComponent(url)}`,
+      );
+
       if (!response.ok) {
-        console.error('Worker response not ok:', response.status);
+        console.error("Worker response not ok:", response.status);
         return null;
       }
 
       const data = await response.json();
-      console.log('Worker response:', data);
+      console.log("Worker response:", data);
 
       if (data && data.latitude && data.longitude) {
         return {
           lat: parseFloat(data.latitude),
-          lng: parseFloat(data.longitude)
+          lng: parseFloat(data.longitude),
         };
       }
 
       return null;
     } catch (error) {
-      console.error('Failed to extract coordinates from worker:', error);
+      console.error("Failed to extract coordinates from worker:", error);
       return null;
     }
   }
@@ -264,7 +309,7 @@ export function useScrapeRuns() {
         parseInt(month) - 1,
         parseInt(day),
         parseInt(hours),
-        parseInt(minutes)
+        parseInt(minutes),
       );
       return datetime;
     } catch (error) {

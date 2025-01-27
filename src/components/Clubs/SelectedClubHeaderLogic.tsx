@@ -29,7 +29,8 @@ export default function SelectedClubHeaderLogic({
 
   const { data: runs } = useFetchRunsByClubId(club?.id || "");
   console.log("runs", runs);
-  const futureRuns = runs?.filter((run: Run) => run.datetime > new Date()) || [];
+  const futureRuns =
+    runs?.filter((run: Run) => run.datetime > new Date()) || [];
 
   if (isLoading) {
     return <ClubHeaderSkeleton />;

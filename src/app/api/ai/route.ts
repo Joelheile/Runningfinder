@@ -19,13 +19,15 @@ export async function POST(request: Request) {
       ],
     });
 
-    return answer; 
+    return answer;
   };
 
   const answer = await responseGenerate(message);
 
-  return new Response(JSON.stringify({
-    message,
-    answer,
-  }));
+  return new Response(
+    JSON.stringify({
+      message,
+      answer,
+    }),
+  );
 }

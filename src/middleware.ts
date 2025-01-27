@@ -4,21 +4,22 @@ import { NextResponse } from "next/server";
 
 export async function middleware(request: NextRequest) {
   // Only check admin routes
-  if (!request.nextUrl.pathname.startsWith('/admin')) {
+  if (!request.nextUrl.pathname.startsWith("/admin")) {
     return NextResponse.next();
   }
 
-  const token = await getToken({ 
-    req: request, 
-    secret: process.env.NEXTAUTH_SECRET 
+  const token = await getToken({
+    req: request,
+    secret: process.env.NEXTAUTH_SECRET,
   });
-
-
 
   if (!token) {
     // Not logged in, redirect to login page with callback
     return NextResponse.redirect(
-      new URL(`/api/auth/signin?callbackUrl=${encodeURIComponent(request.url)}`, request.url)
+      new URL(
+        `/api/auth/signin?callbackUrl=${encodeURIComponent(request.url)}`,
+        request.url,
+      ),
     );
   }
 
@@ -31,7 +32,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    "/admin/:path*",
-  ]
+  matcher: ["/admin/:path*"],
 };
