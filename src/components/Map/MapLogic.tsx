@@ -156,7 +156,18 @@ const Map = memo(({ runs, clubs }: { runs: Run[]; clubs: Club[] }) => {
     };
 
     updateMarkers();
-  }, [clubs, runs]);
+  }, [clubs, runs, markers]);
+
+  useEffect(() => {
+    if (!mapInstanceRef.current || !markers.length) return;
+
+    const bounds = new google.maps.LatLngBounds();
+    markers.forEach((marker) => {
+      bounds.extend(marker.getPosition()!);
+    });
+
+    mapInstanceRef.current.fitBounds(bounds);
+  }, [markers]);
 
   useEffect(() => {
     markers.forEach((marker) => {
