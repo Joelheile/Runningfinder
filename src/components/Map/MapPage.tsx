@@ -6,10 +6,12 @@ import { useCallback, useState } from "react";
 
 import { Session } from "next-auth";
 import Link from "next/link";
+
+import { OnboardingGuide } from "../Onboarding/OnboardingGuide";
 import FilterBar from "../Runs/FilterBarLogic";
 import { Button } from "../UI/button";
-import { RunDisclaimer } from "../UI/disclaimer";
-import { OnboardingGuide } from "../Onboarding/OnboardingGuide";
+import { RunDisclaimer } from "../disclaimer";
+
 
 const MapPage = ({ session }: { session: Session | null }) => {
   const [filters, setFilters] = useState<{
@@ -30,7 +32,7 @@ const MapPage = ({ session }: { session: Session | null }) => {
     }) => {
       setFilters(newFilters);
     },
-    [],
+    []
   ); // Empty dependency array since we only need setFilters which is stable
 
   const { data: clubs } = useFetchClubs();
