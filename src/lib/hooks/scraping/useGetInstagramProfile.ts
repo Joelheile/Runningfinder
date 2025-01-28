@@ -67,7 +67,8 @@ const useGetProfileImage = () => {
       }
 
       profileDescription = firstItem.biography || null;
-      profileImageUrl = firstItem.profilePicUrlHD || firstItem.profilePicUrl || null;
+      profileImageUrl =
+        firstItem.profilePicUrlHD || firstItem.profilePicUrl || null;
 
       if (firstItem.latestPosts) {
         recentPosts = firstItem.latestPosts.slice(0, 6).map((post: any) => ({
