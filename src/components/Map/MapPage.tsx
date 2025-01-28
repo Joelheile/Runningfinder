@@ -12,7 +12,6 @@ import FilterBar from "../Runs/FilterBarLogic";
 import { Button } from "../UI/button";
 import { RunDisclaimer } from "../disclaimer";
 
-
 const MapPage = ({ session }: { session: Session | null }) => {
   const [filters, setFilters] = useState<{
     minDistance?: number;
@@ -32,7 +31,7 @@ const MapPage = ({ session }: { session: Session | null }) => {
     }) => {
       setFilters(newFilters);
     },
-    []
+    [],
   ); // Empty dependency array since we only need setFilters which is stable
 
   const { data: clubs } = useFetchClubs();

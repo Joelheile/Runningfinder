@@ -173,7 +173,7 @@ export function useClubActions() {
   });
 
   return {
-    deleteClub,  
+    deleteClub,
     updateClub,
     approveClub,
   };

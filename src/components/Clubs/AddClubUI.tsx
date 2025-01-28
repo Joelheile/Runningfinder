@@ -133,8 +133,8 @@ export default function AddClubUI({
           ) : (
             <div className="space-y-4">
               <p className="text-sm text-muted-foreground">
-                All fields on this page are optional. Fill in what you&apos;d like to
-                share.
+                All fields on this page are optional. Fill in what you&apos;d
+                like to share.
               </p>
 
               <div className="space-y-2">
