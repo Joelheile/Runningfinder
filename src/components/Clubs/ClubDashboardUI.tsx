@@ -3,13 +3,13 @@ import { Run } from "@/lib/types/Run";
 import { ChevronLeft, Share, Trash } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { RunDisclaimer } from "../Map/disclaimer";
 import AddRunState from "../Runs/AddRunLogic";
 import RunCard from "../Runs/RunCardLogic";
 import { Button } from "../UI/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../UI/tooltip";
 import ClubCard from "./ClubCard";
 import ClubCardSkeleton from "./ClubCardSkeleton";
+import { RunDisclaimer } from "../disclaimer";
 
 interface ClubDetailUIProps {
   club?: Club;
