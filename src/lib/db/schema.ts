@@ -85,20 +85,19 @@ export const verificationTokens = pgTable(
 export const authenticators = pgTable(
   "authenticator",
   {
-    credentialID: text("credential_id").notNull(),
+    credentialId: text("credential_id").notNull(),
     userId: text("user_id")
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),
     providerAccountId: text("provider_account_id").notNull(),
     credentialPublicKey: text("credential_public_key").notNull(),
-    credentialId: text("credential_id").notNull(),
     counter: integer("counter").notNull(),
     credentialDeviceType: text("credential_device_type").notNull(),
     credentialBackedUp: boolean("credential_backed_up").notNull(),
     transports: text("transports"),
   },
   (authenticator) => ({
-    composite_pk: primaryKey(authenticator.userId, authenticator.credentialID),
+    composite_pk: primaryKey(authenticator.userId, authenticator.credentialId),
   }),
 );
 
