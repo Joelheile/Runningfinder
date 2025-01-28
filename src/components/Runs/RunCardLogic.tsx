@@ -8,7 +8,7 @@ interface RunCardProps {
   distance: string;
   locationLat: number;
   locationLng: number;
-
+  weekday: number;
   datetime: Date | null;
   startDescription: string;
   difficulty: string;

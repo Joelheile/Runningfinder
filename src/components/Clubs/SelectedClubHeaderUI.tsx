@@ -41,7 +41,7 @@ export default function SelectedClubHeaderUI({
       }
     };
     fetchInstagramData();
-  }, [club.instagramUsername]);
+  }, [club.instagramUsername, getProfileImage]);
 
   return (
     <div className="fixed top-16 right-0 z-10 w-[400px] h-[calc(100vh-4rem)] bg-white shadow-lg flex flex-col">

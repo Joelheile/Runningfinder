@@ -10,27 +10,27 @@ interface SelectedClubHeaderProps {
   onClose?: () => void;
 }
 
-export default function SelectedClubHeaderLogic({
+export function SelectedClubHeaderLogic({
   run,
   onClose,
 }: SelectedClubHeaderProps) {
   const { data, error, isLoading } = useFetchClubs();
   const [instagramSelected, setInstagramSelected] = useState(false);
 
-  if (!run.clubId) {
-    return <div>No club ID found for this run</div>;
-  }
-
   console.log("data (clubs):", data);
   console.log("run:", run);
   console.log("run.clubId:", run.clubId);
   const club = data?.find((club) => club.id === run.clubId);
   console.log("found club:", club);
-
-  const { data: runs } = useFetchRunsByClubId(club?.id || "");
+  const clubId = club?.id || "";
+  const { data: runs } = useFetchRunsByClubId(clubId);
   console.log("runs", runs);
   const futureRuns =
     runs?.filter((run: Run) => run.datetime > new Date()) || [];
+
+  if (!run.clubId) {
+    return <div>No club ID found for this run</div>;
+  }
 
   if (isLoading) {
     return <ClubHeaderSkeleton />;
