@@ -6,6 +6,7 @@ import AuthProvider from "@/components/Auth/AuthProvider";
 import Metrics from "@/components/metrics";
 import { TooltipProvider } from "@/components/UI/tooltip";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Toaster } from "react-hot-toast";
 import ReactQueryProvider from "../components/ReactQuery/ReactQueryProvider";
 const inter = Inter({ subsets: ["latin"] });
@@ -38,6 +39,7 @@ export default function RootLayout({
               {children}
               <Metrics />
               <Analytics />
+              <SpeedInsights />
             </TooltipProvider>
           </AuthProvider>
         </ReactQueryProvider>
