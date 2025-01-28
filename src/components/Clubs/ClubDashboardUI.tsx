@@ -34,11 +34,11 @@ export default function ClubDashboardUI({
   error,
   noData,
 }: ClubDetailUIProps) {
+  const router = useRouter();
+
   if (loading) return <ClubCardSkeleton />;
   if (error) return <p>Error: {error}</p>;
   if (noData) return <p>No club data available.</p>;
-
-  const router = useRouter();
 
   const {
     name,
@@ -142,6 +142,7 @@ export default function ClubDashboardUI({
                   locationLat={run.location.lat}
                   locationLng={run.location.lng}
                   slug={slug}
+                  weekday={run.weekday || 0}
                 />
               ))}
           </div>
@@ -187,6 +188,7 @@ export default function ClubDashboardUI({
                   locationLat={run.location.lat}
                   locationLng={run.location.lng}
                   slug={slug}
+                  weekday={run.weekday || 0}
                 />
               ))}
           </div>

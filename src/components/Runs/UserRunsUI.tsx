@@ -28,7 +28,7 @@ export default function UserRunsUI({
         <ChevronLeft className="stroke-primary stroke" />
       </button>
       <h1 className="text-2xl font-bold mt-5">Here are your next runs</h1>
-      <p className="text-center mb-2">Let's go, start running!</p>
+      <p className="text-center mb-2">Let&apos;s go, start running!</p>
 
       <div className=" sm:w-full xl:w-3/4 ">
         {userRuns.length == 0 && <RunCardUISkeleton />}
@@ -37,10 +37,11 @@ export default function UserRunsUI({
             <RunCard
               key={run?.id}
               id={run?.id || ""}
-              time={run?.startTime || ""}
-              distance={run?.distance || 0}
-              location={run?.location || { lat: 0, lng: 0 }}
-              intervalDay={run?.intervalDay || 0}
+              datetime={run?.datetime || ""}
+              distance={run?.distance || ""}
+              locationLat={run?.location?.lat || 0}
+              locationLng={run?.location?.lng || 0}
+              weekday={run?.weekday || 0}
               name={run?.name || ""}
               startDescription={run?.startDescription || ""}
               difficulty={run?.difficulty || ""}
@@ -48,7 +49,6 @@ export default function UserRunsUI({
               slug={run?.clubId || ""}
               isRegistered={true}
               isAdmin={false}
-              onUnregister={onUnregister}
             />
           ))}
       </div>

@@ -9,7 +9,7 @@ export function RunDisclaimer() {
         <AlertCircle className="h-4 w-4" />
         <div className="flex-1">
           <AlertDescription className="text-xs">
-            Verify each run before attending, as we can't ensure the event will
+            Verify each run before attending, as we can&apos;t ensure the event will
             occur as specified. Please report any mistakes
           </AlertDescription>
           <div className="mt-1 flex justify-end">
