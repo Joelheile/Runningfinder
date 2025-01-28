@@ -1,17 +1,16 @@
 import {
-  pgTable,
-  foreignKey,
-  text,
-  timestamp,
-  index,
-  unique,
-  integer,
-  numeric,
-  boolean,
-  primaryKey,
-  pgEnum,
+	boolean,
+	foreignKey,
+	index,
+	integer,
+	numeric,
+	pgEnum,
+	pgTable,
+	primaryKey,
+	text,
+	timestamp,
+	unique,
 } from "drizzle-orm/pg-core";
-import { sql } from "drizzle-orm";
 
 export const avatarType = pgEnum("avatarType", ["user", "club"]);
 export const role = pgEnum("role", ["member", "admin", "manager"]);
@@ -218,7 +217,6 @@ export const authenticator = pgTable(
     credentialDeviceType: text("credential_device_type").notNull(),
     credentialBackedUp: boolean("credential_backed_up").notNull(),
     transports: text("transports"),
-    credentialId: text("credentialId").notNull(),
   },
   (table) => {
     return {

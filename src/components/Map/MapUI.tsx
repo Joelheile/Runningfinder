@@ -1,6 +1,6 @@
 import { Run } from "@/lib/types/Run";
 import React, { useEffect, useState } from "react";
-import SelectedClubHeader from "../Clubs/SelectedClubHeaderLogic";
+import { SelectedClubHeaderLogic } from "../Clubs/SelectedClubHeaderLogic";
 
 interface MapViewProps {
   mapRef: React.RefObject<HTMLDivElement>;
@@ -32,10 +32,10 @@ const MapUI = ({ mapRef, selectedLocation, runs }: MapViewProps) => {
         isClubHeaderVisible &&
         (() => {
           const selectedRun = runs.find(
-            (run) => run.id === selectedLocation.id,
+            (run) => run.id === selectedLocation.id
           );
           return selectedRun ? (
-            <SelectedClubHeader
+            <SelectedClubHeaderLogic
               run={selectedRun}
               onClose={() => setIsClubHeaderVisible(false)}
             />
