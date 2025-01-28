@@ -252,10 +252,10 @@ export async function scrapeRuns() {
               continue;
             }
 
-            const numLocationLat = location_latitude ? parseFloat(location_latitude.toString()) : null;
-            const numLocationLng = location_longitude ? parseFloat(location_longitude.toString()) : null;
+            const numLocationLat = location_latitude ? parseFloat(location_latitude.toString()) : 52.52;  // Default to Berlin coordinates
+            const numLocationLng = location_longitude ? parseFloat(location_longitude.toString()) : 13.405;
 
-            const startDescription = location || "No location description available";
+            const startDescription = location ? location : "Location TBD - check club's social media for updates";
 
             // Insert the run into the database
             await db
@@ -268,8 +268,8 @@ export async function scrapeRuns() {
                 datetime: dateObject,
                 weekday: ((dateObject.getDay() + 6) % 7) + 1,
                 startDescription,
-                locationLat: numLocationLat || null,
-                locationLng: numLocationLng || null,
+                locationLat: numLocationLat,
+                locationLng: numLocationLng,
                 mapsLink: locationUrl || null,
                 isRecurrent: isRecurrent || false,
                 isApproved: true,
