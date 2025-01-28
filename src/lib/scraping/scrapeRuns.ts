@@ -149,100 +149,69 @@ export async function scrapeRuns() {
     let skippedRuns = 0;
     let addedClubs = 0;
     let updatedClubs = 0;
+    let clubId: string = ""
 
     for (const clubData of data.clubs) {
       try {
         console.log(`\nProcessing club: ${clubData.clubName}`);
         
-        // Check if club exists
-        const existingClub = existingClubs.find((c: Club) => c.id === clubData.clubName);
-        console.log(`Club ${clubData.clubName} ${existingClub ? 'exists' : 'does not exist'} in database`);
+        // Generate slug for lookup
+        const clubSlug = generateSlug(clubData.clubName);
         
-        // Initialize club data
-        let clubInsertData: any = {
-          id: v4(),
-          name: clubData.clubName,
-          slug: generateSlug(clubData.clubName),
-          creationDate: new Date(),
-          stravaUsername: clubData.stravaUsername || "",
-          instagramUsername: clubData.instagramUsername || "",
-          avatarUrl: "",
-          description: ""
-        };
-
-        // Only fetch and set Instagram data if username is provided
-        if (clubData.instagramUsername && clubData.instagramUsername.trim() !== '') {
-          console.log(`Starting Instagram data fetch for ${clubData.clubName} (${clubData.instagramUsername})...`);
-          try {
-            const instagramProfile = await getInstagramProfile(clubData.instagramUsername);
+        // Check if club exists by slug
+        const existingClub = existingClubs.find((c: Club) => c.slug === clubSlug);
+        if (existingClub) {
+            console.log(`Club with slug ${clubSlug} already exists, skipping creation`);
+            clubId = existingClub.id;
+        } else {
+            console.log(`Club ${clubData.clubName} does not exist in database`);
             
-            if (instagramProfile) {
-              console.log('Instagram profile data retrieved successfully');
-              clubInsertData.avatarUrl = instagramProfile.profileImageUrl;
-              clubInsertData.description = instagramProfile.profileDescription;
+            // Initialize club data
+            let clubInsertData: any = {
+                id: v4(),
+                name: clubData.clubName,
+                slug: clubSlug,
+                creationDate: new Date(),
+                stravaUsername: clubData.stravaUsername || "",
+                instagramUsername: clubData.instagramUsername || "",
+                avatarUrl: "",
+                description: ""
+            };
+
+            // Only fetch and set Instagram data if username is provided
+            if (clubData.instagramUsername && clubData.instagramUsername.trim() !== '') {
+                console.log(`Starting Instagram data fetch for ${clubData.clubName} (${clubData.instagramUsername})...`);
+                try {
+                    const instagramProfile = await getInstagramProfile(clubData.instagramUsername);
+                    
+                    if (instagramProfile) {
+                        console.log('Instagram profile data retrieved successfully');
+                        clubInsertData.avatarUrl = instagramProfile.profileImageUrl;
+                        clubInsertData.description = instagramProfile.profileDescription;
+                    } else {
+                        console.log('No Instagram profile data available');
+                    }
+                } catch (error) {
+                    console.error(`Error fetching Instagram data for ${clubData.clubName}:`, error);
+                }
             } else {
-              console.log('No Instagram profile data available');
+                console.log('No Instagram username provided, skipping profile fetch');
             }
-          } catch (error) {
-            console.error(`Error fetching Instagram data for ${clubData.clubName}:`, error);
-          }
-        } else {
-          console.log('No Instagram username provided, skipping profile fetch');
-        }
 
-        let clubId: string;
-        if (!existingClub) {
-          // Create new club
-          console.log(`Creating new club: ${clubData.clubName} with slug: ${clubInsertData.slug}`);
-          try {
-            await db.insert(clubs).values(clubInsertData);
-            const newClub = await db.select().from(clubs).where(eq(clubs.name, clubData.clubName)).limit(1);
-            clubId = newClub[0].id;
-            console.log(`Successfully created club: ${clubData.clubName}`);
-            addedClubs++;
-          } catch (error) {
-            console.error(`Failed to create club ${clubData.clubName}:`, error);
-            if (error instanceof Error) {
-              console.error('Error details:', error.message);
-            }
-            continue; // Skip processing events for this club
-          }
-        } else {
-          clubId = existingClub.id;
-          // Update existing club with new Instagram data only if Instagram username exists
-          if (clubData.instagramUsername && clubData.instagramUsername.trim() !== '') {
-            console.log(`Updating existing club: ${clubData.clubName} with Instagram data`);
+            // Create new club
+            console.log(`Creating new club: ${clubData.clubName} with slug: ${clubInsertData.slug}`);
             try {
-              const updateData: {
-                instagramUsername?: string;
-                stravaUsername?: string | null;
-                avatarUrl?: string | null;
-                description?: string | null;
-              } = {
-                instagramUsername: clubData.instagramUsername,
-                stravaUsername: clubData.stravaUsername || null,
-              };
-              
-              // Only include Instagram data if it was successfully fetched
-              if (clubInsertData.avatarUrl) {
-                updateData.avatarUrl = clubInsertData.avatarUrl;
-              }
-              if (clubInsertData.description) {
-                updateData.description = clubInsertData.description;
-              }
-              
-              await db.update(clubs)
-                .set(updateData)
-                .where(eq(clubs.id, existingClub.id));
-              console.log(`Successfully updated club: ${clubData.clubName}`);
-              updatedClubs++;
-            } catch (error) {
-              console.error(`Failed to update club ${clubData.clubName}:`, error);
-              // Continue processing events even if update fails
+                await db.insert(clubs).values(clubInsertData);
+                const newClub = await db.select().from(clubs).where(eq(clubs.name, clubData.clubName)).limit(1);
+                clubId = newClub[0].id;
+                console.log(`Successfully created club: ${clubData.clubName}`);
+                addedClubs++;
+            } catch (error: any) {
+                console.error(`Failed to create club ${clubData.clubName}:`, error);
+                throw error;
             }
-          }
         }
-
+        
         // Process events for this club
         console.log(`Processing ${clubData.events.length} events for ${clubData.clubName}`);
         for (const event of clubData.events) {
