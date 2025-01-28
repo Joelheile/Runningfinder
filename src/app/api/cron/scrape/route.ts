@@ -14,17 +14,19 @@ export async function POST(request: Request) {
     console.log("Environment check:");
     console.log("- CRON_SECRET:", process.env.CRON_SECRET ? "✓" : "✗");
     console.log("- APIFY_KEY:", process.env.APIFY_KEY ? "✓" : "✗");
-    
+
     // Run the scraper
     await scrapeRuns();
-    
+
     console.log("Scraping completed successfully");
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Scraping failed with error:", error);
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : "Failed to scrape runs" },
-      { status: 500 }
+      {
+        error: error instanceof Error ? error.message : "Failed to scrape runs",
+      },
+      { status: 500 },
     );
   }
 }

@@ -78,7 +78,7 @@ export default function UnapprovedClubs() {
     // Optimistically update the UI
     queryClient.setQueryData<Club[]>(
       ["clubs", "unapproved"],
-      (old) => old?.filter((club) => club.slug !== slug) ?? []
+      (old) => old?.filter((club) => club.slug !== slug) ?? [],
     );
     approveClub.mutate(slug, {
       onError: () => {

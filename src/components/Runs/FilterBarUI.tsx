@@ -77,7 +77,7 @@ export default function FilterBarUI({
                         setSelectedDays(
                           selectedDays.includes(day.value)
                             ? selectedDays.filter((d) => d !== day.value)
-                            : [...selectedDays, day.value]
+                            : [...selectedDays, day.value],
                         )
                       }
                       className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all border ${
