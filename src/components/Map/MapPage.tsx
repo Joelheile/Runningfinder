@@ -4,7 +4,6 @@ import { useFetchClubs } from "@/lib/hooks/clubs/useFetchClubs";
 import { useFetchRuns } from "@/lib/hooks/runs/useFetchRuns";
 import { useCallback, useState } from "react";
 
-import { Session } from "next-auth";
 import Link from "next/link";
 
 import { OnboardingGuide } from "../Onboarding/OnboardingGuide";
@@ -34,8 +33,7 @@ const MapPage = () => {
     []
   ); // Empty dependency array since we only need setFilters which is stable
 
-  const { data: clubs } = useFetchClubs();
-
+ 
   return (
     <div className="fixed inset-0 overflow-hidden">
       <OnboardingGuide />
@@ -54,8 +52,7 @@ const MapPage = () => {
 
       <RunDisclaimer />
 
-      <Map runs={runs || []} clubs={clubs || []} />
-     
+      <Map runs={runs || []}  />
     </div>
   );
 };
