@@ -1,4 +1,3 @@
-import { useUploadAvatar } from "../avatars/useUploadAvatar";
 
 interface InstagramPost {
   url: string;
