@@ -7,7 +7,7 @@ interface MapLocationPickerProps {
     lat: number,
     lng: number,
     placeUrl: string,
-    formattedAddress: string,
+    formattedAddress: string
   ) => void;
   onCancel: () => void;
   location: { lat: number; lng: number };
@@ -30,7 +30,7 @@ export default function MapLocationPicker({
   const [marker, setMarker] = useState<google.maps.Marker | null>(null);
   const mapRef = useRef<HTMLDivElement>(null);
   const searchService = useRef<google.maps.places.AutocompleteService | null>(
-    null,
+    null
   );
   const placesService = useRef<google.maps.places.PlacesService | null>(null);
 
@@ -55,7 +55,7 @@ export default function MapLocationPicker({
             mapTypeControl: false,
             streetViewControl: false,
             fullscreenControl: false,
-          },
+          }
         );
 
         const markerInstance = new window.google.maps.Marker({
@@ -84,7 +84,7 @@ export default function MapLocationPicker({
         searchService.current =
           new window.google.maps.places.AutocompleteService();
         placesService.current = new window.google.maps.places.PlacesService(
-          mapInstance,
+          mapInstance
         );
       } catch (error) {
         console.error("Error initializing map:", error);
@@ -128,12 +128,12 @@ export default function MapLocationPicker({
             predictions.map((prediction) => ({
               place_id: prediction.place_id,
               description: prediction.description,
-            })),
+            }))
           );
         } else {
           setSearchResults([]);
         }
-      },
+      }
     );
   };
 
@@ -163,12 +163,12 @@ export default function MapLocationPicker({
             lat,
             lng,
             placeUrl,
-            place.name || place.formatted_address || "",
+            place.name || place.formatted_address || ""
           );
           setSearchValue(place.name || "");
           setSearchResults([]);
         }
-      },
+      }
     );
   };
 
