@@ -1,6 +1,5 @@
 "use client";
 import Map from "@/components/Map/MapLogic";
-import { useFetchClubs } from "@/lib/hooks/clubs/useFetchClubs";
 import { useFetchRuns } from "@/lib/hooks/runs/useFetchRuns";
 import { useCallback, useState } from "react";
 
@@ -30,11 +29,11 @@ const MapPage = () => {
     }) => {
       setFilters(newFilters);
     },
-    [],
+    []
   ); // Empty dependency array since we only need setFilters which is stable
 
   return (
-    <div className="fixed inset-0 overflow-hidden">
+    <div className="fixed inset-0 overflow-hidden isolate">
       <OnboardingGuide />
       <FilterBar onFilterChange={handleFilterChange} />
       <div className="absolute z-10 bottom-5 right-1/2 left-1/2 grid-flow-row text-center">
