@@ -153,22 +153,58 @@ export function useClubActions() {
     mutationFn: async (slug: string) => {
       const response = await fetch(`/api/clubs/${slug}/approve`, {
         method: "POST",
+        headers: {
+          'Cache-Control': 'no-cache',
+        },
       });
+      
       if (!response.ok) {
         const error = await response.json();
         throw new Error(error.message || "Failed to approve club");
       }
-      return response.json();
+      
+      const data = await response.json();
+      console.log('Approval response:', data);
+      
+      if (!data.isApproved) {
+        throw new Error('Club was not properly approved');
+      }
+      
+      return data;
     },
-    onSuccess: () => {
-      // Invalidate all club-related queries to ensure fresh data
-      queryClient.invalidateQueries({ queryKey: ["unapprovedClubs"] });
-      queryClient.invalidateQueries({ queryKey: ["clubs"] });
-      queryClient.invalidateQueries({ queryKey: ["club"] });
+    onSuccess: (data) => {
+      console.log('Mutation success, approved club:', data);
+      
+      // Remove from unapproved clubs cache
+      queryClient.setQueryData<Club[]>(['unapprovedClubs'], (old) => 
+        old?.filter(club => club.slug !== data.slug) ?? []
+      );
+      
+      // Force refetch all related queries
+      queryClient.invalidateQueries({ 
+        queryKey: ["unapprovedClubs"],
+        refetchType: "active",
+      });
+      queryClient.invalidateQueries({ 
+        queryKey: ["clubs"],
+        refetchType: "active",
+      });
+      queryClient.invalidateQueries({ 
+        queryKey: ["club"],
+        refetchType: "active",
+      });
+      
       toast.success("Club approved successfully");
     },
     onError: (error: Error) => {
+      console.error('Club approval error:', error);
       toast.error(error.message);
+      
+      // Refetch to ensure UI is in sync
+      queryClient.invalidateQueries({ 
+        queryKey: ["unapprovedClubs"],
+        refetchType: "active",
+      });
     },
   });
 

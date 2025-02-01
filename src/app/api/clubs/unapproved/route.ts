@@ -6,12 +6,22 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
+    // First, log all clubs to see their approval status
+    const allClubs = await db
+      .select()
+      .from(clubs)
+      .execute();
+
+
+    // Then get unapproved clubs with explicit false check
     const unapprovedClubs = await db
       .select()
       .from(clubs)
       .where(eq(clubs.isApproved, false))
-      .orderBy(clubs.creationDate) // Order by creation date to maintain consistent order
+      .orderBy(clubs.creationDate)
       .execute();
+
+
 
     // Ensure all required fields are present with default values if needed
     const clubsWithDefaults = unapprovedClubs.map((club: Club) => {

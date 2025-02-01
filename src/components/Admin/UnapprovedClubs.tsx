@@ -6,6 +6,7 @@ import { useClubActions } from "@/lib/hooks/clubs/useClubActions";
 import { useUnapprovedClubs } from "@/lib/hooks/clubs/useUnapprovedClubs";
 import useGetProfileImage from "@/lib/hooks/scraping/useGetInstagramProfile";
 import { Club } from "@/lib/types/Club";
+import { useQueryClient } from "@tanstack/react-query";
 import { debounce } from "lodash";
 import Image from "next/image";
 import { useEffect } from "react";
@@ -18,7 +19,6 @@ import {
   TableHeader,
   TableRow,
 } from "../UI/table";
-import { useQueryClient } from "@tanstack/react-query";
 
 export default function UnapprovedClubs() {
   const { data: clubs, isLoading, error } = useUnapprovedClubs();
@@ -74,18 +74,47 @@ export default function UnapprovedClubs() {
 
   const debouncedUpdateClub = debounce(handleUpdateClub, 500);
 
-  const handleApproveClub = (slug: string) => {
-    // Optimistically update the UI
-    queryClient.setQueryData<Club[]>(
-      ["clubs", "unapproved"],
-      (old) => old?.filter((club) => club.slug !== slug) ?? [],
-    );
-    approveClub.mutate(slug, {
-      onError: () => {
-        // On error, refetch to restore the correct state
-        queryClient.invalidateQueries({ queryKey: ["clubs", "unapproved"] });
-      },
-    });
+  const handleApproveClub = async (slug: string) => {
+    try {
+      // First remove from cache optimistically
+      queryClient.setQueryData<Club[]>(
+        ["unapprovedClubs"],
+        (old) => old?.filter((club) => club.slug !== slug) ?? []
+      );
+
+      // Perform the approval
+      const result = await approveClub.mutateAsync(slug);
+      console.log('Club approval result:', result);
+      
+      // Force immediate refetch
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: ["unapprovedClubs"],
+          refetchType: "active",
+        }),
+        queryClient.invalidateQueries({
+          queryKey: ["clubs"],
+          refetchType: "active",
+        })
+      ]);
+      
+      // Remove from cache again after server confirmation
+      queryClient.setQueryData<Club[]>(
+        ["unapprovedClubs"],
+        (old) => old?.filter((club) => club.slug !== slug) ?? []
+      );
+      
+      toast.success("Club approved successfully");
+    } catch (error) {
+      console.error("Error approving club:", error);
+      toast.error("Failed to approve club");
+      
+      // Refetch to ensure UI is in sync with server
+      await queryClient.invalidateQueries({
+        queryKey: ["unapprovedClubs"],
+        refetchType: "active"
+      });
+    }
   };
 
   useEffect(() => {
@@ -95,6 +124,8 @@ export default function UnapprovedClubs() {
       });
     }
   }, [clubs]);
+
+  console.log("unnaproved clubs", clubs);
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading unapproved clubs</div>;
@@ -118,78 +149,82 @@ export default function UnapprovedClubs() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {clubs.map((club) => (
-            <TableRow key={club.id} className="hover:bg-gray-50">
-              <TableCell className="flex flex-col items-center p-4">
-                <div className="flex justify-center w-full mb-4">
-                  <div className="relative w-24 h-24">
-                    <Image
-                      fill
-                      src={club.avatarUrl || "/assets/default-club-avatar.png"}
-                      alt={`${club.name} avatar`}
-                      className="object-cover rounded-lg"
-                    />
+          {clubs
+            .filter((club) => !club.isApproved)
+            .map((club) => (
+              <TableRow key={club.id} className="hover:bg-gray-50">
+                <TableCell className="flex flex-col items-center p-4">
+                  <div className="flex justify-center w-full mb-4">
+                    <div className="relative w-24 h-24">
+                      <Image
+                        fill
+                        src={
+                          club.avatarUrl || "/assets/default-club-avatar.png"
+                        }
+                        alt={`${club.name} avatar`}
+                        className="object-cover rounded-lg"
+                      />
+                    </div>
                   </div>
-                </div>
-                <Input
-                  className="text-center font-medium"
-                  defaultValue={club.name}
-                  onChange={(e) =>
-                    debouncedUpdateClub(club, { name: e.target.value })
-                  }
-                />
-              </TableCell>
-              <TableCell className="align-top p-4">
-                <textarea
-                  className="w-full min-h-[120px] p-2 rounded-md border border-gray-300 resize-y bg-white"
-                  defaultValue={club.description}
-                  onChange={(e) =>
-                    debouncedUpdateClub(club, { description: e.target.value })
-                  }
-                  placeholder="Club description..."
-                />
-              </TableCell>
-              <TableCell className="align-top p-4">
-                <Input
-                  placeholder="Instagram username"
-                  defaultValue={club.instagramUsername}
-                  onChange={(e) =>
-                    debouncedUpdateClub(club, {
-                      instagramUsername: e.target.value || "",
-                    })
-                  }
-                />
-              </TableCell>
-              <TableCell className="align-top p-4">
-                <Input
-                  placeholder="Strava username"
-                  defaultValue={club.stravaUsername}
-                  onChange={(e) =>
-                    debouncedUpdateClub(club, {
-                      stravaUsername: e.target.value || "",
-                    })
-                  }
-                />
-              </TableCell>
-              <TableCell className="align-top p-4">
-                <div className="flex flex-col gap-2">
-                  <Button
-                    onClick={() => handleApproveClub(club.slug)}
-                    className="w-full bg-green-600 hover:bg-green-700"
-                  >
-                    Approve
-                  </Button>
-                  <Button
-                    onClick={() => deleteClub.mutate(club.slug)}
-                    variant="destructive"
-                    className="w-full"
-                  >
-                    Delete
-                  </Button>
-                </div>
-              </TableCell>
-            </TableRow>
-          ))}
+                  <Input
+                    className="text-center font-medium"
+                    defaultValue={club.name}
+                    onChange={(e) =>
+                      debouncedUpdateClub(club, { name: e.target.value })
+                    }
+                  />
+                </TableCell>
+                <TableCell className="align-top p-4">
+                  <textarea
+                    className="w-full min-h-[120px] p-2 rounded-md border border-gray-300 resize-y bg-white"
+                    defaultValue={club.description}
+                    onChange={(e) =>
+                      debouncedUpdateClub(club, { description: e.target.value })
+                    }
+                    placeholder="Club description..."
+                  />
+                </TableCell>
+                <TableCell className="align-top p-4">
+                  <Input
+                    placeholder="Instagram username"
+                    defaultValue={club.instagramUsername}
+                    onChange={(e) =>
+                      debouncedUpdateClub(club, {
+                        instagramUsername: e.target.value || "",
+                      })
+                    }
+                  />
+                </TableCell>
+                <TableCell className="align-top p-4">
+                  <Input
+                    placeholder="Strava username"
+                    defaultValue={club.stravaUsername}
+                    onChange={(e) =>
+                      debouncedUpdateClub(club, {
+                        stravaUsername: e.target.value || "",
+                      })
+                    }
+                  />
+                </TableCell>
+                <TableCell className="align-top p-4">
+                  <div className="flex flex-col gap-2">
+                    <Button
+                      onClick={() => handleApproveClub(club.slug)}
+                      className="w-full bg-green-600 hover:bg-green-700"
+                    >
+                      Approve
+                    </Button>
+                    <Button
+                      onClick={() => deleteClub.mutate(club.slug)}
+                      variant="destructive"
+                      className="w-full"
+                    >
+                      Delete
+                    </Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
         </TableBody>
       </Table>
     </div>
