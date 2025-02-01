@@ -1,6 +1,6 @@
 import { Run } from "@/lib/types/Run";
 import React, { useEffect, useState } from "react";
-import { SelectedClubHeaderLogic } from "../Clubs/SelectedClubHeaderLogic";
+import { SelectedClubHeaderLogic } from "../Clubs/SelectedCluLogic";
 
 interface MapViewProps {
   mapRef: React.RefObject<HTMLDivElement>;
