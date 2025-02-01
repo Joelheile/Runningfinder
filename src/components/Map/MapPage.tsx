@@ -30,10 +30,9 @@ const MapPage = () => {
     }) => {
       setFilters(newFilters);
     },
-    []
+    [],
   ); // Empty dependency array since we only need setFilters which is stable
 
- 
   return (
     <div className="fixed inset-0 overflow-hidden">
       <OnboardingGuide />
@@ -52,7 +51,7 @@ const MapPage = () => {
 
       <RunDisclaimer />
 
-      <Map runs={runs || []}  />
+      <Map runs={runs || []} />
     </div>
   );
 };

@@ -61,17 +61,17 @@ export default function AddClub() {
 
   const nextStep = () => {
     if (step === 1 && !validateRequiredFields()) {
-      posthog.capture('club_creation_validation_failed', {
+      posthog.capture("club_creation_validation_failed", {
         step: step,
         missing_fields: [
-          !name.trim() ? 'name' : null,
-          !description.trim() ? 'description' : null
-        ].filter(Boolean)
+          !name.trim() ? "name" : null,
+          !description.trim() ? "description" : null,
+        ].filter(Boolean),
       });
       return;
     }
-    
-    posthog.capture('club_creation_next_step', {
+
+    posthog.capture("club_creation_next_step", {
       from_step: step,
       to_step: Math.min(step + 1, totalSteps),
       fields_completed: {
@@ -79,10 +79,10 @@ export default function AddClub() {
         has_description: !!description.trim(),
         has_instagram: !!instagramUsername.trim(),
         has_strava: !!stravaUsername.trim(),
-        has_avatar: isUploaded || !!avatarUrl
-      }
+        has_avatar: isUploaded || !!avatarUrl,
+      },
     });
-    
+
     setStep((prev) => Math.min(prev + 1, totalSteps));
   };
 
@@ -101,30 +101,30 @@ export default function AddClub() {
   };
 
   const handleClose = () => {
-    posthog.capture('club_creation_modal_closed', {
+    posthog.capture("club_creation_modal_closed", {
       step: step,
       fields_filled: {
         has_name: !!name.trim(),
         has_description: !!description.trim(),
         has_instagram: !!instagramUsername.trim(),
         has_strava: !!stravaUsername.trim(),
-        has_avatar: isUploaded || !!avatarUrl
-      }
+        has_avatar: isUploaded || !!avatarUrl,
+      },
     });
     resetForm();
     setIsOpen(false);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    posthog.capture('club_creation_submitted', {
+    posthog.capture("club_creation_submitted", {
       fields_completed: {
         has_name: !!name.trim(),
         has_description: !!description.trim(),
         has_instagram: !!instagramUsername.trim(),
         has_strava: !!stravaUsername.trim(),
-        has_avatar: isUploaded || !!avatarUrl
+        has_avatar: isUploaded || !!avatarUrl,
       },
-      time_spent: Date.now() - (window as any).__clubCreationStartTime
+      time_spent: Date.now() - (window as any).__clubCreationStartTime,
     });
     e.preventDefault();
 
@@ -201,7 +201,7 @@ export default function AddClub() {
         club_name: name,
         has_instagram: !!instagramUsername,
         has_strava: !!stravaUsername,
-        has_avatar: isUploaded || !!avatarUrl
+        has_avatar: isUploaded || !!avatarUrl,
       });
 
       toast.success("Club added successfully! 🎉", { id: creationToast });
@@ -210,15 +210,15 @@ export default function AddClub() {
       router.refresh();
     } catch (error: any) {
       console.error("❌ Error creating club:", error);
-      posthog.capture('club_creation_failed', {
-        error_message: error.message || 'Unknown error',
+      posthog.capture("club_creation_failed", {
+        error_message: error.message || "Unknown error",
         fields_completed: {
           has_name: !!name.trim(),
           has_description: !!description.trim(),
           has_instagram: !!instagramUsername.trim(),
           has_strava: !!stravaUsername.trim(),
-          has_avatar: isUploaded || !!avatarUrl
-        }
+          has_avatar: isUploaded || !!avatarUrl,
+        },
       });
       toast.error(error.message || "Failed to add club", { id: creationToast });
     }
@@ -227,7 +227,7 @@ export default function AddClub() {
   useEffect(() => {
     if (isOpen) {
       (window as any).__clubCreationStartTime = Date.now();
-      posthog.capture('club_creation_modal_opened');
+      posthog.capture("club_creation_modal_opened");
     }
   }, [isOpen]);
 
