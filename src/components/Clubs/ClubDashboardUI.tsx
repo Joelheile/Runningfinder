@@ -3,13 +3,13 @@ import { Run } from "@/lib/types/Run";
 import { ChevronLeft, Share, Trash } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { RunDisclaimer } from "../disclaimer";
 import AddRunState from "../Runs/AddRunLogic";
 import RunCard from "../Runs/RunCardLogic";
 import { Button } from "../UI/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../UI/tooltip";
 import ClubCard from "./ClubCard";
 import ClubCardSkeleton from "./ClubCardSkeleton";
-import { RunDisclaimer } from "../disclaimer";
 
 interface ClubDetailUIProps {
   club?: Club;
@@ -103,7 +103,6 @@ export default function ClubDashboardUI({
           </Tooltip>
         </div>
       </nav>
-
       <ClubCard
         avatarUrl={avatarUrl}
         name={name}
@@ -112,7 +111,6 @@ export default function ClubDashboardUI({
         stravaUsername={stravaUsername ?? ""}
         websiteUrl={websiteUrl ?? ""}
       />
-
       <div className="mt-4 px-32">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-lg sm:text-xl md:text-2xl font-semibold">
@@ -127,7 +125,7 @@ export default function ClubDashboardUI({
               ?.sort((a, b) =>
                 a.datetime && b.datetime
                   ? a.datetime.getTime() - b.datetime.getTime()
-                  : 0,
+                  : 0
               )
               .map((run) => (
                 <RunCard
@@ -162,16 +160,8 @@ export default function ClubDashboardUI({
           </div>
         )}
       </div>
-
       <RunDisclaimer />
-run
-
-
-
-
-      </div>
-
-
-
+      run
+    </div>
   );
 }
