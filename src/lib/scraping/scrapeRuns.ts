@@ -190,6 +190,7 @@ export async function scrapeRuns() {
             instagramUsername: clubData.instagramUsername || "",
             avatarUrl: "",
             description: "",
+            isApproved: false,
           };
 
           // Only fetch and set Instagram data if username is provided

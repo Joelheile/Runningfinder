@@ -20,7 +20,7 @@ const addClub = async (newClub: Club): Promise<Club> => {
     toast.error("Failed to add club");
     throw new Error("Failed to add club");
   } else {
-    toast.success("Club added successfully");
+
   }
   return response.json();
 };
