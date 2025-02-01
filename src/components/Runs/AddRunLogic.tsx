@@ -3,7 +3,8 @@ import { Club } from "@/lib/types/Club";
 import { Run } from "@/lib/types/Run";
 
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import posthog from "posthog-js";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { v4 as uuidv4 } from "uuid";
 import AddRunUI from "./AddRunUI";
@@ -21,20 +22,20 @@ export default function AddRunState({
   const [difficulty, setDifficulty] = useState(initialValues.difficulty || "");
   const [distance, setDistance] = useState(initialValues.distance || "");
   const [datetime, setDatetime] = useState<Date>(
-    initialValues.datetime || new Date(),
+    initialValues.datetime || new Date()
   );
   const [startDescription, setStartDescription] = useState(
-    initialValues.startDescription || "",
+    initialValues.startDescription || ""
   );
   const [locationLat, setLocationLat] = useState(
-    initialValues.location?.lat || 52.52,
+    initialValues.location?.lat || 52.52
   );
   const [locationLng, setLocationLng] = useState(
-    initialValues.location?.lng || 13.405,
+    initialValues.location?.lng || 13.405
   );
 
   const [isRecurrent, setIsRecurrent] = useState(
-    initialValues.isRecurrent || false,
+    initialValues.isRecurrent || false
   );
   const [showMap, setShowMap] = useState(false);
 
@@ -44,24 +45,49 @@ export default function AddRunState({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
+    // Track submission attempt
+    posthog.capture("run_creation_submitted", {
+      club_id: club.id,
+      club_name: club.name,
+      fields_completed: {
+        has_name: !!name,
+        has_difficulty: !!difficulty,
+        has_distance: !!distance,
+        has_start_description: !!startDescription,
+        has_location: !!(locationLat && locationLng),
+      },
+      time_spent: Date.now() - (window as any).__runCreationStartTime,
+    });
+
+    const validationErrors = [];
+
     if (!name) {
+      validationErrors.push("name");
       toast.error("Please enter a name for the run");
-      return;
     }
     if (!difficulty) {
+      validationErrors.push("difficulty");
       toast.error("Please select a difficulty level");
-      return;
     }
     if (!distance) {
+      validationErrors.push("distance");
       toast.error("Please enter a distance");
-      return;
     }
     if (!startDescription) {
+      validationErrors.push("start_description");
       toast.error("Please enter a start description");
-      return;
     }
     if (!locationLat || !locationLng) {
+      validationErrors.push("location");
       toast.error("Please select a location on the map");
+    }
+
+    if (validationErrors.length > 0) {
+      posthog.capture("run_creation_validation_failed", {
+        missing_fields: validationErrors,
+        club_id: club.id,
+        club_name: club.name,
+      });
       return;
     }
 
@@ -85,6 +111,18 @@ export default function AddRunState({
     };
 
     mutation.mutate(newRun);
+
+    // Track successful run creation
+    posthog.capture("run_created", {
+      run_name: name,
+      club_name: club.name,
+      club_id: club.id,
+      difficulty,
+      distance,
+      is_recurrent: isRecurrent,
+      weekday: datetime ? new Date(datetime).getDay() : null,
+    });
+
     router.push(`/clubs/${club.slug}`);
   };
 
@@ -92,12 +130,49 @@ export default function AddRunState({
     lat: number,
     lng: number,
     placeUrl: string,
-    formattedAddress: string,
+    formattedAddress: string
   ) => {
+    posthog.capture("run_location_selected", {
+      club_id: club.id,
+      club_name: club.name,
+      has_place_url: !!placeUrl,
+      location_type: formattedAddress.includes("Street")
+        ? "street"
+        : formattedAddress.includes("Park")
+          ? "park"
+          : "other",
+    });
+
     setLocationLat(lat);
     setLocationLng(lng);
     setStartDescription(formattedAddress);
   };
+
+  useEffect(() => {
+    // Track when the run creation form is opened
+    (window as any).__runCreationStartTime = Date.now();
+    posthog.capture("run_creation_started", {
+      club_id: club.id,
+      club_name: club.name,
+    });
+
+    // Track when the user leaves/closes the form
+    return () => {
+      const timeSpent = Date.now() - (window as any).__runCreationStartTime;
+      posthog.capture("run_creation_abandoned", {
+        club_id: club.id,
+        club_name: club.name,
+        time_spent: timeSpent,
+        fields_completed: {
+          has_name: !!name,
+          has_difficulty: !!difficulty,
+          has_distance: !!distance,
+          has_start_description: !!startDescription,
+          has_location: !!(locationLat && locationLng),
+        },
+      });
+    };
+  }, []);
 
   return (
     <AddRunUI
