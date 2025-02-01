@@ -1,0 +1,48 @@
+"use client";
+import UnapprovedClubs from "@/components/Admin/UnapprovedClubs";
+import UnapprovedRuns from "@/components/Admin/UnapprovedRuns";
+import MapTest from "@/components/Map/MapTest";
+import { signIn, useSession } from "next-auth/react";
+import Link from "next/link";
+import { redirect } from "next/navigation";
+import toast from "react-hot-toast";
+
+export default function AdminPage() {
+  const { data: session, status } = useSession({
+    required: true,
+    onUnauthenticated() {
+      signIn(undefined, { callbackUrl: "/admin" });
+    },
+  });
+
+  if (status === "loading") {
+    return <div>Loading...</div>;
+  }
+
+  if (!session?.user?.isAdmin) {
+    toast.error("You need to be logged in as an admin to access this page");
+    redirect("/");
+  }
+
+  return (
+    <div className="container mx-auto p-4">
+      <div className="flex flex-row ">
+        <Link href="/">
+          <h1 className="text-2xl font-bold mb-8">Admin Dashboard</h1>
+        </Link>
+      </div>
+      <div className="space-y-8">
+        <section>
+          <UnapprovedClubs />
+        </section>
+        <section>
+          <UnapprovedRuns />
+        </section>
+        <section>
+          <h2 className="text-xl font-semibold mb-4">Google Maps API Test</h2>
+          <MapTest />
+        </section>
+      </div>
+    </div>
+  );
+}

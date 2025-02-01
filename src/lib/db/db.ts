@@ -7,9 +7,7 @@ import { Pool } from "pg";
 config({ path: ".env.local" });
 
 const isTesting = process.env.NEXT_PUBLIC_TESTING === "true";
-const databaseUrl = isTesting
-  ? process.env.NEXT_PUBLIC_DB_DEV
-  : process.env.NEXT_PUBLIC_DB_PROD;
+const databaseUrl = isTesting ? process.env.DB_DEV : process.env.DB_PROD;
 
 let db: any;
 

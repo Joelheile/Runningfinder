@@ -1,127 +1,154 @@
-import { Checkbox } from "@/components/UI/checkbox";
-import { Button } from "@/components/UI/button";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/UI/popover";
-import { Slider } from "../UI/slider";
 import { weekdays } from "@/lib/weekdays";
+import { HelpCircle, X } from "lucide-react";
+import { Button } from "../UI/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../UI/tooltip";
 
 interface FilterBarUIProps {
-  allowedDistances: number[];
-  distanceIndex: number | null;
   selectedDays: number[];
-  toggleDay: (dayValue: number) => void;
-  setDistanceIndex: (index: number | null) => void;
+  setSelectedDays: (days: number[]) => void;
+  searchQuery: string;
+  setSearchQuery: (query: string) => void;
   difficulty: string | null;
-  setDifficulty: (value: string | null) => void;
+  setDifficulty: (difficulty: string | null) => void;
+  toggleDay: (dayValue: number) => void;
   resetFilters: () => void;
 }
 
+const getDifficultyInfo = (level: string) => {
+  switch (level) {
+    case "easy":
+      return {
+        icon: "🟢",
+        description:
+          "Social run, perfect for beginners. Usually under 10km at a conversational pace.",
+        style: "bg-green-100 text-green-700 border-green-300",
+        hoverStyle: "hover:bg-green-200",
+      };
+    case "intermediate":
+      return {
+        icon: "🟡",
+        description:
+          "More structured run, typically 10-15km. Good for regular runners looking for a challenge.",
+        style: "bg-yellow-100 text-yellow-700 border-yellow-300",
+        hoverStyle: "hover:bg-yellow-200",
+      };
+    case "advanced":
+      return {
+        icon: "🔴",
+        description:
+          "Technical workout (intervals, hills) or long distance run (>15km). For experienced runners.",
+        style: "bg-red-100 text-red-700 border-red-300",
+        hoverStyle: "hover:bg-red-200",
+      };
+    default:
+      return {
+        icon: "⚪",
+        description: "",
+        style: "bg-gray-100 text-gray-700",
+        hoverStyle: "hover:bg-gray-200",
+      };
+  }
+};
+
 export default function FilterBarUI({
-  allowedDistances,
-  distanceIndex,
   selectedDays,
-  toggleDay,
-  setDistanceIndex,
+  setSelectedDays,
+  searchQuery,
+  setSearchQuery,
   difficulty,
   setDifficulty,
-  resetFilters,
 }: FilterBarUIProps) {
-  const difficulties = ["easy", "intermediate", "advanced"];
+  const hasActiveFilters =
+    selectedDays.length > 0 || difficulty !== null || searchQuery !== "";
 
   return (
-    <div className="bg-white/90 backdrop-blur-sm absolute bottom-0 h-1/6 left-0 z-10 w-full text-card-foreground shadow-lg p-6 space-y-6">
-      <div className=" flex-col space-y-4">
-        <div className="flex flex-row gap-x-5 w-auto ">
-          <div className="space-y-4 flex flex-col w-1/3">
-            <label className="font-semibold text-lg">When are you free?</label>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  className="sm:w-auto overflow-hidden  text-ellipsis   text-wrap"
-                >
-                  {selectedDays.length === 0
-                    ? "Select Days"
-                    : selectedDays
-                        .sort((a, b) => a - b)
-                        .map((day) => weekdays[day - 1].name)
-                        .join(", ")}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className=" p-4">
-                <div className="space-y-2">
-                  {weekdays.map((day) => (
-                    <div
-                      key={day.value}
-                      className="flex items-center space-x-2"
+    <div className="bg-white/80 backdrop-blur-sm sticky top-0 z-10 w-full border-b border-gray-200 shadow-sm">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <div className="grid grid-cols-[1fr_auto_auto] gap-4 items-start">
+          {/* Filter elements */}
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            {/* Days Selection */}
+            <div className="flex flex-wrap gap-1.5">
+              {weekdays.map((day) => (
+                <Tooltip key={day.value}>
+                  <TooltipTrigger asChild>
+                    <button
+                      onClick={() =>
+                        setSelectedDays(
+                          selectedDays.includes(day.value)
+                            ? selectedDays.filter((d) => d !== day.value)
+                            : [...selectedDays, day.value],
+                        )
+                      }
+                      className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all border ${
+                        selectedDays.includes(day.value)
+                          ? "bg-primary text-white border-primary"
+                          : "bg-gray-100 text-gray-700 hover:bg-gray-300 border-gray-200"
+                      }`}
                     >
-                      <Checkbox
-                        id={day.name}
-                        checked={selectedDays.includes(day.value)}
-                        onCheckedChange={() => toggleDay(day.value)}
-                      />
-                      <label
-                        htmlFor={day.name}
-                        className="font-medium leading-none"
-                      >
-                        {day.name}
-                      </label>
-                    </div>
-                  ))}
-                </div>
-              </PopoverContent>
-            </Popover>
-          </div>
-          <div className="space-y-4 w-2/3">
-            <label className="font-semibold text-lg">
-              Your preferred distance (km)
-            </label>
-            <div className="p-4 border border-input bg-background hover:bg-accent hover:text-accent-foreground rounded-md">
-              <Slider
-                id="distance-filter"
-                min={0}
-                max={allowedDistances.length - 1}
-                step={1}
-                value={
-                  distanceIndex !== null
-                    ? [distanceIndex]
-                    : [allowedDistances.length - 1]
-                }
-                onValueChange={(value: number[]) => setDistanceIndex(value[0])}
-                className="w-full"
-              />
-              <div className="flex mt-2 justify-between text-sm">
-                {allowedDistances.map((value) => (
-                  <span key={value}>{value}</span>
-                ))}
-              </div>
+                      {day.name}
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{day.name}</p>
+                  </TooltipContent>
+                </Tooltip>
+              ))}
+            </div>
+
+            {/* Difficulty Selection */}
+            <div className="flex items-center gap-2">
+              {["easy", "intermediate", "advanced"].map((level) => {
+                const info = getDifficultyInfo(level);
+                return (
+                  <Tooltip key={level}>
+                    <TooltipTrigger asChild>
+                      <div className="relative group">
+                        <button
+                          onClick={() =>
+                            setDifficulty(difficulty === level ? null : level)
+                          }
+                          className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all border relative ${
+                            difficulty === level
+                              ? info.style
+                              : "bg-gray-100 text-gray-700"
+                          } ${difficulty !== level && info.hoverStyle}`}
+                        >
+                          <span className="hidden md:inline">
+                            {info.icon}{" "}
+                            {level.charAt(0).toUpperCase() + level.slice(1)}
+                          </span>
+                          <span className="md:hidden">{info.icon}</span>
+                          <HelpCircle className="w-3 h-3 absolute -top-1 -right-1 text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity" />
+                        </button>
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p className="max-w-xs text-sm">{info.description}</p>
+                    </TooltipContent>
+                  </Tooltip>
+                );
+              })}
             </div>
           </div>
 
-          <div className="space-y-4">
-            <label className="font-semibold text-lg">Select Difficulty</label>
-            <div className="flex flex-col md:flex-row justify-between">
-              <div className="flex space-x-4 mb-2 md:mb-0">
-                {difficulties.map((level) => (
-                  <button
-                    key={level}
-                    className={`py-2 px-4 rounded w-full md:w-auto ${
-                      difficulty === level
-                        ? "bg-blue-500 text-white"
-                        : "bg-gray-200"
-                    }`}
-                    onClick={() =>
-                      setDifficulty(difficulty === level ? null : level)
-                    }
-                  >
-                    {level.charAt(0).toUpperCase() + level.slice(1)}
-                  </button>
-                ))}
-              </div>
-            </div>
+          {/* Reset button */}
+          <div className="flex items-start">
+            {hasActiveFilters && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  setSelectedDays([]);
+                  setSearchQuery("");
+                  setDifficulty(null);
+                }}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                <X className="h-4 w-4 mr-1" />
+                Reset filters
+              </Button>
+            )}
           </div>
         </div>
       </div>

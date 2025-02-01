@@ -1,17 +1,17 @@
-export type Run = {
+export interface Run {
   id: string;
   name: string;
   difficulty: string;
   clubId: string;
-  date: Date | null;
+  datetime: Date;
+  weekday: number | null;
+  startDescription: string;
   location: {
     lat: number;
     lng: number;
   };
-  interval: string;
-  intervalDay: number;
-  startDescription: string;
-  startTime: string;
-  distance: number;
-  membersOnly: boolean;
-};
+  mapsLink: string | null;
+  distance: string;
+  isRecurrent: boolean;
+  isApproved: boolean;
+}

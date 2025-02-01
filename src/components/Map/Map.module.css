@@ -1,0 +1,19 @@
+.marker-label {
+  transform: translateY(-100%);
+  white-space: nowrap;
+}
+
+/* Override Google Maps InfoWindow styles */
+:global(.gm-style-iw) {
+  padding: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+:global(.gm-style-iw-d) {
+  overflow: visible !important;
+}
+
+:global(.gm-style-iw-tc) {
+  display: none !important;
+}

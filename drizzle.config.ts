@@ -5,10 +5,8 @@ config({ path: ".env.local" });
 const isTesting = process.env.NEXT_PUBLIC_TESTING === "true";
 export default defineConfig({
   dialect: "postgresql",
-  schema: "./src/lib/db/schema",
+  schema: "./src/lib/db/schema.ts",
   dbCredentials: {
-    url: isTesting
-      ? process.env.NEXT_PUBLIC_DB_DEV!
-      : process.env.NEXT_PUBLIC_DB_PROD!,
+    url: isTesting ? process.env.DB_DEV! : process.env.DB_PROD!,
   },
 });

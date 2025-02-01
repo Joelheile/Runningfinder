@@ -1,5 +1,5 @@
 import { db } from "@/lib/db/db";
-import { registrations } from "@/lib/db/schema/runs";
+import { registrations } from "@/lib/db/schema";
 
 import { and, eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
@@ -16,7 +16,6 @@ export async function GET(request: Request) {
         and(eq(registrations.userId, userId), eq(registrations.runId, runId)),
       )
       .execute();
-
     return NextResponse.json(res);
   } catch (error) {
     console.error("Error fetching registrations:", error);

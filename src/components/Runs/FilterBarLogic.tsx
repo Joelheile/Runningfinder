@@ -1,70 +1,90 @@
 "use client";
-import { useEffect, useState } from "react";
+
+import { useRouter, useSearchParams } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
 import FilterBarUI from "./FilterBarUI";
 
 interface FilterBarLogicProps {
   onFilterChange: (filters: {
-    minDistance?: number;
-    maxDistance?: number;
     days?: number[];
     difficulty?: string;
+    query?: string;
   }) => void;
 }
 
 export default function FilterBar({ onFilterChange }: FilterBarLogicProps) {
-  const allowedDistances = [5, 7, 10, 15, 21, 42];
-  const [distanceIndex, setDistanceIndex] = useState<number | null>(null);
-  const [selectedDays, setSelectedDays] = useState<number[]>([]);
-  const [difficulty, setDifficulty] = useState<string | null>(null);
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
-  const toggleDay = (dayValue: number) => {
+  // Initialize state from URL params
+  const [selectedDays, setSelectedDays] = useState<number[]>(() => {
+    const days = searchParams.get("weekdays");
+    return days ? days.split(",").map(Number) : [];
+  });
+
+  const [difficulty, setDifficulty] = useState<string | null>(() => {
+    return searchParams.get("difficulty");
+  });
+
+  const [searchQuery, setSearchQuery] = useState<string>(() => {
+    return searchParams.get("q") || "";
+  });
+
+  const toggleDay = useCallback((dayValue: number) => {
     setSelectedDays((prev) =>
       prev.includes(dayValue)
         ? prev.filter((d) => d !== dayValue)
-        : [...prev, dayValue],
+        : [...prev, dayValue].sort((a, b) => a - b),
     );
-  };
+  }, []);
 
-  const resetFilters = () => {
-    setDistanceIndex(null);
-    setSelectedDays([]);
-    setDifficulty(null);
-  };
-
+  // Update URL when filters change
   useEffect(() => {
-    const filters: {
-      minDistance?: number;
-      maxDistance?: number;
-      days?: number[];
-      difficulty?: string;
-    } = {};
-
-    if (distanceIndex !== null) {
-      filters.minDistance = 0;
-      filters.maxDistance = allowedDistances[distanceIndex];
-    }
+    const params = new URLSearchParams();
 
     if (selectedDays.length > 0) {
-      filters.days = selectedDays;
+      params.set("weekdays", selectedDays.join(","));
     }
 
     if (difficulty) {
-      filters.difficulty = difficulty;
+      params.set("difficulty", difficulty);
     }
 
+    if (searchQuery) {
+      params.set("q", searchQuery);
+    }
+
+    // Update URL without full page reload
+    const newUrl =
+      window.location.pathname +
+      (params.toString() ? `?${params.toString()}` : "");
+    router.push(newUrl, { scroll: false });
+  }, [selectedDays, difficulty, searchQuery, router]);
+
+  // Notify parent component of filter changes
+  useEffect(() => {
+    const filters = {
+      days: selectedDays.length > 0 ? selectedDays : undefined,
+      difficulty: difficulty || undefined,
+      query: searchQuery || undefined,
+    };
     onFilterChange(filters);
-  }, [distanceIndex, selectedDays, difficulty]);
+  }, [selectedDays, difficulty, searchQuery, onFilterChange]);
 
   return (
     <FilterBarUI
-      allowedDistances={allowedDistances}
-      distanceIndex={distanceIndex}
       selectedDays={selectedDays}
-      toggleDay={toggleDay}
-      setDistanceIndex={setDistanceIndex}
+      setSelectedDays={setSelectedDays}
+      searchQuery={searchQuery}
+      setSearchQuery={setSearchQuery}
       difficulty={difficulty}
       setDifficulty={setDifficulty}
-      resetFilters={resetFilters}
+      toggleDay={toggleDay}
+      resetFilters={() => {
+        setSelectedDays([]);
+        setDifficulty(null);
+        setSearchQuery("");
+      }}
     />
   );
 }
