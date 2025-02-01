@@ -15,7 +15,7 @@ export default function ClubIconBar({
 }: ClubIconBarInterface) {
   return (
     <>
-      <div className="flex gap-3 mt-3">
+      <div className="flex gap-3">
         {instagramUsername && (
           <Link href={`https://www.instagram.com/${instagramUsername}`}>
             <div className="w-6 h-6 flex items-center justify-center group cursor-pointer">
