@@ -1,5 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
 import { Club } from "@/lib/types/Club";
+import { useQuery } from "@tanstack/react-query";
 
 async function fetchUnapprovedClubs(): Promise<Club[]> {
   const response = await fetch("/api/clubs/unapproved", {
@@ -21,7 +21,7 @@ export function useUnapprovedClubs() {
   return useQuery<Club[]>({
     queryKey: ["unapprovedClubs"],
     queryFn: fetchUnapprovedClubs,
-    // Disable caching to always fetch fresh data
+
     staleTime: 0,
     gcTime: 0,
     refetchOnMount: "always",

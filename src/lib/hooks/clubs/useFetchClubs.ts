@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { Club } from "../../types/Club";
 
 const fetchClubs = async (): Promise<Club[]> => {
@@ -37,6 +37,10 @@ function useFetchClubs() {
   return useQuery({
     queryKey: ["clubs"],
     queryFn: fetchClubs,
+    staleTime: 0, // Data is immediately stale
+    gcTime: 0, // Don't cache at all
+    refetchOnMount: true, // Always refetch on mount
+    refetchOnWindowFocus: true, // Refetch when window regains focus
   });
 }
 
