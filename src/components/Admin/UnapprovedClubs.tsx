@@ -56,12 +56,23 @@ export default function UnapprovedClubs() {
             instagramUsername: data.instagramUsername,
           });
 
-          // Update with Instagram data
+          // Only update Instagram-related fields if they exist in the profile
+          const instagramData: Partial<Club> = {
+            instagramUsername: data.instagramUsername,
+          };
+
+          if (profile.profileImageUrl) {
+            instagramData.avatarUrl = profile.profileImageUrl;
+          }
+
+          if (profile.profileDescription) {
+            instagramData.description = profile.profileDescription;
+          }
+
+          // Merge with existing data
           data = {
             ...data,
-            avatarUrl:
-              profile.profileImageUrl || "/assets/default-club-avatar.png",
-            description: profile.profileDescription || club.description,
+            ...instagramData,
           };
 
           console.log("Retrieved Instagram profile data:", profile);
@@ -159,7 +170,7 @@ export default function UnapprovedClubs() {
   };
 
   useEffect(() => {
-    if (clubs) {
+    if (clubs && Array.isArray(clubs)) {
       clubs.forEach((club) => {
         console.log(`Club ${club.name} avatar URL at render:`, club.avatarUrl);
       });
@@ -170,7 +181,7 @@ export default function UnapprovedClubs() {
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading unapproved clubs</div>;
-  if (!clubs?.length) return <div>No unapproved clubs</div>;
+  if (!clubs) return <div>No unapproved clubs</div>;
 
   return (
     <div className="space-y-6">
@@ -190,7 +201,7 @@ export default function UnapprovedClubs() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {clubs
+          {(clubs ?? [])
             .filter((club) => !club.isApproved)
             .map((club) => (
               <TableRow key={club.id} className="hover:bg-gray-50">

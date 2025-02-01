@@ -143,26 +143,24 @@ export function useClubActions() {
       
       toast.error(err instanceof Error ? err.message : "Failed to update club");
     },
-    onSettled: async (data, error, variables) => {
-      if (!error) {
-        // Invalidate affected queries but prevent automatic refetches
-        await Promise.all([
-          queryClient.invalidateQueries({
-            queryKey: ["clubs"],
-            refetchType: "none",
-          }),
-          queryClient.invalidateQueries({
-            queryKey: ["unapprovedClubs"],
-            refetchType: "none",
-          }),
-          variables.slug &&
-            queryClient.invalidateQueries({
-              queryKey: ["clubs", variables.slug],
-              refetchType: "none",
-            }),
-        ]);
-        toast.success("Club updated successfully");
-      }
+    onSuccess: async (data) => {
+      // Remove all cached data
+      queryClient.removeQueries({ queryKey: ["unapprovedClubs"] });
+      queryClient.removeQueries({ queryKey: ["clubs"] });
+      
+      // Force immediate refetch
+      await Promise.all([
+        queryClient.fetchQuery({ 
+          queryKey: ["unapprovedClubs"],
+          staleTime: 0
+        }),
+        data.slug && queryClient.fetchQuery({ 
+          queryKey: ["clubs", data.slug],
+          staleTime: 0
+        })
+      ]);
+      
+      toast.success("Club updated successfully");
     },
   });
 
