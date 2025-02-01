@@ -25,31 +25,41 @@ const useGetProfileImage = () => {
     }
 
     try {
+      console.log('Fetching Instagram profile for:', instagramUsername);
+      
       const response = await fetch('/api/instagram/profile', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Cache-Control': 'no-cache' 
+        },
         body: JSON.stringify({ instagramUsername }),
       }); 
 
+      const responseData = await response.json();
+
       if (!response.ok) {
-        throw new Error(
-          `Instagram API error: ${response.status} ${response.statusText}`,
-        );
+        console.error('Instagram API error:', responseData);
+        throw new Error(responseData.error || `Instagram API error: ${response.status}`);
       }
 
-      const instagramData = await response.json();
-
-      if (!Array.isArray(instagramData)) {
+      if (!Array.isArray(responseData)) {
+        console.error('Invalid response format:', responseData);
         throw new Error("Invalid response from Instagram API");
       }
 
-      if (instagramData.length === 0) {
-        throw new Error(
-          `No Instagram profile found for username: ${instagramUsername}`,
-        );
+      if (responseData.length === 0) {
+        console.error('No profile data found for:', instagramUsername);
+        throw new Error(`No Instagram profile found for username: ${instagramUsername}`);
       }
 
-      const firstItem = instagramData[0];
+      console.log('Successfully fetched Instagram profile:', {
+        username: responseData[0].username,
+        hasImage: !!responseData[0].profilePicUrl,
+        hasDescription: !!responseData[0].biography
+      });
+
+      const firstItem = responseData[0];
       if (!firstItem) {
         throw new Error("Instagram profile data is empty");
       }
