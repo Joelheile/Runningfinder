@@ -84,16 +84,35 @@ export async function PATCH(
       );
     }
 
+    console.log('Executing update query with data:', { slug, updateData });
+    
+    // First verify the club exists
+    const existingClub = await db
+      .select()
+      .from(clubs)
+      .where(eq(clubs.slug, slug));
+
+    if (!existingClub.length) {
+      console.log('Club not found for update:', slug);
+      return NextResponse.json({ error: "Club not found" }, { status: 404 });
+    }
+
+    console.log('Existing club before update:', existingClub[0]);
+
     const updatedClub = await db
       .update(clubs)
       .set(updateData)
       .where(eq(clubs.slug, slug))
       .returning();
 
+    console.log('Update query result:', updatedClub);
+
     if (!updatedClub.length) {
-      return NextResponse.json({ error: "Club not found" }, { status: 404 });
+      console.error('Update failed - no rows returned');
+      return NextResponse.json({ error: "Update failed" }, { status: 500 });
     }
 
+    console.log('Successfully updated club:', updatedClub[0]);
     return NextResponse.json(updatedClub[0]);
   } catch (error) {
     console.error("Error updating club:", error);

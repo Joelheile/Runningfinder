@@ -67,40 +67,50 @@ export function useClubActions() {
 
   const updateClub = useMutation({
     mutationFn: async (data: Partial<Club>) => {
+      console.log('Starting club update with data:', data);
+      
       const response = await fetch(`/api/clubs/${data.slug}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
+          'Cache-Control': 'no-cache'
         },
         body: JSON.stringify(data),
       });
+
+      const responseData = await response.json();
+      
       if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || "Failed to update club");
+        console.error('Club update failed:', responseData);
+        throw new Error(responseData.error || "Failed to update club");
       }
-      return response.json();
+
+      console.log('Club update successful:', responseData);
+      return responseData;
     },
     onMutate: async (newClub: Partial<Club>) => {
+      console.log('Starting optimistic update for club:', newClub.slug);
+      
+      // Cancel any outgoing refetches
       await queryClient.cancelQueries({ queryKey: ["clubs", newClub.slug] });
       await queryClient.cancelQueries({ queryKey: ["unapprovedClubs"] });
 
       // Snapshot the previous values
-      const previousClub = queryClient.getQueryData<Club>([
-        "clubs",
-        newClub.slug,
-      ]);
-      const previousUnapprovedClubs = queryClient.getQueryData<Club[]>([
-        "unapprovedClubs",
-      ]);
+      const previousClub = queryClient.getQueryData<Club>(["clubs", newClub.slug]);
+      const previousUnapprovedClubs = queryClient.getQueryData<Club[]>(["unapprovedClubs"]);
+
+      console.log('Previous state:', { previousClub, previousUnapprovedClubs });
 
       // Optimistically update
       if (newClub.slug) {
         queryClient.setQueryData<Club>(["clubs", newClub.slug], (old) => {
           if (!old) return old;
-          return {
+          const updated = {
             ...old,
             ...newClub,
           } as Club;
+          console.log('Optimistically updated club:', updated);
+          return updated;
         });
       }
 
@@ -114,16 +124,23 @@ export function useClubActions() {
       return { previousClub, previousUnapprovedClubs };
     },
     onError: (err, newClub, context) => {
+      console.error('Update error:', err);
+      
       // Revert optimistic updates on error
       if (newClub.slug && context?.previousClub) {
+        console.log('Reverting club data to:', context.previousClub);
         queryClient.setQueryData(["clubs", newClub.slug], context.previousClub);
       }
+      
       if (context?.previousUnapprovedClubs) {
-        queryClient.setQueryData(
-          ["unapprovedClubs"],
-          context.previousUnapprovedClubs,
-        );
+        console.log('Reverting unapproved clubs to:', context.previousUnapprovedClubs);
+        queryClient.setQueryData(["unapprovedClubs"], context.previousUnapprovedClubs);
       }
+      
+      // Force refetch to ensure consistency
+      queryClient.invalidateQueries({ queryKey: ["clubs", newClub.slug] });
+      queryClient.invalidateQueries({ queryKey: ["unapprovedClubs"] });
+      
       toast.error(err instanceof Error ? err.message : "Failed to update club");
     },
     onSettled: async (data, error, variables) => {
@@ -172,38 +189,43 @@ export function useClubActions() {
       
       return data;
     },
-    onSuccess: (data) => {
-      console.log('Mutation success, approved club:', data);
-      
-      // Remove from unapproved clubs cache
-      queryClient.setQueryData<Club[]>(['unapprovedClubs'], (old) => 
-        old?.filter(club => club.slug !== data.slug) ?? []
-      );
-      
-      // Force refetch all related queries
-      queryClient.invalidateQueries({ 
-        queryKey: ["unapprovedClubs"],
-        refetchType: "active",
+    onMutate: async (slug: string) => {
+      // Cancel any outgoing refetches
+      await queryClient.cancelQueries({ queryKey: ["unapprovedClubs"] });
+
+      // Snapshot the previous value
+      const previousUnapprovedClubs = queryClient.getQueryData<Club[]>(["unapprovedClubs"]);
+
+      // Optimistically update by removing the approved club
+      queryClient.setQueryData<Club[]>(["unapprovedClubs"], (old) => {
+        if (!old) return [];
+        return old.filter((club) => club.slug !== slug);
       });
-      queryClient.invalidateQueries({ 
-        queryKey: ["clubs"],
-        refetchType: "active",
-      });
-      queryClient.invalidateQueries({ 
-        queryKey: ["club"],
-        refetchType: "active",
-      });
-      
-      toast.success("Club approved successfully");
+
+      return { previousUnapprovedClubs };
     },
-    onError: (error: Error) => {
-      console.error('Club approval error:', error);
-      toast.error(error.message);
+    onError: (err, slug, context) => {
+      // If the mutation fails, use the context returned from onMutate to roll back
+      queryClient.setQueryData(["unapprovedClubs"], context?.previousUnapprovedClubs);
+      toast.error(err instanceof Error ? err.message : "Failed to approve club");
+      console.error('Club approval error:', err);
       
       // Refetch to ensure UI is in sync
       queryClient.invalidateQueries({ 
         queryKey: ["unapprovedClubs"],
         refetchType: "active",
+      });
+    },
+    onSuccess: (data) => {
+      console.log('Mutation success, approved club:', data);
+      toast.success("Club approved successfully");
+      
+      // Remove all club-related cache and force refetch
+      queryClient.removeQueries({ queryKey: ["unapprovedClubs"] });
+      queryClient.invalidateQueries({
+        queryKey: ["unapprovedClubs"],
+        refetchType: "all",
+        exact: true
       });
     },
   });
