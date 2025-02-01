@@ -41,13 +41,6 @@ function useFetchClubs() {
 }
 
 function useFetchClubBySlug(slug: string) {
-  const queryClient = useQueryClient();
-
-  queryClient.invalidateQueries({
-    queryKey: ["clubs"],
-    refetchType: "all",
-  });
-
   return useQuery({
     queryKey: ["clubs", slug],
     queryFn: () => fetchClubById(slug),
