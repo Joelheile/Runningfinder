@@ -18,7 +18,8 @@ export async function GET() {
         websiteUrl: club.websiteUrl,
         slug: club.slug,
       })
-      .from(club);
+      .from(club)
+      .where(eq(club.isApproved, true)).orderBy(club.name)
 
     const clubsWithFallbackAvatar = res.map((club: { avatarUrl: any }) => ({
       ...club,
@@ -69,7 +70,7 @@ export async function POST(request: Request) {
         slug: name.toLowerCase().replace(/ /g, "-"),
         isApproved: false,
       })
-      .returning(); // Return the inserted record
+      .returning(); 
 
     if (!res || res.length === 0) {
       console.error("Club creation failed: No record returned");

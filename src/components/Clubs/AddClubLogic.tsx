@@ -3,11 +3,11 @@ import { useAddClub } from "@/lib/hooks/clubs/useAddClub";
 import useGetProfileImage from "@/lib/hooks/scraping/useGetInstagramProfile";
 import { Club } from "@/lib/types/Club";
 import { useRouter } from "next/navigation";
-import React, { useState, useEffect } from "react";
+import posthog from "posthog-js";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { v4 as uuidv4 } from "uuid";
 import AddClubUI from "./AddClubUI";
-import posthog from "posthog-js";
 
 export default function AddClub() {
   const [name, setName] = useState("");
@@ -26,7 +26,7 @@ export default function AddClub() {
   const { getProfileImage } = useGetProfileImage();
 
   const handleInstagramUsernameChange = async (
-    e: React.ChangeEvent<HTMLInputElement>,
+    e: React.ChangeEvent<HTMLInputElement>
   ) => {
     const username = e.target.value;
     setInstagramUsername(username);
@@ -149,7 +149,7 @@ export default function AddClub() {
           if (data.profileImageUrl) {
             console.log(
               "🖼️ Setting avatar URL from Instagram:",
-              data.profileImageUrl,
+              data.profileImageUrl
             );
             setAvatarUrl(data.profileImageUrl);
             setIsUploaded(false); // We should set this to false for Instagram avatars
@@ -204,7 +204,10 @@ export default function AddClub() {
         has_avatar: isUploaded || !!avatarUrl,
       });
 
-      toast.success("Club added successfully! 🎉", { id: creationToast });
+      toast.success(
+        "Club added successfully 🎉 It will now be reviewed by our team",
+        { id: creationToast }
+      );
       resetForm();
       setIsOpen(false);
       router.refresh();

@@ -19,7 +19,7 @@ export async function GET() {
         ...club,
         slug: club.slug || club.name.toLowerCase().replace(/\s+/g, "-"),
         creationDate: club.creationDate || new Date().toISOString(),
-        avatarUrl: club.avatarUrl || "/assets/default-club-avatar.png",
+        avatarUrl: club.avatarUrl || "/assets/default-fallback-image.png",
       };
 
       return clubWithDefaults;
