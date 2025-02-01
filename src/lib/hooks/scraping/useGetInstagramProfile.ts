@@ -10,8 +10,8 @@ interface InstagramProfile {
   recentPosts: InstagramPost[];
 }
 
-const useGetProfileImage = () => {
-  const getProfileImage = async ({
+
+  const getInstagramProfile = async ({
     instagramUsername,
   }: {
     instagramUsername: string;
@@ -92,7 +92,7 @@ const useGetProfileImage = () => {
     };
   };
 
-  return { getProfileImage };
-};
 
-export default useGetProfileImage;
+
+
+export default getInstagramProfile;                
