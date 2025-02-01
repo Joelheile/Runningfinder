@@ -1,6 +1,6 @@
 import { Club } from "@/lib/types/Club";
 import { Run } from "@/lib/types/Run";
-import { ChevronLeft, Share, Trash } from "lucide-react";
+import { ChevronLeft, Plus, Share, Trash } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { RunDisclaimer } from "../disclaimer";
@@ -60,108 +60,124 @@ export default function ClubDashboardUI({
   const pastRuns = runs?.filter((run) => run.datetime <= new Date()) || [];
 
   return (
-    <div className="flex flex-col w-screen max-w-full h-screen p-8">
-      <nav className="flex justify-between items-center">
-        <button
-          onClick={() => router.back()}
-          className="flex items-center hover:bg-slate-100 rounded-md px-2 py-1 transition-colors"
-        >
-          <div className="flex items-center hover:bg-slate-100 rounded-md px-2 py-1 transition-colors">
-            <ChevronLeft className="stroke-primary" />
-            <span className="text-primary">Back</span>
+    <div className="min-h-screen bg-gray-50">
+      {/* Top Navigation Bar */}
+      <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 px-4 sm:px-6 lg:px-8 py-4">
+        <div className="max-w-7xl mx-auto flex justify-between items-center">
+          <button
+            onClick={() => router.back()}
+            className="flex items-center hover:bg-gray-100 rounded-lg px-3 py-2 transition-colors gap-2"
+          >
+            <ChevronLeft className="stroke-primary h-5 w-5" />
+            <span className="text-primary font-medium">Back</span>
+          </button>
+          <div className="flex items-center gap-2">
+            <div className="flex gap-2">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={onShare}
+                    className="hover:bg-gray-100 rounded-lg"
+                  >
+                    <Share className="h-5 w-5" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Share club</TooltipContent>
+              </Tooltip>
+
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={onDelete}
+                    className="hover:bg-gray-100 rounded-lg"
+                  >
+                    <Trash className="h-5 w-5" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Delete club</TooltipContent>
+              </Tooltip>
+            </div>
           </div>
-        </button>
-        <div className="flex gap-3">
-          {club && <AddRunState club={club} />}
-
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={onShare}
-                className="hover:bg-slate-100"
-              >
-                <Share className="h-5 w-5" />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>Share club</TooltipContent>
-          </Tooltip>
-
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={onDelete}
-                className="hover:bg-slate-100"
-              >
-                <Trash className="h-5 w-5" />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>Delete club</TooltipContent>
-          </Tooltip>
         </div>
       </nav>
-      <ClubCard
-        avatarUrl={avatarUrl}
-        name={name}
-        description={description}
-        instagramUsername={instagramUsername ?? ""}
-        stravaUsername={stravaUsername ?? ""}
-        websiteUrl={websiteUrl ?? ""}
-      />
-      <div className="mt-4 px-32">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-lg sm:text-xl md:text-2xl font-semibold">
-            Upcoming runs
-          </h2>
-          {club && runs && runs.length > 0 && <AddRunState club={club} />}
-        </div>
 
-        {futureRuns.length > 0 ? (
-          <div className="grid grid-cols-1 gap-6 p-6">
-            {futureRuns
-              ?.sort((a, b) =>
-                a.datetime && b.datetime
-                  ? a.datetime.getTime() - b.datetime.getTime()
-                  : 0
-              )
-              .map((run) => (
-                <RunCard
-                  userId={userId}
-                  id={run.id}
-                  key={run.id}
-                  datetime={run.datetime}
-                  name={run.name}
-                  startDescription={run.startDescription}
-                  difficulty={run.difficulty}
-                  distance={run.distance}
-                  locationLat={run.location.lat}
-                  locationLng={run.location.lng}
-                  slug={slug}
-                  weekday={run.weekday || 0}
-                />
-              ))}
-          </div>
-        ) : (
-          <div className="text-center py-12">
-            <p className="text-gray-500">No runs found for this club yet.</p>
-            {userId && (
-              <p className="mt-2">
-                <Link
-                  href={`/clubs/${slug}/runs/new`}
-                  className="text-blue-500 hover:underline"
-                >
-                  Create the first run
-                </Link>
-              </p>
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
+        {/* Club Card Section */}
+        <section className="w-full">
+          <ClubCard
+            avatarUrl={avatarUrl}
+            name={name}
+            description={description}
+            instagramUsername={instagramUsername ?? ""}
+            stravaUsername={stravaUsername ?? ""}
+            websiteUrl={websiteUrl ?? ""}
+          />
+        </section>
+
+        {/* Upcoming Runs Section */}
+        <section className="pt-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+            <h2 className="text-2xl font-bold text-gray-900">Upcoming runs</h2>
+            {club && runs && runs.length > 0 && (
+              <div className="shrink-0">
+                <AddRunState club={club} />
+              </div>
             )}
           </div>
-        )}
-      </div>
-      <RunDisclaimer />
-      run
+
+          {futureRuns.length > 0 ? (
+            <div className="grid grid-cols-1 gap-6">
+              {futureRuns
+                ?.sort((a, b) =>
+                  a.datetime && b.datetime
+                    ? a.datetime.getTime() - b.datetime.getTime()
+                    : 0
+                )
+                .map((run) => (
+                  <RunCard
+                    userId={userId}
+                    id={run.id}
+                    key={run.id}
+                    datetime={run.datetime}
+                    name={run.name}
+                    startDescription={run.startDescription}
+                    difficulty={run.difficulty}
+                    distance={run.distance}
+                    locationLat={run.location.lat}
+                    locationLng={run.location.lng}
+                    slug={slug}
+                    weekday={run.weekday || 0}
+                  />
+                ))}
+            </div>
+          ) : (
+            <div className="text-center py-12 bg-gray-50 rounded-xl">
+              <p className="text-gray-600 font-medium">
+                No runs found for this club yet.
+              </p>
+              {userId && (
+                <p className="mt-2 text-gray-500">
+                  <Link
+                    href={`/clubs/${slug}/runs/new`}
+                    className="text-blue-500 hover:underline"
+                  >
+                    <Button className="w-full sm:w-auto">
+                      <Plus className="w-4 h-4 mr-2" />
+                      Create the first run
+                    </Button>
+                  </Link>
+                </p>
+              )}
+            </div>
+          )}
+        </section>
+        <RunDisclaimer />
+      </main>
     </div>
   );
 }
