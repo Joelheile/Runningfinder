@@ -46,8 +46,8 @@ export default function UnapprovedClubs() {
     refetch();
   }
 
-  async function handleClubDecline(id: string) {
-    const decline = await useDeclineClub(id);
+  async function handleClubDecline(slug: string) {
+    const decline = await useDeclineClub(slug);
     decline();
     refetch();
 
@@ -171,7 +171,7 @@ export default function UnapprovedClubs() {
                       Approve
                     </Button>
                     <Button
-                      onClick={() => handleClubDecline(club.id)}
+                      onClick={() => handleClubDecline(club.slug)}
                       variant="destructive"
                       className="w-full"
                     >

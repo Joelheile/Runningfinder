@@ -1,9 +1,9 @@
 import toast from 'react-hot-toast';
 
-const useDeclineClub = (clubId: string) => {
+const useDeclineClub = (slug: string) => {
   const declineClub = async () => {
     try {
-      const response = await fetch(`/api/clubs/${clubId}`, {
+      const response = await fetch(`/api/clubs/${slug}`, {
         method: 'DELETE',
       });
       if (response.ok) {
