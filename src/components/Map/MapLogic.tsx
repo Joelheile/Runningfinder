@@ -1,4 +1,4 @@
-import { Club } from "@/lib/types/Club";
+import { useFetchClubs } from "@/lib/hooks/clubs/useFetchClubs";
 import { Run } from "@/lib/types/Run";
 import { Loader } from "@googlemaps/js-api-loader";
 import Image from "next/image";
@@ -12,7 +12,7 @@ const loader = new Loader({
   version: "weekly",
 });
 
-const Map = memo(({ runs, clubs }: { runs: Run[]; clubs: Club[] }) => {
+const Map = memo(({ runs }: { runs: Run[] }) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<google.maps.Map | null>(null);
   const infoWindowRef = useRef<google.maps.InfoWindow | null>(null);
@@ -30,10 +30,10 @@ const Map = memo(({ runs, clubs }: { runs: Run[]; clubs: Club[] }) => {
       });
 
       const { Map } = (await loader.importLibrary(
-        "maps",
+        "maps"
       )) as google.maps.MapsLibrary;
       const { InfoWindow } = (await loader.importLibrary(
-        "maps",
+        "maps"
       )) as google.maps.MapsLibrary;
 
       const defaultCenter = { lat: 52.5155235, lng: 13.4049124 };
@@ -65,6 +65,13 @@ const Map = memo(({ runs, clubs }: { runs: Run[]; clubs: Club[] }) => {
     initMap();
   }, []); // Empty dependency array means this only runs once
 
+  const {
+    data: clubs,
+    error: clubError,
+    isLoading: clubLoading,
+  } = useFetchClubs();
+  console.log("clubs:", clubs);
+
   // Update markers when runs change
   useEffect(() => {
     const updateMarkers = async () => {
@@ -79,7 +86,7 @@ const Map = memo(({ runs, clubs }: { runs: Run[]; clubs: Club[] }) => {
 
       try {
         const { Marker } = (await loader.importLibrary(
-          "marker",
+          "marker"
         )) as google.maps.MarkerLibrary;
 
         const newMarkers: google.maps.Marker[] = runs
@@ -103,7 +110,9 @@ const Map = memo(({ runs, clubs }: { runs: Run[]; clubs: Club[] }) => {
 
             marker.addListener("click", () => {
               setSelectedLocation(run);
-              const club = clubs.find((club) => club.id === run.clubId);
+
+              const club = clubs?.find((club) => club.id === run.clubId);
+              console.log("selected club", club);
 
               if (infoWindowRef.current) {
                 infoWindowRef.current.setContent(
@@ -141,8 +150,8 @@ const Map = memo(({ runs, clubs }: { runs: Run[]; clubs: Club[] }) => {
                           {run.difficulty}
                         </span>
                       </Link>
-                    </div>,
-                  ),
+                    </div>
+                  )
                 );
                 infoWindowRef.current.open(mapInstanceRef.current, marker);
               }
@@ -150,20 +159,21 @@ const Map = memo(({ runs, clubs }: { runs: Run[]; clubs: Club[] }) => {
 
             return marker;
           })
-          .filter((marker): marker is google.maps.Marker =>
-            marker !== null && marker instanceof google.maps.Marker
+          .filter(
+            (marker): marker is google.maps.Marker =>
+              marker !== null && marker instanceof google.maps.Marker
           );
 
         // Store markers in ref
         markersRef.current = newMarkers;
       } catch (error) {
-        console.error('Error updating markers:', error);
+        console.error("Error updating markers:", error);
         markersRef.current = [];
       }
     };
 
     updateMarkers();
-  }, [runs]); // Only depend on runs changing
+  }, [runs, clubs]); 
 
   useEffect(() => {
     if (!mapInstanceRef.current || !markersRef.current.length) return;
