@@ -1,10 +1,13 @@
 "use client";
 
 import { Input } from "@/components/UI/input";
+import useApproveClub from "@/lib/hooks/scraping/useApproveClub";
+import useDeclineClub from "@/lib/hooks/scraping/useDeclineClub";
 import useFetchClubs from "@/lib/hooks/scraping/useFetchClubs";
-import { Club } from "@/lib/types/Club";
+import getInstagramProfile from "@/lib/hooks/scraping/useGetInstagramProfile";
 import Image from "next/image";
-import { useState } from "react";
+import toast from "react-hot-toast";
+import { Button } from "../UI/button";
 import {
   Table,
   TableBody,
@@ -14,19 +17,61 @@ import {
   TableRow,
 } from "../UI/table";
 
+import useUpdateAdminClub from "@/lib/hooks/scraping/useUpdateAdminClub";
+import { Club } from "@/lib/types/Club";
+
 export default function UnapprovedClubs() {
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [instagramUsername, setInstagramUsername] = useState("");
-  const [stravaUsername, setStravaUsername] = useState("");
-  const [avatarUrl, setAvatarUrl] = useState<string>(
-    "/assets/default-fallback-image.png"
-  );
-
-  const clubs: Club[] = useFetchClubs();
-
-  console.log("clubs:", clubs);
+  const { clubs, refetch } = useFetchClubs();
   if (!clubs) return <div>No unapproved clubs</div>;
+
+  const handleUpdateClub = async (slug: string, updateData: Partial<Club>) => {
+    try {
+      await useUpdateAdminClub(slug, updateData);
+
+      refetch();
+    } catch (error) {
+      console.error("Failed to update club:", error);
+      toast.error("Failed to update club");
+    }
+  };
+
+  async function handleApproveClub(id: string) {
+    const approve = await useApproveClub(id);
+    approve();
+    refetch();
+  }
+
+  async function handleClubDecline(id: string) {
+    const decline = await useDeclineClub(id);
+    decline();
+    refetch();
+  }
+
+  const handleInstagramFetch = async (slug: string, username: string) => {
+    if (!username) return;
+
+    const loadingToast = toast.loading("Fetching Instagram profile...");
+    try {
+      const instagramScrape = await getInstagramProfile({
+        instagramUsername: username,
+      });
+
+      await handleUpdateClub(slug, {
+        avatarUrl:
+          instagramScrape.profileImageUrl ||
+          "/assets/default-fallback-image.png",
+        description: instagramScrape.profileDescription || "",
+      });
+
+      toast.success("Instagram profile fetched successfully", {
+        id: loadingToast,
+      });
+      refetch();
+    } catch (error) {
+      console.error("Error fetching Instagram profile:", error);
+      toast.error("Failed to fetch Instagram profile", { id: loadingToast });
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -66,14 +111,20 @@ export default function UnapprovedClubs() {
                   <Input
                     className="text-center font-medium"
                     defaultValue={club.name}
-                    onChange={(e) => setName(e.target.value)}
+                    onChange={(e) =>
+                      handleUpdateClub(club.slug, { name: e.target.value })
+                    }
                   />
                 </TableCell>
                 <TableCell className="align-top p-4">
                   <textarea
                     className="w-full min-h-[120px] p-2 rounded-md border border-gray-300 resize-y bg-white"
                     defaultValue={club.description}
-                    onChange={(e) => setDescription(e.target.value)}
+                    onChange={(e) =>
+                      handleUpdateClub(club.slug, {
+                        description: e.target.value,
+                      })
+                    }
                     placeholder="Club description..."
                   />
                 </TableCell>
@@ -81,17 +132,30 @@ export default function UnapprovedClubs() {
                   <Input
                     placeholder="Instagram username"
                     defaultValue={club.instagramUsername}
-                    onChange={(e) => setInstagramUsername(e.target.value)}
+                    onChange={(e) =>
+                      handleUpdateClub(club.slug, {
+                        instagramUsername: e.target.value,
+                      })
+                    }
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        handleInstagramFetch(club.slug, e.currentTarget.value);
+                      }
+                    }}
                   />
                 </TableCell>
                 <TableCell className="align-top p-4">
                   <Input
                     placeholder="Strava username"
                     defaultValue={club.stravaUsername}
-                    onChange={(e) => setStravaUsername(e.target.value)}
+                    onChange={(e) =>
+                      handleUpdateClub(club.slug, {
+                        stravaUsername: e.target.value,
+                      })
+                    }
                   />
                 </TableCell>
-                {/* <TableCell className="align-top p-4">
+                <TableCell className="align-top p-4">
                   <div className="flex flex-col gap-2">
                     <Button
                       onClick={() => handleApproveClub(club.slug)}
@@ -100,14 +164,14 @@ export default function UnapprovedClubs() {
                       Approve
                     </Button>
                     <Button
-                      onClick={() => deleteClub.mutate(club.slug)}
+                      onClick={() => handleClubDecline(club.id)}
                       variant="destructive"
                       className="w-full"
                     >
                       Delete
                     </Button>
                   </div>
-                </TableCell> */}
+                </TableCell>
               </TableRow>
             ))}
         </TableBody>
