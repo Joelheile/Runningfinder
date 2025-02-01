@@ -23,6 +23,8 @@ export async function POST(
       isApproved: existingClub[0].isApproved
     });
 
+    console.log('Starting club update for slug:', params.slug);
+    
     // Update the club using Drizzle's query builder
     const updatedClub = await db
       .update(clubs)
@@ -30,13 +32,21 @@ export async function POST(
       .where(eq(clubs.slug, params.slug))
       .returning();
 
+    console.log('Update query completed. Result:', updatedClub);
+
     if (!updatedClub.length) {
+      console.error('Club update failed - no rows returned');
       throw new Error('Club update failed - no rows returned');
     }
 
-    console.log('Update result:', updatedClub[0]);
+    console.log('Updated club details:', {
+      slug: updatedClub[0].slug,
+      isApproved: updatedClub[0].isApproved,
+      updatedAt: updatedClub[0].updatedAt
+    });
 
     if (!updatedClub[0].isApproved) {
+      console.error('Club update failed - isApproved is still false');
       throw new Error('Club update failed - isApproved is not true');
     }
 
