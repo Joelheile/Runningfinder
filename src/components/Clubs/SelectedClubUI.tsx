@@ -1,7 +1,7 @@
 import useGetProfileImage from "@/lib/hooks/scraping/useGetInstagramProfile";
 import { Club } from "@/lib/types/Club";
 import { Run } from "@/lib/types/Run";
-import { ChevronRight, X } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -44,101 +44,107 @@ export default function SelectedClubHeaderUI({
   }, [club.instagramUsername, getProfileImage]);
 
   return (
-    <div className="fixed top-16 right-0 z-10 w-[400px] h-[calc(100vh-4rem)] bg-white shadow-lg flex flex-col">
-      <div className="flex-none p-6 space-y-6">
-        {/* Close Button */}
-        {onClose && (
-          <div className="flex justify-end">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="text-gray-500 hover:text-gray-700"
-              onClick={onClose}
-            >
-              <X className="h-5 w-5" />
-            </Button>
-          </div>
-        )}
-
-        {/* Club Image */}
-        <Link href={`/clubs/${club.slug}`} className="block">
-          <div className="relative w-full h-48">
-            <Image
-              src={avatarUrl}
-              alt={club.name}
-              fill
-              className="object-cover rounded-lg"
-            />
-          </div>
-        </Link>
-
-        {/* Club Name and Description */}
-        <Link
-          href={`/clubs/${club.slug}`}
-          className="block hover:bg-gray-50 rounded-lg"
+    <div className="fixed inset-0 z-[999] bg-white md:z-[50] md:top-16 md:right-0 md:left-auto md:bottom-auto md:w-[400px] md:h-[calc(100vh-4rem)] md:shadow-lg flex flex-col">
+      {/* Sticky Header with Back Button and Club Name */}
+      <div className="sticky top-0 bg-white z-20 px-4 py-3 border-b flex items-center gap-3">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="text-gray-500 hover:text-gray-700"
+          onClick={onClose}
+          asChild
         >
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-gray-900">{club.name}</h2>
-              <ChevronRight className="h-6 w-6 text-gray-400" />
-            </div>
-            <p className="text-gray-600 leading-relaxed">{club.description}</p>
-          </div>
-        </Link>
-
-        {/* Social Links */}
-        {(club.instagramUsername || club.stravaUsername) && (
-          <div className="pt-2">
-            <h3 className="text-sm font-medium text-gray-500 mb-3">
-              Connect with us
-            </h3>
-            <ClubIconBar
-              instagramUsername={club.instagramUsername || ""}
-              stravaUsername={club.stravaUsername || ""}
-              websiteUrl={club.websiteUrl || ""}
-            />
-          </div>
-        )}
+          <Link href="/map">
+            <ChevronRight className="h-5 w-5 rotate-180" />
+          </Link>
+        </Button>
+        <h2 className="text-lg font-semibold text-gray-900 truncate flex-1">
+          {club.name}
+        </h2>
       </div>
-      {/* Scrollable Runs Section */}
-      <div className="flex-1 overflow-y-auto px-6 pb-6">
-        <Link href={`/clubs/${club.slug}`}>
-          <div className="space-y-2">
-            <h3 className="text-sm font-medium text-gray-500 sticky top-0 bg-white py-2">
-              Upcoming Runs
-            </h3>
-            {runs.map((run) => (
-              <RunCardUI
-                key={run.id}
-                id={run.id}
-                datetime={run.datetime}
-                name={run.name}
-                distance={run.distance}
-                difficulty={run.difficulty}
-                startDescription={run.startDescription}
-                locationLat={run.location?.lat || 0}
-                locationLng={run.location?.lng || 0}
-                mapsLink={run.mapsLink || null}
-                isCompact={true}
-              />
-            ))}
-            {runs.length === 0 && (
-              <p className="text-sm text-gray-500">
-                No upcoming runs scheduled
-              </p>
-            )}
 
-            {/* View All Runs Link */}
-            <div className="mt-6 pt-4">
-              <div className="bg-blue-50 p-4 rounded-lg hover:bg-blue-100 transition-colors">
-                <p className="text-primary text-sm font-medium flex items-center justify-between">
-                  Click to view all runs by this club
-                  <ChevronRight className="h-5 w-5" />
-                </p>
-              </div>
+      {/* Main Content - Scrollable */}
+      <div className="flex-1 overflow-y-auto">
+        {/* Club Image */}
+        <div className="relative w-full aspect-[16/9] md:aspect-[3/2]">
+          <Image
+            src={avatarUrl}
+            alt={club.name}
+            fill
+            className="object-cover"
+            priority
+          />
+        </div>
+
+        {/* Club Info Section */}
+        <div className="px-4 py-5 space-y-5">
+          {/* Description */}
+          <div>
+            <p className="text-gray-600 text-base leading-relaxed">
+              {club.description}
+            </p>
+          </div>
+
+          {/* Social Links */}
+          {(club.instagramUsername || club.stravaUsername) && (
+            <div className="space-y-2.5">
+              <h3 className="text-sm font-medium text-gray-500">
+                Connect with us
+              </h3>
+              <ClubIconBar
+                instagramUsername={club.instagramUsername || ""}
+                stravaUsername={club.stravaUsername || ""}
+                websiteUrl={club.websiteUrl || ""}
+              />
+            </div>
+          )}
+
+          {/* View All Runs Link */}
+          <Link href={`/clubs/${club.slug}`} className="block">
+            <div className="bg-blue-50 px-3 py-2 rounded-lg hover:bg-blue-100 transition-colors">
+              <p className="text-primary text-sm font-medium flex items-center justify-between">
+                View all runs by this club
+                <ChevronRight className="h-4 w-4" />
+              </p>
+            </div>
+          </Link>
+        </div>
+
+        {/* Runs Section */}
+        <div className="mt-2 border-t bg-gray-50">
+          <div className="px-4 py-4">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-base font-semibold text-gray-900">
+                Upcoming Runs
+              </h3>
+              <span className="text-xs text-gray-500">{runs.length} runs</span>
+            </div>
+            <div className="space-y-2.5">
+              {runs.map((run) => (
+                <RunCardUI
+                  key={run.id}
+                  id={run.id}
+                  datetime={run.datetime}
+                  name={run.name}
+                  distance={run.distance}
+                  difficulty={run.difficulty}
+                  startDescription={run.startDescription}
+                  locationLat={run.location?.lat || 0}
+                  locationLng={run.location?.lng || 0}
+                  mapsLink={run.mapsLink || null}
+                  isCompact={true}
+                />
+              ))}
+              {runs.length === 0 && (
+                <div className="py-3 text-center">
+                  <p className="text-sm text-gray-500">
+                    No upcoming runs scheduled
+                  </p>
+                </div>
+              )}
             </div>
           </div>
-        </Link>
+        </div>
       </div>
     </div>
   );

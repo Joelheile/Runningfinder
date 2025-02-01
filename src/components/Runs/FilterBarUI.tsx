@@ -62,7 +62,7 @@ export default function FilterBarUI({
     selectedDays.length > 0 || difficulty !== null || searchQuery !== "";
 
   return (
-    <div className="bg-white/80 backdrop-blur-sm sticky top-0 z-10 w-full border-b border-gray-200 shadow-sm">
+    <div className="sticky top-0 z-[50] md:z-[60] bg-white/80 backdrop-blur-sm w-full border-b border-gray-200 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="md:grid md:grid-cols-[1fr_auto_auto] gap-4 items-start">
           {/* Mobile Layout */}
