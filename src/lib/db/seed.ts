@@ -1,108 +1,106 @@
-import { drizzle } from "drizzle-orm/node-postgres";
-import { Pool } from "pg";
-import { v4 as uuidv4, v4 } from "uuid";
-import { avatars, users } from "./schema/users";
-import { runs } from "./schema/runs";
-import { clubs } from "./schema/clubs";
-import { faker } from "@faker-js/faker";
-import { seed } from "drizzle-seed";
-import { config } from "dotenv";
-config({ path: ".env.local" });
+// import { faker } from "@faker-js/faker";
+// import { config } from "dotenv";
+// import { drizzle } from "drizzle-orm/node-postgres";
+// import { Pool } from "pg";
+// import { v4 as uuidv4 } from "uuid";
+// import { avatars, clubs, runs } from "./schema";
 
-const databaseUrl = process.env.NEXT_PUBLIC_DB_DEV;
+// config({ path: ".env.local" });
 
-console.log("Database URL:", databaseUrl);
+// const databaseUrl = process.env.DB_DEV;
 
-const pool = new Pool({
-  connectionString: databaseUrl,
-  ssl: false,
-});
-const db = drizzle(pool);
+// console.log("Database URL:", databaseUrl);
 
-async function main() {
-  console.log("cleaning up started");
-  await db.delete(runs).execute();
-  await db.delete(clubs).execute();
-  await db.delete(avatars).execute();
-  console.log("cleaning up completed");
+// const pool = new Pool({
+//   connectionString: databaseUrl,
+//   ssl: false,
+// });
+// const db = drizzle(pool);
 
-  console.log("Seeding started!");
+// async function main() {
+//   console.log("Cleaning up started");
+//   try {
+//     await db.delete(runs).execute();
+//     await db.delete(clubs).execute();
+//     await db.delete(avatars).execute();
+//     console.log("Cleaning up completed");
 
-  for (let i = 0; i < 500; i++) {
-    const clubId = uuidv4();
+//     console.log("Seeding started!");
 
-    const clubCoordinates = faker.location.nearbyGPSCoordinate({
-      origin: [52.52, 13.405],
-      radius: 10,
-      isMetric: true,
-    });
-    const avatarFileId = uuidv4();
+//     for (let i = 0; i < 500; i++) {
+//       const clubId = uuidv4();
+//       const clubCoordinates = faker.location.nearbyGPSCoordinate({
+//         origin: [52.52, 13.405],
+//         radius: 10,
+//         isMetric: true,
+//       });
+//       const avatarFileId = uuidv4();
 
-    await db.insert(avatars).values({
-      id: avatarFileId,
-      name: faker.internet.displayName(),
-      img_url: faker.image.avatar(),
-      uploadDate: new Date(),
-      type: "club",
-    });
+//       await db.insert(avatars).values({
+//         id: avatarFileId,
+//         name: faker.internet.displayName(),
+//         img_url: faker.image.avatar(),
+//         uploadDate: new Date(),
+//         type: "club",
+//       });
 
-    await db.insert(clubs).values({
-      id: clubId,
-      name: faker.company.name(),
-      slug: faker.lorem.slug(),
-      description: faker.lorem.sentence(3),
-      locationLng: clubCoordinates[1].toString(),
-      locationLat: clubCoordinates[0].toString(),
-      instagramUsername: faker.internet.displayName(),
-      stravaUsername: faker.internet.displayName(),
-      websiteUrl: faker.internet.url(),
-      avatarFileId: avatarFileId,
-      creationDate: new Date(),
-      memberCount: faker.number.int({ min: 1, max: 1000 }),
-    });
+//       await db.insert(clubs).values({
+//         id: clubId,
+//         name: faker.company.name(),
+//         slug: faker.lorem.slug(),
+//         description: faker.lorem.sentence(3),
+//         lng: parseFloat(clubCoordinates[1].toString()),
+//         lat: parseFloat(clubCoordinates[0].toString()),
+//         instagramUsername: faker.internet.displayName(),
+//         stravaUsername: faker.internet.displayName(),
+//         websiteUrl: faker.internet.url(),
+//         avatarFileId: avatarFileId,
+//         creationDate: new Date(),
+//         memberCount: faker.number.int({ min: 1, max: 1000 }),
+//         isApproved: faker.datatype.boolean(), // Assuming this is a required field
+//       });
 
-    console.log("Club seeded 🚀", clubId);
+//       console.log("Club seeded 🚀", clubId);
 
-    for (let j = 0; j < 5; j++) {
-      const runId = uuidv4();
-      const runDate = faker.date.future();
+//       for (let j = 0; j < 5; j++) {
+//         const runId = uuidv4();
+//         const runDate = faker.date.future();
+//         const runCoordinates = faker.location.nearbyGPSCoordinate({
+//           origin: [52.52, 13.405],
+//           radius: 10,
+//           isMetric: true,
+//         });
 
-      const runCoordinates = faker.location.nearbyGPSCoordinate({
-        origin: [52.52, 13.405],
-        radius: 10,
-        isMetric: true,
-      });
+//         await db.insert(runs).values({
+//           id: runId,
+//           name: faker.person.jobArea() + " Run",
+//           difficulty: faker.helpers.arrayElement([
+//             "easy",
+//             "intermediate",
+//             "advanced",
+//           ]),
+//           clubId: clubId,
+//           datetime: runDate,
+//           weekday: runDate.getDay(),
+//           startDescription: faker.location.street(),
+//           location: {
+//             lat: parseFloat(runCoordinates[0]),
+//             lng: parseFloat(runCoordinates[1]),
+//           },
+//           mapsLink: null, // Assuming mapsLink is optional and can be null
+//           distance: faker.number.int({ min: 1, max: 42 }).toString(),
+//           isRecurrent: faker.datatype.boolean(),
+//           isApproved: faker.datatype.boolean(),
+//         });
 
-      await db.insert(runs).values({
-        id: runId,
-        name: faker.person.jobArea() + " Run",
-        difficulty: faker.helpers.arrayElement([
-          "easy",
-          "intermediate",
-          "advanced",
-        ]),
-        clubId: clubId,
-        date: runDate,
-        interval: faker.helpers.arrayElement([
-          "once",
-          "daily",
-          "weekly",
-          "monthly",
-        ]),
-        intervalDay: faker.number.int({ min: 1, max: 7 }),
-        startDescription: faker.location.street(),
-        startTime: faker.date
-          .future()
-          .toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-        locationLng: runCoordinates[1].toString(),
-        locationLat: runCoordinates[0].toString(),
-        distance: faker.number.int({ min: 1, max: 42 }).toString(),
-      });
-      console.log("Run seeded 🏃", runId);
-    }
-  }
+//         console.log("Run seeded 🏃", runId);
+//       }
+//     }
 
-  console.log("Seeding completed!");
-}
+//     console.log("Seeding completed!");
+//   } catch (error) {
+//     console.error("Error during seeding:", error);
+//   }
+// }
 
-main();
+// main();

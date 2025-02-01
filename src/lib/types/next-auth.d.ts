@@ -1,12 +1,19 @@
-import NextAuth, { DefaultSession } from "next-auth";
+import { AdapterUser } from "@auth/core/adapters";
+import { DefaultSession } from "next-auth";
+
+declare module "@auth/core/adapters" {
+  interface AdapterUser {
+    isAdmin: boolean;
+  }
+}
 
 declare module "next-auth" {
-  /**
-   * Returned by `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
-   */
   interface Session {
     user: {
       id: string;
+      isAdmin: boolean;
     } & DefaultSession["user"];
   }
+
+  interface User extends AdapterUser {}
 }

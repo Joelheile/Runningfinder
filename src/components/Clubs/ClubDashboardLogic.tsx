@@ -29,16 +29,28 @@ export default function ClubDashboard({
   const handleShare = async () => {
     try {
       await navigator.clipboard.writeText(window.location.href);
-      toast("Link copied to clipboard!", { icon: "📋" });
+      toast.success("Club link copied to clipboard!");
     } catch (err) {
       console.error("Failed to copy: ", err);
+      toast.error("Failed to copy link");
     }
   };
+
   const deleteClubMutation = useDeleteClub();
 
   const handleDelete = async () => {
     if (club?.id) {
-      deleteClubMutation.mutate(club.id);
+      if (window.confirm("Are you sure you want to delete this club?")) {
+        deleteClubMutation.mutate(club.id, {
+          onSuccess: () => {
+            toast.success("Club deleted successfully");
+            router.push("/clubs");
+          },
+          onError: () => {
+            toast.error("Failed to delete club");
+          },
+        });
+      }
     }
   };
 
@@ -49,7 +61,6 @@ export default function ClubDashboard({
         slug={slug}
         onShare={handleShare}
         onDelete={handleDelete}
-        onAddRun={() => router.push(`/clubs/${slug}/addrun`)}
       />
     );
   if (isError)
@@ -59,7 +70,6 @@ export default function ClubDashboard({
         slug={slug}
         onShare={handleShare}
         onDelete={handleDelete}
-        onAddRun={() => router.push(`/clubs/${slug}/addrun`)}
       />
     );
   if (!club)
@@ -69,7 +79,6 @@ export default function ClubDashboard({
         slug={slug}
         onShare={handleShare}
         onDelete={handleDelete}
-        onAddRun={() => router.push(`/clubs/${slug}/addrun`)}
       />
     );
 
@@ -81,7 +90,6 @@ export default function ClubDashboard({
       slug={slug}
       onShare={handleShare}
       onDelete={handleDelete}
-      onAddRun={() => router.push(`/clubs/${slug}/addrun`)}
     />
   );
 }

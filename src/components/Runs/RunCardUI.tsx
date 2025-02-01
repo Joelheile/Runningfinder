@@ -1,92 +1,241 @@
-import React from "react";
-import { weekdays } from "@/lib/weekdays";
-import { Trash } from "lucide-react";
-import LikeButton from "../Icons/LikeButton";
+import { MapPin, Trash } from "lucide-react";
+import Script from "next/script";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "../UI/button";
-import calculateCalories from "./CaloriesCalculator";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../UI/tooltip";
 
 interface RunCardUIProps {
-  intervalDay: number;
+  userId?: string;
+  id: string;
+  key: string;
+  datetime: Date | null;
   name: string;
-  time: string;
-  distance: number;
+  distance: string;
   difficulty: string;
   startDescription: string;
-  googleMapsUrl: string;
-  likeFilled: boolean;
-  temperature: number;
-  wind: number;
-  uvIndex: number;
-  handleRegistration: () => void;
-  handleDeleteRun: () => void;
+  locationLat: number;
+  locationLng: number;
+  mapsLink?: string | null;
+  handleDeleteRun?: () => void;
+  isAdmin?: boolean;
+  isCompact?: boolean;
 }
 
+const getMapContainerStyle = (isCompact: boolean) => ({
+  width: "100%",
+  height: isCompact ? "150px" : "250px",
+});
+
+const getDifficultyInfo = (difficulty: string) => {
+  switch (difficulty.toLowerCase()) {
+    case "easy":
+      return {
+        icon: "",
+        description:
+          "Social run, perfect for beginners. Usually under 10km at a conversational pace.",
+        className: "bg-green-100 text-green-700",
+      };
+    case "intermediate":
+      return {
+        icon: "",
+        description:
+          "More structured run, typically 10-15km. Good for regular runners looking for a challenge.",
+        className: "bg-yellow-100 text-yellow-700",
+      };
+    case "advanced":
+      return {
+        icon: "",
+        description:
+          "Technical workout (intervals, hills) or long distance run (>15km). For experienced runners.",
+        className: "bg-red-100 text-red-700",
+      };
+    default:
+      return {
+        icon: "",
+        description: "Difficulty level not specified",
+        className: "bg-gray-100 text-gray-700",
+      };
+  }
+};
+
 export default function RunCardUI({
-  intervalDay,
+  datetime,
   name,
-  time,
   distance,
   difficulty,
   startDescription,
-  googleMapsUrl,
-  likeFilled,
-  temperature,
-  wind,
-  uvIndex,
-  handleRegistration,
+  locationLat,
+  locationLng,
+  mapsLink,
   handleDeleteRun,
+  isAdmin,
+  isCompact = false,
 }: RunCardUIProps) {
-  const difficultyColor =
-    difficulty == "easy"
-      ? "bg-green-300"
-      : difficulty == "intermediate"
-        ? "bg-yellow-300"
-        : "bg-red-300";
+  const [isScriptLoaded, setIsScriptLoaded] = useState(false);
+  const [map, setMap] = useState<google.maps.Map | null>(null);
+  const [marker, setMarker] = useState<google.maps.Marker | null>(null);
+  const mapRef = useRef<HTMLDivElement>(null);
+  const difficultyInfo = getDifficultyInfo(difficulty);
 
-  const caloriesBurned = calculateCalories(difficulty, distance);
+  useEffect(() => {
+    if (!isScriptLoaded || !mapRef.current) return;
+
+    const initMap = async () => {
+      try {
+        const validLocation = {
+          lat:
+            typeof locationLat === "number" && isFinite(locationLat)
+              ? locationLat
+              : 52.52,
+          lng:
+            typeof locationLng === "number" && isFinite(locationLng)
+              ? locationLng
+              : 13.405,
+        };
+
+        const mapInstance = new window.google.maps.Map(
+          mapRef.current as HTMLElement,
+          {
+            center: validLocation,
+            zoom: 15,
+            disableDefaultUI: true,
+            zoomControl: true,
+            mapTypeControl: false,
+            streetViewControl: false,
+            fullscreenControl: false,
+          },
+        );
+
+        const markerInstance = new window.google.maps.Marker({
+          position: validLocation,
+          map: mapInstance,
+          title: name,
+        });
+
+        setMap(mapInstance);
+        setMarker(markerInstance);
+      } catch (error) {
+        console.error("Error initializing map:", error);
+      }
+    };
+
+    initMap();
+  }, [isScriptLoaded, locationLat, locationLng, name]);
+
+  const formatDate = (datetime: Date | null) => {
+    if (!datetime) return "";
+    const d = new Date(datetime);
+    const weekday = new Intl.DateTimeFormat("en-US", {
+      weekday: "long",
+    }).format(d);
+    const time = d.toLocaleTimeString("en-US", {
+      hour12: false,
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+    const fullDate = new Intl.DateTimeFormat("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    }).format(d);
+    return (
+      <>
+        <span className="font-bold">{weekday}</span> - {time} ({fullDate})
+      </>
+    );
+  };
 
   return (
-    <div className="mt-2">
-      {intervalDay ? (
-        <strong className="ml-1">{weekdays[intervalDay - 1].name}</strong>
-      ) : null}
+    <div className={`w-full mx-auto ${isCompact ? "mb-2" : "mb-4"}`}>
+      <div className="bg-white rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-all duration-200">
+        <div
+          className={`flex ${isCompact ? "flex-col" : "flex-col lg:flex-row"}`}
+        >
+          <div className={`flex-1 ${isCompact ? "p-3" : "p-6"}`}>
+            <div
+              className={`text-gray-500 ${isCompact ? "text-xs" : "text-sm"} mb-2`}
+            >
+              {formatDate(datetime)}
+            </div>
+            <div className={`space-y-${isCompact ? "2" : "4"}`}>
+              <div className="flex flex-wrap items-center gap-2">
+                <h3
+                  className={`font-semibold ${isCompact ? "text-base" : "text-xl"} text-gray-900`}
+                >
+                  {name}
+                </h3>
+                <div className="flex items-center gap-2 text-gray-600">
+                  <span className="flex items-center">
+                    {distance ? `${distance} km` : "N/A"}
+                  </span>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <span
+                        className={`px-2 py-1 rounded-full ${isCompact ? "text-xs" : "text-sm"} font-medium ${difficultyInfo.className}`}
+                      >
+                        {difficultyInfo.icon} {difficulty}
+                      </span>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p className="max-w-xs">{difficultyInfo.description}</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </div>
+              </div>
 
-      <div className="flex bg-white mt-2 border justify-between p-2 rounded-md">
-        <div className="flex gap-x-5 items-center pl-2">
-          <LikeButton onClick={handleRegistration} isFilled={likeFilled} />
-          <strong>{name}</strong>
-          <p className="text-medium">|</p>
-          <p>{time}</p>
-          <p className="text-medium">|</p>
-          <p>{distance} km</p>
-          <p className="text-medium">|</p>
-          <p className={`p-1 px-2 rounded-md ${difficultyColor}`}>
-            {difficulty}
-          </p>
-          <p className="  text-medium">~ {caloriesBurned} kcal</p>
-          <p className="text-medium">|</p>
-          <p className="text-medium">{temperature}°C</p>
-          <p className="text-medium">|</p>
-          <p className="text-medium">{wind} km/h</p>
-          {/* <p className="text-medium">|</p>
-          <p className="text-medium">UV Index: {uvIndex}</p> */}
-        </div>
-        <div className="flex gap-x-2 items-center pl-2">
-          <Button
-            className="min-w-28 w-auto"
-            onClick={() => window.open(googleMapsUrl, "_blank")}
-          >
-            {startDescription}
-          </Button>
-          <button
-            type="button"
-            className="stroke-primary"
-            onClick={handleDeleteRun}
-          >
-            <Trash className="stroke-primary hover:bg-slate-200 rounded-sm" />
-          </button>
+              <div className="flex items-center gap-2">
+                <MapPin
+                  className={`${isCompact ? "w-3 h-3" : "w-4 h-4"} text-gray-500`}
+                />
+                <span
+                  className={`${isCompact ? "text-xs" : "text-sm"} text-gray-700`}
+                >
+                  {startDescription}
+                </span>
+                {mapsLink && (
+                  <Button
+                    variant="ghost"
+                    size={isCompact ? "sm" : "default"}
+                    className="ml-2"
+                    onClick={() => window.open(mapsLink, "_blank")}
+                  >
+                    <MapPin
+                      className={`${isCompact ? "w-3 h-3" : "w-4 h-4"}`}
+                    />
+                  </Button>
+                )}
+                {isAdmin && handleDeleteRun && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="text-red-500 hover:text-red-700"
+                    onClick={handleDeleteRun}
+                  >
+                    <Trash className="w-5 h-5" />
+                  </Button>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {!isCompact && (
+            <div className="w-full lg:w-[500px] h-64 lg:h-auto relative">
+              <div
+                ref={mapRef}
+                style={getMapContainerStyle(false)}
+                className="rounded-b-lg lg:rounded-r-lg lg:rounded-bl-none"
+              />
+            </div>
+          )}
         </div>
       </div>
+
+      {!isCompact && (
+        <Script
+          src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`}
+          onLoad={() => setIsScriptLoaded(true)}
+        />
+      )}
     </div>
   );
 }

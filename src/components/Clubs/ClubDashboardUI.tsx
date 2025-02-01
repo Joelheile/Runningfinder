@@ -1,11 +1,15 @@
 import { Club } from "@/lib/types/Club";
 import { Run } from "@/lib/types/Run";
-import { ChevronLeft, Plus, Share, Trash } from "lucide-react";
+import { ChevronLeft, Share, Trash } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import AddRunState from "../Runs/AddRunLogic";
 import RunCard from "../Runs/RunCardLogic";
 import { Button } from "../UI/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../UI/tooltip";
 import ClubCard from "./ClubCard";
 import ClubCardSkeleton from "./ClubCardSkeleton";
+import { RunDisclaimer } from "../disclaimer";
 
 interface ClubDetailUIProps {
   club?: Club;
@@ -13,7 +17,6 @@ interface ClubDetailUIProps {
   userId?: string;
   slug: string;
   onShare: () => void;
-  onAddRun: () => void;
   onDelete: () => void;
   loading?: boolean;
   error?: string;
@@ -26,44 +29,78 @@ export default function ClubDashboardUI({
   userId,
   slug,
   onShare,
-  onAddRun,
   onDelete,
   loading,
   error,
   noData,
 }: ClubDetailUIProps) {
+  const router = useRouter();
+
   if (loading) return <ClubCardSkeleton />;
   if (error) return <p>Error: {error}</p>;
   if (noData) return <p>No club data available.</p>;
 
-  const { name, description, avatarUrl, instagramUsername, websiteUrl } =
-    club || {
-      name: "",
-      description: "",
-      avatarUrl: "",
-      instagramUsername: "",
-      websiteUrl: "",
-    };
+  const {
+    name,
+    description,
+    avatarUrl,
+    instagramUsername,
+    websiteUrl,
+    stravaUsername,
+  } = club || {
+    name: "",
+    description: "",
+    avatarUrl: "",
+    instagramUsername: "",
+    websiteUrl: "",
+    stravaUsername: "",
+  };
+
+  const futureRuns = runs?.filter((run) => run.datetime > new Date()) || [];
+  const pastRuns = runs?.filter((run) => run.datetime <= new Date()) || [];
 
   return (
-    <div className="flex flex-col bg-light w-screen  h-screen p-8">
-      <nav className="flex justify-between">
-        <Link href="/clubs/">
-          <div className="flex">
-            <ChevronLeft className="stroke-primary stroke" />
-            <span className="Back text-primary">Back</span>
+    <div className="flex flex-col w-screen max-w-full h-screen p-8">
+      <nav className="flex justify-between items-center">
+        <button
+          onClick={() => router.back()}
+          className="flex items-center hover:bg-slate-100 rounded-md px-2 py-1 transition-colors"
+        >
+          <div className="flex items-center hover:bg-slate-100 rounded-md px-2 py-1 transition-colors">
+            <ChevronLeft className="stroke-primary" />
+            <span className="text-primary">Back</span>
           </div>
-        </Link>
-        <div className="flex gap-2">
-          <button type="button" onClick={onAddRun}>
-            <Plus className="stroke-primary hover:bg-slate-200 rounded-sm" />
-          </button>
-          <button type="button" onClick={onShare}>
-            <Share className="stroke-primary hover:bg-slate-200 rounded-sm" />
-          </button>
-          <button type="button" onClick={onDelete}>
-            <Trash className="stroke-primary hover:bg-slate-200  rounded-sm"></Trash>
-          </button>
+        </button>
+        <div className="flex gap-3">
+          {club && <AddRunState club={club} />}
+
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={onShare}
+                className="hover:bg-slate-100"
+              >
+                <Share className="h-5 w-5" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>Share club</TooltipContent>
+          </Tooltip>
+
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={onDelete}
+                className="hover:bg-slate-100"
+              >
+                <Trash className="h-5 w-5" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>Delete club</TooltipContent>
+          </Tooltip>
         </div>
       </nav>
 
@@ -71,38 +108,105 @@ export default function ClubDashboardUI({
         avatarUrl={avatarUrl}
         name={name}
         description={description}
-        instagramUsername={instagramUsername}
-        websiteUrl={websiteUrl}
+        instagramUsername={instagramUsername ?? ""}
+        stravaUsername={stravaUsername ?? ""}
+        websiteUrl={websiteUrl ?? ""}
       />
 
-      <div className="mt-4 p-8">
-        <h2 className="mb-2 text-lg sm:text-xl md:text-2xl">Upcoming runs</h2>
-        {runs?.length === 0 && (
-          <>
-            <p>
-              There are no upcoming runs for <strong>{name}</strong>.{" "}
-            </p>
-            <br />
-            <Button onClick={onAddRun}>Add first run 🏃‍♂️</Button>
-          </>
+      <div className="mt-4 px-32">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-lg sm:text-xl md:text-2xl font-semibold">
+            Upcoming runs
+          </h2>
+          {club && runs && runs.length > 0 && <AddRunState club={club} />}
+        </div>
+
+        {futureRuns.length > 0 ? (
+          <div className="grid grid-cols-1 gap-6 p-6">
+            {futureRuns
+              ?.sort((a, b) =>
+                a.datetime && b.datetime
+                  ? a.datetime.getTime() - b.datetime.getTime()
+                  : 0,
+              )
+              .map((run) => (
+                <RunCard
+                  userId={userId}
+                  id={run.id}
+                  key={run.id}
+                  datetime={run.datetime}
+                  name={run.name}
+                  startDescription={run.startDescription}
+                  difficulty={run.difficulty}
+                  distance={run.distance}
+                  locationLat={run.location.lat}
+                  locationLng={run.location.lng}
+                  slug={slug}
+                  weekday={run.weekday || 0}
+                />
+              ))}
+          </div>
+        ) : (
+          <div className="text-center py-12">
+            <p className="text-gray-500">No runs found for this club yet.</p>
+            {userId && (
+              <p className="mt-2">
+                <Link
+                  href={`/clubs/${slug}/runs/new`}
+                  className="text-blue-500 hover:underline"
+                >
+                  Create the first run
+                </Link>
+              </p>
+            )}
+          </div>
         )}
-        {runs
-          ?.sort((a, b) => a.intervalDay - b.intervalDay)
-          .map((run) => (
-            <RunCard
-              userId={userId}
-              id={run.id}
-              key={run.id}
-              time={run.startTime}
-              intervalDay={run.intervalDay}
-              name={run.name}
-              startDescription={run.startDescription}
-              difficulty={run.difficulty}
-              distance={run.distance}
-              location={run.location}
-              slug={slug}
-            />
-          ))}
+      </div>
+
+      <RunDisclaimer />
+
+      <div className="mt-8">
+        <h2 className="text-2xl font-bold mb-4">Upcoming Runs</h2>
+        {futureRuns.length > 0 ? (
+          <div className="grid grid-cols-1 gap-6 p-6">
+            {futureRuns
+              ?.sort((a, b) =>
+                a.datetime && b.datetime
+                  ? a.datetime.getTime() - b.datetime.getTime()
+                  : 0,
+              )
+              .map((run) => (
+                <RunCard
+                  userId={userId}
+                  id={run.id}
+                  key={run.id}
+                  datetime={run.datetime}
+                  name={run.name}
+                  startDescription={run.startDescription}
+                  difficulty={run.difficulty}
+                  distance={run.distance}
+                  locationLat={run.location.lat}
+                  locationLng={run.location.lng}
+                  slug={slug}
+                  weekday={run.weekday || 0}
+                />
+              ))}
+          </div>
+        ) : (
+          <div className="text-center py-12">
+            <p className="text-gray-500">No runs found for this club yet.</p>
+            {userId && (
+              <p className="mt-2">
+                <Link
+                  href={`/clubs/${slug}/runs/new`}
+                  className="text-blue-500 hover:underline"
+                >
+                  Create the first run
+                </Link>
+              </p>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

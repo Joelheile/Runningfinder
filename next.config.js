@@ -8,15 +8,20 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "runningfinder.s3.eu-central-1.amazonaws.com",
-        port: "",
+        hostname: "**",
       },
     ],
-    domains: [
-      "localhost",
-      "runningfinder.s3.eu-central-1.amazonaws.com",
-      "avatars.githubusercontent.com",
-    ],
+  },
+  webpack: (config) => {
+    config.resolve = {
+      ...config.resolve,
+      fallback: {
+        fs: false,
+        path: false,
+        os: false,
+      },
+    };
+    return config;
   },
 };
 
