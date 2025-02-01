@@ -3,8 +3,8 @@ import toast from 'react-hot-toast';
 const useDeclineClub = (clubId: string) => {
   const declineClub = async () => {
     try {
-      const response = await fetch(`/api/clubs/${clubId}/decline`, {
-        method: 'POST',
+      const response = await fetch(`/api/clubs/${clubId}`, {
+        method: 'DELETE',
       });
       if (response.ok) {
         toast.success('Club declined successfully!');

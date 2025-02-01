@@ -1,6 +1,6 @@
 "use client";
 import { useAddClub } from "@/lib/hooks/clubs/useAddClub";
-import useGetProfileImage from "@/lib/hooks/scraping/useGetInstagramProfile";
+import getInstagramProfile from "@/lib/hooks/scraping/useGetInstagramProfile";
 import { Club } from "@/lib/types/Club";
 import { useRouter } from "next/navigation";
 import posthog from "posthog-js";
@@ -23,7 +23,6 @@ export default function AddClub() {
 
   const router = useRouter();
   const mutation = useAddClub();
-  const { getProfileImage } = useGetProfileImage();
 
   const handleInstagramUsernameChange = async (
     e: React.ChangeEvent<HTMLInputElement>
@@ -34,7 +33,7 @@ export default function AddClub() {
     // Only fetch the profile image if no image has been manually uploaded
     if (username && !isUploaded) {
       try {
-        const data = await getProfileImage({ instagramUsername: username });
+        const data = await getInstagramProfile({ instagramUsername: username });
         // We'll let the backend handle setting the avatar URL from Instagram
       } catch (error) {
         console.error("Failed to fetch Instagram data:", error);
@@ -143,7 +142,7 @@ export default function AddClub() {
       if (instagramUsername && !isUploaded) {
         console.log("📸 Fetching Instagram profile for:", instagramUsername);
         try {
-          const data = await getProfileImage({ instagramUsername });
+          const data = await getInstagramProfile({ instagramUsername });
           console.log("📱 Instagram profile data:", data);
 
           if (data.profileImageUrl) {
