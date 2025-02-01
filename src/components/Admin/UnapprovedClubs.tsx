@@ -19,16 +19,19 @@ import {
 
 import useUpdateAdminClub from "@/lib/hooks/scraping/useUpdateAdminClub";
 import { Club } from "@/lib/types/Club";
+import { useRouter } from "next/navigation";
 
 export default function UnapprovedClubs() {
+  const router = useRouter();
   const { clubs, refetch } = useFetchClubs();
   if (!clubs) return <div>No unapproved clubs</div>;
 
   const handleUpdateClub = async (slug: string, updateData: Partial<Club>) => {
     try {
       await useUpdateAdminClub(slug, updateData);
+      await refetch();
 
-      refetch();
+      router.refresh();
     } catch (error) {
       console.error("Failed to update club:", error);
       toast.error("Failed to update club");
@@ -38,6 +41,8 @@ export default function UnapprovedClubs() {
   async function handleApproveClub(id: string) {
     const approve = await useApproveClub(id);
     approve();
+    router.refresh();
+
     refetch();
   }
 
@@ -45,6 +50,8 @@ export default function UnapprovedClubs() {
     const decline = await useDeclineClub(id);
     decline();
     refetch();
+
+    router.refresh();
   }
 
   const handleInstagramFetch = async (slug: string, username: string) => {
@@ -55,6 +62,7 @@ export default function UnapprovedClubs() {
       const instagramScrape = await getInstagramProfile({
         instagramUsername: username,
       });
+      console.log("Instagram scrape result:", instagramScrape);
 
       await handleUpdateClub(slug, {
         avatarUrl:
@@ -63,10 +71,9 @@ export default function UnapprovedClubs() {
         description: instagramScrape.profileDescription || "",
       });
 
-      toast.success("Instagram profile fetched successfully", {
+      toast.success("Instagram profile fetched and updated successfully", {
         id: loadingToast,
       });
-      refetch();
     } catch (error) {
       console.error("Error fetching Instagram profile:", error);
       toast.error("Failed to fetch Instagram profile", { id: loadingToast });
