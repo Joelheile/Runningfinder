@@ -73,17 +73,20 @@ export function OnboardingGuide() {
   const step = steps[currentStep];
 
   const getPositionClasses = (position: string) => {
+    const baseClasses = "fixed mx-4 sm:mx-0 max-w-[90vw] sm:max-w-lg";
+    const mobileClasses = "top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2";
+
     switch (position) {
       case "center":
-        return "fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2";
+        return `${baseClasses} ${mobileClasses} sm:${mobileClasses}`;
       case "bottom":
-        return "fixed bottom-24 left-1/2 -translate-x-1/2";
+        return `${baseClasses} ${mobileClasses} sm:top-auto sm:bottom-24 sm:-translate-y-0`;
       case "top-left":
-        return "fixed top-24 left-8";
+        return `${baseClasses} ${mobileClasses} sm:top-24 sm:left-8 sm:-translate-y-0 sm:translate-x-0`;
       case "top-right":
-        return "fixed top-24 right-8";
+        return `${baseClasses} ${mobileClasses} sm:top-24 sm:right-8 sm:left-auto sm:-translate-y-0 sm:translate-x-0`;
       default:
-        return "fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2";
+        return `${baseClasses} ${mobileClasses} sm:${mobileClasses}`;
     }
   };
 
@@ -99,13 +102,37 @@ export function OnboardingGuide() {
             transition={{ duration: 0.2 }}
             className={`${getPositionClasses(step.position)} z-50`}
           >
-            <Card className="w-[360px] p-6 bg-white/95 shadow-xl backdrop-blur-sm border border-gray-200/50">
-              <h3 className="text-xl font-bold mb-3">{step.title}</h3>
-              <p className="text-gray-600 mb-6 whitespace-pre-line leading-relaxed">
-                {step.description}
+            <Card className="w-full sm:w-[480px] p-4 sm:p-6 bg-white/95 shadow-xl backdrop-blur-sm border border-gray-200/50">
+              <h3 className="text-lg sm:text-xl font-bold mb-2 sm:mb-3">
+                {step.title}
+              </h3>
+              <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6 whitespace-pre-line leading-relaxed [&>strong]:font-bold">
+                {step.description.split("\n").map((line, i) => (
+                  <span key={i}>
+                    {i > 0 && <br />}
+                    {line.startsWith("Easy") ? (
+                      <>
+                        <strong>Easy</strong>
+                        {line.slice(4)}
+                      </>
+                    ) : line.startsWith("Intermediate") ? (
+                      <>
+                        <strong>Intermediate</strong>
+                        {line.slice(12)}
+                      </>
+                    ) : line.startsWith("Advanced") ? (
+                      <>
+                        <strong>Advanced</strong>
+                        {line.slice(8)}
+                      </>
+                    ) : (
+                      line
+                    )}
+                  </span>
+                ))}
               </p>
-              <div className="flex justify-between items-center">
-                <div className="flex gap-1.5">
+              <div className="flex flex-col sm:flex-row gap-4 sm:gap-0 sm:justify-between sm:items-center">
+                <div className="flex gap-1.5 justify-center sm:justify-start">
                   {steps.map((_, index) => (
                     <div
                       key={index}
@@ -115,13 +142,22 @@ export function OnboardingGuide() {
                     />
                   ))}
                 </div>
-                <div className="flex gap-2">
+                <div className="flex gap-2 justify-center sm:justify-end">
                   {currentStep === 0 && (
-                    <Button variant="ghost" onClick={handleSkip} size="sm">
+                    <Button
+                      variant="ghost"
+                      onClick={handleSkip}
+                      size="sm"
+                      className="w-full sm:w-auto"
+                    >
                       Skip
                     </Button>
                   )}
-                  <Button onClick={handleNext} size="sm">
+                  <Button
+                    onClick={handleNext}
+                    size="sm"
+                    className="w-full sm:w-auto"
+                  >
                     {currentStep === steps.length - 1 ? "Get Started" : "Next"}
                   </Button>
                 </div>
