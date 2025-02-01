@@ -34,6 +34,6 @@
     "drizzle-dev.drizzle.config",
     "drizzle-prod.drizzle.config",
     "setupTests.js"
-  ],
+, "src/app/providers.ts"  ],
   "exclude": ["node_modules"]
 }
