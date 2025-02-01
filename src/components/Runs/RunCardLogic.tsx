@@ -1,10 +1,6 @@
 import { useDeleteRun } from "@/lib/hooks/runs/useDeleteRun";
 import { useRouter } from "next/navigation";
 import RunCardUI from "./RunCardUI";
-import { Skeleton } from "@/components/UI/skeleton";
-import { getNextIntervalDate } from "@/lib/getNextIntervalDate";
-import { fetchWeatherData } from "@/lib/fetchWeatherData";
-import { useRouter } from "next/navigation";
 
 interface RunCardProps {
   id: string;
