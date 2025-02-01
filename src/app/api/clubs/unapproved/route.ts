@@ -1,51 +1,34 @@
 import { db } from "@/lib/db/db";
-import { clubs } from "@/lib/db/schema";
-import { Club } from "@/lib/types/Club";
+import { clubs as club } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
+const DEFAULT_FALLBACK_IMAGE_URL = "/assets/default-fallback-image.png";
+
 export async function GET() {
   try {
-    // First, log all clubs to see their approval status
-    const allClubs = await db
-      .select()
-      .from(clubs)
-      .execute();
+    const res = await db
+      .select({
+        id: club.id,
+        name: club.name,
+        description: club.description,
+        avatarUrl: club.avatarUrl,
+        creationDate: club.creationDate,
+        instagramUsername: club.instagramUsername,
+        websiteUrl: club.websiteUrl,
+        slug: club.slug,
+      })
+      .from(club)
+      .where(eq(club.isApproved, false)).orderBy(club.creationDate)
 
+    const clubsWithFallbackAvatar = res.map((club: { avatarUrl: any }) => ({
+      ...club,
+      avatarUrl: club.avatarUrl || DEFAULT_FALLBACK_IMAGE_URL,
+    }));
 
-    // Then get unapproved clubs with explicit false check
-    const unapprovedClubs = await db
-      .select()
-      .from(clubs)
-      .where(eq(clubs.isApproved, false))
-      .orderBy(clubs.creationDate)
-      .execute();
-
-
-
-    // Ensure all required fields are present with default values if needed
-    const clubsWithDefaults = unapprovedClubs.map((club: Club) => {
-      const clubWithDefaults = {
-        ...club,
-        slug: club.slug || club.name.toLowerCase().replace(/\s+/g, "-"),
-        creationDate: club.creationDate || new Date().toISOString(),
-        avatarUrl: club.avatarUrl || "/assets/default-fallback-image.png",
-      };
-
-      return clubWithDefaults;
-    });
-
-    return NextResponse.json(clubsWithDefaults, {
-      headers: {
-        "Cache-Control":
-          "no-store, no-cache, must-revalidate, proxy-revalidate",
-        Pragma: "no-cache",
-        Expires: "0",
-        "Surrogate-Control": "no-store",
-      },
-    });
+    return NextResponse.json(clubsWithFallbackAvatar);
   } catch (error) {
-    console.error("Error fetching unapproved clubs:", error);
+    console.error("Error fetching clubs:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 },
