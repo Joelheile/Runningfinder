@@ -3,7 +3,7 @@ import { useFetchRunsByClubId } from "@/lib/hooks/runs/useFetchRunsByClubId";
 import { Run } from "@/lib/types/Run";
 import { useState } from "react";
 import ClubHeaderSkeleton from "./ClubHeaderSkeleton";
-import SelectedClubHeaderUI from "./SelectedClubHeaderUI";
+import SelectedClubHeaderUI from "./SelectedClubUI";
 
 interface SelectedClubHeaderProps {
   run: Run;
