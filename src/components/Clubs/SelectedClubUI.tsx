@@ -46,7 +46,7 @@ export default function SelectedClubHeaderUI({
   return (
     <div className="fixed inset-0 z-[999] bg-white md:z-[50] md:top-16 md:right-0 md:left-auto md:bottom-auto md:w-[400px] md:h-[calc(100vh-4rem)] md:shadow-lg flex flex-col">
       {/* Sticky Header with Back Button and Club Name */}
-      <div className="sticky top-0 bg-white z-20 px-4 py-3 border-b flex items-center gap-3">
+      <div className="sticky top-0 bg-white z-20 px-4 py-3 flex items-center gap-3">
         <Button
           variant="ghost"
           size="icon"
@@ -66,83 +66,78 @@ export default function SelectedClubHeaderUI({
       {/* Main Content - Scrollable */}
       <div className="flex-1 overflow-y-auto">
         {/* Club Image */}
-        <div className="relative w-full aspect-[16/9] md:aspect-[3/2]">
-          <Image
-            src={avatarUrl}
-            alt={club.name}
-            fill
-            className="object-cover"
-            priority
-          />
+        <div className="pb-4 px-4">
+          <div className="relative w-full aspect-[16/9] md:aspect-[3/2] rounded-lg overflow-hidden shadow-sm">
+            <Image
+              src={avatarUrl}
+              alt={club.name}
+              fill
+              className="object-cover hover:scale-105 transition-transform duration-300"
+              priority
+            />
+          </div>
+          {/* Description */}
+          <p className="text-gray-600 pt-4 px-2 text-[15px] leading-relaxed">
+            {club.description}
+          </p>
+        </div>
+
+        {/* Quick Actions */}
+        <div className="px-4 pb-6">
+          <div className="flex items-center gap-6">
+            <Link href={`/clubs/${club.slug}`} className="flex-1">
+              <Button className="w-full">View Club Profile</Button>
+            </Link>
+            {(club.instagramUsername || club.stravaUsername) && (
+              <div className="flex items-center pl-1">
+                <ClubIconBar
+                  instagramUsername={club.instagramUsername || ""}
+                  stravaUsername={club.stravaUsername || ""}
+                  websiteUrl={club.websiteUrl || ""}
+                />
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Upcoming Runs Section */}
+        <div className="border-t">
+          <div className="px-4 py-3 flex items-center justify-between">
+            <h3 className="text-base font-semibold text-gray-900">
+              Upcoming Runs
+            </h3>
+            <span className="text-xs bg-gray-100 px-2 py-1 rounded-full text-gray-600">
+              {runs.length} runs
+            </span>
+          </div>
         </div>
 
         {/* Club Info Section */}
-        <div className="px-4 py-5 space-y-5">
-          {/* Description */}
-          <div>
-            <p className="text-gray-600 text-base leading-relaxed">
-              {club.description}
-            </p>
-          </div>
-
-          {/* Social Links */}
-          {(club.instagramUsername || club.stravaUsername) && (
-            <div className="space-y-2.5">
-              <h3 className="text-sm font-medium text-gray-500">
-                Connect with us
-              </h3>
-              <ClubIconBar
-                instagramUsername={club.instagramUsername || ""}
-                stravaUsername={club.stravaUsername || ""}
-                websiteUrl={club.websiteUrl || ""}
+        <div className="px-4 space-y-4">
+          {/* Runs List */}
+          <div className="space-y-2.5 mt-2">
+            {runs.map((run) => (
+              <RunCardUI
+                key={run.id}
+                id={run.id}
+                datetime={run.datetime}
+                name={run.name}
+                distance={run.distance}
+                difficulty={run.difficulty}
+                startDescription={run.startDescription}
+                locationLat={run.location?.lat || 0}
+                locationLng={run.location?.lng || 0}
+                mapsLink={run.mapsLink || null}
+                isCompact={true}
               />
-            </div>
-          )}
-
-          {/* View All Runs Link */}
-          <Link href={`/clubs/${club.slug}`} className="block">
-            <div className="bg-blue-50 px-3 py-2 rounded-lg hover:bg-blue-100 transition-colors">
-              <p className="text-primary text-sm font-medium flex items-center justify-between">
-                View all runs by this club
-                <ChevronRight className="h-4 w-4" />
-              </p>
-            </div>
-          </Link>
-        </div>
-
-        {/* Runs Section */}
-        <div className="mt-2 border-t bg-gray-50">
-          <div className="px-4 py-4">
-            <div className="flex items-center justify-between mb-3">
-              <h3 className="text-base font-semibold text-gray-900">
-                Upcoming Runs
-              </h3>
-              <span className="text-xs text-gray-500">{runs.length} runs</span>
-            </div>
-            <div className="space-y-2.5">
-              {runs.map((run) => (
-                <RunCardUI
-                  key={run.id}
-                  id={run.id}
-                  datetime={run.datetime}
-                  name={run.name}
-                  distance={run.distance}
-                  difficulty={run.difficulty}
-                  startDescription={run.startDescription}
-                  locationLat={run.location?.lat || 0}
-                  locationLng={run.location?.lng || 0}
-                  mapsLink={run.mapsLink || null}
-                  isCompact={true}
-                />
-              ))}
-              {runs.length === 0 && (
-                <div className="py-3 text-center">
-                  <p className="text-sm text-gray-500">
-                    No upcoming runs scheduled
-                  </p>
-                </div>
-              )}
-            </div>
+            ))}
+            {runs.length === 0 && (
+              <div className="py-3 text-center bg-gray-50 rounded-lg">
+                <p className="text-sm text-gray-500">
+                  No upcoming runs scheduled
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </div>
