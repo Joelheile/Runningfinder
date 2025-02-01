@@ -4,7 +4,7 @@ import { Alert, AlertDescription } from "./UI/alert";
 
 export function RunDisclaimer() {
   return (
-    <div className="absolute bottom-5 right-5 z-10 max-w-sm">
+    <div className="absolute bottom-5 left-5 z-10 max-w-sm">
       <Alert variant="default" className="bg-white/80 backdrop-blur-sm">
         <AlertCircle className="h-4 w-4" />
         <div className="flex-1">
