@@ -185,6 +185,9 @@ importers:
       postgres:
         specifier: ^3.4.4
         version: 3.4.5
+      posthog-js:
+        specifier: ^1.215.1
+        version: 1.215.1
       prettier:
         specifier: ^3.3.3
         version: 3.4.2
@@ -3306,6 +3309,9 @@ packages:
   core-js-pure@3.40.0:
     resolution: {integrity: sha512-AtDzVIgRrmRKQai62yuSIN5vNiQjcJakJb4fbhVw3ehxx7Lohphvw9SGNWKhLFqSxC4ilD0g/L1huAYFQU3Q6A==}
 
+  core-js@3.40.0:
+    resolution: {integrity: sha512-7vsMc/Lty6AGnn7uFpYT56QesI5D2Y/UkgKounk87OP9Z2H9Z8kj6jzcSGAxFmUtDOS0ntK6lbQz+Nsa0Jj6mQ==}
+
   core-util-is@1.0.3:
     resolution: {integrity: sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==}
 
@@ -4000,6 +4006,9 @@ packages:
   fetch-blob@3.2.0:
     resolution: {integrity: sha512-7yAQpD2UMJzLi1Dqv7qFYnPbaPx7ZfFK6PiIxQ4PfkGPyNyl2Ugx+a/umUonmKqjhM4DnfbMvdX6otXq83soQQ==}
     engines: {node: ^12.20 || >= 14.13}
+
+  fflate@0.4.8:
+    resolution: {integrity: sha512-FJqqoDBR00Mdj9ppamLa/Y7vxm+PRmNWA67N846RvsoYVMKB4q3y/de5PA7gUmRMYK/8CMz2GDZQmCRN1wBcWA==}
 
   file-entry-cache@6.0.1:
     resolution: {integrity: sha512-7Gps/XWymbLk2QLYK4NzpMOrYjMhdIxXuIvy2QBsLE6ljuodKvdkWs/cpyJJ3CVIVpH0Oi1Hvg1ovbMzLdFBBg==}
@@ -5593,6 +5602,9 @@ packages:
     resolution: {integrity: sha512-cDWgoah1Gez9rN3H4165peY9qfpEo+SA61oQv65O3cRUE1pOEoJWwddwcqKE8XZYjbblOJlYDlLV4h67HrEVDg==}
     engines: {node: '>=12'}
 
+  posthog-js@1.215.1:
+    resolution: {integrity: sha512-C64FFbuBB1VyMRMbFj+SyFwcJ6CjsGvNbsPfrH/PO/rv+SeK3KDXMmJ4XrqEN/eZU4DEEfx0Gscqdq9v9jbhCw==}
+
   ppm@0.0.0:
     resolution: {integrity: sha512-WE4+7Buypo4FB/mmFbbk74d0/V7UC1Y+6490bwN/8UWZ32yNNNOi0GpwXM2RMZ8okxSkRMixBLxLg7aBJSvuUg==}
 
@@ -6725,6 +6737,9 @@ packages:
 
   web-tree-sitter@0.24.5:
     resolution: {integrity: sha512-+J/2VSHN8J47gQUAvF8KDadrfz6uFYVjxoxbKWDoXVsH2u7yLdarCnIURnrMA6uSRkgX3SdmqM5BOoQjPdSh5w==}
+
+  web-vitals@4.2.4:
+    resolution: {integrity: sha512-r4DIlprAGwJ7YM11VZp4R884m0Vmgr6EAKe3P+kO0PPj3Unqyvv59rczf6UiGcb9Z8QxZVcqKNwv/g0WNdWwsw==}
 
   webglew@1.0.5:
     resolution: {integrity: sha512-PG18sikVfrnTHaZkYpyaFt5xdjQ7/MbaTRJ8zXc385A/yTsphm6qyUT7UAKvFP/3d8XGLPeqNVTXdQByaBPddQ==}
@@ -10534,6 +10549,8 @@ snapshots:
 
   core-js-pure@3.40.0: {}
 
+  core-js@3.40.0: {}
+
   core-util-is@1.0.3: {}
 
   cosmiconfig@8.3.6(typescript@5.7.3):
@@ -11342,6 +11359,8 @@ snapshots:
     dependencies:
       node-domexception: 1.0.0
       web-streams-polyfill: 3.3.3
+
+  fflate@0.4.8: {}
 
   file-entry-cache@6.0.1:
     dependencies:
@@ -13212,6 +13231,13 @@ snapshots:
 
   postgres@3.4.5: {}
 
+  posthog-js@1.215.1:
+    dependencies:
+      core-js: 3.40.0
+      fflate: 0.4.8
+      preact: 10.24.3
+      web-vitals: 4.2.4
+
   ppm@0.0.0:
     dependencies:
       through: 2.2.7
@@ -14547,6 +14573,8 @@ snapshots:
 
   web-tree-sitter@0.24.5:
     optional: true
+
+  web-vitals@4.2.4: {}
 
   webglew@1.0.5:
     dependencies:
