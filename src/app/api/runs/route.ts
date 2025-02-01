@@ -1,22 +1,25 @@
 import { db } from "@/lib/db/db";
-import { runs } from "@/lib/db/schema/runs";
-import { and, between, eq, inArray } from "drizzle-orm";
+import { runs } from "@/lib/db/schema";
+import { and, asc, eq, gt, inArray, or } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
+const VALID_DIFFICULTIES = ["easy", "intermediate", "advanced"] as const;
+type Difficulty = (typeof VALID_DIFFICULTIES)[number];
+
 function parseQueryParams(searchParams: URLSearchParams) {
-  const minDistanceParam = searchParams.get("minDistance");
-  const maxDistanceParam = searchParams.get("maxDistance");
-  const intervalDaysParam = searchParams.get("interval_day");
-  const difficultyParam = searchParams.get("difficulty");
+  const weekdays = searchParams.get("weekdays")?.split(",").map(Number) || [];
+  const difficulty = searchParams.get("difficulty") as Difficulty | null;
+  const clubId = searchParams.get("clubId");
 
-  const minDistance = minDistanceParam ? parseInt(minDistanceParam, 10) : null;
-  const maxDistance = maxDistanceParam ? parseInt(maxDistanceParam, 10) : null;
-  const intervalDays = intervalDaysParam
-    ? intervalDaysParam.split(",").map(Number)
-    : [];
-  const difficulty = difficultyParam || null;
-
-  return { minDistance, maxDistance, intervalDays, difficulty };
+  return {
+    weekdays: weekdays.filter(
+      (day) => Number.isInteger(day) && day >= 1 && day <= 7,
+    ),
+    difficulty: VALID_DIFFICULTIES.includes(difficulty as Difficulty)
+      ? difficulty
+      : null,
+    clubId,
+  };
 }
 
 function handleErrorResponse(
@@ -27,235 +30,163 @@ function handleErrorResponse(
   console.error(message, error);
   return NextResponse.json({ error: message }, { status });
 }
+
 export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const { minDistance, maxDistance, intervalDays, difficulty } =
-    parseQueryParams(searchParams);
-
   try {
-    const baseQuery = db
-      .select({
-        id: runs.id,
-        name: runs.name,
-        clubId: runs.clubId,
-        difficulty: runs.difficulty,
-        date: runs.date,
-        interval: runs.interval,
-        intervalDay: runs.intervalDay,
-        startDescription: runs.startDescription,
-        startTime: runs.startTime,
-        distance: runs.distance,
-        location: {
-          lat: runs.locationLat,
-          lng: runs.locationLng,
-        },
-      })
-      .from(runs);
+    const { searchParams } = new URL(request.url);
+    const { weekdays, difficulty, clubId } = parseQueryParams(searchParams);
 
-    // Initialize array
-    const conditions = [eq(runs.membersOnly, false)];
+    console.log("Query params:", { weekdays, difficulty, clubId });
 
-    // Validate and add distance condition
-    if (
-      typeof minDistance === "number" &&
-      typeof maxDistance === "number" &&
-      minDistance >= 0 &&
-      maxDistance >= minDistance
-    ) {
-      conditions.push(
-        between(runs.distance, minDistance.toString(), maxDistance.toString()),
-      );
+    // Get current date
+    const now = new Date();
+    console.log("Current date:", now);
+
+    const conditions = [
+      eq(runs.isApproved, true),
+      or(
+        eq(runs.isRecurrent, true),
+        and(eq(runs.isRecurrent, false), gt(runs.datetime, now)),
+      ),
+    ];
+
+    // Add clubId filter if provided
+    if (clubId) {
+      conditions.push(eq(runs.clubId, clubId));
     }
 
-    // Validate and add interval days condition
-    const validDays = intervalDays.filter(
-      (day) => Number.isInteger(day) && day >= 1 && day <= 7,
-    );
-    if (validDays.length > 0) {
-      conditions.push(inArray(runs.intervalDay, validDays));
+    // Add weekday filter if provided
+    if (weekdays.length > 0) {
+      conditions.push(inArray(runs.weekday, weekdays));
     }
 
-    const validDifficulties = ["easy", "intermediate", "advanced"];
-    if (difficulty && validDifficulties.includes(difficulty)) {
+    // Add difficulty filter if provided
+    if (difficulty) {
       conditions.push(eq(runs.difficulty, difficulty));
     }
 
-    // Query based on conditions
-    if (conditions.length > 1) {
-      baseQuery.where(and(...conditions));
-    } else {
-      baseQuery.where(eq(runs.membersOnly, false));
-    }
+    // Get all runs with the specified conditions
+    const runsData = await db
+      .select({
+        id: runs.id,
+        name: runs.name,
+        difficulty: runs.difficulty,
+        clubId: runs.clubId,
+        datetime: runs.datetime,
+        weekday: runs.weekday,
+        startDescription: runs.startDescription,
+        locationLng: runs.locationLng,
+        locationLat: runs.locationLat,
+        mapsLink: runs.mapsLink,
+        isRecurrent: runs.isRecurrent,
+        isApproved: runs.isApproved,
+        distance: runs.distance,
+      })
+      .from(runs)
+      .where(and(...conditions))
+      .orderBy(asc(runs.datetime));
 
-    const result = await baseQuery.execute();
-    return NextResponse.json(result);
+    console.log("Fetched runs from database:", runsData);
+
+    // Transform the data to include a location object
+    const transformedRuns = runsData.map((run: any) => ({
+      ...run,
+      location: {
+        lat: run.locationLat,
+        lng: run.locationLng,
+      },
+    }));
+
+    console.log("Transformed runs:", transformedRuns);
+
+    return NextResponse.json(transformedRuns);
   } catch (error) {
-    return handleErrorResponse(error, "Error fetching runs");
+    return handleErrorResponse(error);
   }
 }
 
 export async function POST(request: Request) {
-  const runData = await request.json();
-
   try {
-    const newRun = {
-      ...runData,
-      locationLng: runData.location.lng,
-      locationLat: runData.location.lat,
-    };
+    const body = await request.json();
 
-    await db.insert(runs).values(newRun).execute();
+    // Validate the date field
+    if (!body.datetime) {
+      return handleErrorResponse(
+        new Error("Date is required"),
+        "Date is required",
+        400,
+      );
+    }
 
-    return NextResponse.json(
-      { message: "Run created successfully", run: newRun },
-      { status: 201 },
-    );
+    // Ensure date is a valid Date object
+    const datetime = new Date(body.datetime);
+    if (isNaN(datetime.getTime())) {
+      return handleErrorResponse(
+        new Error("Invalid date"),
+        "Invalid date",
+        400,
+      );
+    }
+
+    // Validate location coordinates
+    if (!body.location?.lat || !body.location?.lng) {
+      return handleErrorResponse(
+        new Error("Location coordinates are required"),
+        "Location coordinates are required",
+        400,
+      );
+    }
+
+    // Calculate weekday (1-7, where 1 is Monday)
+    const weekday = ((datetime.getDay() + 6) % 7) + 1;
+
+    // Create the run with flattened location fields
+    const run = await db
+      .insert(runs)
+      .values({
+        id: body.id,
+        name: body.name,
+        difficulty: body.difficulty,
+        clubId: body.clubId,
+        datetime,
+        weekday,
+        startDescription: body.startDescription,
+        locationLat: body.location.lat,
+        locationLng: body.location.lng,
+        mapsLink: body.mapsLink,
+        isRecurrent: body.isRecurrent,
+        isApproved: body.isApproved,
+        distance: body.distance,
+      })
+      .returning();
+
+    return NextResponse.json(run[0]);
   } catch (error) {
-    return handleErrorResponse(error, "Error creating run");
+    return handleErrorResponse(error);
   }
 }
 
 export async function DELETE(request: Request) {
-  const { id } = await request.json();
-
   try {
-    await db.delete(runs).where(eq(runs.id, id)).execute();
-    return NextResponse.json({ message: "Run deleted successfully" });
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get("id");
+
+    if (!id) {
+      return handleErrorResponse(
+        new Error("ID is required"),
+        "ID is required",
+        400,
+      );
+    }
+
+    const deletedRun = await db.delete(runs).where(eq(runs.id, id)).returning();
+
+    if (!deletedRun.length) {
+      return NextResponse.json({ error: "Run not found" }, { status: 404 });
+    }
+
+    return NextResponse.json(deletedRun[0]);
   } catch (error) {
-    return handleErrorResponse(error, "Error deleting run");
+    return handleErrorResponse(error);
   }
 }
-
-/**
- * @swagger
- * /api/runs:
- *   get:
- *     summary: Retrieve a list of runs
- *     tags:
- *       - runs
- *     description: Fetch runs based on various query parameters such as distance, interval days, and difficulty.
- *     parameters:
- *       - in: query
- *         name: minDistance
- *         schema:
- *           type: integer
- *         description: Minimum distance of the run in meters
- *       - in: query
- *         name: maxDistance
- *         schema:
- *           type: integer
- *         description: Maximum distance of the run in meters
- *       - in: query
- *         name: interval_day
- *         schema:
- *           type: string
- *         description: Comma-separated list of interval days (1-7)
- *       - in: query
- *         name: difficulty
- *         schema:
- *           type: string
- *           enum: [easy, intermediate, advanced]
- *         description: Difficulty level of the run
- *     responses:
- *       200:
- *         description: A list of runs
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   id:
- *                     type: string
- *                   name:
- *                     type: string
- *                   clubId:
- *                     type: string
- *                   difficulty:
- *                     type: string
- *                   date:
- *                     type: string
- *                     format: date-time
- *                   interval:
- *                     type: string
- *                   intervalDay:
- *                     type: integer
- *                   startDescription:
- *                     type: string
- *                   startTime:
- *                     type: string
- *                   distance:
- *                     type: number
- *                   location:
- *                     type: object
- *                     properties:
- *                       lat:
- *                         type: number
- *                       lng:
- *                         type: number
- *       500:
- *         description: Internal Server Error
- *
- *   post:
- *     summary: Create a new run
- *     tags:
- *       - runs
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               name:
- *                 type: string
- *               clubId:
- *                 type: string
- *               difficulty:
- *                 type: string
- *               date:
- *                 type: string
- *                 format: date-time
- *               interval:
- *                 type: string
- *               intervalDay:
- *                 type: integer
- *               startDescription:
- *                 type: string
- *               startTime:
- *                 type: string
- *               distance:
- *                 type: number
- *               location:
- *                 type: object
- *                 properties:
- *                   lat:
- *                     type: number
- *                   lng:
- *                     type: number
- *     responses:
- *       201:
- *         description: Run created successfully
- *       500:
- *         description: Internal Server Error
- *
- *   delete:
- *     summary: Delete a run
- *     tags:
- *       - runs
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               id:
- *                 type: string
- *     responses:
- *       200:
- *         description: Run deleted successfully
- *       500:
- *         description: Internal Server Error
- */

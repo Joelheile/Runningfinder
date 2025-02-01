@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
 const addRun = async (newRun: Run): Promise<Run> => {
+  console.log("Attempting to add run:", newRun);
   const response = await fetch("/api/runs", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -12,9 +13,12 @@ const addRun = async (newRun: Run): Promise<Run> => {
   });
 
   if (!response.ok) {
-    toast.error("Failed to add run");
-    throw new Error("Failed to add run");
+    const errorText = await response.text();
+    console.error("Failed to add run:", errorText);
+    toast.error(`Failed to add run: ${errorText}`);
+    throw new Error(`Failed to add run: ${errorText}`);
   }
+  console.log("Run added successfully");
   toast.success("Run added successfully");
   return response.json();
 };
