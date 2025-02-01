@@ -15,29 +15,31 @@ export default function ClubIconBar({
 }: ClubIconBarInterface) {
   return (
     <>
-      <div className="flex flew-row   space-x-3 mt-3">
-        <div className="cursor-pointer stroke-primary">
-          {instagramUsername && (
-            <Link href={`https://www.instagram.com/${instagramUsername}`}>
+      <div className="flex gap-3 mt-3">
+        {instagramUsername && (
+          <Link href={`https://www.instagram.com/${instagramUsername}`}>
+            <div className="w-6 h-6 flex items-center justify-center group cursor-pointer">
               <Image
                 width={24}
                 height={24}
                 src="/icons/instagram.jpeg"
                 alt={instagramUsername}
-                className="rounded-md hover:w-7 "
+                className="rounded-md transform group-hover:scale-110 transition-transform duration-200"
               />
-            </Link>
-          )}
-        </div>
+            </div>
+          </Link>
+        )}
         {stravaUsername && (
-          <Link href={`https://strava${instagramUsername}`}>
-            <Image
-              width={24}
-              height={24}
-              src="/icons/strava.svg"
-              alt={instagramUsername}
-              className="rounded-md hover:w-7 "
-            />
+          <Link href={`https://strava.com/clubs/${stravaUsername}`}>
+            <div className="w-6 h-6 flex items-center justify-center group cursor-pointer">
+              <Image
+                width={24}
+                height={24}
+                src="/icons/strava.svg"
+                alt={instagramUsername}
+                className="rounded-md transform group-hover:scale-110 transition-transform duration-200"
+              />
+            </div>
           </Link>
         )}
       </div>
