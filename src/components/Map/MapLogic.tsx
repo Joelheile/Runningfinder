@@ -30,10 +30,10 @@ const Map = memo(({ runs }: { runs: Run[] }) => {
       });
 
       const { Map } = (await loader.importLibrary(
-        "maps"
+        "maps",
       )) as google.maps.MapsLibrary;
       const { InfoWindow } = (await loader.importLibrary(
-        "maps"
+        "maps",
       )) as google.maps.MapsLibrary;
 
       const defaultCenter = { lat: 52.5155235, lng: 13.4049124 };
@@ -86,7 +86,7 @@ const Map = memo(({ runs }: { runs: Run[] }) => {
 
       try {
         const { Marker } = (await loader.importLibrary(
-          "marker"
+          "marker",
         )) as google.maps.MarkerLibrary;
 
         const newMarkers: google.maps.Marker[] = runs
@@ -150,8 +150,8 @@ const Map = memo(({ runs }: { runs: Run[] }) => {
                           {run.difficulty}
                         </span>
                       </Link>
-                    </div>
-                  )
+                    </div>,
+                  ),
                 );
                 infoWindowRef.current.open(mapInstanceRef.current, marker);
               }
@@ -161,7 +161,7 @@ const Map = memo(({ runs }: { runs: Run[] }) => {
           })
           .filter(
             (marker): marker is google.maps.Marker =>
-              marker !== null && marker instanceof google.maps.Marker
+              marker !== null && marker instanceof google.maps.Marker,
           );
 
         // Store markers in ref
@@ -173,7 +173,7 @@ const Map = memo(({ runs }: { runs: Run[] }) => {
     };
 
     updateMarkers();
-  }, [runs, clubs]); 
+  }, [runs, clubs]);
 
   useEffect(() => {
     if (!mapInstanceRef.current || !markersRef.current.length) return;

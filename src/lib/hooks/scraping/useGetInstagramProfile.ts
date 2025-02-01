@@ -1,4 +1,3 @@
-
 interface InstagramPost {
   url: string;
   displayUrl: string;
