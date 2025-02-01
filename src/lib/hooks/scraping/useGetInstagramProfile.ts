@@ -95,4 +95,5 @@ interface InstagramProfile {
 
 
 
-export default getInstagramProfile;                
+export default getInstagramProfile
+;                

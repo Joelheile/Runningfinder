@@ -38,88 +38,20 @@ export async function PATCH(
   try {
     const { slug } = params;
     if (!slug) {
-      return NextResponse.json(
-        { error: "Club slug is required" },
-        { status: 400 },
-      );
+      return NextResponse.json({ error: "Club slug is required" }, { status: 400 });
     }
 
     const body = await request.json();
-    console.log("Received update request for club:", { slug, body });
-
-    // Create an update object with only the fields that are present
-    const updateData: any = {};
-
-    // Explicitly list allowed fields for update
-    const allowedFields = [
-      "name",
-      "description",
-      "instagramUsername",
-      "stravaUsername",
-      "avatarUrl",
-    ];
-
-    // Only update allowed fields
-    for (const field of allowedFields) {
-      if (body[field] !== undefined) {
-        updateData[field] = body[field];
-      }
-    }
-
-    // Explicitly prevent approval through this endpoint
-    if (body.isApproved !== undefined) {
-      console.log("Attempt to update isApproved field detected and blocked");
-      return NextResponse.json(
-        { error: "isApproved cannot be modified through this endpoint" },
-        { status: 400 },
-      );
-    }
-
-    console.log("Final update data:", updateData);
-
-    if (Object.keys(updateData).length === 0) {
-      return NextResponse.json(
-        { error: "No valid fields to update" },
-        { status: 400 },
-      );
-    }
-
-    console.log('Executing update query with data:', { slug, updateData });
-    
-    // First verify the club exists
-    const existingClub = await db
-      .select()
-      .from(clubs)
-      .where(eq(clubs.slug, slug));
-
-    if (!existingClub.length) {
-      console.log('Club not found for update:', slug);
-      return NextResponse.json({ error: "Club not found" }, { status: 404 });
-    }
-
-    console.log('Existing club before update:', existingClub[0]);
-
     const updatedClub = await db
       .update(clubs)
-      .set(updateData)
+      .set(body)
       .where(eq(clubs.slug, slug))
       .returning();
 
-    console.log('Update query result:', updatedClub);
-
-    if (!updatedClub.length) {
-      console.error('Update failed - no rows returned');
-      return NextResponse.json({ error: "Update failed" }, { status: 500 });
-    }
-
-    console.log('Successfully updated club:', updatedClub[0]);
-    return NextResponse.json(updatedClub[0]);
+    return NextResponse.json(updatedClub);
   } catch (error) {
     console.error("Error updating club:", error);
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 },
-    );
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
 
