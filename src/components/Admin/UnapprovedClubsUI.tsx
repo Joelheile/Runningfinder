@@ -18,6 +18,7 @@ interface UnapprovedClubsUIProps {
   handleUpdateClub: (slug: string, updateData: Partial<Club>) => Promise<void>;
   handleApproveClub: (slug: string) => Promise<void>;
   handleClubDecline: (slug: string) => Promise<void>;
+  handleImageUpload: (slug: string, file: File) => Promise<void>;
 }
 
 export default function UnapprovedClubsUI({
@@ -26,6 +27,7 @@ export default function UnapprovedClubsUI({
   handleUpdateClub,
   handleApproveClub,
   handleClubDecline,
+  handleImageUpload,
 }: UnapprovedClubsUIProps) {
   if (!clubs) return <div>No unapproved clubs</div>;
 
@@ -37,8 +39,8 @@ export default function UnapprovedClubsUI({
             <TableHead className="w-[15%]">Name</TableHead>
             <TableHead className="w-[25%]">Description</TableHead>
             <TableHead className="w-[20%]">Instagram</TableHead>
+            <TableHead className="w-[20%]">Strava</TableHead>
             <TableHead className="w-[20%]">Website</TableHead>
-            <TableHead className="w-[20%]">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -46,13 +48,37 @@ export default function UnapprovedClubsUI({
             <TableRow key={club.id}>
               <TableCell className="flex flex-col items-center p-4">
                 <div className="flex justify-center w-full mb-4">
-                  <div className="relative w-24 h-24">
-                    <Image
-                      fill
-                      src={club.avatarUrl || "/assets/default-club-avatar.png"}
-                      alt={`${club.name} avatar`}
-                      className="object-cover rounded-lg"
+                  <div className="relative w-24 h-24 group cursor-pointer">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          handleImageUpload(club.slug, file);
+                        }
+                      }}
+                      id={`image-upload-${club.slug}`}
                     />
+                    <label
+                      htmlFor={`image-upload-${club.slug}`}
+                      className="cursor-pointer block w-full h-full"
+                    >
+                      <Image
+                        fill
+                        src={
+                          club.avatarUrl || "/assets/default-club-avatar.png"
+                        }
+                        alt={`${club.name} avatar`}
+                        className="object-cover rounded-lg transition-opacity group-hover:opacity-75"
+                      />
+                      <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all rounded-lg">
+                        <span className="text-white opacity-0 group-hover:opacity-100 text-sm font-medium">
+                          Change Image
+                        </span>
+                      </div>
+                    </label>
                   </div>
                 </div>
                 <Input
