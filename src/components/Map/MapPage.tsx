@@ -7,6 +7,7 @@ import Link from "next/link";
 
 import { OnboardingGuide } from "../Onboarding/OnboardingGuide";
 import FilterBar from "../Runs/FilterBarLogic";
+import { Suspense } from "react";
 import { Button } from "../UI/button";
 import { RunDisclaimer } from "../disclaimer";
 
@@ -35,7 +36,9 @@ const MapPage = () => {
   return (
     <div className="fixed inset-0 overflow-hidden isolate">
       <OnboardingGuide />
-      <FilterBar onFilterChange={handleFilterChange} />
+      <Suspense fallback={<div className="w-full h-12 bg-gray-100 animate-pulse rounded-md"></div>}>
+        <FilterBar onFilterChange={handleFilterChange} />
+      </Suspense>
       <div className="absolute z-10 bottom-5 right-1/2 left-1/2 grid-flow-row text-center">
         <div className="flex flex-row gap-2 justify-center">
           <Link href="/clubs">
