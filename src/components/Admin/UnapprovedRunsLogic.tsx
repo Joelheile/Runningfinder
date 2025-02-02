@@ -11,11 +11,12 @@ import UnapprovedRunsUI from "./UnapprovedRunsUI";
 export default function UnapprovedRunsLogic() {
   const router = useRouter();
   const { data: runs, refetch } = useUnapprovedRuns();
+  const updateRun = useAdminUpdateRun();
+  const approveRun = useApproveRun();
 
   const handleUpdateRun = async (runId: string, updateData: Partial<Run>) => {
     try {
-      await useAdminUpdateRun(runId, updateData);
-
+      await updateRun.mutateAsync({ runId, updateData });
       await refetch();
       router.refresh();
     } catch (error) {
@@ -26,7 +27,7 @@ export default function UnapprovedRunsLogic() {
 
   const handleApproveRun = async (runId: string) => {
     try {
-      await useApproveRun(runId);
+      await approveRun(runId);
       await refetch();
       router.refresh();
       window.location.reload();

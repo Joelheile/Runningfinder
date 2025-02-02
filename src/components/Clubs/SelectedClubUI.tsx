@@ -40,7 +40,7 @@ export default function SelectedClubHeaderUI({
       }
     };
     fetchInstagramData();
-  }, [club.instagramUsername, getInstagramProfile]);
+  }, [club.instagramUsername]);
 
   return (
     <div className="fixed inset-0 z-[999] bg-white md:z-[50] md:top-16 md:right-0 md:left-auto md:bottom-auto md:w-[400px] md:h-[calc(100vh-4rem)] md:shadow-lg flex flex-col">
@@ -124,8 +124,7 @@ export default function SelectedClubHeaderUI({
                 distance={run.distance}
                 difficulty={run.difficulty}
                 startDescription={run.startDescription}
-                locationLat={run.location?.lat || 0}
-                locationLng={run.location?.lng || 0}
+           
                 mapsLink={run.mapsLink || null}
                 isCompact={true}
               />
