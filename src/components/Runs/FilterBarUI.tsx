@@ -123,7 +123,7 @@ export default function FilterBarUI({
                           >
                             <span>{info.icon}</span>
                             <span className="capitalize">
-                              {difficulty === level ? `${level} set` : level}
+                              {difficulty === level ? `${level} ` : level}
                             </span>
                           </button>
                         </TooltipTrigger>
