@@ -1,7 +1,7 @@
 import toast from 'react-hot-toast';
 
 const useApproveClub = (clubId: string) => {
-  const approveClub = async () => {
+  const approveClub = async (clubId: string) => {
     try {
       const response = await fetch(`/api/clubs/${clubId}/approve`, {
         method: 'POST',

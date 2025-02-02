@@ -16,9 +16,15 @@ export default function UnapprovedClubsLogic() {
   const router = useRouter();
   const { clubs, refetch } = useFetchClubs();
 
+  // Call hooks at the top level
+  const updateAdminClub = useUpdateAdminClub; // Keep it as a function reference
+  const approveClub = useApproveClub; // Keep it as a function reference
+  const declineClub = useDeclineClub; // Keep it as a function reference
+  const { uploadAvatar } = useUploadAvatar();
+
   const handleUpdateClub = async (slug: string, updateData: Partial<Club>) => {
     try {
-      await useUpdateAdminClub(slug, updateData);
+      await updateAdminClub(slug, updateData); // Call with slug and updateData
       toast.success("Club updated successfully");
       await refetch();
       router.refresh();
@@ -28,21 +34,30 @@ export default function UnapprovedClubsLogic() {
     }
   };
 
-  async function handleApproveClub(slug: string) {
-    const approve = await useApproveClub(slug);
-    approve();
-    router.refresh();
-    refetch();
-    window.location.reload();
-  }
+  const handleApproveClub = async (clubId: string) => {
+    try {
+      await approveClub(clubId); // Call with clubId
+      toast.success("Club approved successfully");
+      refetch();
+      router.refresh();
+    } catch (error) {
+      console.error("Failed to approve club:", error);
+      toast.error("Failed to approve club");
+    }
+  };
 
-  async function handleClubDecline(slug: string) {
-    const decline = await useDeclineClub(slug);
-    decline();
-    refetch();
-    router.refresh();
-    window.location.reload();
-  }
+  const handleClubDecline = async (slug: string) => {
+    try {
+      const decline = declineClub(slug); // Call with slug
+      await decline(); // Await the decline function
+      toast.success("Club declined successfully");
+      refetch();
+      router.refresh();
+    } catch (error) {
+      console.error("Failed to decline club:", error);
+      toast.error("Failed to decline club");
+    }
+  };
 
   const handleInstagramFetch = async (slug: string, username: string) => {
     if (!username) return;
@@ -70,8 +85,6 @@ export default function UnapprovedClubsLogic() {
       toast.error("Failed to fetch Instagram profile", { id: loadingToast });
     }
   };
-
-  const { uploadAvatar } = useUploadAvatar();
 
   const handleImageUpload = async (slug: string, file: File) => {
     const loadingToast = toast.loading("Uploading image...");
