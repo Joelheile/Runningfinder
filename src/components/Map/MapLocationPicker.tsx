@@ -108,7 +108,7 @@ export default function MapLocationPicker({
     const position = new google.maps.LatLng(location.lat, location.lng);
     marker.setPosition(position);
     map.setCenter(position);
-  }, [map, marker, location, onSelect]);
+  }, [map, marker, location]);
 
   const handleSearch = (value: string) => {
     setSearchValue(value);

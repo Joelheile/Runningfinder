@@ -33,19 +33,9 @@ export async function GET() {
       .leftJoin(clubs, eq(runs.clubId, clubs.id))
       .where(eq(runs.isApproved, false));
 
-    // Filter out any runs with invalid data
-    const validRuns = unapprovedRuns.filter((run: any) => {
-      const hasValidLocation =
-        run.locationLat != null && run.locationLng != null;
-      const hasValidBasics = run.id && run.name && run.clubId;
-      const hasValidTiming = run.isRecurrent
-        ? run.weekday != null
-        : run.datetime != null;
 
-      return hasValidBasics && hasValidLocation && hasValidTiming;
-    });
 
-    return NextResponse.json(validRuns, {
+    return NextResponse.json(unapprovedRuns, {
       headers: {
         "Cache-Control":
           "no-store, no-cache, must-revalidate, proxy-revalidate",

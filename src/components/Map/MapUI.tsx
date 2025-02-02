@@ -1,6 +1,7 @@
 import { Run } from "@/lib/types/Run";
 import React, { useEffect, useState } from "react";
-import { SelectedClubHeaderLogic } from "../Clubs/SelectedClubHeaderLogic";
+import { SelectedClubHeaderLogic } from "../Clubs/SelectedCluLogic";
+import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
 
 interface MapViewProps {
   mapRef: React.RefObject<HTMLDivElement>;
@@ -10,13 +11,14 @@ interface MapViewProps {
 
 const MapUI = ({ mapRef, selectedLocation, runs }: MapViewProps) => {
   const [isClubHeaderVisible, setIsClubHeaderVisible] = useState(false);
+  const isDesktop = useMediaQuery('(min-width: 768px)');
 
-  // Show header when a new location is selected
+  // Show header when a new location is selected, but only on desktop
   useEffect(() => {
-    if (selectedLocation) {
+    if (selectedLocation && isDesktop) {
       setIsClubHeaderVisible(true);
     }
-  }, [selectedLocation]);
+  }, [selectedLocation, isDesktop]);
 
   const handleMapClick = (e: React.MouseEvent) => {
     // Only hide if clicking directly on the map container, not its children

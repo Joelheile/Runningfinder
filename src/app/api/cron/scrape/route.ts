@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server";
 import { scrapeRuns } from "@/lib/scraping/scrapeRuns";
+import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
   try {

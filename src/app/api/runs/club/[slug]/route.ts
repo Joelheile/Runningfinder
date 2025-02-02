@@ -13,6 +13,8 @@ export async function GET(
   }
 
   try {
+    console.log('Fetching runs for club:', slug);
+    
     const runsData = await db
       .select({
         id: runs.id,
@@ -28,11 +30,13 @@ export async function GET(
           lng: runs.locationLng,
         },
         mapsLink: runs.mapsLink,
-
         isRecurrent: runs.isRecurrent,
+        isApproved: runs.isApproved,
       })
       .from(runs)
       .where(eq(runs.clubId, slug));
+
+
 
     return NextResponse.json(runsData);
   } catch (error) {
