@@ -3,6 +3,7 @@
 import { useDeleteClub } from "@/lib/hooks/clubs/useDeleteClub";
 import { useFetchClubBySlug } from "@/lib/hooks/clubs/useFetchClubs";
 import { useFetchRunsByClubId } from "@/lib/hooks/runs/useFetchRunsByClubId";
+import { Club } from "@/lib/types/Club";
 import { useParams, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import ClubDashboardUI from "./ClubDashboardUI";
@@ -11,10 +12,23 @@ export default function ClubDashboard() {
   const router = useRouter();
   const slug = useParams().slug.toString();
 
-  const { data: club, isLoading, isError, error } = useFetchClubBySlug(slug);
+  const {
+    data: club,
+    isLoading,
+    isError,
+    error,
+  } = useFetchClubBySlug(slug) as {
+    data: Club | undefined;
+    isLoading: boolean;
+    isError: boolean;
+    error: Error;
+  };
 
-  const clubId = club?.id || "";
-  const { data: runs } = useFetchRunsByClubId(clubId);
+  const { data: runs } = useFetchRunsByClubId(club?.id || "");
+
+  if (isError || !club) {
+    return <div>Error loading club details</div>;
+  }
 
   const handleShare = async () => {
     try {
@@ -76,7 +90,6 @@ export default function ClubDashboard() {
     <ClubDashboardUI
       club={club}
       runs={runs}
-      
       slug={slug}
       onShare={handleShare}
       onDelete={handleDelete}

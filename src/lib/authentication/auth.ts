@@ -30,7 +30,8 @@ const trustedHosts = process.env.NEXTAUTH_URL
   ? [new URL(process.env.NEXTAUTH_URL).host]
   : ["localhost:3000", "www.runningfinder.com", "runningfinder.com"];
 
-export const { handlers, auth } = NextAuth({
+export const { handlers, auth, signIn: signInAuth } = NextAuth({
+  
   trustHost: true, // Trust all hosts in production
   cookies: {
     pkceCodeVerifier: {
@@ -50,6 +51,13 @@ export const { handlers, auth } = NextAuth({
     strategy: "jwt",
   },
   callbacks: {
+    async redirect({ url, baseUrl }) {
+      // Allows relative callback URLs
+      if (url.startsWith("/")) return `${baseUrl}${url}`
+      // Allows callback URLs on the same origin
+      else if (new URL(url).origin === baseUrl) return url
+      return baseUrl
+    },
     async signIn({ user, account, profile }) {
       return true;
     },
@@ -60,17 +68,14 @@ export const { handlers, auth } = NextAuth({
       }
       return token;
     },
-    async session({ session, token }) {
-      if (token && session.user) {
+    async session({ session, token, user }) {
+      if (session?.user) {
+        session.user.id = token.sub || token.id as string
+        session.user.isAdmin = Boolean(token.isAdmin)
         session.user.id = token.id as string;
         session.user.isAdmin = Boolean(token.isAdmin);
       }
       return session;
-    },
-    redirect({ url, baseUrl }) {
-      if (url.startsWith("/")) return `${baseUrl}${url}`;
-      else if (new URL(url).origin === baseUrl) return url;
-      return baseUrl;
     },
   },
   adapter: DrizzleAdapter(db, {
