@@ -58,14 +58,14 @@ export default function ClubDashboardUI({
   return (
     <div className="min-h-screen bg-gray-50 pb-safe">
       {/* Top Navigation Bar */}
-      <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 px-3 sm:px-6 lg:px-8 py-3 sm:py-4">
+      <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 px-2 sm:px-6 lg:px-8 py-2 sm:py-4">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <button
             onClick={() => router.back()}
-            className="flex items-center hover:bg-gray-100 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 transition-colors gap-1.5 sm:gap-2"
+            className="flex items-center hover:bg-gray-100 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 transition-colors gap-1 sm:gap-2"
           >
             <ChevronLeft className="stroke-primary h-5 w-5" />
-            <span className="text-primary font-medium">Back</span>
+            <span className="text-primary text-sm sm:text-base font-medium">Back</span>
           </button>
           <div className="flex items-center gap-2">
             <div className="flex gap-2">
@@ -102,7 +102,7 @@ export default function ClubDashboardUI({
       </nav>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6 space-y-6 sm:space-y-8">
+      <main className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-3 sm:py-6 space-y-4 sm:space-y-8">
         {/* Club Card Section */}
         <section className="w-full">
           <ClubCard
@@ -117,8 +117,8 @@ export default function ClubDashboardUI({
 
         {/* Upcoming Runs Section */}
         <section className="pt-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 mb-4 sm:mb-6">
-            <h2 className="text-2xl font-bold text-gray-900">Upcoming runs</h2>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4 mb-3 sm:mb-6">
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Upcoming runs</h2>
             {club && runs && runs.length > 0 && (
               <div className="shrink-0">
                 <AddRunState club={club} />
@@ -156,8 +156,8 @@ export default function ClubDashboardUI({
             </div>
           )}
           {runs?.length === 0 && (
-            <div className="text-center py-8 sm:py-12 bg-gray-50 rounded-xl px-4">
-              <p className="text-gray-600 font-medium">
+            <div className="text-center py-6 sm:py-12 bg-gray-50 rounded-xl px-3 sm:px-4">
+              <p className="text-gray-600 text-sm sm:text-base font-medium">
                 No runs found for this club yet.
               </p>
               {club && (
