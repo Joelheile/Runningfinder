@@ -27,10 +27,6 @@ export default function ClubDashboard() {
   const { data: runs } = useFetchRunsByClubId(club?.id || "");
   const deleteClubMutation = useDeleteClub();
 
-  if (isError || !club) {
-    return <div>Error loading club details</div>;
-  }
-
   const handleShare = async () => {
     try {
       await navigator.clipboard.writeText(window.location.href);
