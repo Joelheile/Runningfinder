@@ -39,7 +39,13 @@ export default function ClubDashboardUI({
   if (error) return <p>Error: {error}</p>;
   if (noData) return <p>No club data available.</p>;
 
-  console.log("runs", runs);
+  console.log("All runs:", runs?.map(run => ({
+    id: run.id,
+    name: run.name,
+    hasLocation: !!(run.location?.lat && run.location?.lng),
+    location: run.location,
+    isApproved: run.isApproved,
+  })));
   const {
     name,
     description,
@@ -148,8 +154,9 @@ export default function ClubDashboardUI({
                     startDescription={run.startDescription}
                     difficulty={run.difficulty}
                     distance={run.distance}
-                    locationLat={run.location.lat}
-                    locationLng={run.location.lng}
+                    locationLat={run.location?.lat}
+                    locationLng={run.location?.lng}
+                    mapsLink={run.mapsLink}
                     slug={slug}
                     weekday={run.weekday || 0}
                   />
