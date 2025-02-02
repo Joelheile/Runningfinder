@@ -31,58 +31,6 @@ export default function UnapprovedRuns() {
   const { updateRun, approveRun, deleteRun } = useRunActions();
   const queryClient = useQueryClient();
 
-  const handleUpdateRun = async (runId: string, data: UpdateRunData) => {
-    const updateData = {
-      ...data,
-      datetime: data.datetime ? new Date(data.datetime) : undefined,
-      id: runId,
-    };
-
-    try {
-      await updateRun.mutateAsync(updateData);
-    } catch (error) {
-      console.error("Failed to update run:", error);
-      // If the run doesn't exist (404), remove it from the cache
-      if (error instanceof Error && error.message.includes("404")) {
-        queryClient.setQueryData<RunWithClub[]>(
-          ["runs", "unapproved"],
-          (old) => old?.filter((run) => run.id !== runId) ?? [],
-        );
-      }
-    }
-  };
-
-  const handleApproveRun = (runId: string) => {
-    // Optimistically update the UI
-    queryClient.setQueryData<RunWithClub[]>(
-      ["runs", "unapproved"],
-      (old) => old?.filter((run) => run.id !== runId) ?? [],
-    );
-    approveRun.mutate(runId, {
-      onError: () => {
-        // On error, refetch to restore the correct state
-        queryClient.invalidateQueries({ queryKey: ["runs", "unapproved"] });
-      },
-    });
-  };
-
-  const handleDeleteRun = (runId: string) => {
-    // Optimistically update the UI
-    queryClient.setQueryData<RunWithClub[]>(
-      ["runs", "unapproved"],
-      (old) => old?.filter((run) => run.id !== runId) ?? [],
-    );
-    deleteRun.mutate(runId, {
-      onError: (error) => {
-        // Only restore the UI state if it's not a 404 error
-        if (!error.message?.includes("404")) {
-          queryClient.invalidateQueries({ queryKey: ["runs", "unapproved"] });
-        }
-      },
-    });
-  };
-
-  const debouncedUpdateRun = debounce(handleUpdateRun, 500);
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading unapproved runs</div>;
