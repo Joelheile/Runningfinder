@@ -163,6 +163,17 @@ export default function UnapprovedClubs() {
                   />
                 </TableCell>
                 <TableCell className="align-top p-4">
+                  <Input
+                    placeholder="Website "
+                    defaultValue={club.websiteUrl}
+                    onChange={(e) =>
+                      handleUpdateClub(club.slug, {
+                        websiteUrl: e.target.value,
+                      })
+                    }
+                  />
+                </TableCell>
+                <TableCell className="align-top p-4">
                   <div className="flex flex-col gap-2">
                     <Button
                       onClick={() => handleApproveClub(club.slug)}
