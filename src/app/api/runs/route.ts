@@ -1,6 +1,6 @@
 import { db } from "@/lib/db/db";
 import { runs } from "@/lib/db/schema";
-import { and, asc, eq, gt, inArray, or } from "drizzle-orm";
+import { and, asc, eq, gt, inArray } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
 const VALID_DIFFICULTIES = ["easy", "intermediate", "advanced"] as const;
