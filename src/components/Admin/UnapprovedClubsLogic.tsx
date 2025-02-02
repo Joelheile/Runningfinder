@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
+import { useUploadAvatar } from "@/lib/hooks/avatars/useUploadAvatar";
 import useApproveClub from "@/lib/hooks/scraping/clubs/useApproveClub";
 import useDeclineClub from "@/lib/hooks/scraping/clubs/useDeclineClub";
 import useFetchClubs from "@/lib/hooks/scraping/clubs/useFetchClubs";
@@ -32,6 +33,7 @@ export default function UnapprovedClubsLogic() {
     approve();
     router.refresh();
     refetch();
+    window.location.reload();
   }
 
   async function handleClubDecline(slug: string) {
@@ -39,6 +41,7 @@ export default function UnapprovedClubsLogic() {
     decline();
     refetch();
     router.refresh();
+    window.location.reload();
   }
 
   const handleInstagramFetch = async (slug: string, username: string) => {
@@ -67,6 +70,20 @@ export default function UnapprovedClubsLogic() {
     }
   };
 
+  const { uploadAvatar } = useUploadAvatar();
+
+  const handleImageUpload = async (slug: string, file: File) => {
+    const loadingToast = toast.loading("Uploading image...");
+    try {
+      const url = await uploadAvatar(file, slug);
+      await handleUpdateClub(slug, { avatarUrl: url });
+      toast.success("Image uploaded successfully", { id: loadingToast });
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      toast.error("Failed to upload image", { id: loadingToast });
+    }
+  };
+
   return (
     <UnapprovedClubsUI
       clubs={clubs}
@@ -74,6 +91,7 @@ export default function UnapprovedClubsLogic() {
       handleUpdateClub={handleUpdateClub}
       handleApproveClub={handleApproveClub}
       handleClubDecline={handleClubDecline}
+      handleImageUpload={handleImageUpload}
     />
   );
 }
