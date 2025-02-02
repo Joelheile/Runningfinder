@@ -1,6 +1,6 @@
 import { Club } from "@/lib/types/Club";
 import { Run } from "@/lib/types/Run";
-import { ChevronLeft, Share, Trash } from "lucide-react";
+import { ChevronLeft, Share } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { RunDisclaimer } from "../disclaimer";
 import AddRunState from "../Runs/AddRunLogic";
@@ -83,7 +83,7 @@ export default function ClubDashboardUI({
                 <TooltipContent>Share club</TooltipContent>
               </Tooltip>
 
-              <Tooltip>
+              {/* <Tooltip>
                 <TooltipTrigger asChild>
                   <Button
                     variant="ghost"
@@ -95,7 +95,7 @@ export default function ClubDashboardUI({
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent>Delete club</TooltipContent>
-              </Tooltip>
+              </Tooltip> */}
             </div>
           </div>
         </div>
@@ -139,7 +139,6 @@ export default function ClubDashboardUI({
                 })
                 .map((run) => (
                   <RunCard
-               
                     id={run.id}
                     key={run.id}
                     datetime={run.datetime}
@@ -161,7 +160,7 @@ export default function ClubDashboardUI({
               <p className="text-gray-600 font-medium">
                 No runs found for this club yet.
               </p>
-              { club && (
+              {club && (
                 <p className="mt-2 text-gray-500">
                   <AddRunState club={club} />
                 </p>
