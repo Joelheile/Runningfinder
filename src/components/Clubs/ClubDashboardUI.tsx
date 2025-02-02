@@ -1,7 +1,6 @@
 import { Club } from "@/lib/types/Club";
 import { Run } from "@/lib/types/Run";
-import { ChevronLeft, Plus, Share, Trash } from "lucide-react";
-import Link from "next/link";
+import { ChevronLeft, Share, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { RunDisclaimer } from "../disclaimer";
 import AddRunState from "../Runs/AddRunLogic";
@@ -160,17 +159,9 @@ export default function ClubDashboardUI({
               <p className="text-gray-600 font-medium">
                 No runs found for this club yet.
               </p>
-              {userId && (
+              {userId && club && (
                 <p className="mt-2 text-gray-500">
-                  <Link
-                    href={`/clubs/${slug}/runs/new`}
-                    className="text-blue-500 hover:underline"
-                  >
-                    <Button className="w-full sm:w-auto">
-                      <Plus className="w-4 h-4 mr-2" />
-                      Create the first run
-                    </Button>
-                  </Link>
+                  <AddRunState club={club} />
                 </p>
               )}
             </div>
