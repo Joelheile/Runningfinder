@@ -1,6 +1,11 @@
 "use client";
 
 import { Button } from "@/components/UI/button";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/UI/hover-card";
 import { Input } from "@/components/UI/input";
 import {
   Table,
@@ -12,6 +17,7 @@ import {
 } from "@/components/UI/table";
 import { Club } from "@/lib/types/Club";
 import { Run } from "@/lib/types/Run";
+import Image from "next/image";
 
 const DIFFICULTIES = ["EASY", "INTERMEDIATE", "ADVANCED"] as const;
 type Difficulty = (typeof DIFFICULTIES)[number];
@@ -60,7 +66,36 @@ export default function UnapprovedRunsUI({
                   }
                 />
               </TableCell>
-              <TableCell>{run.club.name}</TableCell>
+              <TableCell>
+                <HoverCard>
+                  <HoverCardTrigger className="cursor-pointer hover:underline">
+                    {run.club.name}
+                  </HoverCardTrigger>
+                  <HoverCardContent className="w-80">
+                    <div className="flex justify-between space-x-4">
+                      <div className="flex-shrink-0">
+                        {run.club.avatarUrl && (
+                          <Image
+                            src={run.club.avatarUrl}
+                            alt={run.club.name}
+                            width={40}
+                            height={40}
+                            className="rounded-full"
+                          />
+                        )}
+                      </div>
+                      <div className="space-y-1">
+                        <h4 className="text-sm font-semibold">
+                          {run.club.name}
+                        </h4>
+                        <p className="text-sm text-muted-foreground">
+                          {run.club.description || "No description available"}
+                        </p>
+                      </div>
+                    </div>
+                  </HoverCardContent>
+                </HoverCard>
+              </TableCell>
               <TableCell>
                 <select
                   className="w-full p-2 border rounded"
