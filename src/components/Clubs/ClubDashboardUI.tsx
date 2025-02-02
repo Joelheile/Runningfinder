@@ -55,9 +55,6 @@ export default function ClubDashboardUI({
     stravaUsername: "",
   };
 
-  const futureRuns = runs?.filter((run) => run.datetime > new Date()) || [];
-  const pastRuns = runs?.filter((run) => run.datetime <= new Date()) || [];
-
   return (
     <div className="min-h-screen bg-gray-50 pb-safe">
       {/* Top Navigation Bar */}
@@ -128,15 +125,18 @@ export default function ClubDashboardUI({
               </div>
             )}
           </div>
-
-          {futureRuns.length > 0 ? (
+          {runs && runs.length > 0 && (
             <div className="grid grid-cols-1 gap-4 sm:gap-6">
-              {futureRuns
-                ?.sort((a, b) =>
-                  a.datetime && b.datetime
-                    ? a.datetime.getTime() - b.datetime.getTime()
-                    : 0
-                )
+              {runs
+                ?.sort((a, b) => {
+                  if (
+                    a.datetime instanceof Date &&
+                    b.datetime instanceof Date
+                  ) {
+                    return a.datetime.getTime() - b.datetime.getTime();
+                  }
+                  return 0;
+                })
                 .map((run) => (
                   <RunCard
                     userId={userId}
@@ -154,7 +154,8 @@ export default function ClubDashboardUI({
                   />
                 ))}
             </div>
-          ) : (
+          )}
+          {runs?.length === 0 && (
             <div className="text-center py-8 sm:py-12 bg-gray-50 rounded-xl px-4">
               <p className="text-gray-600 font-medium">
                 No runs found for this club yet.
@@ -166,6 +167,7 @@ export default function ClubDashboardUI({
               )}
             </div>
           )}
+          )
         </section>
         <RunDisclaimer />
       </main>
