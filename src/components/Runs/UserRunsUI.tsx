@@ -45,7 +45,6 @@ export default function UserRunsUI({
               name={run?.name || ""}
               startDescription={run?.startDescription || ""}
               difficulty={run?.difficulty || ""}
-              userId={userId}
               slug={run?.clubId || ""}
               isRegistered={true}
               isAdmin={false}
