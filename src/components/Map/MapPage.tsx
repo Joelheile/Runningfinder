@@ -1,14 +1,13 @@
 "use client";
 import Map from "@/components/Map/MapLogic";
-import { useFetchClubs } from "@/lib/hooks/clubs/useFetchClubs";
 import { useFetchRuns } from "@/lib/hooks/runs/useFetchRuns";
 import { useCallback, useState } from "react";
 
-import { Session } from "next-auth";
 import Link from "next/link";
 
 import { OnboardingGuide } from "../Onboarding/OnboardingGuide";
 import FilterBar from "../Runs/FilterBarLogic";
+import { Suspense } from "react";
 import { Button } from "../UI/button";
 import { RunDisclaimer } from "../disclaimer";
 
@@ -34,12 +33,12 @@ const MapPage = () => {
     []
   ); // Empty dependency array since we only need setFilters which is stable
 
-  const { data: clubs } = useFetchClubs();
-
   return (
-    <div className="fixed inset-0 overflow-hidden">
+    <div className="fixed inset-0 overflow-hidden isolate">
       <OnboardingGuide />
-      <FilterBar onFilterChange={handleFilterChange} />
+      <Suspense fallback={<div className="w-full h-12 bg-gray-100 animate-pulse rounded-md"></div>}>
+        <FilterBar onFilterChange={handleFilterChange} />
+      </Suspense>
       <div className="absolute z-10 bottom-5 right-1/2 left-1/2 grid-flow-row text-center">
         <div className="flex flex-row gap-2 justify-center">
           <Link href="/clubs">
@@ -54,8 +53,7 @@ const MapPage = () => {
 
       <RunDisclaimer />
 
-      <Map runs={runs || []} clubs={clubs || []} />
-     
+      <Map runs={runs || []} />
     </div>
   );
 };

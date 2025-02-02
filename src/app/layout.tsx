@@ -3,12 +3,11 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 
 import AuthProvider from "@/components/Auth/AuthProvider";
-import Metrics from "@/components/metrics";
 import { TooltipProvider } from "@/components/UI/tooltip";
-import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Toaster } from "react-hot-toast";
-import ReactQueryProvider from "../components/ReactQuery/ReactQueryProvider";
+import ReactQueryProvider from "../components/Providers/ReactQueryProvider";
+import { CSPostHogProvider } from "./providers";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -36,9 +35,9 @@ export default function RootLayout({
           <AuthProvider>
             <TooltipProvider>
               <Toaster position="bottom-center" />
-              {children}
-              <Metrics />
-              <Analytics />
+              <CSPostHogProvider>
+                <body>{children}</body>
+              </CSPostHogProvider>
               <SpeedInsights />
             </TooltipProvider>
           </AuthProvider>

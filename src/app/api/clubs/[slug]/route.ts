@@ -38,69 +38,20 @@ export async function PATCH(
   try {
     const { slug } = params;
     if (!slug) {
-      return NextResponse.json(
-        { error: "Club slug is required" },
-        { status: 400 },
-      );
+      return NextResponse.json({ error: "Club slug is required" }, { status: 400 });
     }
 
     const body = await request.json();
-    console.log("Received update request for club:", { slug, body });
-
-    // Create an update object with only the fields that are present
-    const updateData: any = {};
-
-    // Explicitly list allowed fields for update
-    const allowedFields = [
-      "name",
-      "description",
-      "instagramUsername",
-      "stravaUsername",
-      "avatarUrl",
-    ];
-
-    // Only update allowed fields
-    for (const field of allowedFields) {
-      if (body[field] !== undefined) {
-        updateData[field] = body[field];
-      }
-    }
-
-    // Explicitly prevent approval through this endpoint
-    if (body.isApproved !== undefined) {
-      console.log("Attempt to update isApproved field detected and blocked");
-      return NextResponse.json(
-        { error: "isApproved cannot be modified through this endpoint" },
-        { status: 400 },
-      );
-    }
-
-    console.log("Final update data:", updateData);
-
-    if (Object.keys(updateData).length === 0) {
-      return NextResponse.json(
-        { error: "No valid fields to update" },
-        { status: 400 },
-      );
-    }
-
     const updatedClub = await db
       .update(clubs)
-      .set(updateData)
+      .set(body)
       .where(eq(clubs.slug, slug))
       .returning();
 
-    if (!updatedClub.length) {
-      return NextResponse.json({ error: "Club not found" }, { status: 404 });
-    }
-
-    return NextResponse.json(updatedClub[0]);
+    return NextResponse.json(updatedClub);
   } catch (error) {
     console.error("Error updating club:", error);
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 },
-    );
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
 

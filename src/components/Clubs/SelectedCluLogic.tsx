@@ -3,7 +3,7 @@ import { useFetchRunsByClubId } from "@/lib/hooks/runs/useFetchRunsByClubId";
 import { Run } from "@/lib/types/Run";
 import { useState } from "react";
 import ClubHeaderSkeleton from "./ClubHeaderSkeleton";
-import SelectedClubHeaderUI from "./SelectedClubHeaderUI";
+import SelectedClubHeaderUI from "./SelectedClubUI";
 
 interface SelectedClubHeaderProps {
   run: Run;
@@ -17,14 +17,11 @@ export function SelectedClubHeaderLogic({
   const { data, error, isLoading } = useFetchClubs();
   const [instagramSelected, setInstagramSelected] = useState(false);
 
-  console.log("data (clubs):", data);
-  console.log("run:", run);
-  console.log("run.clubId:", run.clubId);
   const club = data?.find((club) => club.id === run.clubId);
-  console.log("found club:", club);
+
   const clubId = club?.id || "";
   const { data: runs } = useFetchRunsByClubId(clubId);
-  console.log("runs", runs);
+
   const futureRuns =
     runs?.filter((run: Run) => run.datetime > new Date()) || [];
 

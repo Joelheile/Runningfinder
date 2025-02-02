@@ -19,7 +19,7 @@ const addRun = async (newRun: Run): Promise<Run> => {
     throw new Error(`Failed to add run: ${errorText}`);
   }
   console.log("Run added successfully");
-  toast.success("Run added successfully");
+  toast.success("Run added, it will now be reviewed!");
   return response.json();
 };
 

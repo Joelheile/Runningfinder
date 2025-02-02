@@ -1,10 +1,6 @@
 import { useDeleteRun } from "@/lib/hooks/runs/useDeleteRun";
 import { useRouter } from "next/navigation";
 import RunCardUI from "./RunCardUI";
-import { Skeleton } from "@/components/UI/skeleton";
-import { getNextIntervalDate } from "@/lib/getNextIntervalDate";
-import { fetchWeatherData } from "@/lib/fetchWeatherData";
-import { useRouter } from "next/navigation";
 
 interface RunCardProps {
   id: string;
@@ -21,6 +17,7 @@ interface RunCardProps {
   isRegistered?: boolean;
   isAdmin?: boolean;
   onUnregister?: () => void;
+  mapsLink?: string | null;
 }
 
 export default function RunCard({
@@ -29,7 +26,7 @@ export default function RunCard({
   distance,
   locationLat,
   locationLng,
-
+  mapsLink,
   datetime,
   startDescription,
   difficulty,
@@ -65,12 +62,14 @@ export default function RunCard({
   //   }
   // };
 
-  // Create a more descriptive maps link with both coordinates and location name
-  const mapsLink = `https://www.google.com/maps/search/${encodeURIComponent(startDescription)}/@${locationLat},${locationLng},15z`;
+  // If no mapsLink is provided, create one from the coordinates
+  const generatedMapsLink =
+    locationLat && locationLng
+      ? `https://www.google.com/maps/search/${encodeURIComponent(startDescription)}/@${locationLat},${locationLng},15z`
+      : null;
 
   return (
     <RunCardUI
-      userId={userId}
       id={id}
       key={id}
       datetime={datetime}
@@ -78,9 +77,7 @@ export default function RunCard({
       startDescription={startDescription}
       difficulty={difficulty}
       distance={distance}
-      locationLat={locationLat}
-      locationLng={locationLng}
-      mapsLink={mapsLink}
+      mapsLink={mapsLink || generatedMapsLink}
       isAdmin={isAdmin}
     />
   );

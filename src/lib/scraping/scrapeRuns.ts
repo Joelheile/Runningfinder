@@ -190,6 +190,7 @@ export async function scrapeRuns() {
             instagramUsername: clubData.instagramUsername || "",
             avatarUrl: "",
             description: "",
+            isApproved: false, // Will be set to true if Instagram avatar is fetched
           };
 
           // Only fetch and set Instagram data if username is provided
@@ -208,8 +209,12 @@ export async function scrapeRuns() {
               if (instagramProfile) {
                 console.log("Instagram profile data retrieved successfully");
                 clubInsertData.avatarUrl = instagramProfile.profileImageUrl;
-                clubInsertData.description =
-                  instagramProfile.profileDescription;
+                clubInsertData.description = instagramProfile.profileDescription;
+                // Automatically approve club if it has an avatar URL
+                if (instagramProfile.profileImageUrl) {
+                  console.log("Auto-approving club due to valid Instagram avatar");
+                  clubInsertData.isApproved = true;
+                }
               } else {
                 console.log("No Instagram profile data available");
               }
