@@ -29,7 +29,7 @@ export default function UnapprovedClubsUI({
   handleClubDecline,
   handleImageUpload,
 }: UnapprovedClubsUIProps) {
-  if (!clubs) return <div>No unapproved clubs</div>;
+  if (clubs?.length == 0) return <div>No unapproved clubs</div>;
 
   return (
     <div className="w-full max-w-[95%] mx-auto py-10 overflow-x-auto">
@@ -44,7 +44,7 @@ export default function UnapprovedClubsUI({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {clubs.map((club) => (
+          {clubs?.map((club) => (
             <TableRow key={club.id}>
               <TableCell className="flex flex-col items-center p-4">
                 <div className="flex justify-center w-full mb-4">
@@ -108,7 +108,16 @@ export default function UnapprovedClubsUI({
                     placeholder="Instagram username"
                     defaultValue={club.instagramUsername}
                     onChange={(e) =>
-                      handleInstagramFetch(club.slug, e.target.value)
+                      handleUpdateClub(club.slug, {
+                        instagramUsername: e.target.value,
+                      })
+                    }
+                    onKeyDown={(e) =>
+                      e.key === "Enter" &&
+                      handleInstagramFetch(
+                        club.slug,
+                        club.instagramUsername || ""
+                      )
                     }
                   />
                 </div>
