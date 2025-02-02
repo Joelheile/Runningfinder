@@ -121,15 +121,17 @@ export default function RunCardUI({
             </div>
           </div>
 
-          <div className="ml-4 pl-4 flex flex-col justify-between min-w-[200px]  border-gray-100">
+          <div
+            className={`${isCompact ? "ml-0 mt-2" : "ml-4 pl-4"} flex flex-col justify-between ${isCompact ? "min-w-0" : "min-w-[200px]"} border-gray-100`}
+          >
             <Tooltip>
               <TooltipTrigger>
-                <div className="flex items-start gap-2 hover:text-blue-600 transition-colors cursor-pointer">
+                <div className="flex items-start gap-1 hover:text-blue-600 transition-colors cursor-pointer">
                   <MapPin
-                    className={`${isCompact ? "w-3 h-3" : "w-4 h-4"} mt-1 flex-shrink-0`}
+                    className={`${isCompact ? "w-3 h-3" : "w-4 h-4"} mt-0.5 flex-shrink-0`}
                   />
                   <span
-                    className={`${isCompact ? "text-xs" : "text-sm"} text-gray-700`}
+                    className={`${isCompact ? "text-xs leading-tight" : "text-sm"} text-gray-700`}
                   >
                     {startDescription}
                   </span>
@@ -141,19 +143,21 @@ export default function RunCardUI({
             </Tooltip>
 
             {mapsLink && (
-              <div className="mt-4 space-y-2">
+              <div
+                className={`${isCompact ? "mt-2 space-y-1" : "mt-4 space-y-2"}`}
+              >
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <Button
                       variant="default"
                       size={isCompact ? "sm" : "default"}
-                      className="w-full justify-center gap-2 hover:bg-blue-600 hover:text-white transition-colors"
+                      className="w-full justify-center gap-1 hover:bg-blue-600 hover:text-white transition-colors text-xs py-1"
                       onClick={() => window.open(mapsLink, "_blank")}
                     >
-                      <span className={`${isCompact ? "text-xs" : "text-sm"}`}>
-                        Open in Maps
-                      </span>
-                      <ExternalLink className="w-4 h-4" />
+                      <span>Open in Maps</span>
+                      <ExternalLink
+                        className={`${isCompact ? "w-3 h-3" : "w-4 h-4"}`}
+                      />
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent>
@@ -163,8 +167,8 @@ export default function RunCardUI({
                   </TooltipContent>
                 </Tooltip>
 
-                <div className="flex items-center justify-center gap-1 text-gray-500 hover:text-blue-600 transition-colors cursor-pointer">
-                  <span className={`${isCompact ? "text-xs" : "text-sm"}`}>
+                <div className="flex items-center justify-center text-gray-500 transition-colors cursor-pointer">
+                  <span className="text-[12px]">
                     Check Instagram for updates
                   </span>
                 </div>
