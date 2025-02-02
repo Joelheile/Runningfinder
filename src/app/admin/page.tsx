@@ -1,5 +1,6 @@
 "use client";
-import UnapprovedClubs from "@/components/Admin/UnapprovedClubs";
+
+import UnapprovedClubsLogic from "@/components/Admin/UnapprovedClubsLogic";
 import UnapprovedRuns from "@/components/Admin/UnapprovedRuns";
 import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
@@ -32,7 +33,7 @@ export default function AdminPage() {
       </div>
       <div className="space-y-8">
         <section>
-          <UnapprovedClubs />
+          <UnapprovedClubsLogic />
         </section>
         <section className="border-t pt-10">
           <UnapprovedRuns />
