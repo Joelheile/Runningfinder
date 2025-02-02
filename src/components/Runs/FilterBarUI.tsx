@@ -117,12 +117,14 @@ export default function FilterBarUI({
                             }
                             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-all border ${
                               difficulty === level
-                                ? info.style
-                                : "bg-gray-100 text-gray-700"
+                                ? `${info.style} ${info.hoverStyle}`
+                                : `bg-gray-100 text-gray-700 hover:bg-gray-200`
                             }`}
                           >
                             <span>{info.icon}</span>
-                            <span className="text-xs capitalize">{level}</span>
+                            <span className="capitalize">
+                              {difficulty === level ? `${level} set` : level}
+                            </span>
                           </button>
                         </TooltipTrigger>
                         <TooltipContent side="bottom">
