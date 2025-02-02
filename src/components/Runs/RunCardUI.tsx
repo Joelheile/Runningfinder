@@ -1,6 +1,4 @@
-import { MapPin, Trash } from "lucide-react";
-import Script from "next/script";
-import { useEffect, useRef, useState } from "react";
+import { MapPin } from "lucide-react";
 import { Button } from "../UI/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../UI/tooltip";
 
@@ -13,18 +11,11 @@ interface RunCardUIProps {
   distance: string;
   difficulty: string;
   startDescription: string;
-  locationLat: number;
-  locationLng: number;
   mapsLink?: string | null;
-  handleDeleteRun?: () => void;
+
   isAdmin?: boolean;
   isCompact?: boolean;
 }
-
-const getMapContainerStyle = (isCompact: boolean) => ({
-  width: "100%",
-  height: isCompact ? "150px" : "250px",
-});
 
 const getDifficultyInfo = (difficulty: string) => {
   switch (difficulty.toLowerCase()) {
@@ -64,76 +55,11 @@ export default function RunCardUI({
   distance,
   difficulty,
   startDescription,
-  locationLat,
-  locationLng,
   mapsLink,
-  handleDeleteRun,
   isAdmin,
   isCompact = false,
 }: RunCardUIProps) {
-  const [isScriptLoaded, setIsScriptLoaded] = useState(false);
-  const [map, setMap] = useState<google.maps.Map | null>(null);
-  const [marker, setMarker] = useState<google.maps.Marker | null>(null);
-  const mapRef = useRef<HTMLDivElement>(null);
   const difficultyInfo = getDifficultyInfo(difficulty);
-
-  console.log("passed run", {
-    datetime,
-    name,
-    distance,
-    difficulty,
-    startDescription,
-    locationLat,
-    locationLng,
-    mapsLink,
-  });
-
-  useEffect(() => {
-    if (!isScriptLoaded || !mapRef.current) return;
-
-    // Parse location coordinates ensuring they are numbers
-    const lat = parseFloat(String(locationLat));
-    const lng = parseFloat(String(locationLng));
-
-    const validLocation = {
-      lat: !isNaN(lat) ? lat : 52.52,
-      lng: !isNaN(lng) ? lng : 13.405,
-    };
-
-    console.log("Setting map location to:", validLocation);
-
-    // If map doesn't exist, create it
-    if (!map) {
-      const mapInstance = new window.google.maps.Map(
-        mapRef.current as HTMLElement,
-        {
-          center: validLocation,
-          zoom: 15,
-          disableDefaultUI: true,
-          zoomControl: true,
-          mapTypeControl: false,
-          streetViewControl: false,
-          fullscreenControl: false,
-        }
-      );
-      setMap(mapInstance);
-
-      const markerInstance = new window.google.maps.Marker({
-        position: validLocation,
-        map: mapInstance,
-        title: startDescription || name,
-        animation: window.google.maps.Animation.DROP,
-      });
-      setMarker(markerInstance);
-    } else {
-      // Update existing map and marker positions
-      map.setCenter(validLocation);
-      if (marker) {
-        marker.setPosition(validLocation);
-        marker.setTitle(startDescription || name);
-      }
-    }
-  }, [isScriptLoaded, locationLat, locationLng, name]);
 
   const formatDate = (datetime: Date | null) => {
     if (!datetime) return "";
@@ -161,10 +87,8 @@ export default function RunCardUI({
   return (
     <div className={`w-full mx-auto ${isCompact ? "mb-2" : "mb-4"}`}>
       <div className="bg-white rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-all duration-200">
-        <div
-          className={`flex ${isCompact ? "flex-col" : "flex-col lg:flex-row"}`}
-        >
-          <div className={`flex-1 ${isCompact ? "p-3" : "p-6"}`}>
+        <div className={`flex ${isCompact ? "p-3" : "p-6"} h-full`}>
+          <div className="flex-1">
             <div
               className={`text-gray-500 ${isCompact ? "text-xs" : "text-sm"} mb-2`}
             >
@@ -195,64 +119,38 @@ export default function RunCardUI({
                   </Tooltip>
                 </div>
               </div>
-
-              <div className="flex items-center gap-2">
-                <MapPin
-                  className={`${isCompact ? "w-3 h-3" : "w-4 h-4"} text-gray-500`}
-                />
-                {mapsLink ? (
-                  <Button
-                    variant="link"
-                    size={isCompact ? "sm" : "default"}
-                    className="p-0 h-auto font-normal"
-                    onClick={() => window.open(mapsLink, "_blank")}
-                  >
-                    <span
-                      className={`${isCompact ? "text-xs" : "text-sm"} text-blue-600 hover:text-blue-800`}
-                    >
-                      {startDescription}
-                    </span>
-                  </Button>
-                ) : (
-                  <span
-                    className={`${isCompact ? "text-xs" : "text-sm"} text-gray-700`}
-                  >
-                    {startDescription}
-                  </span>
-                )}
-
-                {isAdmin && handleDeleteRun && (
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="text-red-500 hover:text-red-700"
-                    onClick={handleDeleteRun}
-                  >
-                    <Trash className="w-5 h-5" />
-                  </Button>
-                )}
-              </div>
             </div>
           </div>
 
-          {!isCompact && (
-            <div className="w-full lg:w-[500px] h-64 lg:h-auto relative">
-              <div
-                ref={mapRef}
-                style={getMapContainerStyle(false)}
-                className="rounded-b-lg lg:rounded-r-lg lg:rounded-bl-none"
+          <div className="ml-4 pl-4 flex flex-col justify-between min-w-[200px]">
+            <div className="flex items-start gap-2">
+              <MapPin
+                className={`${isCompact ? "w-3 h-3" : "w-4 h-4"} text-gray-500 mt-1`}
               />
+              <span
+                className={`${isCompact ? "text-xs" : "text-sm"} text-gray-700`}
+              >
+                {startDescription}
+              </span>
             </div>
-          )}
+
+            {mapsLink && (
+              <div className="mt-4">
+                <Button
+                  variant="outline"
+                  size={isCompact ? "sm" : "default"}
+                  className="w-full justify-center gap-2 text-gray-700 hover:text-gray-900"
+                  onClick={() => window.open(mapsLink, "_blank")}
+                >
+                  <span className={`${isCompact ? "text-xs" : "text-sm"}`}>
+                    Open in Maps
+                  </span>
+                </Button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
-
-      {!isCompact && (
-        <Script
-          src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`}
-          onLoad={() => setIsScriptLoaded(true)}
-        />
-      )}
     </div>
   );
 }
