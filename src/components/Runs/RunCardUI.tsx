@@ -86,7 +86,9 @@ export default function RunCardUI({
   return (
     <div className={`w-full mx-auto ${isCompact ? "mb-2" : "mb-4"}`}>
       <div className="bg-white rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-all duration-200">
-        <div className={`flex ${isCompact ? "p-3" : "p-6"} h-full`}>
+        <div
+          className={`flex flex-col sm:flex-row ${isCompact ? "p-3" : "p-4 sm:p-6"} h-full`}
+        >
           <div className="flex-1">
             <div
               className={`text-gray-500 ${isCompact ? "text-xs" : "text-sm"} mb-2`}
@@ -122,7 +124,15 @@ export default function RunCardUI({
           </div>
 
           <div
-            className={`${isCompact ? "ml-0 mt-2" : "ml-4 pl-4"} flex flex-col justify-between ${isCompact ? "min-w-0" : "min-w-[200px]"} border-gray-100`}
+            className={`
+              flex flex-col justify-between
+              ${isCompact ? "min-w-0" : "sm:min-w-[200px]"}
+              mt-3 sm:mt-0
+              pt-3 sm:pt-0
+              border-t sm:border-t-0
+              sm:ml-4 sm:pl-4
+
+            `}
           >
             <Tooltip>
               <TooltipTrigger>
@@ -143,15 +153,13 @@ export default function RunCardUI({
             </Tooltip>
 
             {mapsLink && (
-              <div
-                className={`${isCompact ? "mt-2 space-y-1" : "mt-4 space-y-2"}`}
-              >
+              <div className="flex flex-col gap-2 sm:gap-3 mt-2 sm:mt-4">
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <Button
                       variant="default"
                       size={isCompact ? "sm" : "default"}
-                      className="w-full justify-center gap-1 hover:bg-blue-600 hover:text-white transition-colors text-xs py-1"
+                      className="w-full justify-center gap-1 hover:bg-blue-600 hover:text-white transition-colors text-xs py-2 sm:py-1.5"
                       onClick={() => window.open(mapsLink, "_blank")}
                     >
                       <span>Open in Maps</span>
@@ -167,7 +175,7 @@ export default function RunCardUI({
                   </TooltipContent>
                 </Tooltip>
 
-                <div className="flex items-center justify-center text-gray-500 transition-colors cursor-pointer">
+                <div className="flex items-center justify-center text-gray-500 transition-colors cursor-pointer ">
                   <span className="text-[12px]">
                     Check Instagram for updates
                   </span>

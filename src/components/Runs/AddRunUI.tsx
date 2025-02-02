@@ -126,7 +126,7 @@ export default function AddRunUI({
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
-        <Button className="w-full sm:w-auto">
+        <Button className="w-full sm:w-auto" variant="outline">
           <Plus className="w-4 h-4 mr-2" />
           Suggest new run
         </Button>
