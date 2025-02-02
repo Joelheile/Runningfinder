@@ -38,6 +38,15 @@ interface InstagramProfile {
 
       const responseData = await response.json();
 
+      // Check if we hit the API limit
+      if (responseData.limitError) {
+        return {
+          profileImageUrl: null,
+          profileDescription: 'Instagram data temporarily unavailable (API limit reached)',
+          recentPosts: []
+        };
+      }
+
       if (!response.ok) {
         console.error('Instagram API error:', responseData);
         throw new Error(responseData.error || `Instagram API error: ${response.status}`);

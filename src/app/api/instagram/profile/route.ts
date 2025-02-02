@@ -41,6 +41,17 @@ export async function POST(request: Request) {
         statusText: response.statusText,
         error: errorText
       });
+
+      // Handle rate limit specifically
+      if (response.status === 402) {
+        return NextResponse.json({
+          profileImageUrl: null,
+          profileDescription: null,
+          recentPosts: [],
+          limitError: true
+        }, { status: 200 }); // Return 200 to prevent error UI
+      }
+
       return NextResponse.json({ 
         error: `Instagram API error: ${response.status} ${response.statusText}` 
       }, { status: response.status });
