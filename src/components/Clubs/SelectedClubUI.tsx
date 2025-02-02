@@ -1,4 +1,4 @@
-import useGetProfileImage from "@/lib/hooks/scraping/useGetInstagramProfile";
+import getInstagramProfile from "@/lib/hooks/scraping/useGetInstagramProfile";
 import { Club } from "@/lib/types/Club";
 import { Run } from "@/lib/types/Run";
 import { ChevronRight } from "lucide-react";
@@ -28,20 +28,19 @@ export default function SelectedClubHeaderUI({
   runs,
   onClose,
 }: SelectedClubHeaderUIProps) {
-  const { getProfileImage } = useGetProfileImage();
   const [instagramPosts, setInstagramPosts] = useState<InstagramPost[]>([]);
 
   useEffect(() => {
     const fetchInstagramData = async () => {
       if (club.instagramUsername) {
-        const data = await getProfileImage({
+        const data = await getInstagramProfile({
           instagramUsername: club.instagramUsername,
         });
         setInstagramPosts(data.recentPosts);
       }
     };
     fetchInstagramData();
-  }, [club.instagramUsername, getProfileImage]);
+  }, [club.instagramUsername, getInstagramProfile]);
 
   return (
     <div className="fixed inset-0 z-[999] bg-white md:z-[50] md:top-16 md:right-0 md:left-auto md:bottom-auto md:w-[400px] md:h-[calc(100vh-4rem)] md:shadow-lg flex flex-col">
