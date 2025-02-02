@@ -44,7 +44,7 @@ interface AddRunUIProps {
     lat: number,
     lng: number,
     placeUrl: string,
-    formattedAddress: string,
+    formattedAddress: string
   ) => void;
 }
 
@@ -128,7 +128,7 @@ export default function AddRunUI({
       <DialogTrigger asChild>
         <Button className="w-full sm:w-auto">
           <Plus className="w-4 h-4 mr-2" />
-          Add New Run
+          Suggest new run
         </Button>
       </DialogTrigger>
 

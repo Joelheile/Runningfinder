@@ -1,4 +1,4 @@
-import { MapPin } from "lucide-react";
+import { ExternalLink, MapPin } from "lucide-react";
 import { Button } from "../UI/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../UI/tooltip";
 
@@ -121,30 +121,53 @@ export default function RunCardUI({
             </div>
           </div>
 
-          <div className="ml-4 pl-4 flex flex-col justify-between min-w-[200px]">
-            <div className="flex items-start gap-2">
-              <MapPin
-                className={`${isCompact ? "w-3 h-3" : "w-4 h-4"} text-gray-500 mt-1`}
-              />
-              <span
-                className={`${isCompact ? "text-xs" : "text-sm"} text-gray-700`}
-              >
-                {startDescription}
-              </span>
-            </div>
+          <div className="ml-4 pl-4 flex flex-col justify-between min-w-[200px]  border-gray-100">
+            <Tooltip>
+              <TooltipTrigger>
+                <div className="flex items-start gap-2 hover:text-blue-600 transition-colors cursor-pointer">
+                  <MapPin
+                    className={`${isCompact ? "w-3 h-3" : "w-4 h-4"} mt-1 flex-shrink-0`}
+                  />
+                  <span
+                    className={`${isCompact ? "text-xs" : "text-sm"} text-gray-700`}
+                  >
+                    {startDescription}
+                  </span>
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p className="max-w-xs text-sm">Meeting point for the run</p>
+              </TooltipContent>
+            </Tooltip>
 
             {mapsLink && (
-              <div className="mt-4">
-                <Button
-                  variant="outline"
-                  size={isCompact ? "sm" : "default"}
-                  className="w-full justify-center gap-2 text-gray-700 hover:text-gray-900"
-                  onClick={() => window.open(mapsLink, "_blank")}
-                >
+              <div className="mt-4 space-y-2">
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant="default"
+                      size={isCompact ? "sm" : "default"}
+                      className="w-full justify-center gap-2 hover:bg-blue-600 hover:text-white transition-colors"
+                      onClick={() => window.open(mapsLink, "_blank")}
+                    >
+                      <span className={`${isCompact ? "text-xs" : "text-sm"}`}>
+                        Open in Maps
+                      </span>
+                      <ExternalLink className="w-4 h-4" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p className="max-w-xs text-sm">
+                      View the route on Google Maps
+                    </p>
+                  </TooltipContent>
+                </Tooltip>
+
+                <div className="flex items-center justify-center gap-1 text-gray-500 hover:text-blue-600 transition-colors cursor-pointer">
                   <span className={`${isCompact ? "text-xs" : "text-sm"}`}>
-                    Open in Maps
+                    Check Instagram for updates
                   </span>
-                </Button>
+                </div>
               </div>
             )}
           </div>

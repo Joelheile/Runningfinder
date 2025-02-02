@@ -5,7 +5,6 @@ import { useCallback, useState } from "react";
 
 import Link from "next/link";
 
-import { OnboardingGuide } from "../Onboarding/OnboardingGuide";
 import FilterBar from "../Runs/FilterBarLogic";
 import { Suspense } from "react";
 import { Button } from "../UI/button";
@@ -35,7 +34,6 @@ const MapPage = () => {
 
   return (
     <div className="fixed inset-0 overflow-hidden isolate">
-      <OnboardingGuide />
       <Suspense fallback={<div className="w-full h-12 bg-gray-100 animate-pulse rounded-md"></div>}>
         <FilterBar onFilterChange={handleFilterChange} />
       </Suspense>
