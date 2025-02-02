@@ -43,11 +43,8 @@ export async function GET(request: Request) {
     console.log("Current date:", now);
 
     const conditions = [
-      eq(runs.isApproved, true),
-      or(
-        eq(runs.isRecurrent, true),
-        and(eq(runs.isRecurrent, false), gt(runs.datetime, now)),
-      ),
+      
+      
     ];
 
     // Add clubId filter if provided
@@ -83,7 +80,8 @@ export async function GET(request: Request) {
         distance: runs.distance,
       })
       .from(runs)
-      .where(and(...conditions))
+      .where(and(eq(runs.isApproved, true), gt(runs.datetime, now)),
+      )
       .orderBy(asc(runs.datetime));
 
     console.log("Fetched runs from database:", runsData);
