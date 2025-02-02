@@ -25,6 +25,7 @@ export default function ClubDashboard() {
   };
 
   const { data: runs } = useFetchRunsByClubId(club?.id || "");
+  const deleteClubMutation = useDeleteClub();
 
   if (isError || !club) {
     return <div>Error loading club details</div>;
@@ -39,8 +40,6 @@ export default function ClubDashboard() {
       toast.error("Failed to copy link");
     }
   };
-
-  const deleteClubMutation = useDeleteClub();
 
   const handleDelete = async () => {
     if (club?.id) {
