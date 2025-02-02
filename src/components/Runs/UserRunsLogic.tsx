@@ -16,7 +16,6 @@ export default function UserRuns({ userId }: UserRunsProps) {
     isLoading: registrationsLoading,
     error: registrationsError,
   } = useFetchRegistrationByUser(userId);
-  console.log("registrations", registrations);
 
   const {
     data: runs,

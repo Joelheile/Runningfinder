@@ -14,14 +14,12 @@ export default function MapTest() {
         });
 
         await loader.load();
-        console.log("Google Maps API loaded successfully!");
 
         if (mapRef.current) {
           const map = new google.maps.Map(mapRef.current, {
             center: { lat: 52.52, lng: 13.405 }, // Berlin coordinates
             zoom: 12,
           });
-          console.log("Map instance created successfully!");
         }
       } catch (error) {
         console.error("Error loading Google Maps:", error);

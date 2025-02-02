@@ -46,7 +46,11 @@ export default function AddRunState({
     e.preventDefault();
 
     // Track submission attempt
+    // Enable session recording for this important user action
+    posthog.startSessionRecording();
+    
     posthog.capture("run_creation_submitted", {
+      $recording_enabled: true,
       club_id: club.id,
       club_name: club.name,
       fields_completed: {
@@ -84,6 +88,7 @@ export default function AddRunState({
 
     if (validationErrors.length > 0) {
       posthog.capture("run_creation_validation_failed", {
+        $recording_enabled: true,
         missing_fields: validationErrors,
         club_id: club.id,
         club_name: club.name,
@@ -125,6 +130,7 @@ export default function AddRunState({
 
     // Track successful run creation
     posthog.capture("run_created", {
+      $recording_enabled: true,
       run_name: name,
       club_name: club.name,
       club_id: club.id,
@@ -144,6 +150,7 @@ export default function AddRunState({
     formattedAddress: string
   ) => {
     posthog.capture("run_location_selected", {
+      $recording_enabled: true,
       club_id: club.id,
       club_name: club.name,
       has_place_url: !!placeUrl,
@@ -162,6 +169,7 @@ export default function AddRunState({
   useEffect(() => {
     (window as any).__runCreationStartTime = Date.now();
     posthog.capture("run_creation_started", {
+      $recording_enabled: true,
       club_id: club.id,
       club_name: club.name,
     });
@@ -169,6 +177,7 @@ export default function AddRunState({
     return () => {
       const timeSpent = Date.now() - (window as any).__runCreationStartTime;
       posthog.capture("run_creation_abandoned", {
+        $recording_enabled: true,
         club_id: club.id,
         club_name: club.name,
         time_spent: timeSpent,

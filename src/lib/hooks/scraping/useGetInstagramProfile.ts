@@ -25,7 +25,7 @@ interface InstagramProfile {
     }
 
     try {
-      console.log('Fetching Instagram profile for:', instagramUsername);
+      
       
       const response = await fetch('/api/instagram/profile', {
         method: 'POST',
@@ -53,11 +53,6 @@ interface InstagramProfile {
         throw new Error(`No Instagram profile found for username: ${instagramUsername}`);
       }
 
-      console.log('Successfully fetched Instagram profile:', {
-        username: responseData[0].username,
-        hasImage: !!responseData[0].profilePicUrl,
-        hasDescription: !!responseData[0].biography
-      });
 
       const firstItem = responseData[0];
       if (!firstItem) {
