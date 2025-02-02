@@ -64,6 +64,7 @@ export default function UnapprovedClubsLogic() {
       toast.success("Instagram profile fetched successfully", {
         id: loadingToast,
       });
+      window.location.reload();
     } catch (error) {
       console.error("Error fetching Instagram profile:", error);
       toast.error("Failed to fetch Instagram profile", { id: loadingToast });
@@ -78,6 +79,7 @@ export default function UnapprovedClubsLogic() {
       const url = await uploadAvatar(file, slug);
       await handleUpdateClub(slug, { avatarUrl: url });
       toast.success("Image uploaded successfully", { id: loadingToast });
+      window.location.reload();
     } catch (error) {
       console.error("Error uploading image:", error);
       toast.error("Failed to upload image", { id: loadingToast });
