@@ -39,6 +39,7 @@ export default function ClubDashboardUI({
   if (error) return <p>Error: {error}</p>;
   if (noData) return <p>No club data available.</p>;
 
+  console.log("runs", runs);
   const {
     name,
     description,
@@ -167,7 +168,6 @@ export default function ClubDashboardUI({
               )}
             </div>
           )}
-          )
         </section>
         <RunDisclaimer />
       </main>
