@@ -26,10 +26,10 @@ const fetchClubById = async (slug: string): Promise<Club> => {
 
   return {
     ...data,
-    location: data.locationLat && data.locationLng ? {
+    location: {
       lat: parseFloat(data.locationLat),
       lng: parseFloat(data.locationLng),
-    } : null,
+    },
   };
 };
 
