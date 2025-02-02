@@ -1,7 +1,8 @@
 "use client";
 
 import UnapprovedClubsLogic from "@/components/Admin/UnapprovedClubsLogic";
-import UnapprovedRuns from "@/components/Admin/UnapprovedRuns";
+import UnapprovedRunsLogic from "@/components/Admin/UnapprovedRunsLogic";
+
 import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -36,7 +37,7 @@ export default function AdminPage() {
           <UnapprovedClubsLogic />
         </section>
         <section className="border-t pt-10">
-          <UnapprovedRuns />
+          <UnapprovedRunsLogic />
         </section>
         {/* <section>
           <h2 className="text-xl font-semibold mb-4">Google Maps API Test</h2>
