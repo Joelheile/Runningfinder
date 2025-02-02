@@ -17,7 +17,13 @@ const Map = memo(({ runs }: { runs: Run[] }) => {
   const mapInstanceRef = useRef<google.maps.Map | null>(null);
   const infoWindowRef = useRef<google.maps.InfoWindow | null>(null);
   const markersRef = useRef<google.maps.Marker[]>([]);
+  const userMarkerRef = useRef<google.maps.Marker | null>(null);
   const [selectedLocation, setSelectedLocation] = useState<Run | null>(null);
+  const [userLocation, setUserLocation] = useState<{
+    lat: number;
+    lng: number;
+  } | null>(null);
+  const [locationError, setLocationError] = useState<string>("");
 
   // Initialize map only once
   useEffect(() => {
@@ -30,10 +36,10 @@ const Map = memo(({ runs }: { runs: Run[] }) => {
       });
 
       const { Map } = (await loader.importLibrary(
-        "maps",
+        "maps"
       )) as google.maps.MapsLibrary;
       const { InfoWindow } = (await loader.importLibrary(
-        "maps",
+        "maps"
       )) as google.maps.MapsLibrary;
 
       const defaultCenter = { lat: 52.5155235, lng: 13.4049124 };
@@ -56,10 +62,58 @@ const Map = memo(({ runs }: { runs: Run[] }) => {
         streetViewControl: false,
         rotateControl: false,
         fullscreenControl: false,
-        gestureHandling: "cooperative", // Makes it easier to scroll on mobile
+        gestureHandling: "greedy", // Makes map fully draggable on mobile
       });
 
       infoWindowRef.current = new InfoWindow();
+
+      // Initialize user location tracking
+      if (navigator.geolocation) {
+        const { Marker } = (await loader.importLibrary(
+          "marker"
+        )) as google.maps.MarkerLibrary;
+
+        // Create user marker but don't set position yet
+        userMarkerRef.current = new Marker({
+          map: mapInstanceRef.current,
+          icon: {
+            path: google.maps.SymbolPath.CIRCLE,
+            scale: 8,
+            fillColor: "#4285F4",
+            fillOpacity: 1,
+            strokeColor: "white",
+            strokeWeight: 2,
+          },
+          zIndex: 1000, // Keep user marker on top
+        });
+
+        // Watch user's position
+        navigator.geolocation.watchPosition(
+          (position) => {
+            const newLocation = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude,
+            };
+            setUserLocation(newLocation);
+            setLocationError("");
+
+            if (userMarkerRef.current) {
+              userMarkerRef.current.setPosition(newLocation);
+            }
+          },
+          (error) => {
+            console.error("Error getting location:", error);
+            setLocationError(error.message);
+          },
+          {
+            enableHighAccuracy: true,
+            maximumAge: 30000,
+            timeout: 27000,
+          }
+        );
+      } else {
+        setLocationError("Geolocation is not supported by this browser.");
+      }
     };
 
     initMap();
@@ -85,7 +139,7 @@ const Map = memo(({ runs }: { runs: Run[] }) => {
 
       try {
         const { Marker } = (await loader.importLibrary(
-          "marker",
+          "marker"
         )) as google.maps.MarkerLibrary;
 
         const newMarkers: google.maps.Marker[] = runs
@@ -148,8 +202,8 @@ const Map = memo(({ runs }: { runs: Run[] }) => {
                           {run.difficulty}
                         </span>
                       </Link>
-                    </div>,
-                  ),
+                    </div>
+                  )
                 );
                 infoWindowRef.current.open(mapInstanceRef.current, marker);
               }
@@ -159,7 +213,7 @@ const Map = memo(({ runs }: { runs: Run[] }) => {
           })
           .filter(
             (marker): marker is google.maps.Marker =>
-              marker !== null && marker instanceof google.maps.Marker,
+              marker !== null && marker instanceof google.maps.Marker
           );
 
         // Store markers in ref
@@ -198,8 +252,48 @@ const Map = memo(({ runs }: { runs: Run[] }) => {
     });
   }, [selectedLocation]);
 
+  // Function to center map on user location
+  const centerOnUser = () => {
+    if (userLocation && mapInstanceRef.current) {
+      mapInstanceRef.current.panTo(userLocation);
+      mapInstanceRef.current.setZoom(15);
+    }
+  };
+
   return (
-    <MapUI mapRef={mapRef} selectedLocation={selectedLocation} runs={runs} />
+    <div className="relative w-full h-full">
+      <MapUI mapRef={mapRef} selectedLocation={selectedLocation} runs={runs} />
+      {userLocation && (
+        <button
+          onClick={centerOnUser}
+          className="absolute bottom-24 right-4 z-10 p-3 bg-white rounded-full shadow-lg hover:bg-gray-50 transition-colors"
+          aria-label="Center on my location"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <circle cx="12" cy="12" r="3" />
+            <path d="M19.671 4.329l-3.042 3.042" />
+            <path d="M7.371 16.629l-3.042 3.042" />
+            <path d="M19.671 19.671l-3.042-3.042" />
+            <path d="M7.371 7.371l-3.042-3.042" />
+          </svg>
+        </button>
+      )}
+      {locationError && (
+        <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-10 bg-red-100 text-red-700 px-4 py-2 rounded-lg text-sm">
+          {locationError}
+        </div>
+      )}
+    </div>
   );
 });
 
