@@ -77,49 +77,62 @@ export default function RunCardUI({
   const mapRef = useRef<HTMLDivElement>(null);
   const difficultyInfo = getDifficultyInfo(difficulty);
 
+  console.log("passed run", {
+    datetime,
+    name,
+    distance,
+    difficulty,
+    startDescription,
+    locationLat,
+    locationLng,
+    mapsLink,
+  });
+
   useEffect(() => {
     if (!isScriptLoaded || !mapRef.current) return;
 
-    const initMap = async () => {
-      try {
-        const validLocation = {
-          lat:
-            typeof locationLat === "number" && isFinite(locationLat)
-              ? locationLat
-              : 52.52,
-          lng:
-            typeof locationLng === "number" && isFinite(locationLng)
-              ? locationLng
-              : 13.405,
-        };
+    // Parse location coordinates ensuring they are numbers
+    const lat = parseFloat(String(locationLat));
+    const lng = parseFloat(String(locationLng));
 
-        const mapInstance = new window.google.maps.Map(
-          mapRef.current as HTMLElement,
-          {
-            center: validLocation,
-            zoom: 15,
-            disableDefaultUI: true,
-            zoomControl: true,
-            mapTypeControl: false,
-            streetViewControl: false,
-            fullscreenControl: false,
-          },
-        );
-
-        const markerInstance = new window.google.maps.Marker({
-          position: validLocation,
-          map: mapInstance,
-          title: name,
-        });
-
-        setMap(mapInstance);
-        setMarker(markerInstance);
-      } catch (error) {
-        console.error("Error initializing map:", error);
-      }
+    const validLocation = {
+      lat: !isNaN(lat) ? lat : 52.52,
+      lng: !isNaN(lng) ? lng : 13.405,
     };
 
-    initMap();
+    console.log("Setting map location to:", validLocation);
+
+    // If map doesn't exist, create it
+    if (!map) {
+      const mapInstance = new window.google.maps.Map(
+        mapRef.current as HTMLElement,
+        {
+          center: validLocation,
+          zoom: 15,
+          disableDefaultUI: true,
+          zoomControl: true,
+          mapTypeControl: false,
+          streetViewControl: false,
+          fullscreenControl: false,
+        }
+      );
+      setMap(mapInstance);
+
+      const markerInstance = new window.google.maps.Marker({
+        position: validLocation,
+        map: mapInstance,
+        title: startDescription || name,
+        animation: window.google.maps.Animation.DROP,
+      });
+      setMarker(markerInstance);
+    } else {
+      // Update existing map and marker positions
+      map.setCenter(validLocation);
+      if (marker) {
+        marker.setPosition(validLocation);
+        marker.setTitle(startDescription || name);
+      }
+    }
   }, [isScriptLoaded, locationLat, locationLng, name]);
 
   const formatDate = (datetime: Date | null) => {
@@ -187,23 +200,27 @@ export default function RunCardUI({
                 <MapPin
                   className={`${isCompact ? "w-3 h-3" : "w-4 h-4"} text-gray-500`}
                 />
-                <span
-                  className={`${isCompact ? "text-xs" : "text-sm"} text-gray-700`}
-                >
-                  {startDescription}
-                </span>
-                {mapsLink && (
+                {mapsLink ? (
                   <Button
-                    variant="ghost"
+                    variant="link"
                     size={isCompact ? "sm" : "default"}
-                    className="ml-2"
+                    className="p-0 h-auto font-normal"
                     onClick={() => window.open(mapsLink, "_blank")}
                   >
-                    <MapPin
-                      className={`${isCompact ? "w-3 h-3" : "w-4 h-4"}`}
-                    />
+                    <span
+                      className={`${isCompact ? "text-xs" : "text-sm"} text-blue-600 hover:text-blue-800`}
+                    >
+                      {startDescription}
+                    </span>
                   </Button>
+                ) : (
+                  <span
+                    className={`${isCompact ? "text-xs" : "text-sm"} text-gray-700`}
+                  >
+                    {startDescription}
+                  </span>
                 )}
+
                 {isAdmin && handleDeleteRun && (
                   <Button
                     variant="ghost"
