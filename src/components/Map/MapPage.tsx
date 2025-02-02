@@ -5,8 +5,8 @@ import { useCallback, useState } from "react";
 
 import Link from "next/link";
 
-import FilterBar from "../Runs/FilterBarLogic";
 import { Suspense } from "react";
+import FilterBar from "../Runs/FilterBarLogic";
 import { Button } from "../UI/button";
 import { RunDisclaimer } from "../disclaimer";
 
@@ -34,7 +34,11 @@ const MapPage = () => {
 
   return (
     <div className="fixed inset-0 overflow-hidden isolate">
-      <Suspense fallback={<div className="w-full h-12 bg-gray-100 animate-pulse rounded-md"></div>}>
+      <Suspense
+        fallback={
+          <div className="w-full h-12 bg-gray-100 animate-pulse rounded-md"></div>
+        }
+      >
         <FilterBar onFilterChange={handleFilterChange} />
       </Suspense>
       <div className="absolute z-10 bottom-5 right-1/2 left-1/2 grid-flow-row text-center">
