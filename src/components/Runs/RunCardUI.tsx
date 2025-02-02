@@ -5,7 +5,6 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "../UI/tooltip";
 interface RunCardUIProps {
   userId?: string;
   id: string;
-  key: string;
   datetime: Date | null;
   name: string;
   distance: string;
