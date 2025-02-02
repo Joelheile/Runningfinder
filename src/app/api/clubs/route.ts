@@ -15,8 +15,11 @@ export async function GET() {
         avatarUrl: club.avatarUrl,
         creationDate: club.creationDate,
         instagramUsername: club.instagramUsername,
+        stravaUsername: club.stravaUsername,
         websiteUrl: club.websiteUrl,
         slug: club.slug,
+        isApproved: club.isApproved,
+
       })
       .from(club)
       .where(eq(club.isApproved, true)).orderBy(club.name)
