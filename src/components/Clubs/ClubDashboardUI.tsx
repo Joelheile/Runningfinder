@@ -13,7 +13,7 @@ import ClubCardSkeleton from "./ClubCardSkeleton";
 interface ClubDetailUIProps {
   club?: Club;
   runs?: Run[];
-  userId?: string;
+
   slug: string;
   onShare: () => void;
   onDelete: () => void;
@@ -25,7 +25,7 @@ interface ClubDetailUIProps {
 export default function ClubDashboardUI({
   club,
   runs,
-  userId,
+
   slug,
   onShare,
   onDelete,
@@ -39,13 +39,6 @@ export default function ClubDashboardUI({
   if (error) return <p>Error: {error}</p>;
   if (noData) return <p>No club data available.</p>;
 
-  console.log("All runs:", runs?.map(run => ({
-    id: run.id,
-    name: run.name,
-    hasLocation: !!(run.location?.lat && run.location?.lng),
-    location: run.location,
-    isApproved: run.isApproved,
-  })));
   const {
     name,
     description,
@@ -146,7 +139,7 @@ export default function ClubDashboardUI({
                 })
                 .map((run) => (
                   <RunCard
-                    userId={userId}
+               
                     id={run.id}
                     key={run.id}
                     datetime={run.datetime}
@@ -168,7 +161,7 @@ export default function ClubDashboardUI({
               <p className="text-gray-600 font-medium">
                 No runs found for this club yet.
               </p>
-              {userId && club && (
+              { club && (
                 <p className="mt-2 text-gray-500">
                   <AddRunState club={club} />
                 </p>

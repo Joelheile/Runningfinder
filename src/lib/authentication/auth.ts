@@ -25,7 +25,24 @@ const providers = [
   }),
 ];
 
+// Get trusted hosts from environment or use defaults
+const trustedHosts = process.env.NEXTAUTH_URL
+  ? [new URL(process.env.NEXTAUTH_URL).host]
+  : ["localhost:3000", "www.runningfinder.com", "runningfinder.com"];
+
 export const { handlers, auth } = NextAuth({
+  trustHost: true, // Trust all hosts in production
+  cookies: {
+    pkceCodeVerifier: {
+      name: "next-auth.pkce.code_verifier",
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        secure: process.env.NODE_ENV === "production",
+      },
+    },
+  },
   providers,
   debug: true,
   secret: process.env.NEXTAUTH_SECRET,

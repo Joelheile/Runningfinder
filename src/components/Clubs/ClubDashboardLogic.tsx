@@ -7,11 +7,7 @@ import { useParams, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import ClubDashboardUI from "./ClubDashboardUI";
 
-export default function ClubDashboard({
-  userId,
-}: {
-  userId: string | undefined;
-}) {
+export default function ClubDashboard() {
   const router = useRouter();
   const slug = useParams().slug.toString();
 
@@ -80,7 +76,7 @@ export default function ClubDashboard({
     <ClubDashboardUI
       club={club}
       runs={runs}
-      userId={userId}
+      
       slug={slug}
       onShare={handleShare}
       onDelete={handleDelete}

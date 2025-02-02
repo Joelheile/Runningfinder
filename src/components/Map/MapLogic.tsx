@@ -70,7 +70,6 @@ const Map = memo(({ runs }: { runs: Run[] }) => {
     error: clubError,
     isLoading: clubLoading,
   } = useFetchClubs();
-  console.log("clubs:", clubs);
 
   // Update markers when runs change
   useEffect(() => {
@@ -112,7 +111,6 @@ const Map = memo(({ runs }: { runs: Run[] }) => {
               setSelectedLocation(run);
 
               const club = clubs?.find((club) => club.id === run.clubId);
-              console.log("selected club", club);
 
               if (infoWindowRef.current) {
                 infoWindowRef.current.setContent(

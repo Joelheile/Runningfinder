@@ -24,6 +24,16 @@ export default function AddClub() {
   const router = useRouter();
   const mutation = useAddClub();
 
+  // Start session recording when form is opened
+  useEffect(() => {
+    if (isOpen) {
+      posthog.startSessionRecording();
+      posthog.capture("club_creation_started", {
+        $recording_enabled: true,
+      });
+    }
+  }, [isOpen]);
+
   const handleInstagramUsernameChange = async (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -61,6 +71,7 @@ export default function AddClub() {
   const nextStep = () => {
     if (step === 1 && !validateRequiredFields()) {
       posthog.capture("club_creation_validation_failed", {
+        $recording_enabled: true,
         step: step,
         missing_fields: [
           !name.trim() ? "name" : null,
@@ -71,6 +82,7 @@ export default function AddClub() {
     }
 
     posthog.capture("club_creation_next_step", {
+      $recording_enabled: true,
       from_step: step,
       to_step: Math.min(step + 1, totalSteps),
       fields_completed: {
@@ -101,6 +113,7 @@ export default function AddClub() {
 
   const handleClose = () => {
     posthog.capture("club_creation_modal_closed", {
+      $recording_enabled: true,
       step: step,
       fields_filled: {
         has_name: !!name.trim(),
@@ -160,22 +173,10 @@ export default function AddClub() {
           // Continue with club creation even if Instagram fetch fails
         }
       } else {
-        console.log("ℹ️ Skipping Instagram fetch:", {
-          instagramUsername,
-          isUploaded,
-          avatarUrl,
-        });
+       
       }
 
-      console.log("📝 Preparing club data:", {
-        name,
-        description,
-        instagramUsername,
-        stravaUsername,
-        avatarFileId,
-        isUploaded,
-        avatarUrl: avatarUrl || "",
-      });
+   
 
       const formData: Club = {
         id: "",
@@ -191,12 +192,13 @@ export default function AddClub() {
         websiteUrl: "",
       };
 
-      console.log("💾 Submitting club data:", formData);
+      
       await mutation.mutateAsync(formData);
-      console.log("✅ Club created successfully!");
+      
 
       // Track successful club creation
       posthog.capture("club_created", {
+        $recording_enabled: true,
         club_name: name,
         has_instagram: !!instagramUsername,
         has_strava: !!stravaUsername,
@@ -211,8 +213,9 @@ export default function AddClub() {
       setIsOpen(false);
       router.refresh();
     } catch (error: any) {
-      console.error("❌ Error creating club:", error);
+      
       posthog.capture("club_creation_failed", {
+        $recording_enabled: true,
         error_message: error.message || "Unknown error",
         fields_completed: {
           has_name: !!name.trim(),

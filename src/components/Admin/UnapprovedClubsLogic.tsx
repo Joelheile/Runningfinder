@@ -67,7 +67,6 @@ export default function UnapprovedClubsLogic() {
       const instagramScrape = await getInstagramProfile({
         instagramUsername: username,
       });
-      console.log("Instagram scrape result:", instagramScrape);
 
       await handleUpdateClub(slug, {
         avatarUrl:

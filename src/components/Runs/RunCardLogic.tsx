@@ -12,7 +12,7 @@ interface RunCardProps {
   datetime: Date | null;
   startDescription: string;
   difficulty: string;
-  userId?: string;
+
   slug?: string;
   isRegistered?: boolean;
   isAdmin?: boolean;
@@ -30,7 +30,7 @@ export default function RunCard({
   datetime,
   startDescription,
   difficulty,
-  userId,
+
   slug,
   isRegistered,
   isAdmin,

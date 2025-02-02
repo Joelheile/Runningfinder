@@ -10,7 +10,6 @@ const cancelRegistration = async ({
   runId,
   userId,
 }: UseCancelRegistrationParams) => {
-  console.log("runId" + runId + "userId" + userId);
   const response = await fetch("/api/registrations", {
     method: "DELETE",
     headers: {
