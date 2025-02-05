@@ -42,9 +42,10 @@ export async function GET(request: Request) {
     const now = new Date();
     console.log("Current date:", now);
 
+    // Initialize conditions array with base conditions
     const conditions = [
-      
-      
+      eq(runs.isApproved, true),
+      gt(runs.datetime, now)
     ];
 
     // Add clubId filter if provided
@@ -80,14 +81,9 @@ export async function GET(request: Request) {
         distance: runs.distance,
       })
       .from(runs)
-      .where(
-        and(
-          eq(runs.isApproved, true),
+      .where(and(...conditions))
 
-            gt(runs.datetime, now),
-        )
-
-      )
+      
       .orderBy(asc(runs.datetime));
 
 
