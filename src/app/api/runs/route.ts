@@ -80,11 +80,18 @@ export async function GET(request: Request) {
         distance: runs.distance,
       })
       .from(runs)
-      .where(and(eq(runs.isApproved, true), gt(runs.datetime, now)),
+      .where(
+        and(
+          eq(runs.isApproved, true),
+
+            gt(runs.datetime, now),
+        )
+
       )
       .orderBy(asc(runs.datetime));
 
-    console.log("Fetched runs from database:", runsData);
+
+
 
     // Transform the data to include a location object
     const transformedRuns = runsData.map((run: any) => ({
@@ -94,8 +101,6 @@ export async function GET(request: Request) {
         lng: run.locationLng,
       },
     }));
-
-    console.log("Transformed runs:", transformedRuns);
 
     return NextResponse.json(transformedRuns);
   } catch (error) {

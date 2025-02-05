@@ -1,6 +1,6 @@
 import { db } from "@/lib/db/db";
 import { runs } from "@/lib/db/schema";
-import { eq } from "drizzle-orm";
+import { and, eq, gt } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
 export async function GET(
@@ -11,7 +11,7 @@ export async function GET(
   if (!slug) {
     return NextResponse.json({ error: "Club ID is required" }, { status: 400 });
   }
-
+  const now = new Date();
   try {
     console.log('Fetching runs for club:', slug);
     
@@ -34,7 +34,16 @@ export async function GET(
         isApproved: runs.isApproved,
       })
       .from(runs)
-      .where(eq(runs.clubId, slug));
+      .where(
+        and(
+          eq(runs.isApproved, true),
+          eq(runs.clubId, slug),
+
+            gt(runs.datetime, now),
+        )
+
+      )
+
 
 
 

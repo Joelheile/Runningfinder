@@ -30,7 +30,7 @@ interface AddClubUIProps {
   handleDescriptionChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   handleStravaUsernameChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleInstagramUsernameChange: (
-    e: React.ChangeEvent<HTMLInputElement>,
+    e: React.ChangeEvent<HTMLInputElement>
   ) => void;
   handleUploadChange: (uploaded: boolean, url: string | null) => void;
   handleSubmit: (e: React.FormEvent) => void;
@@ -81,7 +81,9 @@ export default function AddClubUI({
 
       <DialogContent className="sm:max-w-[600px] max-h-[90vh] sm:max-h-[80vh] overflow-y-auto px-4 sm:px-6">
         <DialogHeader>
-          <DialogTitle className="text-lg sm:text-xl font-semibold">Add New Club</DialogTitle>
+          <DialogTitle className="text-lg sm:text-xl font-semibold">
+            Add New Club
+          </DialogTitle>
           <DialogDescription className="space-y-2">
             <div className="flex items-center justify-between text-xs sm:text-sm">
               <span>
@@ -109,7 +111,9 @@ export default function AddClubUI({
           {step === 1 ? (
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="name" className="text-sm sm:text-base">Club Name</Label>
+                <Label htmlFor="name" className="text-sm sm:text-base">
+                  Club Name
+                </Label>
                 <Input
                   id="name"
                   value={name}
@@ -120,7 +124,9 @@ export default function AddClubUI({
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="description" className="text-sm sm:text-base">Club Description</Label>
+                <Label htmlFor="description" className="text-sm sm:text-base">
+                  Club Description
+                </Label>
                 <Textarea
                   id="description"
                   value={description}
@@ -138,7 +144,12 @@ export default function AddClubUI({
               </p>
 
               <div className="space-y-2">
-                <Label htmlFor="instagramUsername" className="text-sm sm:text-base">Instagram Username</Label>
+                <Label
+                  htmlFor="instagramUsername"
+                  className="text-sm sm:text-base"
+                >
+                  Instagram Username
+                </Label>
                 <div className="relative">
                   <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">
                     @
@@ -154,7 +165,12 @@ export default function AddClubUI({
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="stravaUsername" className="text-sm sm:text-base">Strava Club Username</Label>
+                <Label
+                  htmlFor="stravaUsername"
+                  className="text-sm sm:text-base"
+                >
+                  Strava Club Username
+                </Label>
                 <div className="relative">
                   <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">
                     @
@@ -176,7 +192,10 @@ export default function AddClubUI({
                 <div className="mt-1">
                   {!instagramUsername && (
                     <>
-                      <Label htmlFor="avatar" className="block text-sm sm:text-base">
+                      <Label
+                        htmlFor="avatar"
+                        className="block text-sm sm:text-base"
+                      >
                         Club Logo
                       </Label>
 
@@ -193,7 +212,12 @@ export default function AddClubUI({
 
           <div className="flex justify-between mt-4 sm:mt-6">
             {step > 1 && (
-              <Button type="button" variant="outline" onClick={prevStep} className="text-sm sm:text-base px-2 sm:px-4">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={prevStep}
+                className="text-sm sm:text-base px-2 sm:px-4"
+              >
                 <ChevronLeft className="w-4 h-4" />
                 Back
               </Button>
