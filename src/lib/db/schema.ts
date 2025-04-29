@@ -1,13 +1,13 @@
 import {
-  boolean,
-  decimal,
-  index,
-  integer,
-  pgEnum,
-  pgTable,
-  primaryKey,
-  text,
-  timestamp,
+    boolean,
+    decimal,
+    index,
+    integer,
+    pgEnum,
+    pgTable,
+    primaryKey,
+    text,
+    timestamp,
 } from "drizzle-orm/pg-core";
 import type { AdapterAccountType } from "next-auth/adapters";
 import { v4 } from "uuid";
@@ -132,8 +132,8 @@ export const runs = pgTable("runs", {
   datetime: timestamp("datetime"),
   weekday: integer("weekday"),
   startDescription: text("start_description"),
-  locationLng: decimal("location_lng"),
-  locationLat: decimal("location_lat"),
+  locationLng: decimal("location_lng", { precision: 10, scale: 6 }),
+  locationLat: decimal("location_lat", { precision: 10, scale: 6 }),
   mapsLink: text("mapsLink"),
   isRecurrent: boolean("is_recurrent"),
   isApproved: boolean("is_approved"),
