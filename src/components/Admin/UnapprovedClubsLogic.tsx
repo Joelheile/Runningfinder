@@ -16,15 +16,14 @@ export default function UnapprovedClubsLogic() {
   const router = useRouter();
   const { clubs, refetch } = useFetchClubs();
 
-  // Call hooks at the top level
-  const updateAdminClub = useUpdateAdminClub; // Keep it as a function reference
-  const approveClub = useApproveClub; // Keep it as a function reference
-  const declineClub = useDeclineClub; // Keep it as a function reference
+  const updateAdminClub = useUpdateAdminClub;
+  const approveClub = useApproveClub;
+  const declineClub = useDeclineClub;
   const { uploadAvatar } = useUploadAvatar();
 
   const handleUpdateClub = async (slug: string, updateData: Partial<Club>) => {
     try {
-      await updateAdminClub(slug, updateData); // Call with slug and updateData
+      await updateAdminClub(slug, updateData);
       toast.success("Club updated successfully");
       await refetch();
       router.refresh();
@@ -36,7 +35,7 @@ export default function UnapprovedClubsLogic() {
 
   const handleApproveClub = async (clubId: string) => {
     try {
-      await approveClub(clubId); // Call with clubId
+      await approveClub(clubId);
       toast.success("Club approved successfully");
       refetch();
       router.refresh();
@@ -48,8 +47,8 @@ export default function UnapprovedClubsLogic() {
 
   const handleClubDecline = async (slug: string) => {
     try {
-      const decline = declineClub(slug); // Call with slug
-      await decline(); // Await the decline function
+      const decline = declineClub(slug);
+      await decline(); 
       toast.success("Club declined successfully");
       refetch();
       router.refresh();

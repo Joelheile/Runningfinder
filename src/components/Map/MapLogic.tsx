@@ -55,8 +55,8 @@ const Map = memo(({ runs }: { runs: Run[] }) => {
         center,
         zoom: 12,
         mapId: process.env.NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID,
-        disableDefaultUI: true, // Disable all default UI elements
-        zoomControl: false, // Keep zoom control
+        disableDefaultUI: true, 
+        zoomControl: false, 
         mapTypeControl: false,
         scaleControl: false,
         streetViewControl: false,
@@ -67,13 +67,12 @@ const Map = memo(({ runs }: { runs: Run[] }) => {
 
       infoWindowRef.current = new InfoWindow();
 
-      // Initialize user location tracking
       if (navigator.geolocation) {
         const { Marker } = (await loader.importLibrary(
           "marker"
         )) as google.maps.MarkerLibrary;
 
-        // Create user marker but don't set position yet
+
         userMarkerRef.current = new Marker({
           map: mapInstanceRef.current,
           icon: {
@@ -84,10 +83,9 @@ const Map = memo(({ runs }: { runs: Run[] }) => {
             strokeColor: "white",
             strokeWeight: 2,
           },
-          zIndex: 1000, // Keep user marker on top
+          zIndex: 1000, 
         });
 
-        // Watch user's position
         navigator.geolocation.watchPosition(
           (position) => {
             const newLocation = {
@@ -130,11 +128,10 @@ const Map = memo(({ runs }: { runs: Run[] }) => {
     const updateMarkers = async () => {
       if (!mapInstanceRef.current || !infoWindowRef.current) return;
 
-      // Clear existing markers
       markersRef.current.forEach((marker) => marker.setMap(null));
       markersRef.current = [];
 
-      // Only proceed if we have runs to display
+
       if (runs.length === 0) return;
 
       try {
@@ -252,7 +249,6 @@ const Map = memo(({ runs }: { runs: Run[] }) => {
     });
   }, [selectedLocation]);
 
-  // Function to center map on user location
   const centerOnUser = () => {
     if (userLocation && mapInstanceRef.current) {
       mapInstanceRef.current.panTo(userLocation);

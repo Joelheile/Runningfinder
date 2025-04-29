@@ -45,8 +45,6 @@ export default function AddRunState({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Track submission attempt
-    // Enable session recording for this important user action
     posthog.startSessionRecording();
     
     posthog.capture("run_creation_submitted", {

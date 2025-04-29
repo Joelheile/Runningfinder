@@ -99,7 +99,6 @@ export default function AddClubUI({
 
         <form
           onSubmit={(e) => {
-            // Only submit if we're on the last step
             if (step !== totalSteps) {
               e.preventDefault();
               return;

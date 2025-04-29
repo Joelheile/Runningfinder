@@ -16,7 +16,7 @@ const MapPage = () => {
     maxDistance?: number;
     days?: number[];
     difficulty?: string;
-  }>({}); // No filters at initial render
+  }>({});
 
   const { data: runs, isLoading, error } = useFetchRuns(filters);
 
@@ -30,7 +30,7 @@ const MapPage = () => {
       setFilters(newFilters);
     },
     []
-  ); // Empty dependency array since we only need setFilters which is stable
+  );
 
   return (
     <div className="fixed inset-0 overflow-hidden isolate">
@@ -46,10 +46,6 @@ const MapPage = () => {
           <Link href="/clubs">
             <Button variant={"default"}>Search Clubs 🏃</Button>
           </Link>
-
-          {/* <Link href="/myruns">
-            <Button variant={"outline"}>My runs 🥳</Button>
-          </Link> */}
         </div>
       </div>
 

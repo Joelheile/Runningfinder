@@ -8,7 +8,6 @@ export function useUploadAvatar() {
     file: File,
     avatarId: string,
   ): Promise<string> => {
-    // Ensure it returns a Promise<string>
     const reader = new FileReader();
     reader.readAsArrayBuffer(file);
 
@@ -47,15 +46,15 @@ export function useUploadAvatar() {
 
             setUploadedUrl(json.signedUrl.split("?")[0]);
             setIsLoading(false);
-            resolve(json.signedUrl.split("?")[0]); // Resolve the promise with the URL
+            resolve(json.signedUrl.split("?")[0]); 
           } catch (error) {
             setIsLoading(false);
             console.error("Error uploading file:", error);
-            reject(error); // Reject the promise on error
+            reject(error);
           }
         } else {
           setIsLoading(false);
-          reject(new Error("File data is not available")); // Reject if file data is not available
+          reject(new Error("File data is not available"));
         }
       };
     });

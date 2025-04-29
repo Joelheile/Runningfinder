@@ -9,10 +9,10 @@ export const useFetchRuns = (filters: {
 }) => {
   return useQuery({
     queryKey: ["runs", { ...filters }],
-    staleTime: 0, // Data is immediately stale
+    staleTime: 0, 
     gcTime: 0, // Don't cache at all
-    refetchOnMount: true, // Always refetch on mount
-    refetchOnWindowFocus: true, // Refetch when window regains focus
+    refetchOnMount: true,
+    refetchOnWindowFocus: true,
     queryFn: () => {
       const params = new URLSearchParams();
       if (

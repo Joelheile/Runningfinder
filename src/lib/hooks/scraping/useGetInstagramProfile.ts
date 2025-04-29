@@ -38,7 +38,6 @@ interface InstagramProfile {
 
       const responseData = await response.json();
 
-      // Check if we hit the API limit
       if (responseData.limitError) {
         return {
           profileImageUrl: null,

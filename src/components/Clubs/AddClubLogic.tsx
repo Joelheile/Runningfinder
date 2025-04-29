@@ -24,7 +24,6 @@ export default function AddClub() {
   const router = useRouter();
   const mutation = useAddClub();
 
-  // Start session recording when form is opened
   useEffect(() => {
     if (isOpen) {
       posthog.startSessionRecording();
@@ -40,11 +39,9 @@ export default function AddClub() {
     const username = e.target.value;
     setInstagramUsername(username);
 
-    // Only fetch the profile image if no image has been manually uploaded
     if (username && !isUploaded) {
       try {
         const data = await getInstagramProfile({ instagramUsername: username });
-        // We'll let the backend handle setting the avatar URL from Instagram
       } catch (error) {
         console.error("Failed to fetch Instagram data:", error);
       }
@@ -140,18 +137,15 @@ export default function AddClub() {
     });
     e.preventDefault();
 
-    // Only process submission on the final step
     if (step !== totalSteps) {
       return;
     }
 
     if (!validateRequiredFields()) return;
 
-    // Show creation toast
     const creationToast = toast.loading("🏗️ Creating your running club...");
 
     try {
-      // If Instagram username is provided and no avatar is uploaded, try to get the profile image
       if (instagramUsername && !isUploaded) {
         console.log("📸 Fetching Instagram profile for:", instagramUsername);
         try {
@@ -164,13 +158,12 @@ export default function AddClub() {
               data.profileImageUrl
             );
             setAvatarUrl(data.profileImageUrl);
-            setIsUploaded(false); // We should set this to false for Instagram avatars
+            setIsUploaded(false); 
           } else {
             console.warn("⚠️ No profile image URL returned from Instagram");
           }
         } catch (error) {
           console.error("❌ Failed to fetch Instagram data:", error);
-          // Continue with club creation even if Instagram fetch fails
         }
       } else {
        
@@ -184,8 +177,8 @@ export default function AddClub() {
         description,
         instagramUsername: instagramUsername.trim() || "",
         stravaUsername: stravaUsername.trim() || "",
-        avatarFileId: isUploaded ? avatarFileId : "", // Only use avatarFileId for manual uploads
-        avatarUrl: avatarUrl || "", // Use avatarUrl state which already contains Instagram URL if available
+        avatarFileId: isUploaded ? avatarFileId : "",
+        avatarUrl: avatarUrl || "", 
         creationDate: "",
         slug: "",
         isApproved: false,
@@ -196,7 +189,6 @@ export default function AddClub() {
       await mutation.mutateAsync(formData);
       
 
-      // Track successful club creation
       posthog.capture("club_created", {
         $recording_enabled: true,
         club_name: name,

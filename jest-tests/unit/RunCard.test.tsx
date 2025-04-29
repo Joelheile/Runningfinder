@@ -1,10 +1,9 @@
 /**
  * @jest-environment jsdom
  */
-import React from "react";
-import { render } from "@testing-library/react";
-import "@testing-library/jest-dom/extend-expect";
 import RunCardUI from "@/components/Runs/RunCardUI";
+import "@testing-library/jest-dom/extend-expect";
+import { render } from "@testing-library/react";
 
 describe("RunCardUI Props", () => {
   const defaultProps = {

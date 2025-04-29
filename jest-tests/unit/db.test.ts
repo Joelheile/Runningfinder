@@ -1,5 +1,6 @@
 import { db } from "@/lib/db/db";
-import { clubs } from "@/lib/db/schema/clubs";
+import { clubs } from "@/lib/db/schema";
+
 
 describe("Database Connection", () => {
   it("should connect to the database and execute a query", async () => {
