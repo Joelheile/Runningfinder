@@ -1,8 +1,8 @@
 "use client";
 
-import useAdminUpdateRun from "@/lib/hooks/scraping/runs/useAdminUpdateRun";
-import useApproveRun from "@/lib/hooks/scraping/runs/useApproveRun";
-import { useUnapprovedRuns } from "@/lib/hooks/scraping/runs/useUnapprovedRuns";
+import useAdminUpdateRun from "@/lib/hooks/admin/runs/useAdminUpdateRun";
+import useApproveRun from "@/lib/hooks/admin/runs/useApproveRun";
+import { useUnapprovedRuns } from "@/lib/hooks/admin/runs/useUnapprovedRuns";
 import { Run } from "@/lib/types/Run";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";

@@ -3,12 +3,12 @@
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
+import useApproveClub from "@/lib/hooks/admin/clubs/useApproveClub";
+import useDeclineClub from "@/lib/hooks/admin/clubs/useDeclineClub";
+import useFetchClubs from "@/lib/hooks/admin/clubs/useFetchClubs";
+import useUpdateAdminClub from "@/lib/hooks/admin/clubs/useUpdateAdminClub";
+import getInstagramProfile from "@/lib/hooks/admin/useGetInstagramProfile";
 import { useUploadAvatar } from "@/lib/hooks/avatars/useUploadAvatar";
-import useApproveClub from "@/lib/hooks/scraping/clubs/useApproveClub";
-import useDeclineClub from "@/lib/hooks/scraping/clubs/useDeclineClub";
-import useFetchClubs from "@/lib/hooks/scraping/clubs/useFetchClubs";
-import useUpdateAdminClub from "@/lib/hooks/scraping/clubs/useUpdateAdminClub";
-import getInstagramProfile from "@/lib/hooks/scraping/useGetInstagramProfile";
 import { Club } from "@/lib/types/Club";
 import UnapprovedClubsUI from "./UnapprovedClubsUI";
 
@@ -48,7 +48,7 @@ export default function UnapprovedClubsLogic() {
   const handleClubDecline = async (slug: string) => {
     try {
       const decline = declineClub(slug);
-      await decline(); 
+      await decline();
       toast.success("Club declined successfully");
       refetch();
       router.refresh();
