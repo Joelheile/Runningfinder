@@ -5,7 +5,9 @@ export async function POST(request: Request) {
   try {
 
     const authHeader = request.headers.get("authorization");
-    if (!authHeader || authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+    const isVercelCron = request.headers.get("x-vercel-cron") === "true";
+    
+    if (!isVercelCron && (!authHeader || authHeader !== `Bearer ${process.env.CRON_SECRET}`)) {
       console.error("Unauthorized request:", authHeader);
       return new NextResponse("Unauthorized", { status: 401 });
     }
@@ -14,7 +16,6 @@ export async function POST(request: Request) {
     console.log("Environment check:");
     console.log("- CRON_SECRET:", process.env.CRON_SECRET ? "✓" : "✗");
     console.log("- APIFY_KEY:", process.env.APIFY_KEY ? "✓" : "✗");
-
 
     await scrapeRuns();
 

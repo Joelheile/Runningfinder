@@ -298,11 +298,11 @@ export async function scrapeRuns() {
             }
 
             const numLocationLat = location_latitude
-              ? parseFloat(location_latitude.toString())
-              : 52.52; // Default to Berlin coordinates
+              ? parseFloat(location_latitude.toString()).toFixed(6)
+              : "52.520000"; // Default to Berlin coordinates
             const numLocationLng = location_longitude
-              ? parseFloat(location_longitude.toString())
-              : 13.405;
+              ? parseFloat(location_longitude.toString()).toFixed(6)
+              : "13.405000";
 
             const startDescription = location
               ? location
