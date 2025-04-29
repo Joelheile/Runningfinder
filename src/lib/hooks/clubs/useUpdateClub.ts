@@ -33,7 +33,6 @@ export function useUpdateClub() {
     mutationFn: ({ slug, data }: { slug: string; data: UpdateClubData }) =>
       updateClub(slug, data),
     onSuccess: () => {
-      // Invalidate all club-related queries
       queryClient.invalidateQueries({ queryKey: ["clubs"] });
     },
   });

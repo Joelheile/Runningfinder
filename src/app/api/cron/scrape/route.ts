@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
   try {
-    // Verify the request is coming from GitHub Actions or local development
+
     const authHeader = request.headers.get("authorization");
     if (!authHeader || authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
       console.error("Unauthorized request:", authHeader);
@@ -15,7 +15,7 @@ export async function POST(request: Request) {
     console.log("- CRON_SECRET:", process.env.CRON_SECRET ? "✓" : "✗");
     console.log("- APIFY_KEY:", process.env.APIFY_KEY ? "✓" : "✗");
 
-    // Run the scraper
+
     await scrapeRuns();
 
     console.log("Scraping completed successfully");

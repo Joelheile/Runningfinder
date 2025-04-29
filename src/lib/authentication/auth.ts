@@ -25,14 +25,14 @@ const providers = [
   }),
 ];
 
-// Get trusted hosts from environment or use defaults
+
 const trustedHosts = process.env.NEXTAUTH_URL
   ? [new URL(process.env.NEXTAUTH_URL).host]
   : ["localhost:3000", "www.runningfinder.com", "runningfinder.com"];
 
 export const { handlers, auth, signIn: signInAuth } = NextAuth({
   
-  trustHost: true, // Trust all hosts in production
+  trustHost: true, 
   cookies: {
     pkceCodeVerifier: {
       name: "next-auth.pkce.code_verifier",
@@ -52,9 +52,9 @@ export const { handlers, auth, signIn: signInAuth } = NextAuth({
   },
   callbacks: {
     async redirect({ url, baseUrl }) {
-      // Allows relative callback URLs
+
       if (url.startsWith("/")) return `${baseUrl}${url}`
-      // Allows callback URLs on the same origin
+
       else if (new URL(url).origin === baseUrl) return url
       return baseUrl
     },

@@ -39,28 +39,7 @@ export default function RunCard({
   const { mutate: deleteRun } = useDeleteRun();
   const router = useRouter();
 
-  // const handleRegistration = () => {
-  //   if (!userId) {
-  //     router.push("/auth/login");
-  //     return;
-  //   }
-
-  //   register({ runId: id, userId });
-  // };
-
-  // const handleDeleteRun = () => {
-  //   if (!isAdmin) return;
-  //   if (window.confirm("Are you sure you want to delete this run?")) {
-  //     deleteRun(
-  //       { id },
-  //       {
-  //         onSuccess: () => {
-  //           router.refresh();
-  //         },
-  //       }
-  //     );
-  //   }
-  // };
+ 
 
   // If no mapsLink is provided, create one from the coordinates
   const generatedMapsLink =

@@ -1,8 +1,5 @@
-// Worker script for fetching and parsing running events
-
 async function parseJavaScriptData(html) {
   try {
-    // Look for the data in the JavaScript
     const pattern = /self\.__next_f\.push\(\[1,"(.*?)"\]\)/g;
     const matches = [...html.matchAll(pattern)];
 
@@ -10,17 +7,14 @@ async function parseJavaScriptData(html) {
 
     for (const match of matches) {
       try {
-        // Unescape the string
         const data = decodeURIComponent(JSON.parse(`"${match[1]}"`));
 
-        // Split into individual event entries
         const eventEntries = data.matchAll(/\d+:\{([^}]+)\}/g);
 
         for (const entry of eventEntries) {
           try {
-            // Convert to proper JSON format
             let jsonStr = "{" + entry[1] + "}";
-            // Fix any missing quotes around keys
+
             jsonStr = jsonStr.replace(/([{,])\s*([a-zA-Z]+):/g, '$1"$2":');
             const eventData = JSON.parse(jsonStr);
 
@@ -100,7 +94,6 @@ async function fetchAndParseEvents() {
 
 async function extractCoordinates(url) {
   try {
-    // Fetch the URL and follow redirects
     const response = await fetch(url, {
       redirect: "follow",
       headers: {
@@ -115,19 +108,15 @@ async function extractCoordinates(url) {
     const finalUrl = response.url;
     console.log("Final URL:", finalUrl);
 
-    // Try different patterns to extract coordinates
     const patterns = [
-      // Pattern for /search/ URLs
       {
         regex: /\/search\/(-?\d+\.?\d*),\s*(-?\d+\.?\d*)/,
         extract: (match) => ({ latitude: match[1], longitude: match[2] }),
       },
-      // Pattern for @lat,lng in URL
       {
         regex: /@(-?\d+\.?\d*),(-?\d+\.?\d*)/,
         extract: (match) => ({ latitude: match[1], longitude: match[2] }),
       },
-      // Pattern for ?q=lat,lng in URL
       {
         regex: /[?&]q=(-?\d+\.?\d*),(-?\d+\.?\d*)/,
         extract: (match) => ({ latitude: match[1], longitude: match[2] }),
@@ -164,7 +153,7 @@ async function handleLocationRequest(request) {
             "Content-Type": "application/json",
             "Access-Control-Allow-Origin": "*",
           },
-        },
+        }
       );
     }
 
@@ -173,7 +162,7 @@ async function handleLocationRequest(request) {
       headers: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
-        "Cache-Control": "public, max-age=3600", // Cache for 1 hour
+        "Cache-Control": "public, max-age=3600",
       },
     });
   } catch (error) {
@@ -187,13 +176,12 @@ async function handleLocationRequest(request) {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
         },
-      },
+      }
     );
   }
 }
 
 async function handleRequest(request) {
-  // Handle CORS preflight requests
   if (request.method === "OPTIONS") {
     return new Response(null, {
       headers: {
@@ -207,7 +195,6 @@ async function handleRequest(request) {
 
   const url = new URL(request.url);
 
-  // Handle location requests
   if (url.pathname === "/location") {
     return handleLocationRequest(request);
   }
@@ -227,7 +214,7 @@ async function handleRequest(request) {
             "Content-Type": "application/json",
             "Access-Control-Allow-Origin": "*",
           },
-        },
+        }
       );
     }
 
@@ -235,7 +222,7 @@ async function handleRequest(request) {
       headers: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
-        "Cache-Control": "public, max-age=300", // Cache for 5 minutes
+        "Cache-Control": "public, max-age=300",
       },
     });
   } catch (error) {
@@ -251,12 +238,11 @@ async function handleRequest(request) {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
         },
-      },
+      }
     );
   }
 }
 
-// Export the handler for Cloudflare Workers
 export default {
   fetch: handleRequest,
 };

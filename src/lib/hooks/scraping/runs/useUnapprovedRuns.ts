@@ -38,7 +38,6 @@ export function useUnapprovedRuns() {
   return useQuery({
     queryKey: ["runs", "unapproved"],
     queryFn: fetchUnapprovedRuns,
-    // Disable caching to always fetch fresh data
     staleTime: 0,
     gcTime: 0,
     refetchOnMount: true,

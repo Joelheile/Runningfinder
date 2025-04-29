@@ -13,7 +13,7 @@ export async function POST(request: Request) {
       messages: [
         {
           role: "system",
-          content: "You are a that does exactly what asked for",
+          content: "You are a helpful assistant that does exactly what asked for",
         },
         { role: "user", content: ` "${message}"` },
       ],
