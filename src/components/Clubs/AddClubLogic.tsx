@@ -1,6 +1,6 @@
 "use client";
+import getInstagramProfile from "@/lib/hooks/admin/useGetInstagramProfile";
 import { useAddClub } from "@/lib/hooks/clubs/useAddClub";
-import getInstagramProfile from "@/lib/hooks/scraping/useGetInstagramProfile";
 import { Club } from "@/lib/types/Club";
 import { useRouter } from "next/navigation";
 import posthog from "posthog-js";
@@ -158,7 +158,7 @@ export default function AddClub() {
               data.profileImageUrl
             );
             setAvatarUrl(data.profileImageUrl);
-            setIsUploaded(false); 
+            setIsUploaded(false);
           } else {
             console.warn("⚠️ No profile image URL returned from Instagram");
           }
@@ -166,10 +166,7 @@ export default function AddClub() {
           console.error("❌ Failed to fetch Instagram data:", error);
         }
       } else {
-       
       }
-
-   
 
       const formData: Club = {
         id: "",
@@ -178,16 +175,14 @@ export default function AddClub() {
         instagramUsername: instagramUsername.trim() || "",
         stravaUsername: stravaUsername.trim() || "",
         avatarFileId: isUploaded ? avatarFileId : "",
-        avatarUrl: avatarUrl || "", 
+        avatarUrl: avatarUrl || "",
         creationDate: "",
         slug: "",
         isApproved: false,
         websiteUrl: "",
       };
 
-      
       await mutation.mutateAsync(formData);
-      
 
       posthog.capture("club_created", {
         $recording_enabled: true,
@@ -205,7 +200,6 @@ export default function AddClub() {
       setIsOpen(false);
       router.refresh();
     } catch (error: any) {
-      
       posthog.capture("club_creation_failed", {
         $recording_enabled: true,
         error_message: error.message || "Unknown error",

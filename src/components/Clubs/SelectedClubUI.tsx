@@ -1,4 +1,4 @@
-import getInstagramProfile from "@/lib/hooks/scraping/useGetInstagramProfile";
+import getInstagramProfile from "@/lib/hooks/admin/useGetInstagramProfile";
 import { Club } from "@/lib/types/Club";
 import { Run } from "@/lib/types/Run";
 import { ChevronRight } from "lucide-react";
@@ -124,7 +124,6 @@ export default function SelectedClubHeaderUI({
                 distance={run.distance}
                 difficulty={run.difficulty}
                 startDescription={run.startDescription}
-           
                 mapsLink={run.mapsLink || null}
                 isCompact={true}
               />
