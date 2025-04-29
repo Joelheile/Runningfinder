@@ -4,48 +4,15 @@ import { Run } from "@/lib/types/Run";
 import { eq } from "drizzle-orm";
 import { v4 } from "uuid";
 import { Club } from "../types/Club";
+import { InstagramProfile } from "../types/InstagramProfile";
+import { WorkerResponse } from "../types/WorkerReponse";
 
 const SCRAPING_WORKER_URL =
   "https://runningfinder.joel-heil-escobar.workers.dev/";
 
-interface WorkerEvent {
-  eventName: string;
-  clubName: string;
-  datetime: string;
-  location: string;
-  locationUrl: string;
-  difficulty: string;
-  distance: string;
-  isRecurrent?: boolean;
-  location_latitude?: number;
-  location_longitude?: number;
-  instagramUsername?: string;
-  stravaUsername?: string;
-}
 
-interface WorkerResponse {
-  totalClubs: number;
-  totalEvents: number;
-  averageEventsPerClub: number;
-  lastUpdated: string;
-  clubs: Array<{
-    clubName: string;
-    events: WorkerEvent[];
-    totalEvents: number;
-    instagramUsername?: string;
-    stravaUsername?: string;
-  }>;
-}
 
-interface InstagramProfile {
-  profileImageUrl: string | null;
-  profileDescription: string | null;
-  recentPosts: Array<{
-    url: string;
-    displayUrl: string;
-    caption?: string;
-  }>;
-}
+
 
 function generateSlug(name: string): string {
   return name
@@ -147,11 +114,11 @@ export async function scrapeRuns() {
     );
     console.log("Clubs found:", data.clubs.map((c) => c.clubName).join(", "));
 
-    // Get existing runs to avoid duplicates
+
     const existingRuns = await db.select().from(runs);
     console.log(`Found ${existingRuns.length} existing runs in database`);
 
-    // Get existing clubs to check which ones need to be created
+
     const existingClubs = await db.select().from(clubs);
     console.log(`Found ${existingClubs.length} existing clubs in database`);
 
@@ -165,10 +132,10 @@ export async function scrapeRuns() {
       try {
         console.log(`\nProcessing club: ${clubData.clubName}`);
 
-        // Generate slug for lookup
+
         const clubSlug = generateSlug(clubData.clubName);
 
-        // Check if club exists by slug
+
         const existingClub = existingClubs.find(
           (c: Club) => c.slug === clubSlug,
         );
@@ -180,7 +147,6 @@ export async function scrapeRuns() {
         } else {
           console.log(`Club ${clubData.clubName} does not exist in database`);
 
-          // Initialize club data
           let clubInsertData: any = {
             id: v4(),
             name: clubData.clubName,
@@ -190,7 +156,7 @@ export async function scrapeRuns() {
             instagramUsername: clubData.instagramUsername || "",
             avatarUrl: "",
             description: "",
-            isApproved: false, // Will be set to true if Instagram avatar is fetched
+            isApproved: false,
           };
 
           // Only fetch and set Instagram data if username is provided
@@ -210,7 +176,7 @@ export async function scrapeRuns() {
                 console.log("Instagram profile data retrieved successfully");
                 clubInsertData.avatarUrl = instagramProfile.profileImageUrl;
                 clubInsertData.description = instagramProfile.profileDescription;
-                // Automatically approve club if it has an avatar URL
+
                 if (instagramProfile.profileImageUrl) {
                   console.log("Auto-approving club due to valid Instagram avatar");
                   clubInsertData.isApproved = true;
@@ -230,7 +196,6 @@ export async function scrapeRuns() {
             );
           }
 
-          // Create new club
           console.log(
             `Creating new club: ${clubData.clubName} with slug: ${clubInsertData.slug}`,
           );
@@ -250,7 +215,7 @@ export async function scrapeRuns() {
           }
         }
 
-        // Process events for this club
+
         console.log(
           `Processing ${clubData.events.length} events for ${clubData.clubName}`,
         );
@@ -299,7 +264,7 @@ export async function scrapeRuns() {
 
             const numLocationLat = location_latitude
               ? parseFloat(location_latitude.toString()).toFixed(6)
-              : "52.520000"; // Default to Berlin coordinates
+              : "52.520000"; 
             const numLocationLng = location_longitude
               ? parseFloat(location_longitude.toString()).toFixed(6)
               : "13.405000";
@@ -308,7 +273,7 @@ export async function scrapeRuns() {
               ? location
               : "Location TBD - check club's social media for updates";
 
-            // Insert the run into the database
+
             await db.insert(runs).values({
               id: v4(),
               name: eventName,
