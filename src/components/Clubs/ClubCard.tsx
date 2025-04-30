@@ -1,5 +1,6 @@
 import Image from "next/image";
 import ClubIconBar from "../Icons/ClubIconBar";
+import React from "react";
 
 interface ClubCardProps {
   avatarUrl?: string;

@@ -26,6 +26,8 @@ export const users = pgTable("users", {
   attendedRuns: integer("attended_runs"),
   image: text("image"),
   isAdmin: boolean("is_admin").default(false),
+  passwordHash: text("password_hash"),
+  passwordSalt: text("password_salt"),
 });
 
 export const avatarTypeEnum = pgEnum("avatarType", ["user", "club"]);
