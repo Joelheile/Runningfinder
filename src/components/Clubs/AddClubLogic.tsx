@@ -1,5 +1,4 @@
 "use client";
-import getInstagramProfile from "@/lib/hooks/admin/useGetInstagramProfile";
 import { useAddClub } from "@/lib/hooks/clubs/useAddClub";
 import { Club } from "@/lib/types/Club";
 import { useRouter } from "next/navigation";
@@ -33,19 +32,11 @@ export default function AddClub() {
     }
   }, [isOpen]);
 
-  const handleInstagramUsernameChange = async (
+  const handleInstagramUsernameChange = (
     e: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const username = e.target.value;
     setInstagramUsername(username);
-
-    if (username && !isUploaded) {
-      try {
-        const data = await getInstagramProfile({ instagramUsername: username });
-      } catch (error) {
-        console.error("Failed to fetch Instagram data:", error);
-      }
-    }
   };
 
   const handleUploadChange = (uploaded: boolean, url: string | null) => {
@@ -122,26 +113,8 @@ export default function AddClub() {
     const creationToast = toast.loading("🏗️ Creating your running club...");
 
     try {
-      if (instagramUsername && !isUploaded) {
-        console.log("📸 Fetching Instagram profile for:", instagramUsername);
-        try {
-          const data = await getInstagramProfile({ instagramUsername });
-          console.log("📱 Instagram profile data:", data);
-
-          if (data.profileImageUrl) {
-            console.log(
-              "🖼️ Setting avatar URL from Instagram:",
-              data.profileImageUrl,
-            );
-            setAvatarUrl(data.profileImageUrl);
-            setIsUploaded(false);
-          } else {
-            console.warn("⚠️ No profile image URL returned from Instagram");
-          }
-        } catch (error) {
-          console.error("❌ Failed to fetch Instagram data:", error);
-        }
-      } else {
+      if (!isUploaded && !avatarUrl) {
+        console.log("⚠️ No avatar uploaded or provided");
       }
 
       const formData: Club = {
@@ -159,6 +132,8 @@ export default function AddClub() {
       };
 
       await mutation.mutateAsync(formData);
+
+      router.refresh();
 
       posthog.capture("club_created", {
         $recording_enabled: true,
