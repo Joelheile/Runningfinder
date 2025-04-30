@@ -38,7 +38,10 @@ export async function PATCH(
   try {
     const { slug } = params;
     if (!slug) {
-      return NextResponse.json({ error: "Club slug is required" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Club slug is required" },
+        { status: 400 },
+      );
     }
 
     const body = await request.json();
@@ -51,7 +54,10 @@ export async function PATCH(
     return NextResponse.json(updatedClub);
   } catch (error) {
     console.error("Error updating club:", error);
-    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 },
+    );
   }
 }
 

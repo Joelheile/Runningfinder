@@ -33,8 +33,6 @@ export async function GET() {
       .leftJoin(clubs, eq(runs.clubId, clubs.id))
       .where(eq(runs.isApproved, false));
 
-
-
     return NextResponse.json(unapprovedRuns, {
       headers: {
         "Cache-Control":

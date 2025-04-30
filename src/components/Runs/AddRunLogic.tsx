@@ -22,20 +22,20 @@ export default function AddRunState({
   const [difficulty, setDifficulty] = useState(initialValues.difficulty || "");
   const [distance, setDistance] = useState(initialValues.distance || "");
   const [datetime, setDatetime] = useState<Date>(
-    initialValues.datetime || new Date()
+    initialValues.datetime || new Date(),
   );
   const [startDescription, setStartDescription] = useState(
-    initialValues.startDescription || ""
+    initialValues.startDescription || "",
   );
   const [locationLat, setLocationLat] = useState(
-    initialValues.location?.lat || 52.52
+    initialValues.location?.lat || 52.52,
   );
   const [locationLng, setLocationLng] = useState(
-    initialValues.location?.lng || 13.405
+    initialValues.location?.lng || 13.405,
   );
 
   const [isRecurrent, setIsRecurrent] = useState(
-    initialValues.isRecurrent || false
+    initialValues.isRecurrent || false,
   );
   const [showMap, setShowMap] = useState(false);
 
@@ -46,20 +46,6 @@ export default function AddRunState({
     e.preventDefault();
 
     posthog.startSessionRecording();
-    
-    posthog.capture("run_creation_submitted", {
-      $recording_enabled: true,
-      club_id: club.id,
-      club_name: club.name,
-      fields_completed: {
-        has_name: !!name,
-        has_difficulty: !!difficulty,
-        has_distance: !!distance,
-        has_start_description: !!startDescription,
-        has_location: !!(locationLat && locationLng),
-      },
-      time_spent: Date.now() - (window as any).__runCreationStartTime,
-    });
 
     const validationErrors = [];
 
@@ -115,7 +101,6 @@ export default function AddRunState({
 
     mutation.mutate(newRun);
 
-    // Reset all form fields
     setName("");
     setDifficulty("");
     setDistance("");
@@ -126,7 +111,6 @@ export default function AddRunState({
     setIsRecurrent(false);
     setShowMap(false);
 
-    // Track successful run creation
     posthog.capture("run_created", {
       $recording_enabled: true,
       run_name: name,
@@ -145,20 +129,8 @@ export default function AddRunState({
     lat: number,
     lng: number,
     placeUrl: string,
-    formattedAddress: string
+    formattedAddress: string,
   ) => {
-    posthog.capture("run_location_selected", {
-      $recording_enabled: true,
-      club_id: club.id,
-      club_name: club.name,
-      has_place_url: !!placeUrl,
-      location_type: formattedAddress.includes("Street")
-        ? "street"
-        : formattedAddress.includes("Park")
-          ? "park"
-          : "other",
-    });
-
     setLocationLat(lat);
     setLocationLng(lng);
     setStartDescription(formattedAddress);
@@ -166,11 +138,6 @@ export default function AddRunState({
 
   useEffect(() => {
     (window as any).__runCreationStartTime = Date.now();
-    posthog.capture("run_creation_started", {
-      $recording_enabled: true,
-      club_id: club.id,
-      club_name: club.name,
-    });
 
     return () => {
       const timeSpent = Date.now() - (window as any).__runCreationStartTime;

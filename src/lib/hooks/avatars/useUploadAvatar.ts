@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useState } from "react";
 
 export function useUploadAvatar() {
@@ -47,7 +47,7 @@ export function useUploadAvatar() {
 
             setUploadedUrl(json.signedUrl.split("?")[0]);
             setIsLoading(false);
-            resolve(json.signedUrl.split("?")[0]); 
+            resolve(json.signedUrl.split("?")[0]);
           } catch (error) {
             setIsLoading(false);
             console.error("Error uploading file:", error);

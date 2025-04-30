@@ -1,15 +1,15 @@
 import { WorkerEvent } from "./WorkerEvent";
 
 export interface WorkerResponse {
-    totalClubs: number;
+  totalClubs: number;
+  totalEvents: number;
+  averageEventsPerClub: number;
+  lastUpdated: string;
+  clubs: Array<{
+    clubName: string;
+    events: WorkerEvent[];
     totalEvents: number;
-    averageEventsPerClub: number;
-    lastUpdated: string;
-    clubs: Array<{
-      clubName: string;
-      events: WorkerEvent[];
-      totalEvents: number;
-      instagramUsername?: string;
-      stravaUsername?: string;
-    }>;
-  }
+    instagramUsername?: string;
+    stravaUsername?: string;
+  }>;
+}

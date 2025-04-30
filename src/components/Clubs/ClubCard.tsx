@@ -34,7 +34,9 @@ export default function ClubCard({
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent">
               <div className="absolute bottom-0 p-4 text-white">
-                <h1 className="text-2xl font-bold mb-1 line-clamp-1 text-white">{name}</h1>
+                <h1 className="text-2xl font-bold mb-1 line-clamp-1 text-white">
+                  {name}
+                </h1>
               </div>
             </div>
           </div>

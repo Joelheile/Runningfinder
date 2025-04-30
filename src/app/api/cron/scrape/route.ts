@@ -3,11 +3,13 @@ import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
   try {
-
     const authHeader = request.headers.get("authorization");
     const isVercelCron = request.headers.get("x-vercel-cron") === "true";
-    
-    if (!isVercelCron && (!authHeader || authHeader !== `Bearer ${process.env.CRON_SECRET}`)) {
+
+    if (
+      !isVercelCron &&
+      (!authHeader || authHeader !== `Bearer ${process.env.CRON_SECRET}`)
+    ) {
       console.error("Unauthorized request:", authHeader);
       return new NextResponse("Unauthorized", { status: 401 });
     }

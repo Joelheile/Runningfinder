@@ -9,7 +9,7 @@ export const useFetchRuns = (filters: {
 }) => {
   return useQuery({
     queryKey: ["runs", { ...filters }],
-    staleTime: 0, 
+    staleTime: 0,
     gcTime: 0, // Don't cache at all
     refetchOnMount: true,
     refetchOnWindowFocus: true,

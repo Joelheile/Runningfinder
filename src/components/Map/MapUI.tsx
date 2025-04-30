@@ -33,7 +33,7 @@ const MapUI = ({ mapRef, selectedLocation, runs }: MapViewProps) => {
         isClubHeaderVisible &&
         (() => {
           const selectedRun = runs.find(
-            (run) => run.id === selectedLocation.id
+            (run) => run.id === selectedLocation.id,
           );
           return selectedRun ? (
             <SelectedClubHeaderLogic

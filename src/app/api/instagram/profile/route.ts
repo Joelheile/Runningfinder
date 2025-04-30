@@ -1,84 +1,108 @@
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
   try {
     const { instagramUsername } = await request.json();
-    console.log('Received request for Instagram profile:', instagramUsername);
+    console.log("Received request for Instagram profile:", instagramUsername);
 
     if (!instagramUsername) {
-      console.log('Missing Instagram username in request');
-      return NextResponse.json({ error: "Instagram username is required" }, { status: 400 });
+      console.log("Missing Instagram username in request");
+      return NextResponse.json(
+        { error: "Instagram username is required" },
+        { status: 400 },
+      );
     }
 
     if (!process.env.APIFY_KEY) {
-      console.error('APIFY_KEY environment variable is not configured');
-      return NextResponse.json({ 
-        error: "Instagram scraping is not configured. Please set APIFY_KEY in .env.local" 
-      }, { status: 500 });
+      console.error("APIFY_KEY environment variable is not configured");
+      return NextResponse.json(
+        {
+          error:
+            "Instagram scraping is not configured. Please set APIFY_KEY in .env.local",
+        },
+        { status: 500 },
+      );
     }
 
-    console.log('Fetching Instagram profile for:', instagramUsername);
-    
+    console.log("Fetching Instagram profile for:", instagramUsername);
+
     const response = await fetch(
       `https://api.apify.com/v2/acts/apify~instagram-profile-scraper/run-sync-get-dataset-items?token=${process.env.APIFY_KEY}`,
       {
         method: "POST",
-        headers: { 
+        headers: {
           "Content-Type": "application/json",
-          'Accept': 'application/json'
+          Accept: "application/json",
         },
         body: JSON.stringify({
           usernames: [instagramUsername],
           resultsLimit: 6,
         }),
-      }
+      },
     );
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('Apify API error:', {
+      console.error("Apify API error:", {
         status: response.status,
         statusText: response.statusText,
-        error: errorText
+        error: errorText,
       });
 
       // Handle rate limit specifically
       if (response.status === 402) {
-        return NextResponse.json({
-          profileImageUrl: null,
-          profileDescription: null,
-          recentPosts: [],
-          limitError: true
-        }, { status: 200 }); // Return 200 to prevent error UI
+        return NextResponse.json(
+          {
+            profileImageUrl: null,
+            profileDescription: null,
+            recentPosts: [],
+            limitError: true,
+          },
+          { status: 200 },
+        ); // Return 200 to prevent error UI
       }
 
-      return NextResponse.json({ 
-        error: `Instagram API error: ${response.status} ${response.statusText}` 
-      }, { status: response.status });
+      return NextResponse.json(
+        {
+          error: `Instagram API error: ${response.status} ${response.statusText}`,
+        },
+        { status: response.status },
+      );
     }
 
     const data = await response.json();
-    console.log('Received Instagram data:', {
+    console.log("Received Instagram data:", {
       dataLength: data.length,
-      firstItem: data[0] ? {
-        username: data[0].username,
-        hasImage: !!data[0].profilePicUrl,
-        hasDescription: !!data[0].biography
-      } : null
+      firstItem: data[0]
+        ? {
+            username: data[0].username,
+            hasImage: !!data[0].profilePicUrl,
+            hasDescription: !!data[0].biography,
+          }
+        : null,
     });
 
     if (!Array.isArray(data) || data.length === 0) {
-      console.error('Invalid or empty response from Apify:', data);
-      return NextResponse.json({ 
-        error: `No Instagram profile found for username: ${instagramUsername}` 
-      }, { status: 404 });
+      console.error("Invalid or empty response from Apify:", data);
+      return NextResponse.json(
+        {
+          error: `No Instagram profile found for username: ${instagramUsername}`,
+        },
+        { status: 404 },
+      );
     }
 
     return NextResponse.json(data);
   } catch (error) {
-    console.error('Error fetching Instagram profile:', error);
-    return NextResponse.json({ 
-      error: error instanceof Error ? error.message : "Failed to fetch Instagram profile" 
-    }, { status: 500 });
+    console.error("Error fetching Instagram profile:", error);
+    return NextResponse.json(
+      {
+        error:
+          error instanceof Error
+            ? error.message
+            : "Failed to fetch Instagram profile",
+      },
+      { status: 500 },
+    );
   }
 }

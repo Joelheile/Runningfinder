@@ -25,14 +25,16 @@ const providers = [
   }),
 ];
 
-
 const trustedHosts = process.env.NEXTAUTH_URL
   ? [new URL(process.env.NEXTAUTH_URL).host]
   : ["localhost:3000", "www.runningfinder.com", "runningfinder.com"];
 
-export const { handlers, auth, signIn: signInAuth } = NextAuth({
-  
-  trustHost: true, 
+export const {
+  handlers,
+  auth,
+  signIn: signInAuth,
+} = NextAuth({
+  trustHost: true,
   cookies: {
     pkceCodeVerifier: {
       name: "next-auth.pkce.code_verifier",
@@ -52,11 +54,9 @@ export const { handlers, auth, signIn: signInAuth } = NextAuth({
   },
   callbacks: {
     async redirect({ url, baseUrl }) {
-
-      if (url.startsWith("/")) return `${baseUrl}${url}`
-
-      else if (new URL(url).origin === baseUrl) return url
-      return baseUrl
+      if (url.startsWith("/")) return `${baseUrl}${url}`;
+      else if (new URL(url).origin === baseUrl) return url;
+      return baseUrl;
     },
     async signIn({ user, account, profile }) {
       return true;
@@ -70,8 +70,8 @@ export const { handlers, auth, signIn: signInAuth } = NextAuth({
     },
     async session({ session, token, user }) {
       if (session?.user) {
-        session.user.id = token.sub || token.id as string
-        session.user.isAdmin = Boolean(token.isAdmin)
+        session.user.id = token.sub || (token.id as string);
+        session.user.isAdmin = Boolean(token.isAdmin);
         session.user.id = token.id as string;
         session.user.isAdmin = Boolean(token.isAdmin);
       }

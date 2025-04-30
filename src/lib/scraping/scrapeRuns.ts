@@ -10,10 +10,6 @@ import { WorkerResponse } from "../types/WorkerReponse";
 const SCRAPING_WORKER_URL =
   "https://runningfinder.joel-heil-escobar.workers.dev/";
 
-
-
-
-
 function generateSlug(name: string): string {
   return name
     .toLowerCase()
@@ -114,10 +110,8 @@ export async function scrapeRuns() {
     );
     console.log("Clubs found:", data.clubs.map((c) => c.clubName).join(", "));
 
-
     const existingRuns = await db.select().from(runs);
     console.log(`Found ${existingRuns.length} existing runs in database`);
-
 
     const existingClubs = await db.select().from(clubs);
     console.log(`Found ${existingClubs.length} existing clubs in database`);
@@ -132,9 +126,7 @@ export async function scrapeRuns() {
       try {
         console.log(`\nProcessing club: ${clubData.clubName}`);
 
-
         const clubSlug = generateSlug(clubData.clubName);
-
 
         const existingClub = existingClubs.find(
           (c: Club) => c.slug === clubSlug,
@@ -175,10 +167,13 @@ export async function scrapeRuns() {
               if (instagramProfile) {
                 console.log("Instagram profile data retrieved successfully");
                 clubInsertData.avatarUrl = instagramProfile.profileImageUrl;
-                clubInsertData.description = instagramProfile.profileDescription;
+                clubInsertData.description =
+                  instagramProfile.profileDescription;
 
                 if (instagramProfile.profileImageUrl) {
-                  console.log("Auto-approving club due to valid Instagram avatar");
+                  console.log(
+                    "Auto-approving club due to valid Instagram avatar",
+                  );
                   clubInsertData.isApproved = true;
                 }
               } else {
@@ -214,7 +209,6 @@ export async function scrapeRuns() {
             throw error;
           }
         }
-
 
         console.log(
           `Processing ${clubData.events.length} events for ${clubData.clubName}`,
@@ -264,7 +258,7 @@ export async function scrapeRuns() {
 
             const numLocationLat = location_latitude
               ? parseFloat(location_latitude.toString()).toFixed(6)
-              : "52.520000"; 
+              : "52.520000";
             const numLocationLng = location_longitude
               ? parseFloat(location_longitude.toString()).toFixed(6)
               : "13.405000";
@@ -272,7 +266,6 @@ export async function scrapeRuns() {
             const startDescription = location
               ? location
               : "Location TBD - check club's social media for updates";
-
 
             await db.insert(runs).values({
               id: v4(),

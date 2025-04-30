@@ -1,18 +1,18 @@
-import toast from 'react-hot-toast';
+import toast from "react-hot-toast";
 
 const useApproveClub = (clubId: string) => {
   const approveClub = async (clubId: string) => {
     try {
       const response = await fetch(`/api/clubs/${clubId}/approve`, {
-        method: 'POST',
+        method: "POST",
       });
       if (response.ok) {
-        toast.success('Club approved successfully!');
+        toast.success("Club approved successfully!");
       } else {
-        toast.error('Failed to approve club.');
+        toast.error("Failed to approve club.");
       }
     } catch (error) {
-      toast.error('Error approving club.');
+      toast.error("Error approving club.");
     }
   };
 

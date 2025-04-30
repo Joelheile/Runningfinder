@@ -44,7 +44,7 @@ interface AddRunUIProps {
     lat: number,
     lng: number,
     placeUrl: string,
-    formattedAddress: string
+    formattedAddress: string,
   ) => void;
 }
 
