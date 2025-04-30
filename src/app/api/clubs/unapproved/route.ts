@@ -27,7 +27,14 @@ export async function GET() {
       avatarUrl: club.avatarUrl || DEFAULT_FALLBACK_IMAGE_URL,
     }));
 
-    return NextResponse.json(clubsWithFallbackAvatar);
+    return NextResponse.json(clubsWithFallbackAvatar, {
+      headers: {
+        "Cache-Control":
+          "no-store, no-cache, must-revalidate, proxy-revalidate",
+        Pragma: "no-cache",
+        Expires: "0",
+      },
+    });
   } catch (error) {
     console.error("Error fetching clubs:", error);
     return NextResponse.json(

@@ -17,45 +17,28 @@ export async function POST(
       return NextResponse.json({ error: "Club not found" }, { status: 404 });
     }
 
-    console.log("Existing club before update:", {
-      slug: existingClub[0].slug,
-      isApproved: existingClub[0].isApproved,
-    });
-
-    console.log("Starting club update for slug:", params.slug);
-
     const updatedClub = await db
       .update(clubs)
       .set({ isApproved: true })
       .where(eq(clubs.slug, params.slug))
       .returning();
 
-    console.log("Update query completed. Result:", updatedClub);
-
     if (!updatedClub.length) {
-      console.error("Club update failed - no rows returned");
-      throw new Error("Club update failed - no rows returned");
+      return NextResponse.json(
+        { error: "Failed to update club" },
+        { status: 500 },
+      );
     }
 
-    console.log("Updated club details:", {
-      slug: updatedClub[0].slug,
-      isApproved: updatedClub[0].isApproved,
-      updatedAt: updatedClub[0].updatedAt,
+    return NextResponse.json(updatedClub[0], {
+      headers: {
+        "Cache-Control":
+          "no-store, no-cache, must-revalidate, proxy-revalidate",
+        Pragma: "no-cache",
+        Expires: "0",
+      },
     });
-
-    if (!updatedClub[0].isApproved) {
-      console.error("Club update failed - isApproved is still false");
-      throw new Error("Club update failed - isApproved is not true");
-    }
-
-    console.log("Update successful:", {
-      slug: updatedClub[0].slug,
-      isApproved: updatedClub[0].isApproved,
-    });
-
-    return NextResponse.json(updatedClub[0]);
   } catch (error) {
-    console.error("Error approving club:", error);
     return NextResponse.json(
       {
         error: error instanceof Error ? error.message : "Internal Server Error",

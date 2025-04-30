@@ -14,10 +14,10 @@ import UnapprovedClubsUI from "./UnapprovedClubsUI";
 
 export default function UnapprovedClubsLogic() {
   const router = useRouter();
-  const { clubs, refetch } = useFetchClubs();
+  const { clubs, refetch, isLoading } = useFetchClubs();
 
   const updateAdminClub = useUpdateAdminClub;
-  const approveClub = useApproveClub;
+  const approveClubFn = useApproveClub();
   const declineClub = useDeclineClub;
   const { uploadAvatar } = useUploadAvatar();
 
@@ -33,14 +33,21 @@ export default function UnapprovedClubsLogic() {
     }
   };
 
-  const handleApproveClub = async (clubId: string) => {
+  const handleApproveClub = async (slug: string) => {
     try {
-      await approveClub(clubId);
-      toast.success("Club approved successfully");
-      refetch();
+      const loadingToast = toast.loading("Approving club...");
+
+      const result = await approveClubFn(slug);
+
+      toast.success("Club approved successfully", { id: loadingToast });
+
+      await refetch();
       router.refresh();
+
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
     } catch (error) {
-      console.error("Failed to approve club:", error);
       toast.error("Failed to approve club");
     }
   };
@@ -53,7 +60,6 @@ export default function UnapprovedClubsLogic() {
       refetch();
       router.refresh();
     } catch (error) {
-      console.error("Failed to decline club:", error);
       toast.error("Failed to decline club");
     }
   };
@@ -96,6 +102,8 @@ export default function UnapprovedClubsLogic() {
       toast.error("Failed to upload image", { id: loadingToast });
     }
   };
+
+  if (isLoading) return <div>Loading...</div>;
 
   return (
     <UnapprovedClubsUI

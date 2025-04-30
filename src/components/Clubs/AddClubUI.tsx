@@ -189,21 +189,19 @@ export default function AddClubUI({
 
               <div className="space-y-2">
                 <div className="mt-1">
-                  {!instagramUsername && (
-                    <>
-                      <Label
-                        htmlFor="avatar"
-                        className="block text-sm sm:text-base"
-                      >
-                        Club Logo
-                      </Label>
+                  <>
+                    <Label
+                      htmlFor="avatar"
+                      className="block text-sm sm:text-base"
+                    >
+                      Club Logo
+                    </Label>
 
-                      <AvatarUploader
-                        id={avatarFileId}
-                        onUploadChange={handleUploadChange}
-                      />
-                    </>
-                  )}
+                    <AvatarUploader
+                      id={avatarFileId}
+                      onUploadChange={handleUploadChange}
+                    />
+                  </>
                 </div>
               </div>
             </div>

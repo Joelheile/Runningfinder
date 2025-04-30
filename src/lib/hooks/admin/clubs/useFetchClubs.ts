@@ -1,25 +1,43 @@
 import { Club } from "@/lib/types/Club";
-import { useCallback, useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
+async function fetchUnapprovedClubs(): Promise<Club[]> {
+  const response = await fetch("/api/clubs/unapproved", {
+    cache: "no-store",
+    headers: {
+      Pragma: "no-cache",
+      "Cache-Control": "no-cache, no-store, must-revalidate",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch unapproved clubs");
+  }
+
+  return await response.json();
+}
+
 const useFetchClubs = () => {
-  const [clubs, setClubs] = useState<Club[]>([]);
+  const {
+    data = [],
+    refetch,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["clubs", "unapproved"],
+    queryFn: fetchUnapprovedClubs,
+    staleTime: 0,
+    gcTime: 0,
+    refetchOnMount: true,
+    refetchOnWindowFocus: true,
+  });
 
-  const fetchClubs = useCallback(async () => {
-    try {
-      const response = await fetch("/api/clubs/unapproved");
-      const data = await response.json();
-      setClubs(data);
-    } catch (error) {
-      toast.error("Failed to fetch clubs.");
-    }
-  }, []);
+  if (error) {
+    toast.error("Failed to fetch clubs.");
+  }
 
-  useEffect(() => {
-    fetchClubs();
-  }, [fetchClubs]);
-
-  return { clubs, refetch: fetchClubs };
+  return { clubs: data, refetch, isLoading };
 };
 
 export default useFetchClubs;
