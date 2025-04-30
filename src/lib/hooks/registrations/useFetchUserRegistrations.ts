@@ -3,7 +3,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 const fetchRegistrationByUserId = async (
   userId: string,
-): Promise<Registration> => {
+): Promise<Registration[]> => {
   const response = await fetch(`/api/registrations/user/${userId}`);
 
   if (!response.ok) {
@@ -15,11 +15,11 @@ const fetchRegistrationByUserId = async (
 
 function useFetchRegistrationByUser(userId: string) {
   const queryClient = useQueryClient();
-  queryClient.invalidateQueries({ queryKey: ["registrations", userId] });
 
-  return useQuery<Registration, Error>({
+  return useQuery<Registration[], Error>({
     queryKey: ["registrations", userId],
     queryFn: () => fetchRegistrationByUserId(userId),
+    enabled: !!userId,
   });
 }
 

@@ -1,9 +1,9 @@
 "use client";
 import Map from "@/components/Map/MapLogic";
 import { useFetchRuns } from "@/lib/hooks/runs/useFetchRuns";
-import { useCallback, useState } from "react";
 
 import Link from "next/link";
+import { useCallback, useState } from "react";
 
 import { Suspense } from "react";
 import FilterBar from "../Runs/FilterBarLogic";
@@ -11,6 +11,7 @@ import { Button } from "../UI/button";
 import { RunDisclaimer } from "../disclaimer";
 
 const MapPage = () => {
+
   const [filters, setFilters] = useState<{
     minDistance?: number;
     maxDistance?: number;
@@ -29,7 +30,7 @@ const MapPage = () => {
     }) => {
       setFilters(newFilters);
     },
-    [],
+    []
   );
 
   return (
@@ -45,6 +46,10 @@ const MapPage = () => {
         <div className="flex flex-row gap-2 justify-center">
           <Link href="/clubs">
             <Button variant={"default"}>Search Clubs 🏃</Button>
+          </Link>
+
+          <Link href="/runs/liked">
+            <Button variant={"outline"}>My Runs 📅</Button>
           </Link>
         </div>
       </div>
