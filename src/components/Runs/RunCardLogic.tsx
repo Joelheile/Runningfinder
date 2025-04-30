@@ -39,8 +39,6 @@ export default function RunCard({
   const { mutate: deleteRun } = useDeleteRun();
   const router = useRouter();
 
- 
-
   // If no mapsLink is provided, create one from the coordinates
   const generatedMapsLink =
     locationLat && locationLng

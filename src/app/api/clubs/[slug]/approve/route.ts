@@ -8,7 +8,6 @@ export async function POST(
   { params }: { params: { slug: string } },
 ) {
   try {
-
     const existingClub = await db
       .select()
       .from(clubs)
@@ -18,13 +17,12 @@ export async function POST(
       return NextResponse.json({ error: "Club not found" }, { status: 404 });
     }
 
-    console.log('Existing club before update:', {
+    console.log("Existing club before update:", {
       slug: existingClub[0].slug,
-      isApproved: existingClub[0].isApproved
+      isApproved: existingClub[0].isApproved,
     });
 
-    console.log('Starting club update for slug:', params.slug);
-    
+    console.log("Starting club update for slug:", params.slug);
 
     const updatedClub = await db
       .update(clubs)
@@ -32,34 +30,36 @@ export async function POST(
       .where(eq(clubs.slug, params.slug))
       .returning();
 
-    console.log('Update query completed. Result:', updatedClub);
+    console.log("Update query completed. Result:", updatedClub);
 
     if (!updatedClub.length) {
-      console.error('Club update failed - no rows returned');
-      throw new Error('Club update failed - no rows returned');
+      console.error("Club update failed - no rows returned");
+      throw new Error("Club update failed - no rows returned");
     }
 
-    console.log('Updated club details:', {
+    console.log("Updated club details:", {
       slug: updatedClub[0].slug,
       isApproved: updatedClub[0].isApproved,
-      updatedAt: updatedClub[0].updatedAt
+      updatedAt: updatedClub[0].updatedAt,
     });
 
     if (!updatedClub[0].isApproved) {
-      console.error('Club update failed - isApproved is still false');
-      throw new Error('Club update failed - isApproved is not true');
+      console.error("Club update failed - isApproved is still false");
+      throw new Error("Club update failed - isApproved is not true");
     }
 
-    console.log('Update successful:', {
+    console.log("Update successful:", {
       slug: updatedClub[0].slug,
-      isApproved: updatedClub[0].isApproved
+      isApproved: updatedClub[0].isApproved,
     });
 
     return NextResponse.json(updatedClub[0]);
   } catch (error) {
     console.error("Error approving club:", error);
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : "Internal Server Error" },
+      {
+        error: error instanceof Error ? error.message : "Internal Server Error",
+      },
       { status: 500 },
     );
   }

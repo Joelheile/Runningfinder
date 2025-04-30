@@ -1,7 +1,5 @@
 import { Club } from "@/lib/types/Club";
 
-
-
 async function useUpdateAdminClub(slug: string, club: Partial<Club>) {
   const response = await fetch(`/api/clubs/${slug}`, {
     method: "PATCH",

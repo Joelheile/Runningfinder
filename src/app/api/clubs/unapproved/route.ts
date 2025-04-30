@@ -19,7 +19,8 @@ export async function GET() {
         slug: club.slug,
       })
       .from(club)
-      .where(eq(club.isApproved, false)).orderBy(club.creationDate)
+      .where(eq(club.isApproved, false))
+      .orderBy(club.creationDate);
 
     const clubsWithFallbackAvatar = res.map((club: { avatarUrl: any }) => ({
       ...club,

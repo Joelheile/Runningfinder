@@ -36,10 +36,10 @@ const Map = memo(({ runs }: { runs: Run[] }) => {
       });
 
       const { Map } = (await loader.importLibrary(
-        "maps"
+        "maps",
       )) as google.maps.MapsLibrary;
       const { InfoWindow } = (await loader.importLibrary(
-        "maps"
+        "maps",
       )) as google.maps.MapsLibrary;
 
       const defaultCenter = { lat: 52.5155235, lng: 13.4049124 };
@@ -55,8 +55,8 @@ const Map = memo(({ runs }: { runs: Run[] }) => {
         center,
         zoom: 12,
         mapId: process.env.NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID,
-        disableDefaultUI: true, 
-        zoomControl: false, 
+        disableDefaultUI: true,
+        zoomControl: false,
         mapTypeControl: false,
         scaleControl: false,
         streetViewControl: false,
@@ -69,9 +69,8 @@ const Map = memo(({ runs }: { runs: Run[] }) => {
 
       if (navigator.geolocation) {
         const { Marker } = (await loader.importLibrary(
-          "marker"
+          "marker",
         )) as google.maps.MarkerLibrary;
-
 
         userMarkerRef.current = new Marker({
           map: mapInstanceRef.current,
@@ -83,7 +82,7 @@ const Map = memo(({ runs }: { runs: Run[] }) => {
             strokeColor: "white",
             strokeWeight: 2,
           },
-          zIndex: 1000, 
+          zIndex: 1000,
         });
 
         navigator.geolocation.watchPosition(
@@ -107,7 +106,7 @@ const Map = memo(({ runs }: { runs: Run[] }) => {
             enableHighAccuracy: true,
             maximumAge: 30000,
             timeout: 27000,
-          }
+          },
         );
       } else {
         setLocationError("Geolocation is not supported by this browser.");
@@ -131,12 +130,11 @@ const Map = memo(({ runs }: { runs: Run[] }) => {
       markersRef.current.forEach((marker) => marker.setMap(null));
       markersRef.current = [];
 
-
       if (runs.length === 0) return;
 
       try {
         const { Marker } = (await loader.importLibrary(
-          "marker"
+          "marker",
         )) as google.maps.MarkerLibrary;
 
         const newMarkers: google.maps.Marker[] = runs
@@ -199,8 +197,8 @@ const Map = memo(({ runs }: { runs: Run[] }) => {
                           {run.difficulty}
                         </span>
                       </Link>
-                    </div>
-                  )
+                    </div>,
+                  ),
                 );
                 infoWindowRef.current.open(mapInstanceRef.current, marker);
               }
@@ -210,7 +208,7 @@ const Map = memo(({ runs }: { runs: Run[] }) => {
           })
           .filter(
             (marker): marker is google.maps.Marker =>
-              marker !== null && marker instanceof google.maps.Marker
+              marker !== null && marker instanceof google.maps.Marker,
           );
 
         // Store markers in ref

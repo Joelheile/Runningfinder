@@ -43,10 +43,7 @@ export async function GET(request: Request) {
     console.log("Current date:", now);
 
     // Initialize conditions array with base conditions
-    const conditions = [
-      eq(runs.isApproved, true),
-      gt(runs.datetime, now)
-    ];
+    const conditions = [eq(runs.isApproved, true), gt(runs.datetime, now)];
 
     // Add clubId filter if provided
     if (clubId) {
@@ -83,11 +80,7 @@ export async function GET(request: Request) {
       .from(runs)
       .where(and(...conditions))
 
-      
       .orderBy(asc(runs.datetime));
-
-
-
 
     // Transform the data to include a location object
     const transformedRuns = runsData.map((run: any) => ({
@@ -259,7 +252,7 @@ export async function DELETE(request: Request) {
  *                     type: number
  *       500:
  *         description: Internal Server Error.
- * 
+ *
  *   post:
  *     tags:
  *       - runs
@@ -320,7 +313,7 @@ export async function DELETE(request: Request) {
  *         description: Bad request, invalid input.
  *       500:
  *         description: Internal Server Error.
- * 
+ *
  *   delete:
  *     tags:
  *       - runs

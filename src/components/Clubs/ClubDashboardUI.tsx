@@ -65,7 +65,9 @@ export default function ClubDashboardUI({
             className="flex items-center hover:bg-gray-100 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 transition-colors gap-1 sm:gap-2"
           >
             <ChevronLeft className="stroke-primary h-5 w-5" />
-            <span className="text-primary text-sm sm:text-base font-medium">Back</span>
+            <span className="text-primary text-sm sm:text-base font-medium">
+              Back
+            </span>
           </button>
           <div className="flex items-center gap-2">
             <div className="flex gap-2">
@@ -118,7 +120,9 @@ export default function ClubDashboardUI({
         {/* Upcoming Runs Section */}
         <section className="pt-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4 mb-3 sm:mb-6">
-            <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Upcoming runs</h2>
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900">
+              Upcoming runs
+            </h2>
             {club && runs && runs.length > 0 && (
               <div className="shrink-0">
                 <AddRunState club={club} />

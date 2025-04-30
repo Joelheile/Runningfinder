@@ -116,7 +116,7 @@ export default function UnapprovedClubsUI({
                       e.key === "Enter" &&
                       handleInstagramFetch(
                         club.slug,
-                        club.instagramUsername || ""
+                        club.instagramUsername || "",
                       )
                     }
                   />

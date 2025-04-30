@@ -13,8 +13,8 @@ export async function GET(
   }
   const now = new Date();
   try {
-    console.log('Fetching runs for club:', slug);
-    
+    console.log("Fetching runs for club:", slug);
+
     const runsData = await db
       .select({
         id: runs.id,
@@ -39,11 +39,9 @@ export async function GET(
           eq(runs.isApproved, true),
           eq(runs.clubId, slug),
 
-            gt(runs.datetime, now),
-        )
-
-      )
-
+          gt(runs.datetime, now),
+        ),
+      );
 
     return NextResponse.json(runsData);
   } catch (error) {

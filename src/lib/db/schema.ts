@@ -1,13 +1,13 @@
 import {
-    boolean,
-    decimal,
-    index,
-    integer,
-    pgEnum,
-    pgTable,
-    primaryKey,
-    text,
-    timestamp,
+  boolean,
+  decimal,
+  index,
+  integer,
+  pgEnum,
+  pgTable,
+  primaryKey,
+  text,
+  timestamp,
 } from "drizzle-orm/pg-core";
 import type { AdapterAccountType } from "next-auth/adapters";
 import { v4 } from "uuid";

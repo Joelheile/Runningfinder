@@ -34,7 +34,7 @@ export default function AddClub() {
   }, [isOpen]);
 
   const handleInstagramUsernameChange = async (
-    e: React.ChangeEvent<HTMLInputElement>
+    e: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const username = e.target.value;
     setInstagramUsername(username);
@@ -155,7 +155,7 @@ export default function AddClub() {
           if (data.profileImageUrl) {
             console.log(
               "🖼️ Setting avatar URL from Instagram:",
-              data.profileImageUrl
+              data.profileImageUrl,
             );
             setAvatarUrl(data.profileImageUrl);
             setIsUploaded(false);
@@ -194,7 +194,7 @@ export default function AddClub() {
 
       toast.success(
         "Club added successfully 🎉 It will now be reviewed by our team",
-        { id: creationToast }
+        { id: creationToast },
       );
       resetForm();
       setIsOpen(false);

@@ -1,4 +1,3 @@
-
 export interface InstagramProfile {
   profileImageUrl: string | null;
   profileDescription: string | null;

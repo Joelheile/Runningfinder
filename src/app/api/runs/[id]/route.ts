@@ -44,7 +44,6 @@ export async function PATCH(
 
     const body = await request.json();
 
-
     const [existingRun] = await db
       .select()
       .from(runs)
@@ -58,10 +57,7 @@ export async function PATCH(
       );
     }
 
-
     const updateData: Partial<typeof runs.$inferSelect> = {};
-
-  
 
     if (body.isApproved === true) updateData.isApproved = true;
 
@@ -95,7 +91,6 @@ export async function DELETE(
       return NextResponse.json({ error: "ID is required" }, { status: 400 });
     }
 
-
     const [existingRun] = await db
       .select()
       .from(runs)
@@ -103,7 +98,6 @@ export async function DELETE(
       .limit(1);
 
     if (!existingRun) {
-
       return NextResponse.json({
         success: true,
         message: "Run already deleted",
@@ -181,7 +175,7 @@ export async function DELETE(
  *         description: Run not found.
  *       500:
  *         description: Internal Server Error.
- *   
+ *
  *   patch:
  *     tags:
  *       - runs
@@ -230,7 +224,7 @@ export async function DELETE(
  *         description: Run not found.
  *       500:
  *         description: Internal Server Error.
- *   
+ *
  *   delete:
  *     tags:
  *       - runs
