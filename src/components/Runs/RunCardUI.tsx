@@ -101,12 +101,10 @@ export default function RunCardUI({
       e.preventDefault();
       e.stopPropagation();
       onLikeRun();
-    }
-  };
 
-  const handleLikeButtonClick = () => {
-    if (onLikeRun) {
-      onLikeRun();
+      setTimeout(() => {
+        window.location.reload();
+      }, 100);
     }
   };
 
@@ -130,9 +128,9 @@ export default function RunCardUI({
         <div className={`space-y-${isCompact ? "2" : "4"}`}>
           <div className="flex flex-wrap items-center gap-2">
             {onLikeRun && (
-              <div className="z-10" onClick={handleLikeClick}>
+              <div className="z-10">
                 <LikeButton
-                  onClick={handleLikeButtonClick}
+                  onClick={handleLikeClick}
                   isFilled={isRegistered || false}
                   isLoading={isRegistering}
                 />

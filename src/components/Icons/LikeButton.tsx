@@ -4,7 +4,7 @@ import { Heart } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../UI/tooltip";
 
 interface LikeButtonProps {
-  onClick: () => void;
+  onClick: (e: React.MouseEvent) => void;
   isFilled?: boolean;
   isLoading?: boolean;
   className?: string;

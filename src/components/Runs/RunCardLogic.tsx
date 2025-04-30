@@ -1,16 +1,13 @@
 import { useCancelRegistration } from "@/lib/hooks/registrations/useCancelRegistration";
 import { useRegisterRun } from "@/lib/hooks/registrations/useRegisterRun";
-import { useRegistrationStatusData } from "@/lib/hooks/registrations/useRegistrationStatusData";
+import { useRegistrations } from "@/lib/hooks/registrations/useRegistrations";
 import { useDeleteRun } from "@/lib/hooks/runs/useDeleteRun";
-import {
-  getMapsLink,
-  registerForRun,
-  unregisterFromRun,
-} from "@/lib/hooks/runs/useRunCardHelpers";
+import { getMapsLink } from "@/lib/hooks/runs/useRunCardHelpers";
 import { useQueryClient } from "@tanstack/react-query";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import toast from "react-hot-toast";
 import RunCardUI from "./RunCardUI";
 
 interface RunCardProps {
@@ -29,6 +26,7 @@ interface RunCardProps {
   isAdmin?: boolean;
   onUnregister?: (runId: string) => void;
   mapsLink?: string | null;
+  clubSlug?: string;
 }
 
 export default function RunCard({
@@ -46,6 +44,7 @@ export default function RunCard({
   isRegistered: initialIsRegistered,
   isAdmin,
   onUnregister: externalUnregister,
+  clubSlug,
 }: RunCardProps) {
   const { data: session } = useSession();
   const router = useRouter();
@@ -55,6 +54,7 @@ export default function RunCard({
   const registerRun = useRegisterRun();
   const cancelRegistration = useCancelRegistration();
   const queryClient = useQueryClient();
+  const { checkRegistrationStatus } = useRegistrations();
 
   const recoveryMapsLink = getMapsLink(
     mapsLink,
@@ -63,23 +63,14 @@ export default function RunCard({
     startDescription
   );
 
-  // Check registration status using the stable wrapper hook
   const {
     data: isCheckedRegistered,
     refetch: refetchRegistration,
     isLoading: isCheckingRegistration,
-  } = useRegistrationStatusData({
+  } = checkRegistrationStatus({
     userId: session?.user?.id,
     runId: id,
   });
-
-  // Force refetch data when component mounts - but only once
-  useEffect(() => {
-    // Force clear and refetch all run data when component mounts
-    queryClient.invalidateQueries({ queryKey: ["runs"] });
-
-    // No need for continual refetching
-  }, [queryClient]);
 
   const isRegistered =
     typeof initialIsRegistered !== "undefined"
@@ -97,22 +88,30 @@ export default function RunCard({
     }
 
     if (isRegistered) {
-      await unregisterFromRun(
-        id,
-        session.user.id,
-        externalUnregister,
-        setIsUnregistering,
-        cancelRegistration,
-        refetchRegistration
-      );
+      setIsUnregistering(true);
+      try {
+        if (externalUnregister) {
+          externalUnregister(id);
+        } else {
+          await cancelRegistration.mutateAsync({
+            runId: id,
+            userId: session.user.id,
+          });
+        }
+      } catch (error) {
+        toast.error("Error unregistering from run");
+      } finally {
+        setIsUnregistering(false);
+      }
     } else {
-      await registerForRun(
-        id,
-        session.user.id,
-        setIsRegistering,
-        registerRun,
-        refetchRegistration
-      );
+      setIsRegistering(true);
+      try {
+        await registerRun.mutateAsync({ runId: id, userId: session.user.id });
+      } catch (error) {
+        toast.error("Error registering for run");
+      } finally {
+        setIsRegistering(false);
+      }
     }
   };
 
@@ -129,9 +128,9 @@ export default function RunCard({
       isAdmin={isAdmin}
       isRegistered={isRegistered}
       onLikeRun={handleHeartClick}
-      onUnregister={handleHeartClick}
       isRegistering={isLoading}
       userId={session?.user?.id}
+      clubSlug={clubSlug}
     />
   );
 }

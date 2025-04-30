@@ -43,22 +43,13 @@ export function useRegisterRun() {
   return useMutation({
     mutationFn: registerRun,
     onSuccess: ({ userId, runId }) => {
-      // Use the combined hook for more maintainable invalidation
+
       invalidateRegistrations();
       invalidateUserRegistrations(userId);
       invalidateRegistrationStatus(userId, runId);
       
-      // Invalidate all run-related queries to ensure fresh data
+
       queryClient.invalidateQueries({ queryKey: ["runs"] });
-      queryClient.removeQueries({ queryKey: ["runs"] }); // Force complete cache removal
-      
-      // Invalidate specific run query
-      queryClient.invalidateQueries({ queryKey: ["runs", runId] });
-      
-      // Force the UI to reload fresh data
-      setTimeout(() => {
-        queryClient.refetchQueries({ queryKey: ["runs"] });
-      }, 100);
     },
   });
 }

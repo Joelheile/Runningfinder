@@ -5,6 +5,10 @@ import { and, eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 
+export const dynamic = 'force-dynamic'; 
+export const fetchCache = 'force-no-store';
+export const revalidate = 0;
+
 export async function GET(request: Request) {
   const { userId, runId } = await request.json();
 
@@ -16,7 +20,16 @@ export async function GET(request: Request) {
         and(eq(registrations.userId, userId), eq(registrations.runId, runId)),
       )
       .execute();
-    return NextResponse.json(res);
+      
+    const headers = {
+      'Cache-Control': 'no-cache, no-store, must-revalidate',
+      'Pragma': 'no-cache',
+      'Expires': '0',
+      'Surrogate-Control': 'no-store',
+      'Vary': '*',
+    };
+    
+    return NextResponse.json(res, { headers });
   } catch (error) {
     console.error("Error fetching registrations:", error);
     return NextResponse.json(
@@ -56,7 +69,13 @@ export async function POST(request: Request) {
       })
       .execute();
 
-    return NextResponse.json(res);
+    const headers = {
+      'Cache-Control': 'no-cache, no-store, must-revalidate',
+      'Pragma': 'no-cache',
+      'Expires': '0',
+    };
+
+    return NextResponse.json(res, { headers });
   } catch (error) {
     console.error("Error creating registration:", error);
     return NextResponse.json(
@@ -77,7 +96,13 @@ export async function DELETE(request: Request) {
       )
       .execute();
 
-    return NextResponse.json(res);
+    const headers = {
+      'Cache-Control': 'no-cache, no-store, must-revalidate',
+      'Pragma': 'no-cache',
+      'Expires': '0',
+    };
+
+    return NextResponse.json(res, { headers });
   } catch (error) {
     console.error("Error updating registration:", error);
     return NextResponse.json(

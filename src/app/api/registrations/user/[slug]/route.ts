@@ -3,6 +3,10 @@ import { registrations } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
+export const dynamic = 'force-dynamic'; 
+export const fetchCache = 'force-no-store';
+export const revalidate = 0; 
+
 export async function GET(
   request: Request,
   { params }: { params: { slug: string } },
@@ -26,6 +30,8 @@ export async function GET(
       'Cache-Control': 'no-cache, no-store, must-revalidate',
       'Pragma': 'no-cache',
       'Expires': '0',
+      'Surrogate-Control': 'no-store',
+      'Vary': '*',
     };
 
     return NextResponse.json(res, { 
