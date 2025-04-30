@@ -13,7 +13,7 @@ const deleteRun = async (runId: string): Promise<string> => {
   }
 
   toast.success("Run deleted successfully");
-  return runId; // Return the ID for use in onSuccess
+  return runId;
 };
 
 export function useDeleteRun() {
@@ -21,17 +21,13 @@ export function useDeleteRun() {
   return useMutation({
     mutationFn: deleteRun,
     onSuccess: (runId) => {
-      // More aggressive cache invalidation
       queryClient.invalidateQueries({ queryKey: ["runs"] });
       queryClient.removeQueries({ queryKey: ["runs"] });
-      
-      // Invalidate specific run query
+
       queryClient.invalidateQueries({ queryKey: ["runs", runId] });
-      
-      // Also invalidate any registrations that might have been for this run
+
       queryClient.invalidateQueries({ queryKey: ["registrations"] });
-      
-      // Force refetch
+
       setTimeout(() => {
         queryClient.refetchQueries({ queryKey: ["runs"] });
       }, 100);

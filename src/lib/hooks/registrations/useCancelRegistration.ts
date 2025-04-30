@@ -15,7 +15,7 @@ const cancelRegistration = async ({
     headers: {
       "Content-Type": "application/json",
       "Cache-Control": "no-cache, no-store, must-revalidate",
-      "Pragma": "no-cache",
+      Pragma: "no-cache",
     },
     body: JSON.stringify({
       runId,
@@ -39,10 +39,8 @@ export function useCancelRegistration() {
   return useMutation({
     mutationFn: cancelRegistration,
     onSuccess: (_, variables) => {
-      // Reset the entire cache to ensure fresh data
       queryClient.resetQueries();
-      
-      // Invalidate specific queries
+
       queryClient.invalidateQueries({ queryKey: ["runs"] });
       queryClient.invalidateQueries({ queryKey: ["registrations"] });
     },

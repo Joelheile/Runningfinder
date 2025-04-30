@@ -151,7 +151,6 @@ export async function scrapeRuns() {
             isApproved: false,
           };
 
-          // Only fetch and set Instagram data if username is provided
           if (
             clubData.instagramUsername &&
             clubData.instagramUsername.trim() !== ""
@@ -239,7 +238,6 @@ export async function scrapeRuns() {
 
             const dateObject = new Date(datetime);
 
-            // Check for duplicate runs
             const existingRun = existingRuns.find(
               (r: Run) =>
                 r.name === eventName &&

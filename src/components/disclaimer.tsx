@@ -8,7 +8,6 @@ export function RunDisclaimer() {
 
   return (
     <div className="fixed bottom-5 left-5 z-10">
-      {/* Mobile View */}
       <div className="sm:hidden">
         {isOpen ? (
           <Alert
@@ -48,7 +47,6 @@ export function RunDisclaimer() {
         )}
       </div>
 
-      {/* Desktop View */}
       <div className="hidden sm:block max-w-sm">
         <Alert variant="default" className="bg-white/90 backdrop-blur-sm">
           <AlertCircle className="h-4 w-4 shrink-0" />

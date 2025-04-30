@@ -37,7 +37,6 @@ export default function FilterBar({ onFilterChange }: FilterBarLogicProps) {
     );
   }, []);
 
-  // Update URL when filters change
   useEffect(() => {
     const params = new URLSearchParams();
 
@@ -59,7 +58,6 @@ export default function FilterBar({ onFilterChange }: FilterBarLogicProps) {
     router.push(newUrl, { scroll: false });
   }, [selectedDays, difficulty, searchQuery, router]);
 
-  // Notify parent component of filter changes
   useEffect(() => {
     const filters = {
       days: selectedDays.length > 0 ? selectedDays : undefined,

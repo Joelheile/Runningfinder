@@ -38,14 +38,11 @@ export function useUpdateRun() {
     mutationFn: ({ id, data }: { id: string; data: UpdateRunData }) =>
       updateRun(id, data),
     onSuccess: (result) => {
-      // Invalidate all runs globally
       queryClient.invalidateQueries({ queryKey: ["runs"] });
       queryClient.removeQueries({ queryKey: ["runs"] });
-      
-      // Invalidate specific run
+
       queryClient.invalidateQueries({ queryKey: ["runs", result.id] });
-      
-      // Force refetch
+
       setTimeout(() => {
         queryClient.refetchQueries({ queryKey: ["runs"] });
       }, 100);

@@ -21,7 +21,6 @@ export default function ClubCard({
   return (
     <div className="w-full transform transition-all duration-300 hover:scale-[1.02]">
       <div className="bg-white rounded-lg hover:shadow-md transition-all duration-300 overflow-hidden border border-gray-100">
-        {/* Mobile Layout */}
         <div className="md:hidden">
           <div className="relative h-48 w-full">
             <Image
@@ -52,7 +51,6 @@ export default function ClubCard({
           </div>
         </div>
 
-        {/* Desktop Layout */}
         <div className="hidden md:flex flex-row min-h-[12rem]">
           <div className="relative w-1/3">
             <Image

@@ -8,11 +8,14 @@ interface UseCheckUserRegisteredParams {
 /**
  * @deprecated Use useRegistrations().checkRegistrationStatus instead
  */
-export function useCheckUserRegistered({ userId, runId }: UseCheckUserRegisteredParams) {
+export function useCheckUserRegistered({
+  userId,
+  runId,
+}: UseCheckUserRegisteredParams) {
   console.warn(
-    "useCheckUserRegistered is deprecated. Please use useRegistrations().checkRegistrationStatus instead."
+    "useCheckUserRegistered is deprecated. Please use useRegistrations().checkRegistrationStatus instead.",
   );
-  
+
   const { checkRegistrationStatus } = useRegistrations();
   return checkRegistrationStatus({ userId, runId });
-} 
+}

@@ -19,9 +19,7 @@ const MapPage = () => {
 
   const { data: runs, isLoading, error, refetch } = useFetchRuns(filters);
 
-  // Force refetch data when component mounts
   useEffect(() => {
-    // Clear cache and fetch fresh data
     queryClient.invalidateQueries({ queryKey: ["runs"] });
     queryClient.removeQueries({ queryKey: ["runs"] });
     setTimeout(() => refetch(), 100);
@@ -34,11 +32,10 @@ const MapPage = () => {
       days?: number[];
       difficulty?: string;
     }) => {
-      // Force clear cache before applying new filters
       queryClient.invalidateQueries({ queryKey: ["runs"] });
       setFilters(newFilters);
     },
-    [queryClient]
+    [queryClient],
   );
 
   return (
