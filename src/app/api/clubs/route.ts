@@ -51,7 +51,6 @@ export async function POST(request: Request) {
       avatarUrl,
     } = await request.json();
 
-    // Validate required fields
     if (!id || !name) {
       return NextResponse.json(
         { error: "Missing required fields: id and name are required" },

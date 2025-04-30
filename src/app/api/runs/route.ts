@@ -38,29 +38,23 @@ export async function GET(request: Request) {
 
     console.log("Query params:", { weekdays, difficulty, clubId });
 
-    // Get current date
     const now = new Date();
     console.log("Current date:", now);
 
-    // Initialize conditions array with base conditions
     const conditions = [eq(runs.isApproved, true), gt(runs.datetime, now)];
 
-    // Add clubId filter if provided
     if (clubId) {
       conditions.push(eq(runs.clubId, clubId));
     }
 
-    // Add weekday filter if provided
     if (weekdays.length > 0) {
       conditions.push(inArray(runs.weekday, weekdays));
     }
 
-    // Add difficulty filter if provided
     if (difficulty) {
       conditions.push(eq(runs.difficulty, difficulty));
     }
 
-    // Get all runs with the specified conditions
     const runsData = await db
       .select({
         id: runs.id,
@@ -82,7 +76,6 @@ export async function GET(request: Request) {
 
       .orderBy(asc(runs.datetime));
 
-    // Transform the data to include a location object
     const transformedRuns = runsData.map((run: any) => ({
       ...run,
       location: {
@@ -101,7 +94,6 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
 
-    // Validate the date field
     if (!body.datetime) {
       return handleErrorResponse(
         new Error("Date is required"),
@@ -110,7 +102,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // Ensure date is a valid Date object
     const datetime = new Date(body.datetime);
     if (isNaN(datetime.getTime())) {
       return handleErrorResponse(
@@ -120,7 +111,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // Validate location coordinates
     if (!body.location?.lat || !body.location?.lng) {
       return handleErrorResponse(
         new Error("Location coordinates are required"),
@@ -129,10 +119,9 @@ export async function POST(request: Request) {
       );
     }
 
-    // Calculate weekday (1-7, where 1 is Monday)
+
     const weekday = ((datetime.getDay() + 6) % 7) + 1;
 
-    // Create the run with flattened location fields
     const run = await db
       .insert(runs)
       .values({

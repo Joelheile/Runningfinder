@@ -211,7 +211,6 @@ const Map = memo(({ runs }: { runs: Run[] }) => {
               marker !== null && marker instanceof google.maps.Marker,
           );
 
-        // Store markers in ref
         markersRef.current = newMarkers;
       } catch (error) {
         console.error("Error updating markers:", error);
@@ -232,7 +231,7 @@ const Map = memo(({ runs }: { runs: Run[] }) => {
     });
 
     mapInstanceRef.current?.fitBounds(bounds);
-  }, [runs]); // Update bounds when runs change
+  }, [runs]);
 
   useEffect(() => {
     markersRef.current.forEach((marker) => {

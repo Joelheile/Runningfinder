@@ -39,7 +39,6 @@ export default function MapLocationPicker({
 
     const initMap = async () => {
       try {
-        // Default to a central location if no location is provided
         const defaultLocation = {
           lat: location?.lat || 52.52,
           lng: location?.lng || 13.405,
@@ -64,7 +63,6 @@ export default function MapLocationPicker({
           draggable: true,
         });
 
-        // Ensure marker dragging is enabled
         markerInstance.setDraggable(true);
         markerInstance.addListener("dragend", () => {
           const position = markerInstance.getPosition();
@@ -80,7 +78,6 @@ export default function MapLocationPicker({
         setMap(mapInstance);
         setMarker(markerInstance);
 
-        // Initialize services
         searchService.current =
           new window.google.maps.places.AutocompleteService();
         placesService.current = new window.google.maps.places.PlacesService(

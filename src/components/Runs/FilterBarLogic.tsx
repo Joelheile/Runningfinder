@@ -16,7 +16,6 @@ export default function FilterBar({ onFilterChange }: FilterBarLogicProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  // Initialize state from URL params
   const [selectedDays, setSelectedDays] = useState<number[]>(() => {
     const days = searchParams.get("weekdays");
     return days ? days.split(",").map(Number) : [];
@@ -54,7 +53,6 @@ export default function FilterBar({ onFilterChange }: FilterBarLogicProps) {
       params.set("q", searchQuery);
     }
 
-    // Update URL without full page reload
     const newUrl =
       window.location.pathname +
       (params.toString() ? `?${params.toString()}` : "");
