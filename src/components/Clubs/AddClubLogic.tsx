@@ -34,7 +34,7 @@ export default function AddClub() {
   }, [isOpen]);
 
   const handleInstagramUsernameChange = async (
-    e: React.ChangeEvent<HTMLInputElement>,
+    e: React.ChangeEvent<HTMLInputElement>
   ) => {
     const username = e.target.value;
     setInstagramUsername(username);
@@ -78,19 +78,6 @@ export default function AddClub() {
       return;
     }
 
-    posthog.capture("club_creation_next_step", {
-      $recording_enabled: true,
-      from_step: step,
-      to_step: Math.min(step + 1, totalSteps),
-      fields_completed: {
-        has_name: !!name.trim(),
-        has_description: !!description.trim(),
-        has_instagram: !!instagramUsername.trim(),
-        has_strava: !!stravaUsername.trim(),
-        has_avatar: isUploaded || !!avatarUrl,
-      },
-    });
-
     setStep((prev) => Math.min(prev + 1, totalSteps));
   };
 
@@ -109,17 +96,6 @@ export default function AddClub() {
   };
 
   const handleClose = () => {
-    posthog.capture("club_creation_modal_closed", {
-      $recording_enabled: true,
-      step: step,
-      fields_filled: {
-        has_name: !!name.trim(),
-        has_description: !!description.trim(),
-        has_instagram: !!instagramUsername.trim(),
-        has_strava: !!stravaUsername.trim(),
-        has_avatar: isUploaded || !!avatarUrl,
-      },
-    });
     resetForm();
     setIsOpen(false);
   };
@@ -155,7 +131,7 @@ export default function AddClub() {
           if (data.profileImageUrl) {
             console.log(
               "🖼️ Setting avatar URL from Instagram:",
-              data.profileImageUrl,
+              data.profileImageUrl
             );
             setAvatarUrl(data.profileImageUrl);
             setIsUploaded(false);
@@ -194,7 +170,7 @@ export default function AddClub() {
 
       toast.success(
         "Club added successfully 🎉 It will now be reviewed by our team",
-        { id: creationToast },
+        { id: creationToast }
       );
       resetForm();
       setIsOpen(false);
