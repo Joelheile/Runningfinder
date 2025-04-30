@@ -7,7 +7,6 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 
 export default function AdminPage() {
-  // session is handled in middleware
   const { status } = useSession();
 
   if (status === "loading") {

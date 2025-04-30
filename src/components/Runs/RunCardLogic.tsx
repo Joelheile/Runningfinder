@@ -60,7 +60,7 @@ export default function RunCard({
     mapsLink,
     locationLat,
     locationLng,
-    startDescription
+    startDescription,
   );
 
   const {

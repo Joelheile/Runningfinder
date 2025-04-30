@@ -34,20 +34,18 @@ const registerRun = async ({ runId, userId }: UseRegisterRunParams) => {
 
 export function useRegisterRun() {
   const queryClient = useQueryClient();
-  const { 
-    invalidateRegistrations, 
-    invalidateUserRegistrations, 
-    invalidateRegistrationStatus 
+  const {
+    invalidateRegistrations,
+    invalidateUserRegistrations,
+    invalidateRegistrationStatus,
   } = useRegistrations();
 
   return useMutation({
     mutationFn: registerRun,
     onSuccess: ({ userId, runId }) => {
-
       invalidateRegistrations();
       invalidateUserRegistrations(userId);
       invalidateRegistrationStatus(userId, runId);
-      
 
       queryClient.invalidateQueries({ queryKey: ["runs"] });
     },

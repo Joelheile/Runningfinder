@@ -39,7 +39,6 @@ export default function UserRuns({ userId }: UserRunsProps) {
     return () => clearTimeout(timer);
   }, []);
 
-  // Force refetch registrations when component mounts
   useEffect(() => {
     refetchRegistrations();
   }, [refetchRegistrations]);

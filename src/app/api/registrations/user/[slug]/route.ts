@@ -3,21 +3,18 @@ import { registrations } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
-export const dynamic = 'force-dynamic'; 
-export const fetchCache = 'force-no-store';
-export const revalidate = 0; 
+export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store";
+export const revalidate = 0;
 
 export async function GET(
   request: Request,
   { params }: { params: { slug: string } },
 ) {
   if (!params.slug) {
-    return NextResponse.json(
-      { error: "User ID is required" },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: "User ID is required" }, { status: 400 });
   }
-  
+
   try {
     const query = db
       .select()
@@ -27,16 +24,16 @@ export async function GET(
     const res = await query.execute();
 
     const headers = {
-      'Cache-Control': 'no-cache, no-store, must-revalidate',
-      'Pragma': 'no-cache',
-      'Expires': '0',
-      'Surrogate-Control': 'no-store',
-      'Vary': '*',
+      "Cache-Control": "no-cache, no-store, must-revalidate",
+      Pragma: "no-cache",
+      Expires: "0",
+      "Surrogate-Control": "no-store",
+      Vary: "*",
     };
 
-    return NextResponse.json(res, { 
+    return NextResponse.json(res, {
       headers,
-      status: 200 
+      status: 200,
     });
   } catch (error) {
     console.error("Error fetching registrations:", error);

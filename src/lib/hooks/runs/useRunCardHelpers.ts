@@ -2,27 +2,25 @@ import toast from "react-hot-toast";
 import { useCancelRegistration } from "../registrations/useCancelRegistration";
 import { useRegisterRun } from "../registrations/useRegisterRun";
 
-
 export function getMapsLink(
   providedLink: string | null | undefined,
   lat: number,
   lng: number,
-  description: string
+  description: string,
 ): string | null {
   if (providedLink) return providedLink;
-  
+
   return lat && lng
     ? `https://www.google.com/maps/search/${encodeURIComponent(description)}/@${lat},${lng},15z`
     : null;
 }
-
 
 export async function registerForRun(
   runId: string,
   userId: string,
   setLoading: (state: boolean) => void,
   registerMutation: ReturnType<typeof useRegisterRun>,
-  refetchFn: () => Promise<any>
+  refetchFn: () => Promise<any>,
 ) {
   setLoading(true);
   try {
@@ -34,14 +32,13 @@ export async function registerForRun(
   }
 }
 
-
 export async function unregisterFromRun(
   runId: string,
   userId: string,
   externalHandler: ((runId: string) => void) | undefined,
   setLoading: (state: boolean) => void,
   cancelMutation: ReturnType<typeof useCancelRegistration>,
-  refetchFn: () => Promise<any>
+  refetchFn: () => Promise<any>,
 ) {
   setLoading(true);
   try {
@@ -56,4 +53,4 @@ export async function unregisterFromRun(
   } finally {
     setLoading(false);
   }
-} 
+}

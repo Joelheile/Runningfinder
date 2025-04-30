@@ -25,7 +25,6 @@ const Map = memo(({ runs }: { runs: Run[] }) => {
   } | null>(null);
   const [locationError, setLocationError] = useState<string>("");
 
-  // Initialize map only once
   useEffect(() => {
     const initMap = async () => {
       if (mapInstanceRef.current) return;
@@ -62,7 +61,7 @@ const Map = memo(({ runs }: { runs: Run[] }) => {
         streetViewControl: false,
         rotateControl: false,
         fullscreenControl: false,
-        gestureHandling: "greedy", // Makes map fully draggable on mobile
+        gestureHandling: "greedy",
       });
 
       infoWindowRef.current = new InfoWindow();
@@ -114,7 +113,7 @@ const Map = memo(({ runs }: { runs: Run[] }) => {
     };
 
     initMap();
-  }, []); // Empty dependency array means this only runs once
+  }, []);
 
   const {
     data: clubs,
@@ -122,7 +121,6 @@ const Map = memo(({ runs }: { runs: Run[] }) => {
     isLoading: clubLoading,
   } = useFetchClubs();
 
-  // Update markers when runs change
   useEffect(() => {
     const updateMarkers = async () => {
       if (!mapInstanceRef.current || !infoWindowRef.current) return;

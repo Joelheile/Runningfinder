@@ -1,4 +1,4 @@
-// Presigned URLs allow you to upload large chunks of data directly at the source (here, Amazon S3).
+// Presigned URLs allow you to upload large chunks of data directly at the source
 import { s3Client } from "@/lib/db/s3-client";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";

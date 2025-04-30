@@ -1,4 +1,5 @@
-import { weekdays } from "@/lib/weekdays";
+import { getDifficultyInfo } from "@/lib/utils/getDifficultyInfo";
+import { weekdays } from "@/lib/utils/weekdays";
 import { HelpCircle, X } from "lucide-react";
 import { Button } from "../UI/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../UI/tooltip";
@@ -13,42 +14,6 @@ interface FilterBarUIProps {
   toggleDay: (dayValue: number) => void;
   resetFilters: () => void;
 }
-
-const getDifficultyInfo = (level: string) => {
-  switch (level) {
-    case "easy":
-      return {
-        icon: "🟢",
-        description:
-          "Social run, perfect for beginners. Usually under 10km at a conversational pace.",
-        style: "bg-green-100 text-green-700 border-green-300",
-        hoverStyle: "hover:bg-green-200",
-      };
-    case "intermediate":
-      return {
-        icon: "🟡",
-        description:
-          "More structured run, typically 10-15km. Good for regular runners looking for a challenge.",
-        style: "bg-yellow-100 text-yellow-700 border-yellow-300",
-        hoverStyle: "hover:bg-yellow-200",
-      };
-    case "advanced":
-      return {
-        icon: "🔴",
-        description:
-          "Technical workout (intervals, hills) or long distance run (>15km). For experienced runners.",
-        style: "bg-red-100 text-red-700 border-red-300",
-        hoverStyle: "hover:bg-red-200",
-      };
-    default:
-      return {
-        icon: "⚪",
-        description: "",
-        style: "bg-gray-100 text-gray-700",
-        hoverStyle: "hover:bg-gray-200",
-      };
-  }
-};
 
 export default function FilterBarUI({
   selectedDays,
@@ -65,10 +30,8 @@ export default function FilterBarUI({
     <div className="sticky top-0 z-[50] md:z-[60] bg-white/80 backdrop-blur-sm w-full border-b border-gray-200 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="md:grid md:grid-cols-[1fr_auto_auto] gap-4 items-start">
-          {/* Mobile Layout */}
           <div className="block md:hidden">
             <div className="flex flex-col gap-4">
-              {/* CTA */}
               <div className="text-center">
                 <h2 className="text-lg font-semibold text-gray-900">
                   Find Your Perfect Run
@@ -78,7 +41,6 @@ export default function FilterBarUI({
                 </p>
               </div>
 
-              {/* Days Selection */}
               <div>
                 <div className="flex flex-wrap gap-1.5 justify-center">
                   {weekdays.map((day) => (
@@ -103,7 +65,6 @@ export default function FilterBarUI({
                 </div>
               </div>
 
-              {/* Difficulty Selection */}
               <div>
                 <div className="flex justify-center gap-2">
                   {["easy", "intermediate", "advanced"].map((level) => {
@@ -136,7 +97,6 @@ export default function FilterBarUI({
                 </div>
               </div>
 
-              {/* Reset button */}
               {hasActiveFilters && (
                 <div className="flex justify-center">
                   <Button
@@ -157,9 +117,7 @@ export default function FilterBarUI({
             </div>
           </div>
 
-          {/* Desktop Layout (unchanged) */}
           <div className="hidden md:flex md:flex-row md:items-center justify-between gap-4">
-            {/* Days Selection */}
             <div className="flex flex-wrap gap-1.5">
               {weekdays.map((day) => (
                 <Tooltip key={day.value}>
@@ -188,7 +146,6 @@ export default function FilterBarUI({
               ))}
             </div>
 
-            {/* Difficulty Selection */}
             <div className="flex items-center gap-2">
               {["easy", "intermediate", "advanced"].map((level) => {
                 const info = getDifficultyInfo(level);
@@ -223,7 +180,6 @@ export default function FilterBarUI({
             </div>
           </div>
 
-          {/* Desktop Reset button */}
           <div className="hidden md:flex items-start">
             {hasActiveFilters && (
               <Button

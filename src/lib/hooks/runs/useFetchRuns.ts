@@ -9,12 +9,12 @@ export const useFetchRuns = (filters: {
 }) => {
   return useQuery({
     queryKey: ["runs", { ...filters }],
-    staleTime: 0, // Always consider data stale
-    gcTime: 0, // Don't cache at all (formerly cacheTime)
-    refetchOnMount: "always", // Always refetch when component mounts
+    staleTime: 0,
+    gcTime: 0,
+    refetchOnMount: "always",
     refetchOnWindowFocus: true,
     refetchOnReconnect: true,
-    retry: 2, // Retry failed requests 2 times
+    retry: 2,
     queryFn: () => {
       const params = new URLSearchParams();
       if (
@@ -31,19 +31,20 @@ export const useFetchRuns = (filters: {
         params.append("difficulty", filters.difficulty);
       }
 
-      // Add a timestamp to bust cache
       params.append("_t", Date.now().toString());
 
       const queryString = params.toString();
       const url = queryString ? `/api/runs?${queryString}` : `/api/runs`;
 
-      return axios.get(url, {
-        headers: {
-          'Cache-Control': 'no-cache',
-          'Pragma': 'no-cache',
-          'Expires': '0',
-        }
-      }).then((res) => res.data);
+      return axios
+        .get(url, {
+          headers: {
+            "Cache-Control": "no-cache",
+            Pragma: "no-cache",
+            Expires: "0",
+          },
+        })
+        .then((res) => res.data);
     },
   });
 };

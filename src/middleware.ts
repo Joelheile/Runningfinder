@@ -13,7 +13,6 @@ export async function middleware(request: NextRequest) {
   });
 
   if (!token) {
-    // Not logged in, redirect to login page with callback
     return NextResponse.redirect(
       new URL(
         `/api/auth/signin?callbackUrl=${encodeURIComponent(request.url)}`,

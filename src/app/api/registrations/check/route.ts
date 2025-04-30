@@ -3,8 +3,8 @@ import { registrations } from "@/lib/db/schema";
 import { and, eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 
-export const dynamic = 'force-dynamic';
-export const fetchCache = 'force-no-store';
+export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store";
 export const revalidate = 0;
 
 export async function GET(request: NextRequest) {
@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
   if (!userId || !runId) {
     return NextResponse.json(
       { error: "User ID and Run ID are required" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -24,16 +24,16 @@ export async function GET(request: NextRequest) {
       .select()
       .from(registrations)
       .where(
-        and(eq(registrations.userId, userId), eq(registrations.runId, runId))
+        and(eq(registrations.userId, userId), eq(registrations.runId, runId)),
       )
       .execute();
 
     const headers = {
-      'Cache-Control': 'no-cache, no-store, must-revalidate',
-      'Pragma': 'no-cache',
-      'Expires': '0',
-      'Surrogate-Control': 'no-store',
-      'Vary': '*',
+      "Cache-Control": "no-cache, no-store, must-revalidate",
+      Pragma: "no-cache",
+      Expires: "0",
+      "Surrogate-Control": "no-store",
+      Vary: "*",
     };
 
     return NextResponse.json({ isRegistered: result.length > 0 }, { headers });
@@ -41,7 +41,7 @@ export async function GET(request: NextRequest) {
     console.error("Error checking registration:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
-} 
+}
