@@ -45,8 +45,6 @@ export async function GET() {
  *       - admin
  *     summary: Retrieve all unapproved clubs.
  *     description: Admin-only endpoint to fetch all pending club approvals.
- *     security:
- *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: A list of unapproved clubs.

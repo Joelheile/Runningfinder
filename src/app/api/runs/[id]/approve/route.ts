@@ -64,8 +64,6 @@ export async function POST(
  *         schema:
  *           type: string
  *         description: Unique identifier of the run to approve
- *     security:
- *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Run approved successfully.

@@ -62,8 +62,6 @@ export async function DELETE(request: Request) {
  *       - upload
  *     summary: Upload a user avatar.
  *     description: Stores user avatar information in the database after it has been uploaded to S3.
- *     security:
- *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -105,8 +103,6 @@ export async function DELETE(request: Request) {
  *       - upload
  *     summary: Delete a user avatar.
  *     description: Removes avatar information from the database (doesn't delete from S3).
- *     security:
- *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:

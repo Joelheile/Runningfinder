@@ -36,8 +36,6 @@ export async function GET(request: NextRequest) {
  *       - upload
  *     summary: Generate a presigned URL for S3 uploads.
  *     description: Creates a temporary signed URL for direct browser-to-S3 file uploads, bypassing the server.
- *     security:
- *       - bearerAuth: []
  *     parameters:
  *       - in: query
  *         name: fileName

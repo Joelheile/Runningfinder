@@ -81,8 +81,7 @@ export async function POST(
  *         schema:
  *           type: string
  *         description: Unique slug identifier of the club to approve
- *     security:
- *       - bearerAuth: []
+
  *     responses:
  *       200:
  *         description: Club approved successfully.

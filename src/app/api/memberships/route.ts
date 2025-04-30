@@ -50,8 +50,6 @@ export async function POST(request: Request) {
  *       - memberships
  *     summary: Retrieve all memberships.
  *     description: Returns a list of all club memberships across the platform.
- *     security:
- *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: A list of all memberships.
@@ -87,8 +85,6 @@ export async function POST(request: Request) {
  *       - memberships
  *     summary: Create a new membership.
  *     description: Creates a new club membership for a user, defaulting to pending status.
- *     security:
- *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
