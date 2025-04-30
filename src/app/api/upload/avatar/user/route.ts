@@ -58,44 +58,82 @@ export async function DELETE(request: Request) {
  * @swagger
  * /api/upload/avatar/user:
  *   post:
- *     summary: Upload a user avatar.
  *     tags:
  *       - upload
+ *     summary: Upload a user avatar.
+ *     description: Stores user avatar information in the database after it has been uploaded to S3.
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
  *             type: object
+ *             required:
+ *               - objectName
+ *               - objectUrl
+ *               - objectId
  *             properties:
  *               objectName:
  *                 type: string
+ *                 description: Original filename of the avatar
  *               objectUrl:
  *                 type: string
+ *                 description: Full URL to the avatar in S3
  *               objectId:
  *                 type: string
+ *                 description: Unique identifier for the avatar
  *     responses:
  *       200:
- *         description: Successfully uploaded the file.
+ *         description: Avatar information successfully stored.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Successfully uploaded the file
+ *       401:
+ *         description: Unauthorized - Authentication required.
  *       500:
- *         description: Failed to upload file.
+ *         description: Failed to store avatar information.
  *
  *   delete:
- *     summary: Delete a user avatar.
  *     tags:
  *       - upload
+ *     summary: Delete a user avatar.
+ *     description: Removes avatar information from the database (doesn't delete from S3).
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
  *             type: object
+ *             required:
+ *               - objectId
  *             properties:
  *               objectId:
  *                 type: string
+ *                 description: Unique identifier of the avatar to delete
  *     responses:
  *       200:
- *         description: Successfully deleted the file.
+ *         description: Avatar information successfully removed.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Successfully deleted the file
+ *       401:
+ *         description: Unauthorized - Authentication required.
+ *       404:
+ *         description: Avatar not found.
  *       500:
- *         description: Failed to delete file.
+ *         description: Failed to delete avatar information.
  */

@@ -47,3 +47,64 @@ export async function POST(
     );
   }
 }
+
+/**
+ * @swagger
+ * /api/runs/{id}/approve:
+ *   post:
+ *     tags:
+ *       - runs
+ *       - admin
+ *     summary: Approve a run.
+ *     description: Admin-only endpoint to approve a run for public visibility.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Unique identifier of the run to approve
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Run approved successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                 name:
+ *                   type: string
+ *                 clubId:
+ *                   type: string
+ *                 datetime:
+ *                   type: string
+ *                   format: date-time
+ *                 weekday:
+ *                   type: integer
+ *                 startDescription:
+ *                   type: string
+ *                 locationLng:
+ *                   type: number
+ *                 locationLat:
+ *                   type: number
+ *                 distance:
+ *                   type: number
+ *                 difficulty:
+ *                   type: string
+ *                 isApproved:
+ *                   type: boolean
+ *                 isRecurrent:
+ *                   type: boolean
+ *       400:
+ *         description: Invalid input or missing ID.
+ *       401:
+ *         description: Unauthorized - Admin access required.
+ *       404:
+ *         description: Run not found.
+ *       500:
+ *         description: Internal Server Error.
+ */

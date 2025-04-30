@@ -189,3 +189,155 @@ export async function DELETE(request: Request) {
     return handleErrorResponse(error);
   }
 }
+
+/**
+ * @swagger
+ * /api/runs:
+ *   get:
+ *     tags:
+ *       - runs
+ *     summary: List all available runs.
+ *     description: Retrieves a list of all approved runs with optional filtering capabilities.
+ *     parameters:
+ *       - in: query
+ *         name: weekdays
+ *         schema:
+ *           type: string
+ *         description: Comma-separated list of weekdays (1-7, where 1 is Monday)
+ *       - in: query
+ *         name: difficulty
+ *         schema:
+ *           type: string
+ *           enum: [easy, intermediate, advanced]
+ *         description: Filter runs by difficulty level
+ *       - in: query
+ *         name: clubId
+ *         schema:
+ *           type: string
+ *         description: Filter runs by club ID
+ *     responses:
+ *       200:
+ *         description: A list of runs matching the filter criteria.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                   name:
+ *                     type: string
+ *                   clubId:
+ *                     type: string
+ *                   difficulty:
+ *                     type: string
+ *                     enum: [easy, intermediate, advanced]
+ *                   datetime:
+ *                     type: string
+ *                     format: date-time
+ *                   weekday:
+ *                     type: integer
+ *                     description: Day of the week (1-7, where 1 is Monday)
+ *                   startDescription:
+ *                     type: string
+ *                   location:
+ *                     type: object
+ *                     properties:
+ *                       lat:
+ *                         type: number
+ *                       lng:
+ *                         type: number
+ *                   mapsLink:
+ *                     type: string
+ *                   isRecurrent:
+ *                     type: boolean
+ *                   isApproved:
+ *                     type: boolean
+ *                   distance:
+ *                     type: number
+ *       500:
+ *         description: Internal Server Error.
+ * 
+ *   post:
+ *     tags:
+ *       - runs
+ *     summary: Create a new run.
+ *     description: Creates a new run entry in the database.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *               - clubId
+ *               - datetime
+ *               - difficulty
+ *               - location
+ *             properties:
+ *               id:
+ *                 type: string
+ *                 description: Unique identifier for the run. Generated if not provided.
+ *               name:
+ *                 type: string
+ *               clubId:
+ *                 type: string
+ *               datetime:
+ *                 type: string
+ *                 format: date-time
+ *               difficulty:
+ *                 type: string
+ *                 enum: [easy, intermediate, advanced]
+ *               distance:
+ *                 type: number
+ *               startDescription:
+ *                 type: string
+ *               location:
+ *                 type: object
+ *                 required:
+ *                   - lat
+ *                   - lng
+ *                 properties:
+ *                   lat:
+ *                     type: number
+ *                   lng:
+ *                     type: number
+ *               mapsLink:
+ *                 type: string
+ *               isRecurrent:
+ *                 type: boolean
+ *                 default: false
+ *               isApproved:
+ *                 type: boolean
+ *                 default: false
+ *     responses:
+ *       200:
+ *         description: Run created successfully.
+ *       400:
+ *         description: Bad request, invalid input.
+ *       500:
+ *         description: Internal Server Error.
+ * 
+ *   delete:
+ *     tags:
+ *       - runs
+ *     summary: Delete a run.
+ *     description: Permanently removes a run from the database using a query parameter.
+ *     parameters:
+ *       - in: query
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID of the run to delete
+ *     responses:
+ *       200:
+ *         description: Run successfully deleted.
+ *       404:
+ *         description: Run not found.
+ *       500:
+ *         description: Internal Server Error.
+ */

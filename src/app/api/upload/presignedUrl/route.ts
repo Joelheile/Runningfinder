@@ -30,25 +30,30 @@ export async function GET(request: NextRequest) {
 
 /**
  * @swagger
- * /api/upload/presignedurl:
+ * /api/upload/presignedUrl:
  *   get:
- *     summary: Generate a presigned URL for uploading files to AWS S3.
  *     tags:
  *       - upload
+ *     summary: Generate a presigned URL for S3 uploads.
+ *     description: Creates a temporary signed URL for direct browser-to-S3 file uploads, bypassing the server.
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: query
  *         name: fileName
  *         required: true
  *         schema:
  *           type: string
+ *         description: Original filename of the file to upload
  *       - in: query
  *         name: contentType
  *         required: true
  *         schema:
  *           type: string
+ *         description: MIME type of the file (e.g., image/jpeg, image/png)
  *     responses:
  *       200:
- *         description: Returns a presigned URL.
+ *         description: Successfully generated presigned URL.
  *         content:
  *           application/json:
  *             schema:
@@ -56,6 +61,12 @@ export async function GET(request: NextRequest) {
  *               properties:
  *                 signedUrl:
  *                   type: string
+ *                   description: Temporary URL to upload the file directly to S3
+ *                   example: https://bucket-name.s3.region.amazonaws.com/1623456789-file.jpg?X-Amz-Algorithm=...
+ *       400:
+ *         description: Missing required parameters.
+ *       401:
+ *         description: Unauthorized - Authentication required.
  *       500:
- *         description: Internal Server Error.
+ *         description: Failed to generate presigned URL.
  */

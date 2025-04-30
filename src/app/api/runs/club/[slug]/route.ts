@@ -45,8 +45,6 @@ export async function GET(
       )
 
 
-
-
     return NextResponse.json(runsData);
   } catch (error) {
     console.error("Error fetching runs:", error);
@@ -59,22 +57,23 @@ export async function GET(
 
 /**
  * @swagger
- * /api/runs/{slug}:
+ * /api/runs/club/{slug}:
  *   get:
- *     summary: Retrieve runs for a specific club
  *     tags:
  *       - runs
- *     description: Fetches all runs associated with a given club ID (slug).
+ *       - clubs
+ *     summary: Retrieve all runs for a specific club.
+ *     description: Returns a list of all approved, upcoming runs organized by a particular club.
  *     parameters:
  *       - in: path
  *         name: slug
  *         required: true
  *         schema:
  *           type: string
- *         description: The club ID (slug) to fetch runs for
+ *         description: Club ID to fetch runs for
  *     responses:
  *       200:
- *         description: A list of runs for the specified club
+ *         description: List of club runs.
  *         content:
  *           application/json:
  *             schema:
@@ -90,16 +89,14 @@ export async function GET(
  *                     type: string
  *                   difficulty:
  *                     type: string
- *                   date:
+ *                     enum: [easy, intermediate, advanced]
+ *                   datetime:
  *                     type: string
  *                     format: date-time
- *                   interval:
- *                     type: string
- *                   intervalDay:
+ *                   weekday:
  *                     type: integer
+ *                     description: Day of the week (1-7, where 1 is Monday)
  *                   startDescription:
- *                     type: string
- *                   startTime:
  *                     type: string
  *                   distance:
  *                     type: number
@@ -110,8 +107,16 @@ export async function GET(
  *                         type: number
  *                       lng:
  *                         type: number
+ *                   mapsLink:
+ *                     type: string
+ *                   isRecurrent:
+ *                     type: boolean
+ *                   isApproved:
+ *                     type: boolean
  *       400:
- *         description: Bad Request - slug is required
+ *         description: Club ID is required.
+ *       404:
+ *         description: Club not found.
  *       500:
- *         description: Internal Server Error
+ *         description: Failed to fetch runs.
  */
