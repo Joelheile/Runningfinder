@@ -61,8 +61,6 @@ export async function GET() {
  *       - admin
  *     summary: Retrieve all unapproved runs.
  *     description: Admin-only endpoint to fetch all pending run approvals with their associated club information.
- *     security:
- *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: A list of unapproved runs with their club details.

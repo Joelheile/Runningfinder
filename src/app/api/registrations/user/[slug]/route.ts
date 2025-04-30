@@ -45,8 +45,6 @@ export async function GET(
  *         schema:
  *           type: string
  *         description: User ID to fetch registrations for
- *     security:
- *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: List of user's run registrations.
