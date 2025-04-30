@@ -18,13 +18,11 @@ export function useRegistrations() {
       queryKey: ["registrations", userId],
       queryFn: () => fetchRegistrationsByUserId(userId),
       enabled: !!userId,
-      refetchOnWindowFocus: false,
-      refetchOnMount: true,
-      refetchOnReconnect: false,
-      refetchInterval: false,
-      staleTime: 60000,
-      gcTime: 300000,
+      staleTime: 0,
+      gcTime: 0,
       retry: 2,
+      refetchOnMount: true,
+      refetchOnWindowFocus: true,
     });
   };
   
@@ -34,13 +32,11 @@ export function useRegistrations() {
       queryKey: ["registration", userId, runId],
       queryFn: () => checkUserRegistered({ userId, runId }),
       enabled: !!userId && !!runId,
-      refetchOnWindowFocus: false,
-      refetchOnMount: true,
-      refetchOnReconnect: false,
-      refetchInterval: false,
-      staleTime: 60000,
-      gcTime: 300000,
+      staleTime: 0,
+      gcTime: 0,
       retry: 2,
+      refetchOnMount: true,
+      refetchOnWindowFocus: true,
     });
   };
 
@@ -51,12 +47,12 @@ export function useRegistrations() {
 
 
   const invalidateUserRegistrations = (userId: string) => {
-    queryClient.invalidateQueries({ queryKey: ["registrations", userId] });
+    queryClient.removeQueries({ queryKey: ["registrations", userId] });
   };
 
 
   const invalidateRegistrationStatus = (userId: string, runId: string) => {
-    queryClient.invalidateQueries({ queryKey: ["registration", userId, runId] });
+    queryClient.removeQueries({ queryKey: ["registration", userId, runId] });
   };
 
   return {
@@ -77,6 +73,7 @@ async function fetchRegistrationsByUserId(userId: string): Promise<Registration[
       'Cache-Control': 'no-cache, no-store, must-revalidate',
       'Pragma': 'no-cache',
     },
+    cache: 'no-store'
   });
 
   if (!response.ok) {
@@ -95,7 +92,8 @@ async function checkUserRegistered({ userId, runId }: CheckRegistrationParams): 
     headers: {
       'Cache-Control': 'no-cache, no-store, must-revalidate',
       'Pragma': 'no-cache',
-    }
+    },
+    cache: 'no-store'
   });
   
   if (!response.ok) {

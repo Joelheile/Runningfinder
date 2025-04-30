@@ -1,9 +1,10 @@
 "use client";
 
 import { useCancelRegistration } from "@/lib/hooks/registrations/useCancelRegistration";
-import { useUserRegistrationsData } from "@/lib/hooks/registrations/useUserRegistrationsData";
+import { useRegistrations } from "@/lib/hooks/registrations/useRegistrations";
 import { useFetchRuns } from "@/lib/hooks/runs/useFetchRuns";
 import { Run } from "@/lib/types/Run";
+import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import RunCardUISkeleton from "./RunCardUISkeleton";
 import UserRunsUI from "./UserRunsUI";
@@ -15,13 +16,20 @@ type UserRunsProps = {
 export default function UserRuns({ userId }: UserRunsProps) {
   const [isUnregistering, setIsUnregistering] = useState<string | null>(null);
   const [isInitialLoad, setIsInitialLoad] = useState(true);
+  const queryClient = useQueryClient();
 
+  useEffect(() => {
+    queryClient.resetQueries({ queryKey: ["registrations"] });
+    queryClient.resetQueries({ queryKey: ["registration"] });
+  }, [queryClient]);
+
+  const { getUserRegistrations } = useRegistrations();
   const {
     data: registrations,
     isLoading: registrationsLoading,
     error: registrationsError,
     refetch: refetchRegistrations,
-  } = useUserRegistrationsData(userId);
+  } = getUserRegistrations(userId);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -30,6 +38,11 @@ export default function UserRuns({ userId }: UserRunsProps) {
 
     return () => clearTimeout(timer);
   }, []);
+
+  // Force refetch registrations when component mounts
+  useEffect(() => {
+    refetchRegistrations();
+  }, [refetchRegistrations]);
 
   const {
     data: runs,
@@ -45,6 +58,9 @@ export default function UserRuns({ userId }: UserRunsProps) {
     try {
       setIsUnregistering(runId);
       await cancelRegistration.mutateAsync({ runId, userId });
+
+      queryClient.resetQueries();
+
       await refetchRegistrations();
     } catch (error) {
       console.error("Failed to unregister from run", error);

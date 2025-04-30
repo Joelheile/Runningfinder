@@ -27,7 +27,6 @@ export async function registerForRun(
   setLoading(true);
   try {
     await registerMutation.mutateAsync({ runId, userId });
-    refetchFn();
   } catch (error) {
     toast.error("Error registering for run");
   } finally {
@@ -44,15 +43,14 @@ export async function unregisterFromRun(
   cancelMutation: ReturnType<typeof useCancelRegistration>,
   refetchFn: () => Promise<any>
 ) {
-  if (externalHandler) {
-    externalHandler(runId);
-    return;
-  }
-  
   setLoading(true);
   try {
-    await cancelMutation.mutateAsync({ runId, userId });
-    refetchFn();
+    if (externalHandler) {
+      externalHandler(runId);
+      await refetchFn();
+    } else {
+      await cancelMutation.mutateAsync({ runId, userId });
+    }
   } catch (error) {
     toast.error("Error unregistering from run");
   } finally {

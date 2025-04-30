@@ -1,6 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import { useRegistrations } from "./useRegistrations";
 
 interface UseCancelRegistrationParams {
   runId: string;
@@ -15,6 +14,8 @@ const cancelRegistration = async ({
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
+      "Cache-Control": "no-cache, no-store, must-revalidate",
+      "Pragma": "no-cache",
     },
     body: JSON.stringify({
       runId,
@@ -34,31 +35,16 @@ const cancelRegistration = async ({
 
 export function useCancelRegistration() {
   const queryClient = useQueryClient();
-  const { 
-    invalidateRegistrations, 
-    invalidateUserRegistrations, 
-    invalidateRegistrationStatus 
-  } = useRegistrations();
 
   return useMutation({
     mutationFn: cancelRegistration,
     onSuccess: (_, variables) => {
-      // Use the combined hook for more maintainable invalidation
-      invalidateRegistrations();
-      invalidateUserRegistrations(variables.userId);
-      invalidateRegistrationStatus(variables.userId, variables.runId);
+      // Reset the entire cache to ensure fresh data
+      queryClient.resetQueries();
       
-      // More aggressive invalidation for runs data
+      // Invalidate specific queries
       queryClient.invalidateQueries({ queryKey: ["runs"] });
-      queryClient.removeQueries({ queryKey: ["runs"] }); // Force complete cache removal
-      
-      // Invalidate specific run query
-      queryClient.invalidateQueries({ queryKey: ["runs", variables.runId] });
-      
-      // Force the UI to reload fresh data
-      setTimeout(() => {
-        queryClient.refetchQueries({ queryKey: ["runs"] });
-      }, 100);
+      queryClient.invalidateQueries({ queryKey: ["registrations"] });
     },
   });
 }
