@@ -1,3 +1,5 @@
+
+
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
@@ -106,3 +108,53 @@ export async function POST(request: Request) {
     );
   }
 }
+
+/**
+ * @swagger
+ * /api/instagram/profile:
+ *   post:
+ *     summary: Fetch Instagram profile data
+ *     description: |
+ *       Retrieves profile information and recent posts for a given Instagram username using the Apify scraper API.
+ *       Requires APIFY_KEY environment variable to be configured.
+ *     tags:
+ *       - Instagram
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - instagramUsername
+ *             properties:
+ *               instagramUsername:
+ *                 type: string
+ *                 description: Instagram username to fetch profile data for
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved Instagram profile data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   username:
+ *                     type: string
+ *                   profilePicUrl:
+ *                     type: string
+ *                   biography:
+ *                     type: string
+ *                   recentPosts:
+ *                     type: array
+ *       400:
+ *         description: Missing or invalid Instagram username
+ *       402:
+ *         description: API rate limit exceeded
+ *       404:
+ *         description: Instagram profile not found
+ *       500:
+ *         description: Server error or missing API configuration
+ */

@@ -1,5 +1,5 @@
 import { useFetchClubs } from "@/lib/hooks/clubs/useFetchClubs";
-import { useFetchRunsByClubId } from "@/lib/hooks/runs/useFetchRunsByClubId";
+import { useClubRunsData } from "@/lib/hooks/runs/useRunsData";
 import { Run } from "@/lib/types/Run";
 import { useState } from "react";
 import ClubHeaderSkeleton from "./ClubHeaderSkeleton";
@@ -20,7 +20,7 @@ export function SelectedClubHeaderLogic({
   const club = data?.find((club) => club.id === run.clubId);
 
   const clubId = club?.id || "";
-  const { data: runs } = useFetchRunsByClubId(clubId);
+  const { data: runs } = useClubRunsData(clubId);
 
   const futureRuns =
     runs?.filter((run: Run) => run.datetime > new Date()) || [];

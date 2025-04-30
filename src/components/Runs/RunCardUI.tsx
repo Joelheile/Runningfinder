@@ -1,4 +1,5 @@
 import { ExternalLink, MapPin } from "lucide-react";
+import LikeButton from "../Icons/LikeButton";
 import { Button } from "../UI/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../UI/tooltip";
 
@@ -11,7 +12,10 @@ interface RunCardUIProps {
   difficulty: string;
   startDescription: string;
   mapsLink?: string | null;
-
+  isRegistered?: boolean;
+  isRegistering?: boolean;
+  onLikeRun?: () => void;
+  onUnregister?: () => void;
   isAdmin?: boolean;
   isCompact?: boolean;
 }
@@ -49,12 +53,18 @@ const getDifficultyInfo = (difficulty: string) => {
 };
 
 export default function RunCardUI({
+  userId,
+  id,
   datetime,
   name,
   distance,
   difficulty,
   startDescription,
   mapsLink,
+  isRegistered,
+  isRegistering,
+  onLikeRun,
+  onUnregister,
   isAdmin,
   isCompact = false,
 }: RunCardUIProps) {
@@ -90,13 +100,22 @@ export default function RunCardUI({
           className={`flex flex-col sm:flex-row ${isCompact ? "p-3" : "p-4 sm:p-6"} h-full`}
         >
           <div className="flex-1">
-            <div
-              className={`text-gray-500 ${isCompact ? "text-xs" : "text-sm"} mb-2`}
-            >
-              {formatDate(datetime)}
+            <div className="flex justify-between items-start mb-2">
+              <div
+                className={`text-gray-500 ${isCompact ? "text-xs" : "text-sm"}`}
+              >
+                {formatDate(datetime)}
+              </div>
             </div>
+
             <div className={`space-y-${isCompact ? "2" : "4"}`}>
               <div className="flex flex-wrap items-center gap-2">
+                {onLikeRun && (
+                  <LikeButton
+                    onClick={onLikeRun}
+                    isFilled={isRegistered || false}
+                  />
+                )}
                 <h3
                   className={`font-semibold ${isCompact ? "text-base" : "text-xl"} text-gray-900`}
                 >
@@ -131,7 +150,6 @@ export default function RunCardUI({
               pt-3 sm:pt-0
               border-t sm:border-t-0
               sm:ml-4 sm:pl-4
-
             `}
           >
             <Tooltip>

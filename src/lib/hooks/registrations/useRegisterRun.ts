@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
+import { useRegistrations } from "./useRegistrations";
 
 interface UseRegisterRunParams {
   runId: string;
@@ -33,11 +34,31 @@ const registerRun = async ({ runId, userId }: UseRegisterRunParams) => {
 
 export function useRegisterRun() {
   const queryClient = useQueryClient();
+  const { 
+    invalidateRegistrations, 
+    invalidateUserRegistrations, 
+    invalidateRegistrationStatus 
+  } = useRegistrations();
 
   return useMutation({
     mutationFn: registerRun,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["registrations"] });
+    onSuccess: ({ userId, runId }) => {
+      // Use the combined hook for more maintainable invalidation
+      invalidateRegistrations();
+      invalidateUserRegistrations(userId);
+      invalidateRegistrationStatus(userId, runId);
+      
+      // Invalidate all run-related queries to ensure fresh data
+      queryClient.invalidateQueries({ queryKey: ["runs"] });
+      queryClient.removeQueries({ queryKey: ["runs"] }); // Force complete cache removal
+      
+      // Invalidate specific run query
+      queryClient.invalidateQueries({ queryKey: ["runs", runId] });
+      
+      // Force the UI to reload fresh data
+      setTimeout(() => {
+        queryClient.refetchQueries({ queryKey: ["runs"] });
+      }, 100);
     },
   });
 }

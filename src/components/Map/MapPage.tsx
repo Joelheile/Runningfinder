@@ -1,17 +1,15 @@
 "use client";
 import Map from "@/components/Map/MapLogic";
 import { useFetchRuns } from "@/lib/hooks/runs/useFetchRuns";
-
+import { useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
-import { useCallback, useState } from "react";
-
-import { Suspense } from "react";
+import { Suspense, useCallback, useEffect, useState } from "react";
 import FilterBar from "../Runs/FilterBarLogic";
 import { Button } from "../UI/button";
 import { RunDisclaimer } from "../disclaimer";
 
 const MapPage = () => {
-
+  const queryClient = useQueryClient();
   const [filters, setFilters] = useState<{
     minDistance?: number;
     maxDistance?: number;
@@ -19,7 +17,15 @@ const MapPage = () => {
     difficulty?: string;
   }>({});
 
-  const { data: runs, isLoading, error } = useFetchRuns(filters);
+  const { data: runs, isLoading, error, refetch } = useFetchRuns(filters);
+
+  // Force refetch data when component mounts
+  useEffect(() => {
+    // Clear cache and fetch fresh data
+    queryClient.invalidateQueries({ queryKey: ["runs"] });
+    queryClient.removeQueries({ queryKey: ["runs"] });
+    setTimeout(() => refetch(), 100);
+  }, [queryClient, refetch]);
 
   const handleFilterChange = useCallback(
     (newFilters: {
@@ -28,9 +34,11 @@ const MapPage = () => {
       days?: number[];
       difficulty?: string;
     }) => {
+      // Force clear cache before applying new filters
+      queryClient.invalidateQueries({ queryKey: ["runs"] });
       setFilters(newFilters);
     },
-    []
+    [queryClient]
   );
 
   return (

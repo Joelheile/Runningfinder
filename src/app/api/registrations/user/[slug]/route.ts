@@ -7,20 +7,31 @@ export async function GET(
   request: Request,
   { params }: { params: { slug: string } },
 ) {
-  console.log("params", params);
+  if (!params.slug) {
+    return NextResponse.json(
+      { error: "User ID is required" },
+      { status: 400 }
+    );
+  }
+  
   try {
     const query = db
       .select()
       .from(registrations)
       .where(eq(registrations.userId, params.slug));
 
-    console.log("Executing query:", query.toSQL());
-
     const res = await query.execute();
 
-    console.log("Query result:", res);
+    const headers = {
+      'Cache-Control': 'no-cache, no-store, must-revalidate',
+      'Pragma': 'no-cache',
+      'Expires': '0',
+    };
 
-    return NextResponse.json(res);
+    return NextResponse.json(res, { 
+      headers,
+      status: 200 
+    });
   } catch (error) {
     console.error("Error fetching registrations:", error);
     return NextResponse.json(
