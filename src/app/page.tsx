@@ -1,3 +1,4 @@
+import ErrorHandler from "@/components/ErrorHandler";
 import MapPage from "@/components/Map/MapPage";
 import { auth } from "@/lib/authentication/auth";
 
@@ -7,6 +8,7 @@ export default async function HomePage() {
 
   return (
     <div>
+      <ErrorHandler />
       <MapPage />
     </div>
   );

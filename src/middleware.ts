@@ -3,7 +3,6 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
 export async function middleware(request: NextRequest) {
-
   if (!request.nextUrl.pathname.startsWith("/admin")) {
     return NextResponse.next();
   }
@@ -24,7 +23,8 @@ export async function middleware(request: NextRequest) {
   }
 
   if (!token.isAdmin) {
-    return NextResponse.redirect(new URL("/", request.url));
+    console.log("not admin");
+    return NextResponse.redirect(new URL("/?error=adminRequired", request.url));
   }
 
   return NextResponse.next();

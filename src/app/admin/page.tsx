@@ -3,26 +3,15 @@
 import UnapprovedClubsLogic from "@/components/Admin/UnapprovedClubsLogic";
 import UnapprovedRunsLogic from "@/components/Admin/UnapprovedRunsLogic";
 
-import { signIn, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { redirect } from "next/navigation";
-import toast from "react-hot-toast";
 
 export default function AdminPage() {
-  const { data: session, status } = useSession({
-    required: true,
-    onUnauthenticated() {
-      signIn(undefined, { callbackUrl: "/admin" });
-    },
-  });
+  // session is handled in middleware
+  const { status } = useSession();
 
   if (status === "loading") {
     return <div>Loading...</div>;
-  }
-
-  if (!session?.user?.isAdmin) {
-    toast.error("You need to be logged in as an admin to access this page");
-    redirect("/");
   }
 
   return (

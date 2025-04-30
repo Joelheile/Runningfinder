@@ -119,7 +119,6 @@ export async function POST(request: Request) {
       );
     }
 
-
     const weekday = ((datetime.getDay() + 6) % 7) + 1;
 
     const run = await db
