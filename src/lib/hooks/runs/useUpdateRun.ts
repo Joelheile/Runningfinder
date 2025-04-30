@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 
 export interface UpdateRunData {
   name?: string;
@@ -21,10 +22,13 @@ async function updateRun(id: string, data: UpdateRunData) {
   });
 
   if (!response.ok) {
-    throw new Error("Failed to update run");
+    const errorText = await response.text();
+    toast.error(`Failed to update run: ${errorText}`);
+    throw new Error(`Failed to update run: ${errorText}`);
   }
 
-  return response.json();
+  toast.success("Run updated successfully");
+  return { id, ...response.json() };
 }
 
 export function useUpdateRun() {
@@ -33,8 +37,18 @@ export function useUpdateRun() {
   return useMutation({
     mutationFn: ({ id, data }: { id: string; data: UpdateRunData }) =>
       updateRun(id, data),
-    onSuccess: () => {
+    onSuccess: (result) => {
+      // Invalidate all runs globally
       queryClient.invalidateQueries({ queryKey: ["runs"] });
+      queryClient.removeQueries({ queryKey: ["runs"] });
+      
+      // Invalidate specific run
+      queryClient.invalidateQueries({ queryKey: ["runs", result.id] });
+      
+      // Force refetch
+      setTimeout(() => {
+        queryClient.refetchQueries({ queryKey: ["runs"] });
+      }, 100);
     },
   });
 }

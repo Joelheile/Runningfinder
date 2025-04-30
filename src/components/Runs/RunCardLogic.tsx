@@ -1,5 +1,16 @@
+import { useCancelRegistration } from "@/lib/hooks/registrations/useCancelRegistration";
+import { useRegisterRun } from "@/lib/hooks/registrations/useRegisterRun";
+import { useRegistrationStatusData } from "@/lib/hooks/registrations/useRegistrationStatusData";
 import { useDeleteRun } from "@/lib/hooks/runs/useDeleteRun";
+import {
+  getMapsLink,
+  registerForRun,
+  unregisterFromRun,
+} from "@/lib/hooks/runs/useRunCardHelpers";
+import { useQueryClient } from "@tanstack/react-query";
+import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import RunCardUI from "./RunCardUI";
 
 interface RunCardProps {
@@ -16,7 +27,7 @@ interface RunCardProps {
   slug?: string;
   isRegistered?: boolean;
   isAdmin?: boolean;
-  onUnregister?: () => void;
+  onUnregister?: (runId: string) => void;
   mapsLink?: string | null;
 }
 
@@ -32,18 +43,78 @@ export default function RunCard({
   difficulty,
 
   slug,
-  isRegistered,
+  isRegistered: initialIsRegistered,
   isAdmin,
-  onUnregister,
+  onUnregister: externalUnregister,
 }: RunCardProps) {
-  const { mutate: deleteRun } = useDeleteRun();
+  const { data: session } = useSession();
   const router = useRouter();
+  const [isRegistering, setIsRegistering] = useState(false);
+  const [isUnregistering, setIsUnregistering] = useState(false);
+  const { mutate: deleteRun } = useDeleteRun();
+  const registerRun = useRegisterRun();
+  const cancelRegistration = useCancelRegistration();
+  const queryClient = useQueryClient();
 
-  // If no mapsLink is provided, create one from the coordinates
-  const generatedMapsLink =
-    locationLat && locationLng
-      ? `https://www.google.com/maps/search/${encodeURIComponent(startDescription)}/@${locationLat},${locationLng},15z`
-      : null;
+  const recoveryMapsLink = getMapsLink(
+    mapsLink,
+    locationLat,
+    locationLng,
+    startDescription
+  );
+
+  // Check registration status using the stable wrapper hook
+  const {
+    data: isCheckedRegistered,
+    refetch: refetchRegistration,
+    isLoading: isCheckingRegistration,
+  } = useRegistrationStatusData({
+    userId: session?.user?.id,
+    runId: id,
+  });
+
+  // Force refetch data when component mounts - but only once
+  useEffect(() => {
+    // Force clear and refetch all run data when component mounts
+    queryClient.invalidateQueries({ queryKey: ["runs"] });
+
+    // No need for continual refetching
+  }, [queryClient]);
+
+  const isRegistered =
+    typeof initialIsRegistered !== "undefined"
+      ? initialIsRegistered
+      : isCheckedRegistered;
+
+  const isLoading = isRegistering || isUnregistering || isCheckingRegistration;
+
+  const handleHeartClick = async () => {
+    if (isLoading) return;
+
+    if (!session?.user) {
+      signIn(undefined, { callbackUrl: window.location.href });
+      return;
+    }
+
+    if (isRegistered) {
+      await unregisterFromRun(
+        id,
+        session.user.id,
+        externalUnregister,
+        setIsUnregistering,
+        cancelRegistration,
+        refetchRegistration
+      );
+    } else {
+      await registerForRun(
+        id,
+        session.user.id,
+        setIsRegistering,
+        registerRun,
+        refetchRegistration
+      );
+    }
+  };
 
   return (
     <RunCardUI
@@ -54,8 +125,13 @@ export default function RunCard({
       startDescription={startDescription}
       difficulty={difficulty}
       distance={distance}
-      mapsLink={mapsLink || generatedMapsLink}
+      mapsLink={recoveryMapsLink}
       isAdmin={isAdmin}
+      isRegistered={isRegistered}
+      onLikeRun={handleHeartClick}
+      onUnregister={handleHeartClick}
+      isRegistering={isLoading}
+      userId={session?.user?.id}
     />
   );
 }

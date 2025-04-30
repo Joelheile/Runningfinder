@@ -2,7 +2,7 @@
 
 import { useDeleteClub } from "@/lib/hooks/clubs/useDeleteClub";
 import { useFetchClubBySlug } from "@/lib/hooks/clubs/useFetchClubs";
-import { useFetchRunsByClubId } from "@/lib/hooks/runs/useFetchRunsByClubId";
+import { useClubRunsData } from "@/lib/hooks/runs/useRunsData";
 import { Club } from "@/lib/types/Club";
 import { useParams, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
@@ -24,7 +24,7 @@ export default function ClubDashboard() {
     error: Error;
   };
 
-  const { data: runs } = useFetchRunsByClubId(club?.id || "");
+  const { data: runs } = useClubRunsData(club?.id);
   const deleteClubMutation = useDeleteClub();
 
   const handleShare = async () => {

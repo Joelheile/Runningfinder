@@ -1,10 +1,10 @@
 "use client";
 
 import { useCancelRegistration } from "@/lib/hooks/registrations/useCancelRegistration";
-import { useFetchRegistrationByUser } from "@/lib/hooks/registrations/useFetchUserRegistrations";
+import { useUserRegistrationsData } from "@/lib/hooks/registrations/useUserRegistrationsData";
 import { useFetchRuns } from "@/lib/hooks/runs/useFetchRuns";
 import { Run } from "@/lib/types/Run";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import RunCardUISkeleton from "./RunCardUISkeleton";
 import UserRunsUI from "./UserRunsUI";
 
@@ -14,12 +14,22 @@ type UserRunsProps = {
 
 export default function UserRuns({ userId }: UserRunsProps) {
   const [isUnregistering, setIsUnregistering] = useState<string | null>(null);
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
 
   const {
     data: registrations,
     isLoading: registrationsLoading,
     error: registrationsError,
-  } = useFetchRegistrationByUser(userId);
+    refetch: refetchRegistrations,
+  } = useUserRegistrationsData(userId);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsInitialLoad(false);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const {
     data: runs,
@@ -35,6 +45,7 @@ export default function UserRuns({ userId }: UserRunsProps) {
     try {
       setIsUnregistering(runId);
       await cancelRegistration.mutateAsync({ runId, userId });
+      await refetchRegistrations();
     } catch (error) {
       console.error("Failed to unregister from run", error);
     } finally {
@@ -42,7 +53,7 @@ export default function UserRuns({ userId }: UserRunsProps) {
     }
   };
 
-  const isLoading = registrationsLoading || runsLoading;
+  const isLoading = isInitialLoad || registrationsLoading || runsLoading;
   const error = registrationsError || runError;
 
   if (isLoading) {

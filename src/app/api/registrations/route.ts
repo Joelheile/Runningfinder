@@ -52,6 +52,7 @@ export async function POST(request: Request) {
         runId: runId,
         userId: userId,
         status: status,
+        registrationDate: new Date()
       })
       .execute();
 

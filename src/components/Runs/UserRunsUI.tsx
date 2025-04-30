@@ -59,12 +59,6 @@ export default function UserRunsUI({
                 isRegistered={true}
                 isAdmin={false}
               />
-              <button
-                onClick={() => onUnregister(run?.id || "")}
-                className="absolute bottom-4 right-4 px-3 py-1 bg-red-500 hover:bg-red-600 text-white text-sm rounded-md transition-colors"
-              >
-                Unregister
-              </button>
             </div>
           ))
         )}

@@ -26,7 +26,17 @@ export function useAddRun() {
   return useMutation<Run, Error, Run>({
     mutationFn: addRun,
     onSuccess: (data) => {
+      // Invalidate club-specific runs
       queryClient.invalidateQueries({ queryKey: ["runs", data.clubId] });
+      
+      // Invalidate all runs globally
+      queryClient.invalidateQueries({ queryKey: ["runs"] });
+      queryClient.removeQueries({ queryKey: ["runs"] });
+      
+      // Force refetch
+      setTimeout(() => {
+        queryClient.refetchQueries({ queryKey: ["runs"] });
+      }, 100);
     },
   });
 }
