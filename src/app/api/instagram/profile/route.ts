@@ -59,7 +59,7 @@ export async function POST(request: Request) {
             limitError: true,
           },
           { status: 200 },
-        ); // Return 200 to prevent error UI
+        );
       }
 
       return NextResponse.json(

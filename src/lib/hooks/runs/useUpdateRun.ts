@@ -34,7 +34,6 @@ export function useUpdateRun() {
     mutationFn: ({ id, data }: { id: string; data: UpdateRunData }) =>
       updateRun(id, data),
     onSuccess: () => {
-      // Invalidate all run-related queries
       queryClient.invalidateQueries({ queryKey: ["runs"] });
     },
   });
