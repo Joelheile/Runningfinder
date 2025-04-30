@@ -35,3 +35,47 @@ export async function GET() {
     );
   }
 }
+
+/**
+ * @swagger
+ * /api/clubs/unapproved:
+ *   get:
+ *     tags:
+ *       - clubs
+ *       - admin
+ *     summary: Retrieve all unapproved clubs.
+ *     description: Admin-only endpoint to fetch all pending club approvals.
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: A list of unapproved clubs.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                   name:
+ *                     type: string
+ *                   description:
+ *                     type: string
+ *                   avatarUrl:
+ *                     type: string
+ *                   creationDate:
+ *                     type: string
+ *                     format: date-time
+ *                   instagramUsername:
+ *                     type: string
+ *                   websiteUrl:
+ *                     type: string
+ *                   slug:
+ *                     type: string
+ *       401:
+ *         description: Unauthorized - Admin access required.
+ *       500:
+ *         description: Internal Server Error.
+ */

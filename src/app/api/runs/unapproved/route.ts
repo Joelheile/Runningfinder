@@ -51,3 +51,73 @@ export async function GET() {
     );
   }
 }
+
+/**
+ * @swagger
+ * /api/runs/unapproved:
+ *   get:
+ *     tags:
+ *       - runs
+ *       - admin
+ *     summary: Retrieve all unapproved runs.
+ *     description: Admin-only endpoint to fetch all pending run approvals with their associated club information.
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: A list of unapproved runs with their club details.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                   name:
+ *                     type: string
+ *                   difficulty:
+ *                     type: string
+ *                     enum: [easy, intermediate, advanced]
+ *                   clubId:
+ *                     type: string
+ *                   club:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: string
+ *                       name:
+ *                         type: string
+ *                       description:
+ *                         type: string
+ *                       instagramUsername:
+ *                         type: string
+ *                       stravaUsername:
+ *                         type: string
+ *                       avatarUrl:
+ *                         type: string
+ *                   datetime:
+ *                     type: string
+ *                     format: date-time
+ *                   weekday:
+ *                     type: integer
+ *                   startDescription:
+ *                     type: string
+ *                   locationLng:
+ *                     type: number
+ *                   locationLat:
+ *                     type: number
+ *                   mapsLink:
+ *                     type: string
+ *                   isRecurrent:
+ *                     type: boolean
+ *                   isApproved:
+ *                     type: boolean
+ *                   distance:
+ *                     type: number
+ *       401:
+ *         description: Unauthorized - Admin access required.
+ *       500:
+ *         description: Internal Server Error.
+ */

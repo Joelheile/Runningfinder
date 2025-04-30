@@ -44,7 +44,7 @@ export async function PATCH(
 
     const body = await request.json();
 
-    // First check if the run exists
+
     const [existingRun] = await db
       .select()
       .from(runs)
@@ -58,27 +58,11 @@ export async function PATCH(
       );
     }
 
-    // Create an update object with only the fields that are present
+
     const updateData: Partial<typeof runs.$inferSelect> = {};
 
-    // Only allow updating these specific fields during normal updates
-    if (body.name !== undefined) updateData.name = body.name;
-    if (body.datetime !== undefined)
-      updateData.datetime = new Date(body.datetime);
-    if (body.difficulty !== undefined) updateData.difficulty = body.difficulty;
-    if (body.distance !== undefined) updateData.distance = body.distance;
-    if (body.startDescription !== undefined)
-      updateData.startDescription = body.startDescription;
-    if (body.isRecurrent !== undefined)
-      updateData.isRecurrent = body.isRecurrent;
-    if (body.locationLat !== undefined)
-      updateData.locationLat = body.locationLat;
-    if (body.locationLng !== undefined)
-      updateData.locationLng = body.locationLng;
-    if (body.mapsLink !== undefined) updateData.mapsLink = body.mapsLink;
+  
 
-    // Only allow setting isApproved if it's explicitly passed and true
-    // This ensures isApproved can only be set through the approve endpoint
     if (body.isApproved === true) updateData.isApproved = true;
 
     if (Object.keys(updateData).length === 0) {
@@ -111,7 +95,7 @@ export async function DELETE(
       return NextResponse.json({ error: "ID is required" }, { status: 400 });
     }
 
-    // First check if the run exists
+
     const [existingRun] = await db
       .select()
       .from(runs)
@@ -119,7 +103,7 @@ export async function DELETE(
       .limit(1);
 
     if (!existingRun) {
-      // Return 200 if run doesn't exist, as the end state is what the client wanted
+
       return NextResponse.json({
         success: true,
         message: "Run already deleted",
@@ -140,3 +124,130 @@ export async function DELETE(
     );
   }
 }
+
+/**
+ * @swagger
+ * /api/runs/{id}:
+ *   get:
+ *     tags:
+ *       - runs
+ *     summary: Retrieve a run by ID.
+ *     description: Returns detailed information about a specific run.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Unique identifier of the run
+ *     responses:
+ *       200:
+ *         description: Returns the run data.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                 name:
+ *                   type: string
+ *                 clubId:
+ *                   type: string
+ *                 datetime:
+ *                   type: string
+ *                   format: date-time
+ *                 weekday:
+ *                   type: integer
+ *                   description: Day of the week (1-7, where 1 is Monday)
+ *                 distance:
+ *                   type: number
+ *                 difficulty:
+ *                   type: string
+ *                   enum: [easy, intermediate, advanced]
+ *                 startDescription:
+ *                   type: string
+ *                 locationLat:
+ *                   type: number
+ *                 locationLng:
+ *                   type: number
+ *                 mapsLink:
+ *                   type: string
+ *                 isRecurrent:
+ *                   type: boolean
+ *                 isApproved:
+ *                   type: boolean
+ *       404:
+ *         description: Run not found.
+ *       500:
+ *         description: Internal Server Error.
+ *   
+ *   patch:
+ *     tags:
+ *       - runs
+ *     summary: Update a run by ID.
+ *     description: Updates specific fields of an existing run.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Unique identifier of the run
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               datetime:
+ *                 type: string
+ *                 format: date-time
+ *               difficulty:
+ *                 type: string
+ *                 enum: [easy, intermediate, advanced]
+ *               distance:
+ *                 type: number
+ *               startDescription:
+ *                 type: string
+ *               isRecurrent:
+ *                 type: boolean
+ *               locationLat:
+ *                 type: number
+ *               locationLng:
+ *                 type: number
+ *               mapsLink:
+ *                 type: string
+ *               isApproved:
+ *                 type: boolean
+ *     responses:
+ *       200:
+ *         description: Returns the updated run.
+ *       404:
+ *         description: Run not found.
+ *       500:
+ *         description: Internal Server Error.
+ *   
+ *   delete:
+ *     tags:
+ *       - runs
+ *     summary: Delete a run by ID.
+ *     description: Permanently removes a run from the database.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Unique identifier of the run
+ *     responses:
+ *       200:
+ *         description: Run successfully deleted.
+ *       404:
+ *         description: Run not found or already deleted.
+ *       500:
+ *         description: Internal Server Error.
+ */

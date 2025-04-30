@@ -39,10 +39,6 @@ export default function AdminPage() {
         <section className="border-t pt-10">
           <UnapprovedRunsLogic />
         </section>
-        {/* <section>
-          <h2 className="text-xl font-semibold mb-4">Google Maps API Test</h2>
-          <MapTest />
-        </section> */}
       </div>
     </div>
   );

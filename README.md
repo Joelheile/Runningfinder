@@ -133,7 +133,7 @@ _To skip the process of setting up different API Keys in Google and Github oAuth
    ```sh
    pnpm i
    ```
-3. Create [.env.local ](/readme/env.md)file
+3. Copy .env.example file and get either actual keys from me or enter your own
 
 4. Run project
    ```sh
@@ -143,9 +143,9 @@ _To skip the process of setting up different API Keys in Google and Github oAuth
    ```sh
    pnpm run tests
    ```
-6. Get familiar with [API documentation](http://localhost:3000/api-doc)
+6. Get familiar with [API documentation](http://localhost:3000/docs)
    ```sh
-   http://localhost:3000/api-doc
+   http://localhost:3000/docs
    ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
