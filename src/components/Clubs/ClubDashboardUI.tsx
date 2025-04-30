@@ -1,12 +1,11 @@
 import { Club } from "@/lib/types/Club";
 import { Run } from "@/lib/types/Run";
-import { ChevronLeft, Share } from "lucide-react";
+import { ChevronLeft, Heart, Share } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { RunDisclaimer } from "../disclaimer";
 import AddRunState from "../Runs/AddRunLogic";
 import RunCard from "../Runs/RunCardLogic";
 import { Button } from "../UI/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "../UI/tooltip";
 import ClubCard from "./ClubCard";
 import ClubCardSkeleton from "./ClubCardSkeleton";
 
@@ -57,7 +56,6 @@ export default function ClubDashboardUI({
 
   return (
     <div className="min-h-screen bg-gray-50 pb-safe">
-      {/* Top Navigation Bar */}
       <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 px-2 sm:px-6 lg:px-8 py-2 sm:py-4">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <button
@@ -71,41 +69,28 @@ export default function ClubDashboardUI({
           </button>
           <div className="flex items-center gap-2">
             <div className="flex gap-2">
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={onShare}
-                    className="hover:bg-gray-100 rounded-lg"
-                  >
-                    <Share className="h-5 w-5" />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>Share club</TooltipContent>
-              </Tooltip>
-
-              {/* <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={onDelete}
-                    className="hover:bg-gray-100 rounded-lg"
-                  >
-                    <Trash className="h-5 w-5" />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>Delete club</TooltipContent>
-              </Tooltip> */}
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => router.push("/runs/liked")}
+                className="hover:bg-gray-100 rounded-lg"
+              >
+                <Heart className="h-5 w-5" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={onShare}
+                className="hover:bg-gray-100 rounded-lg"
+              >
+                <Share className="h-5 w-5" />
+              </Button>
             </div>
           </div>
         </div>
       </nav>
 
-      {/* Main Content */}
       <main className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-3 sm:py-6 space-y-4 sm:space-y-8">
-        {/* Club Card Section */}
         <section className="w-full">
           <ClubCard
             avatarUrl={avatarUrl}
@@ -117,7 +102,6 @@ export default function ClubDashboardUI({
           />
         </section>
 
-        {/* Upcoming Runs Section */}
         <section className="pt-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4 mb-3 sm:mb-6">
             <h2 className="text-xl sm:text-2xl font-bold text-gray-900">

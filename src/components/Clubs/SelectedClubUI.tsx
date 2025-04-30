@@ -4,6 +4,7 @@ import { Run } from "@/lib/types/Run";
 import { ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import ClubIconBar from "../Icons/ClubIconBar";
 import RunCardUI from "../Runs/RunCardUI";
@@ -42,9 +43,10 @@ export default function SelectedClubHeaderUI({
     fetchInstagramData();
   }, [club.instagramUsername]);
 
+  const router = useRouter();
+
   return (
     <div className="fixed inset-0 z-[999] bg-white md:z-[50] md:top-16 md:right-0 md:left-auto md:bottom-auto md:w-[400px] md:h-[calc(100vh-4rem)] md:shadow-lg flex flex-col">
-      {/* Sticky Header with Back Button and Club Name */}
       <div className="sticky top-0 bg-white z-20 px-4 py-3 flex items-center gap-3">
         <Button
           variant="ghost"
@@ -53,7 +55,7 @@ export default function SelectedClubHeaderUI({
           onClick={onClose}
           asChild
         >
-          <Link href="/map">
+          <Link href="/">
             <ChevronRight className="h-5 w-5 rotate-180" />
           </Link>
         </Button>
@@ -62,9 +64,7 @@ export default function SelectedClubHeaderUI({
         </h2>
       </div>
 
-      {/* Main Content - Scrollable */}
       <div className="flex-1 overflow-y-auto">
-        {/* Club Image */}
         <div className="pb-4 px-4">
           <div className="relative w-full aspect-[16/9] md:aspect-[3/2] rounded-lg overflow-hidden shadow-sm">
             <Image
@@ -75,13 +75,12 @@ export default function SelectedClubHeaderUI({
               priority
             />
           </div>
-          {/* Description */}
+
           <p className="text-gray-600 pt-4 px-2 text-[15px] leading-relaxed">
             {club.description}
           </p>
         </div>
 
-        {/* Quick Actions */}
         <div className="px-4 pb-6">
           <div className="flex items-center gap-6">
             <Link href={`/clubs/${club.slug}`} className="flex-1">
@@ -99,7 +98,6 @@ export default function SelectedClubHeaderUI({
           </div>
         </div>
 
-        {/* Upcoming Runs Section */}
         <div className="border-t">
           <div className="px-4 py-3 flex items-center justify-between">
             <h3 className="text-base font-semibold text-gray-900">
@@ -111,22 +109,25 @@ export default function SelectedClubHeaderUI({
           </div>
         </div>
 
-        {/* Club Info Section */}
         <div className="px-4 space-y-4">
-          {/* Runs List */}
           <div className="space-y-2.5 mt-2">
             {runs.map((run) => (
-              <RunCardUI
+              <button
                 key={run.id}
-                id={run.id}
-                datetime={run.datetime}
-                name={run.name}
-                distance={run.distance}
-                difficulty={run.difficulty}
-                startDescription={run.startDescription}
-                mapsLink={run.mapsLink || null}
-                isCompact={true}
-              />
+                onClick={() => router.push(`/clubs/${club.slug}`)}
+              >
+                <RunCardUI
+                  key={run.id}
+                  id={run.id}
+                  datetime={run.datetime}
+                  name={run.name}
+                  distance={run.distance}
+                  difficulty={run.difficulty}
+                  startDescription={run.startDescription}
+                  mapsLink={run.mapsLink || null}
+                  isCompact={true}
+                />
+              </button>
             ))}
             {runs.length === 0 && (
               <div className="py-3 text-center bg-gray-50 rounded-lg">
