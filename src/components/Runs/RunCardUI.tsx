@@ -1,5 +1,6 @@
 import { ExternalLink, MapPin } from "lucide-react";
 import Link from "next/link";
+import React from "react";
 import LikeButton from "../Icons/LikeButton";
 import { Button } from "../UI/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../UI/tooltip";
