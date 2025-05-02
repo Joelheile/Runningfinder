@@ -1,0 +1,54 @@
+# Workflow: Daily Run Scraping
+# Purpose: Automatically scrapes running events from various club websites
+# Schedule: Runs daily at midnight UTC (adjust if needed for your timezone)
+# Manual Trigger: Available via workflow_dispatch for testing purposes
+
+name: Daily Run Scraping
+
+on:
+  schedule:
+    # Runs at 00:00 UTC every day
+    # Modify the cron expression if you need a different schedule:
+    # ┌───────────── minute (0 - 59)
+    # │ ┌───────────── hour (0 - 23)
+    # │ │ ┌───────────── day of the month (1 - 31)
+    # │ │ │ ┌───────────── month (1 - 12)
+    # │ │ │ │ ┌───────────── day of the week (0 - 6)
+    # │ │ │ │ │
+    # * * * * *
+    - cron: "0 0 * * *"
+
+  # Allows manual triggering of the workflow from GitHub UI
+  workflow_dispatch:
+
+jobs:
+  scrape:
+    name: Scrape Running Events
+    runs-on: ubuntu-latest
+    timeout-minutes: 15 # Set maximum job runtime
+
+    steps:
+      - name: Trigger scraping endpoint
+        id: scrape
+        # Using curl with proper error handling and timeout
+        run: |
+          response=$(curl -X POST \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            -H "Content-Type: application/json" \
+            -w "\n%{http_code}" \
+            --max-time 300 \
+            --retry 3 \
+            --retry-delay 5 \
+            --silent \
+            ${{ secrets.NEXT_PUBLIC_APP_URL }}/api/cron/scrape)
+
+          http_code=$(echo "$response" | tail -n1)
+          content=$(echo "$response" | sed \$d)
+
+          echo "HTTP Status Code: $http_code"
+          echo "Response: $content"
+
+          if [ "$http_code" -ne 200 ]; then
+            echo "::error::Scraping failed with status code $http_code"
+            exit 1
+          fi
