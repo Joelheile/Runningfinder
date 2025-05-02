@@ -10,6 +10,7 @@ const cancelRegistration = async ({
   runId,
   userId,
 }: UseCancelRegistrationParams) => {
+  console.log("runId" + runId + "userId" + userId);
   const response = await fetch("/api/registrations", {
     method: "DELETE",
     headers: {
@@ -43,6 +44,7 @@ export function useCancelRegistration() {
 
       queryClient.invalidateQueries({ queryKey: ["runs"] });
       queryClient.invalidateQueries({ queryKey: ["registrations"] });
+      queryClient.invalidateQueries({ queryKey: ["runs"] });
     },
   });
 }
