@@ -12,6 +12,7 @@ const nextConfig = {
       },
     ],
   },
+  output: "standalone",
   webpack: (config) => {
     config.resolve = {
       ...config.resolve,
