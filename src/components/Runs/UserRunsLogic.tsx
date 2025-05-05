@@ -1,7 +1,7 @@
 "use client";
 
 import { useCancelRegistration } from "@/lib/hooks/registrations/useCancelRegistration";
-import { useRegistrations } from "@/lib/hooks/registrations/useRegistrations";
+import { useUserRegistrations } from "@/lib/hooks/registrations/useRegistrations";
 import { useFetchRuns } from "@/lib/hooks/runs/useFetchRuns";
 import { Run } from "@/lib/types/Run";
 import { useQueryClient } from "@tanstack/react-query";
@@ -23,13 +23,12 @@ export default function UserRuns({ userId }: UserRunsProps) {
     queryClient.resetQueries({ queryKey: ["registration"] });
   }, [queryClient]);
 
-  const { getUserRegistrations } = useRegistrations();
   const {
     data: registrations,
     isLoading: registrationsLoading,
     error: registrationsError,
     refetch: refetchRegistrations,
-  } = getUserRegistrations(userId);
+  } = useUserRegistrations(userId);
 
   useEffect(() => {
     const timer = setTimeout(() => {

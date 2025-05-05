@@ -1,6 +1,9 @@
 import { useCancelRegistration } from "@/lib/hooks/registrations/useCancelRegistration";
 import { useRegisterRun } from "@/lib/hooks/registrations/useRegisterRun";
-import { useRegistrations } from "@/lib/hooks/registrations/useRegistrations";
+import {
+  useRegistrations,
+  useRegistrationStatus,
+} from "@/lib/hooks/registrations/useRegistrations";
 import { useDeleteRun } from "@/lib/hooks/runs/useDeleteRun";
 import { getMapsLink } from "@/lib/hooks/runs/useRunCardHelpers";
 import { useQueryClient } from "@tanstack/react-query";
@@ -50,32 +53,33 @@ export default function RunCard({
   const router = useRouter();
   const [isRegistering, setIsRegistering] = useState(false);
   const [isUnregistering, setIsUnregistering] = useState(false);
+  const [localRegistered, setLocalRegistered] = useState<boolean | undefined>(
+    undefined
+  );
   const { mutate: deleteRun } = useDeleteRun();
   const registerRun = useRegisterRun();
   const cancelRegistration = useCancelRegistration();
   const queryClient = useQueryClient();
-  const { checkRegistrationStatus } = useRegistrations();
+  const { invalidateRegistrationStatus } = useRegistrations();
 
   const recoveryMapsLink = getMapsLink(
     mapsLink,
     locationLat,
     locationLng,
-    startDescription,
+    startDescription
   );
 
   const {
     data: isCheckedRegistered,
     refetch: refetchRegistration,
     isLoading: isCheckingRegistration,
-  } = checkRegistrationStatus({
+  } = useRegistrationStatus({
     userId: session?.user?.id,
     runId: id,
   });
 
   const isRegistered =
-    typeof initialIsRegistered !== "undefined"
-      ? initialIsRegistered
-      : isCheckedRegistered;
+    initialIsRegistered ?? localRegistered ?? isCheckedRegistered;
 
   const isLoading = isRegistering || isUnregistering || isCheckingRegistration;
 
@@ -98,6 +102,9 @@ export default function RunCard({
             userId: session.user.id,
           });
         }
+        setLocalRegistered(false);
+        invalidateRegistrationStatus(session.user.id, id);
+        await refetchRegistration();
       } catch (error) {
         toast.error("Error unregistering from run");
       } finally {
@@ -107,6 +114,9 @@ export default function RunCard({
       setIsRegistering(true);
       try {
         await registerRun.mutateAsync({ runId: id, userId: session.user.id });
+        setLocalRegistered(true);
+        invalidateRegistrationStatus(session.user.id, id);
+        await refetchRegistration();
       } catch (error) {
         toast.error("Error registering for run");
       } finally {

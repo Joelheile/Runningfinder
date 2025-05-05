@@ -102,10 +102,6 @@ export default function RunCardUI({
       e.preventDefault();
       e.stopPropagation();
       onLikeRun();
-
-      setTimeout(() => {
-        window.location.reload();
-      }, 100);
     }
   };
 

@@ -181,15 +181,15 @@ _To skip the process of setting up different API Keys in Google and Github oAuth
    ```
 3. Copy .env.example file and get either actual keys from me or enter your own
 
-4. Run project
+4. Run project either with production database or on local docker container
+   (I can help if you want to start it locally)
+   **production:**
+
    ```sh
-   pnpm run dev
+   pnpm run prod
    ```
-5. Run tests
-   ```sh
-   pnpm run tests
-   ```
-6. Get familiar with [API documentation](http://localhost:3000/docs)
+
+5. Get familiar with [API documentation](http://localhost:3000/docs)
    ```sh
    http://localhost:3000/docs
    ```
@@ -204,7 +204,7 @@ _To skip the process of setting up different API Keys in Google and Github oAuth
 
 ### Database access
 
-You can access the database locally through the following command:
+You can access the database locally, if Docker containers are running and schema is generated with ```pnpm run dev:generate``` through the following command:
 
 ```
  pnpm drizzle-kit studio
