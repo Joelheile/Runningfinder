@@ -20,8 +20,8 @@
     "dev:seed": " npx node -r esbuild-register src/lib/db/seed.ts"
   },
   "dependencies": {
-    "@auth/core": "0.37.4",
-    "@auth/drizzle-adapter": "^1.7.4",
+    "@auth/core": "^0.18.1",
+    "@auth/drizzle-adapter": "^0.3.12",
     "@aws-sdk/client-s3": "^3.679.0",
     "@aws-sdk/s3-request-presigner": "^3.679.0",
     "@googlemaps/js-api-loader": "^1.16.8",
@@ -72,7 +72,7 @@
     "lucide-react": "^0.438.0",
     "msw": "^2.6.6",
     "next": "14.2.7",
-    "next-auth": "5.0.0-beta.25",
+    "next-auth": "^5.0.0-beta.4",
     "next-intl": "^3.24.0",
     "next-swagger-doc": "^0.4.1",
     "nock": "^13.5.6",
