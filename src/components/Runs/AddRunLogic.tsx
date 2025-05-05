@@ -22,20 +22,20 @@ export default function AddRunState({
   const [difficulty, setDifficulty] = useState(initialValues.difficulty || "");
   const [distance, setDistance] = useState(initialValues.distance || "");
   const [datetime, setDatetime] = useState<Date>(
-    initialValues.datetime || new Date()
+    initialValues.datetime || new Date(),
   );
   const [startDescription, setStartDescription] = useState(
-    initialValues.startDescription || ""
+    initialValues.startDescription || "",
   );
   const [locationLat, setLocationLat] = useState(
-    initialValues.location?.lat || 52.52
+    initialValues.location?.lat || 52.52,
   );
   const [locationLng, setLocationLng] = useState(
-    initialValues.location?.lng || 13.405
+    initialValues.location?.lng || 13.405,
   );
 
   const [isRecurrent, setIsRecurrent] = useState(
-    initialValues.isRecurrent || false
+    initialValues.isRecurrent || false,
   );
   const [showMap, setShowMap] = useState(false);
 
@@ -141,7 +141,7 @@ export default function AddRunState({
     lat: number,
     lng: number,
     placeUrl: string,
-    formattedAddress: string
+    formattedAddress: string,
   ) => {
     posthog.capture("run_location_selected", {
       club_id: club.id,
@@ -181,7 +181,16 @@ export default function AddRunState({
         },
       });
     };
-  }, []);
+  }, [
+    club.id,
+    club.name,
+    difficulty,
+    distance,
+    locationLat,
+    locationLng,
+    name,
+    startDescription,
+  ]);
 
   return (
     <AddRunUI

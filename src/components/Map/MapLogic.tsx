@@ -113,7 +113,7 @@ const Map = memo(({ runs }: { runs: Run[] }) => {
     };
 
     initMap();
-  }, []);
+  }, [runs]);
 
   const {
     data: clubs,
@@ -229,7 +229,7 @@ const Map = memo(({ runs }: { runs: Run[] }) => {
     });
 
     mapInstanceRef.current?.fitBounds(bounds);
-  }, [runs]);
+  }, [markersRef.current.length, runs]);
 
   useEffect(() => {
     markersRef.current.forEach((marker) => {

@@ -42,7 +42,10 @@ export function useUserRegistrations(userId: string) {
   });
 }
 
-export function useRegistrationStatus({ userId, runId }: CheckRegistrationParams) {
+export function useRegistrationStatus({
+  userId,
+  runId,
+}: CheckRegistrationParams) {
   return useQuery<RegistrationStatus, Error>({
     queryKey: ["registration", userId, runId],
     queryFn: () => checkUserRegistered({ userId, runId }),

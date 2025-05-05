@@ -1,51 +1,32 @@
+import { Run } from "@/lib/types/Run";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import toast from "react-hot-toast";
+import { updateRun } from "./runAPIs";
 
-export interface UpdateRunData {
-  name?: string;
-  description?: string;
-  datetime?: Date;
-  difficulty?: string;
-  distance?: string;
-  startDescription?: string;
-  isApproved?: boolean;
-  isRecurrent?: boolean;
-}
-
-async function updateRun(id: string, data: UpdateRunData) {
-  const response = await fetch(`/api/runs/${id}`, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  });
-
-  if (!response.ok) {
-    const errorText = await response.text();
-    toast.error(`Failed to update run: ${errorText}`);
-    throw new Error(`Failed to update run: ${errorText}`);
-  }
-
-  toast.success("Run updated successfully");
-  return { id, ...response.json() };
-}
-
+/**
+ * Hook to update an existing run
+ */
 export function useUpdateRun() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: UpdateRunData }) =>
+    mutationFn: ({ id, data }: { id: string; data: Partial<Run> }) =>
       updateRun(id, data),
-    onSuccess: (result) => {
-      queryClient.invalidateQueries({ queryKey: ["runs"] });
-      queryClient.removeQueries({ queryKey: ["runs"] });
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({
+        queryKey: ["run", data.id],
+      });
 
-      queryClient.invalidateQueries({ queryKey: ["runs", result.id] });
+      if (data.clubId) {
+        queryClient.invalidateQueries({
+          queryKey: ["runs", "club", data.clubId],
+        });
+      }
 
-      setTimeout(() => {
-        queryClient.refetchQueries({ queryKey: ["runs"] });
-      }, 100);
+      queryClient.invalidateQueries({
+        queryKey: ["runs"],
+      });
     },
   });
 }
+
+export { updateRun };

@@ -4,15 +4,17 @@ import { useRegisterRun } from "../registrations/useRegisterRun";
 
 export function getMapsLink(
   providedLink: string | null | undefined,
-  lat: number,
-  lng: number,
-  description: string,
+  lat: number | undefined,
+  lng: number | undefined,
+  description: string = "",
 ): string | null {
   if (providedLink) return providedLink;
 
-  return lat && lng
-    ? `https://www.google.com/maps/search/${encodeURIComponent(description)}/@${lat},${lng},15z`
-    : null;
+  if (lat && lng) {
+    return `https://www.google.com/maps/search/${encodeURIComponent(description)}/@${lat},${lng},15z`;
+  }
+
+  return null;
 }
 
 export async function registerForRun(
@@ -20,9 +22,9 @@ export async function registerForRun(
   userId: string,
   setLoading: (state: boolean) => void,
   registerMutation: ReturnType<typeof useRegisterRun>,
-  refetchFn: () => Promise<any>,
 ) {
   setLoading(true);
+
   try {
     await registerMutation.mutateAsync({ runId, userId });
   } catch (error) {
@@ -35,16 +37,15 @@ export async function registerForRun(
 export async function unregisterFromRun(
   runId: string,
   userId: string,
-  externalHandler: ((runId: string) => void) | undefined,
   setLoading: (state: boolean) => void,
   cancelMutation: ReturnType<typeof useCancelRegistration>,
-  refetchFn: () => Promise<any>,
+  externalHandler?: (runId: string) => void,
 ) {
   setLoading(true);
+
   try {
     if (externalHandler) {
       externalHandler(runId);
-      await refetchFn();
     } else {
       await cancelMutation.mutateAsync({ runId, userId });
     }
