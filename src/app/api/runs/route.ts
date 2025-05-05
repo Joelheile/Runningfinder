@@ -38,48 +38,23 @@ export async function GET(request: Request) {
 
     console.log("Query params:", { weekdays, difficulty, clubId });
 
-<<<<<<< HEAD
     const now = new Date();
     console.log("Current date:", now);
 
     const conditions = [eq(runs.isApproved, true), gt(runs.datetime, now)];
 
-=======
-    // Get current date
-    const now = new Date();
-    console.log("Current date:", now);
-
-    const conditions = [
-      
-      
-    ];
-
-    // Add clubId filter if provided
->>>>>>> origin/main
     if (clubId) {
       conditions.push(eq(runs.clubId, clubId));
     }
 
-<<<<<<< HEAD
-=======
-    // Add weekday filter if provided
->>>>>>> origin/main
     if (weekdays.length > 0) {
       conditions.push(inArray(runs.weekday, weekdays));
     }
 
-<<<<<<< HEAD
-=======
-    // Add difficulty filter if provided
->>>>>>> origin/main
     if (difficulty) {
       conditions.push(eq(runs.difficulty, difficulty));
     }
 
-<<<<<<< HEAD
-=======
-    // Get all runs with the specified conditions
->>>>>>> origin/main
     const runsData = await db
       .select({
         id: runs.id,
@@ -97,20 +72,10 @@ export async function GET(request: Request) {
         distance: runs.distance,
       })
       .from(runs)
-<<<<<<< HEAD
       .where(and(...conditions))
 
       .orderBy(asc(runs.datetime));
 
-=======
-      .where(and(eq(runs.isApproved, true), gt(runs.datetime, now)),
-      )
-      .orderBy(asc(runs.datetime));
-
-    console.log("Fetched runs from database:", runsData);
-
-    // Transform the data to include a location object
->>>>>>> origin/main
     const transformedRuns = runsData.map((run: any) => ({
       ...run,
       location: {
@@ -119,11 +84,6 @@ export async function GET(request: Request) {
       },
     }));
 
-<<<<<<< HEAD
-=======
-    console.log("Transformed runs:", transformedRuns);
-
->>>>>>> origin/main
     return NextResponse.json(transformedRuns);
   } catch (error) {
     return handleErrorResponse(error);
@@ -134,10 +94,6 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
 
-<<<<<<< HEAD
-=======
-    // Validate the date field
->>>>>>> origin/main
     if (!body.datetime) {
       return handleErrorResponse(
         new Error("Date is required"),
@@ -146,10 +102,6 @@ export async function POST(request: Request) {
       );
     }
 
-<<<<<<< HEAD
-=======
-    // Ensure date is a valid Date object
->>>>>>> origin/main
     const datetime = new Date(body.datetime);
     if (isNaN(datetime.getTime())) {
       return handleErrorResponse(
@@ -159,10 +111,6 @@ export async function POST(request: Request) {
       );
     }
 
-<<<<<<< HEAD
-=======
-    // Validate location coordinates
->>>>>>> origin/main
     if (!body.location?.lat || !body.location?.lng) {
       return handleErrorResponse(
         new Error("Location coordinates are required"),
@@ -171,15 +119,8 @@ export async function POST(request: Request) {
       );
     }
 
-<<<<<<< HEAD
     const weekday = ((datetime.getDay() + 6) % 7) + 1;
 
-=======
-    // Calculate weekday (1-7, where 1 is Monday)
-    const weekday = ((datetime.getDay() + 6) % 7) + 1;
-
-    // Create the run with flattened location fields
->>>>>>> origin/main
     const run = await db
       .insert(runs)
       .values({
@@ -229,7 +170,6 @@ export async function DELETE(request: Request) {
     return handleErrorResponse(error);
   }
 }
-<<<<<<< HEAD
 
 /**
  * @swagger
@@ -382,5 +322,3 @@ export async function DELETE(request: Request) {
  *       500:
  *         description: Internal Server Error.
  */
-=======
->>>>>>> origin/main

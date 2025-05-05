@@ -10,35 +10,6 @@ interface CheckRegistrationParams {
 export function useRegistrations() {
   const queryClient = useQueryClient();
 
-  const getUserRegistrations = (userId: string) => {
-    return useQuery<Registration[], Error>({
-      queryKey: ["registrations", userId],
-      queryFn: () => fetchRegistrationsByUserId(userId),
-      enabled: !!userId,
-      staleTime: 0,
-      gcTime: 0,
-      retry: 2,
-      refetchOnMount: true,
-      refetchOnWindowFocus: true,
-    });
-  };
-
-  const checkRegistrationStatus = ({
-    userId,
-    runId,
-  }: CheckRegistrationParams) => {
-    return useQuery<RegistrationStatus, Error>({
-      queryKey: ["registration", userId, runId],
-      queryFn: () => checkUserRegistered({ userId, runId }),
-      enabled: !!userId && !!runId,
-      staleTime: 0,
-      gcTime: 0,
-      retry: 2,
-      refetchOnMount: true,
-      refetchOnWindowFocus: true,
-    });
-  };
-
   const invalidateRegistrations = () => {
     queryClient.invalidateQueries({ queryKey: ["registrations"] });
   };
@@ -52,12 +23,36 @@ export function useRegistrations() {
   };
 
   return {
-    getUserRegistrations,
-    checkRegistrationStatus,
     invalidateRegistrations,
     invalidateUserRegistrations,
     invalidateRegistrationStatus,
   };
+}
+
+export function useUserRegistrations(userId: string) {
+  return useQuery<Registration[], Error>({
+    queryKey: ["registrations", userId],
+    queryFn: () => fetchRegistrationsByUserId(userId),
+    enabled: !!userId,
+    staleTime: 0,
+    gcTime: 0,
+    retry: 2,
+    refetchOnMount: true,
+    refetchOnWindowFocus: true,
+  });
+}
+
+export function useRegistrationStatus({ userId, runId }: CheckRegistrationParams) {
+  return useQuery<RegistrationStatus, Error>({
+    queryKey: ["registration", userId, runId],
+    queryFn: () => checkUserRegistered({ userId, runId }),
+    enabled: !!userId && !!runId,
+    staleTime: 0,
+    gcTime: 0,
+    retry: 2,
+    refetchOnMount: true,
+    refetchOnWindowFocus: true,
+  });
 }
 
 async function fetchRegistrationsByUserId(
