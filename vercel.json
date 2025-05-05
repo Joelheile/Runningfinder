@@ -1,7 +1,7 @@
 {
   "buildCommand": "next build",
   "devCommand": "next dev",
-  "installCommand": "npm install",
+  "installCommand": "pnpm install --no-frozen-lockfile",
   "outputDirectory": ".next",
   "crons": [
     {
