@@ -12,8 +12,6 @@ const nextConfig = {
       },
     ],
   },
-  output: "server",
-  distDir: ".next",
   webpack: (config) => {
     config.resolve = {
       ...config.resolve,
