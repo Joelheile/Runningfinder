@@ -25,7 +25,10 @@ export function hashPassword(password: string, salt: string): string {
  * @param password - The plain text password to hash
  * @returns An object containing the salt and hash
  */
-export function saltAndHashPassword(password: string): { salt: string; hash: string } {
+export function saltAndHashPassword(password: string): {
+  salt: string;
+  hash: string;
+} {
   const salt = generateSalt();
   const hash = hashPassword(password, salt);
   return { salt, hash };
@@ -38,7 +41,11 @@ export function saltAndHashPassword(password: string): { salt: string; hash: str
  * @param storedSalt - The stored salt used for hashing
  * @returns Boolean indicating whether the password is valid
  */
-export function verifyPassword(password: string, storedHash: string, storedSalt: string): boolean {
+export function verifyPassword(
+  password: string,
+  storedHash: string,
+  storedSalt: string,
+): boolean {
   const hash = hashPassword(password, storedSalt);
   return hash === storedHash;
-} 
+}

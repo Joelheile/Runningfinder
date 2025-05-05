@@ -1,21 +1,30 @@
-import { useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { useFetchRunsByClubId } from "./useFetchRunsByClubId";
+import { fetchRunsByClubId } from "./runAPIs";
 
 export function useClubRunsData(clubId: string | undefined) {
   const queryClient = useQueryClient();
   const effectiveClubId = clubId || "";
 
-  const result = useFetchRunsByClubId(effectiveClubId);
+  const queryKey = ["runs", "club", effectiveClubId];
+
+  const result = useQuery({
+    queryKey,
+    queryFn: () => fetchRunsByClubId(effectiveClubId),
+    staleTime: 0,
+    enabled: !!effectiveClubId,
+  });
 
   useEffect(() => {
     if (!effectiveClubId) return;
 
     queryClient.prefetchQuery({
-      queryKey: ["runs", "club", effectiveClubId],
-      queryFn: () => result.queryFn(),
+      queryKey,
+      queryFn: () => fetchRunsByClubId(effectiveClubId),
     });
-  }, [effectiveClubId, queryClient, result.queryFn]);
+  }, [effectiveClubId, queryClient, queryKey]);
 
   return result;
 }
+
+export { fetchRunsByClubId };

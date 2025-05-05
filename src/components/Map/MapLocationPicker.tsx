@@ -97,7 +97,7 @@ export default function MapLocationPicker({
     }, 100);
 
     return () => clearTimeout(timer);
-  }, [isScriptLoaded, location]);
+  }, [isScriptLoaded, location, onSelect]);
 
   useEffect(() => {
     if (!map || !marker || !location) return;

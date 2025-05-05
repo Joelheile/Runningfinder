@@ -204,7 +204,7 @@ _To skip the process of setting up different API Keys in Google and Github oAuth
 
 ### Database access
 
-You can access the database locally, if Docker containers are running and schema is generated with ```pnpm run dev:generate``` through the following command:
+You can access the database locally, if Docker containers are running and schema is generated with `pnpm run dev:generate` through the following command:
 
 ```
  pnpm drizzle-kit studio
