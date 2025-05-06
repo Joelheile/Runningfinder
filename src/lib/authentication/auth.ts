@@ -7,7 +7,10 @@ import { accounts, sessions, users, verificationTokens } from "../db/schema";
 import { sendVerificationRequest } from "./sendMailRequest";
 
 const providers = [
-  GitHub,
+  GitHub({
+    clientId: process.env.AUTH_GITHUB_ID,
+    clientSecret: process.env.AUTH_GITHUB_SECRET,
+  }),
   Resend({
     apiKey: process.env.AUTH_RESEND_API_KEY,
     from: "no-reply@runningfinder.de",
