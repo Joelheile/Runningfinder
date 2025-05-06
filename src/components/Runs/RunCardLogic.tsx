@@ -56,7 +56,7 @@ export default function RunCard({
   const [isRegistering, setIsRegistering] = useState(false);
   const [isUnregistering, setIsUnregistering] = useState(false);
   const [localRegistered, setLocalRegistered] = useState<boolean | undefined>(
-    undefined
+    undefined,
   );
   const { mutate: deleteRun } = useDeleteRun();
   const registerRun = useRegisterRun();
@@ -68,7 +68,7 @@ export default function RunCard({
     mapsLink,
     locationLat,
     locationLng,
-    startDescription
+    startDescription,
   );
 
   const {
