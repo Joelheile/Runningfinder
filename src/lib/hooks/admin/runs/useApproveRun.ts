@@ -21,9 +21,9 @@ export default function useApproveRun() {
         throw new Error(`Failed to approve run: ${errorText}`);
       }
 
-      await queryClient.invalidateQueries({ queryKey: ['runs'] });
-      await queryClient.invalidateQueries({ queryKey: ['runs', 'unapproved'] });
-      
+      await queryClient.invalidateQueries({ queryKey: ["runs"] });
+      await queryClient.invalidateQueries({ queryKey: ["runs", "unapproved"] });
+
       toast.success("Run approved successfully");
       return response.json() as Promise<Run>;
     } catch (error) {

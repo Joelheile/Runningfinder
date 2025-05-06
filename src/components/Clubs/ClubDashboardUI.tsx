@@ -58,11 +58,11 @@ export default function ClubDashboardUI({
   const pastRuns = runs?.filter((run) => run.isPast) || [];
 
   const sortedUpcomingRuns = [...upcomingRuns].sort(
-    (a, b) => new Date(a.datetime).getTime() - new Date(b.datetime).getTime()
+    (a, b) => new Date(a.datetime).getTime() - new Date(b.datetime).getTime(),
   );
 
   const sortedPastRuns = [...pastRuns].sort(
-    (a, b) => new Date(b.datetime).getTime() - new Date(a.datetime).getTime()
+    (a, b) => new Date(b.datetime).getTime() - new Date(a.datetime).getTime(),
   );
 
   return (

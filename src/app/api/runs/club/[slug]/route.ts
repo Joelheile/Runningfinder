@@ -35,16 +35,11 @@ export async function GET(
         isApproved: runs.isApproved,
       })
       .from(runs)
-      .where(
-        and(
-          eq(runs.isApproved, true),
-          eq(runs.clubId, slug)
-        ),
-      );
-    
+      .where(and(eq(runs.isApproved, true), eq(runs.clubId, slug)));
+
     const pastRuns = runsData.map((run: Run) => ({
       ...run,
-      isPast: run.datetime < now
+      isPast: run.datetime < now,
     }));
 
     return NextResponse.json(pastRuns);
