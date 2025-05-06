@@ -3,6 +3,9 @@ import { clubs, runs } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export async function GET() {
   try {
     const unapprovedRuns = await db
@@ -35,10 +38,10 @@ export async function GET() {
 
     return NextResponse.json(unapprovedRuns, {
       headers: {
-        "Cache-Control":
-          "no-store, no-cache, must-revalidate, proxy-revalidate",
+        "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0",
         Pragma: "no-cache",
         Expires: "0",
+        "Surrogate-Control": "no-store",
       },
     });
   } catch (error) {
