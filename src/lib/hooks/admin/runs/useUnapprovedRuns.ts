@@ -8,15 +8,20 @@ interface RunWithClub extends Run {
 
 async function fetchUnapprovedRuns(): Promise<RunWithClub[]> {
   const response = await fetch("/api/runs/unapproved", {
+    method: "GET",
     cache: "no-store",
     headers: {
       Pragma: "no-cache",
-      "Cache-Control": "no-cache",
+      "Cache-Control": "no-cache, no-store, must-revalidate",
+      Expires: "0",
     },
+    next: { revalidate: 0 },
   });
+  
   if (!response.ok) {
     throw new Error("Failed to fetch unapproved runs");
   }
+  
   const data = await response.json();
 
   return data.map((run: any) => {
@@ -40,7 +45,9 @@ export function useUnapprovedRuns() {
     queryFn: fetchUnapprovedRuns,
     staleTime: 0,
     gcTime: 0,
-    refetchOnMount: true,
+    refetchOnMount: "always",
     refetchOnWindowFocus: true,
+    refetchOnReconnect: true,
+    refetchInterval: 5000, // Refresh every 5 seconds
   });
 }
