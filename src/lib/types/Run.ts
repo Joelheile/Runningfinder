@@ -14,4 +14,5 @@ export interface Run {
   distance: string;
   isRecurrent: boolean;
   isApproved: boolean;
+  isPast?: boolean;
 }

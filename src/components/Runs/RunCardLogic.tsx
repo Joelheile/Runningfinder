@@ -30,6 +30,7 @@ interface RunCardProps {
   onUnregister?: (runId: string) => void;
   mapsLink?: string | null;
   clubSlug?: string;
+  isPast?: boolean;
 }
 
 export default function RunCard({
@@ -48,13 +49,14 @@ export default function RunCard({
   isAdmin,
   onUnregister: externalUnregister,
   clubSlug,
+  isPast = false,
 }: RunCardProps) {
   const { data: session } = useSession();
   const router = useRouter();
   const [isRegistering, setIsRegistering] = useState(false);
   const [isUnregistering, setIsUnregistering] = useState(false);
   const [localRegistered, setLocalRegistered] = useState<boolean | undefined>(
-    undefined,
+    undefined
   );
   const { mutate: deleteRun } = useDeleteRun();
   const registerRun = useRegisterRun();
@@ -66,7 +68,7 @@ export default function RunCard({
     mapsLink,
     locationLat,
     locationLng,
-    startDescription,
+    startDescription
   );
 
   const {
@@ -84,7 +86,7 @@ export default function RunCard({
   const isLoading = isRegistering || isUnregistering || isCheckingRegistration;
 
   const handleHeartClick = async () => {
-    if (isLoading) return;
+    if (isLoading || isPast) return;
 
     if (!session?.user) {
       signIn(undefined, { callbackUrl: window.location.href });
@@ -141,6 +143,7 @@ export default function RunCard({
       isRegistering={isLoading}
       userId={session?.user?.id}
       clubSlug={clubSlug}
+      isPast={isPast}
     />
   );
 }

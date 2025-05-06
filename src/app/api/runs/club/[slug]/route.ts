@@ -1,6 +1,7 @@
 import { db } from "@/lib/db/db";
 import { runs } from "@/lib/db/schema";
-import { and, eq, gt } from "drizzle-orm";
+import { Run } from "@/lib/types/Run";
+import { and, eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
 export async function GET(
@@ -37,13 +38,16 @@ export async function GET(
       .where(
         and(
           eq(runs.isApproved, true),
-          eq(runs.clubId, slug),
-
-          gt(runs.datetime, now),
+          eq(runs.clubId, slug)
         ),
       );
+    
+    const pastRuns = runsData.map((run: Run) => ({
+      ...run,
+      isPast: run.datetime < now
+    }));
 
-    return NextResponse.json(runsData);
+    return NextResponse.json(pastRuns);
   } catch (error) {
     console.error("Error fetching runs:", error);
     return NextResponse.json(
@@ -110,6 +114,8 @@ export async function GET(
  *                   isRecurrent:
  *                     type: boolean
  *                   isApproved:
+ *                     type: boolean
+ *                   isPast:
  *                     type: boolean
  *       400:
  *         description: Club ID is required.
