@@ -23,7 +23,7 @@ describe("RunCardUI Props", () => {
     const { getByText } = render(
       <TooltipProvider>
         <RunCardUI {...defaultProps} />
-      </TooltipProvider>
+      </TooltipProvider>,
     );
 
     expect(getByText("Morning Run")).toBeInTheDocument();
