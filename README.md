@@ -3,17 +3,24 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/Joelheile/ClubHub">
+  <a href="https://github.com/Joelheile/RunningFinder">
     <img src="/public/icons/App Icon.png" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">Running Finder</h3>
+  <h1 align="center">Running Finder</h1>
 
   <p align="center">
-Tired of running alone? Got overwhelmed with all the running clubs?
-<br /> We're here to help you. Find the running clubs of your dreams!
+    An open-source platform connecting runners with local running clubs
     <br />
-   
+    <a href="https://github.com/Joelheile/RunningFinder"><strong>Explore the docs »</strong></a>
+    <br />
+    <br />
+    <a href="https://runningfinder.com">View Demo</a>
+    ·
+    <a href="https://github.com/Joelheile/RunningFinder/issues">Report Bug</a>
+    ·
+    <a href="https://github.com/Joelheile/RunningFinder/issues">Request Feature</a>
+  </p>
 </div>
 
 <!-- TABLE OF CONTENTS -->
@@ -44,29 +51,158 @@ Tired of running alone? Got overwhelmed with all the running clubs?
 
 <!-- ABOUT THE PROJECT -->
 
-## About The Project
+## 🚀 About The Project
 
-This semester, I started building **Running Finder** — a platform inspired by Berlin's growing community gathering trend.
+Running Finder is a platform that helps runners discover and connect with running clubs and events in their area. The application displays running clubs and events on an interactive map, allowing users to filter by preferences like distance, weekday, or difficulty.
 
-Our mission is to centralize information about running clubs and events, displaying them on a dynamic Google Map. Users can filter runs based on their preferences (distance, weekday, or difficulty) and register for events directly through the platform.
+### Key Features
 
-At the beginning I implemented that only signed in users could add runs & clubs, but user Feedback suggested to open it up and implement a admin dashboard to decline/approve runs & clubs. Different authentication roles will be implemented in the future. Soon, managing runs and implementing a coexistence of single and recurring runs into the application will also be possible.
+- **Interactive Map**: View running clubs and events plotted on Google Maps
+- **Advanced Filtering**: Find runs by distance, weekday, and difficulty level
+- **Club Discovery**: Browse and join local running clubs
+- **Event Registration**: Register for upcoming runs directly through the platform
+- **Authentication**: Sign in with GitHub or email to save preferences and manage registrations
 
 ### Built With
 
-- [![Next][Next.js]][Next-url]
-- [![React][React.js]][React-url]
-- [![Drizzle][Drizzle]][Drizzle-url]
-- [![Jest][Jest]][Jest-url]
-- ![TailwindCSS][TailwindCSS]
-- [![Neon][Neon-tech]][Neon-tech-url]
+- [Next.js](https://nextjs.org/) - React framework with server-side rendering
+- [React](https://reactjs.org/) - Frontend library for building user interfaces
+- [Drizzle ORM](https://drizzle.team/) - TypeScript ORM for SQL databases
+- [TailwindCSS](https://tailwindcss.com/) - Utility-first CSS framework
+- [Neon](https://neon.tech/) - Serverless Postgres database
+- [Shadcn UI](https://ui.shadcn.com/) - Reusable component library
+- [Jest](https://jestjs.io/) & [Playwright](https://playwright.dev/) for testing
 
-[Drizzle]: https://img.shields.io/badge/Drizzle-000000?style=for-the-badge&logo=drizzle&logoColor=white
-[Drizzle-url]: https://drizzle.team/
-[Neon-tech]: https://img.shields.io/badge/Neon-000000?style=for-the-badge&logo=neon&logoColor=white
-[Neon-tech-url]: https://neon.tech/
-[Jest]: https://img.shields.io/badge/Jest-C21325?style=for-the-badge&logo=jest&logoColor=white
-[Jest-url]: https://jestjs.io/
+## 🚦 Getting Started
+
+### Prerequisites
+
+- Node.js (v18 or higher)
+- pnpm
+  ```sh
+  npm install -g pnpm
+  ```
+- Postgres database (or use the provided Docker setup)
+
+### Installation
+
+1. Clone the repository
+
+   ```sh
+   git clone https://github.com/Joelheile/RunningFinder.git
+   cd RunningFinder
+   ```
+
+2. Install dependencies
+
+   ```sh
+   pnpm install
+   ```
+
+3. Create a `.env.local` file based on `.env.example` and add your API keys
+
+   ```sh
+   cp .env.example .env.local
+   ```
+
+4. Set up the database
+
+   ```sh
+   # For development with Docker
+   sh docker_run.sh
+
+   # Generate database schema
+   pnpm dev:generate
+   pnpm dev:push
+
+   # Seed the database (optional)
+   pnpm dev:seed
+   ```
+
+5. Start the development server
+
+   ```sh
+   pnpm dev
+   ```
+
+6. Access the API documentation at http://localhost:3000/docs
+
+## 🗂️ Project Structure
+
+```
+runningfinder/
+├── src/                   # Source code
+│   ├── app/               # Next.js app router pages
+│   ├── components/        # React components
+│   ├── lib/               # Utilities, hooks, and business logic
+│   │   ├── authentication/# Auth configuration
+│   │   ├── db/            # Database schema and connections
+│   │   └── types/         # TypeScript type definitions
+├── public/                # Static assets
+├── tests/                 # Test files
+├── drizzle/               # Database migrations
+└── playwright-tests/      # End-to-end tests
+```
+
+## 🧪 Testing
+
+Run all tests with:
+
+```sh
+pnpm tests
+```
+
+Or run specific test suites:
+
+```sh
+# Unit tests
+pnpm jest unit
+
+# Integration tests
+pnpm jest integration
+
+# End-to-end tests
+npx playwright test
+```
+
+## 🛣️ Roadmap
+
+- [ ] Combine Google Maps marker dragging and place search
+- [ ] Enhance club dashboard with role-based permissions
+  - [ ] Page editing
+  - [ ] Membership management
+  - [ ] Registration management
+- [ ] Support for additional sport types
+- [ ] Weather API integration for run forecasts
+- [ ] Strava API integration for syncing runs
+
+See the [open issues](https://github.com/Joelheile/RunningFinder/issues) for a full list of proposed features and known issues.
+
+## 🤝 Contributing
+
+Contributions make the open-source community an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+Don't forget to check our [Contributing Guidelines](CONTRIBUTING.md).
+
+## 📄 License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
+## 📞 Contact
+
+Project Link: [https://github.com/Joelheile/RunningFinder](https://github.com/Joelheile/RunningFinder)
+
+## Acknowledgments
+
+- [Google Maps Platform](https://developers.google.com/maps) for mapping services
+- [Auth.js](https://authjs.dev/) for authentication
+- All the amazing runners and clubs who inspired this project!
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -156,116 +292,6 @@ flowchart TD
     style ApplicationModules fill:#FFFDD0,stroke:#CBD5E0,stroke-width:2px,color:#2D3748,font-weight:bold
 ```
 
-<!-- GETTING STARTED -->
-
-## Getting Started
-
-Download node.js and install pnpm
-
-- pnpm
-  ```sh
-  npm install pnpm
-  ```
-
-### Installation
-
-_To skip the process of setting up different API Keys in Google and Github oAuth in this assessment, I've provided my env secrets to copy them into a .env.local file. <br> Please do not share them_
-
-1. Clone the repo
-   ```sh
-   git clone https://github.com/Joelheile/ClubHub.git
-   ```
-2. Install packages
-   ```sh
-   pnpm i
-   ```
-3. Copy .env.example file and get either actual keys from me or enter your own
-
-4. Run project either with production database or on local docker container
-   (I can help if you want to start it locally)
-   **production:**
-
-   ```sh
-   pnpm run prod
-   ```
-
-5. Get familiar with [API documentation](http://localhost:3000/docs)
-   ```sh
-   http://localhost:3000/docs
-   ```
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- <Flowchart> -->
-
-### Entity-Relationship (ER) Diagram
-
-[Go to ER-Diagram](/readme/er-diagram.md)
-
-### Database access
-
-You can access the database locally, if Docker containers are running and schema is generated with `pnpm run dev:generate` through the following command:
-
-```
- pnpm drizzle-kit studio
-```
-
-<!-- CLEAN CODE EXAMPLES -->
-
-# Clean Code examples
-
-### API Documentation
-
-As you can see in the [API documentation](http://localhost:3000/docs), I've used [Swagger](https://swagger.io/) to document my API.
-I found it much more understandable than adding docstrings to routes.
-This way it is also possible to test the routes using only this dashboard.
-
-### Readability and Cleanliness
-
-1. **DRY**
-   To keep the code consistent, I used exported types and constants.
-   The [types](./src/lib/types/) we're the most helpful ones, as I changed them often and it was easier to change them in one place.
-2. **Code formatting**
-   Enabling prettier on save in VSCode and enabling auto deletion for unused imports was a game changer for keeping the files clean.
-3. **Naming**
-   I renamed and moved files much more often than I was used to, to make sure that names were intention revealing.
-4. **Refactoring**  
-   When a feature was finished, I intended to refactor it as soon as possible. Complex components were broken into smaller ones and often refactored in one state and one UI component.
-   This opens the possibility to use UI testing libraries like [Storybook JS](https://storybook.js.org/)
-5. **Magic numbers**
-   I used magic numbers or strings often in my last projects, but tried to avoid them and use constants or enums instead.
-
-As I used the project also for Clean Code, it really helped me understanding the value of clean code and how important it is to not clean it once, but to maintain it.
-Especially avoiding complex or too nested structures, to keep the code readable and understandable.
-
-### Committing
-
-Early into the process I recognized that naturally I was used to doing smaller commits. This is the reason why atomic commits came quite naturally and were easy to implement. I was familiar with using fix, chore and feat as commit prefixes. Using the [gitmoji commit guidelines](https://gitmoji.dev/) was a great way to keep the commit messages consistent. Although I like the consistency it is too much work researching the right emoji for every commit. I'll therefore not use it in further projects and stay with the classic (feat/fix/chore).
-
-In my research I sumbled upon the [semantic commit message style](https://gist.github.com/joshbuchea/6f47e86d2510bce28f8e7f42ae84c716):
-`<type>(<scope>): <subject> `
-
-**Examples:**
-
-- feat: (new feature for the user, not a new feature for build script)
-- fix: (bug fix for the user, not a fix to a build script)
-- docs: (changes to the documentation)
-- style: (formatting, missing semi colons, etc; no production code change)
-- refactor: (refactoring production code, eg. renaming a variable)
-- test: (adding missing tests, refactoring tests; no production code change)
-- chore: (updating grunt tasks etc; no production code change)
-
-## Refactoring Workflow
-
-The branch "[refactoringExample](https://github.com/Joelheile/ClubHub/commits/refactoringExample/)" is an example of a refactoring workflow I implemented. I cherry picked the commit of a refactoring I did earlier and broke it further down using atomic commits.
-
-### Testing
-
-The tests I currently have are mostly integration tests for the two most important routes: runs and clubs.
-These tests were helpful for refactoring routes and to make sure, that the API worked like intended.
-It helped me to understand the value of automated testing. In the next weeks I will further enhance testing on more routes, implement more E2E tests, it they make sense and most importantly build unit tests.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 <!-- STATIC CODE ANALYSIS -->
 
 ## Static Code Analysis
@@ -281,8 +307,6 @@ pnpm run lint
 
 <br/>
 I hope you liked the project :)
-
-Really looking forward to the oral assessments!
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->

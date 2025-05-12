@@ -1,9 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { expect, test } from "@playwright/test";
 
-test("Test add club & run logic and delete both afterwards", async ({
-  page,
-}) => {
+test("Test add club ", async ({ page }) => {
   const clubName = `${faker.company.name()} Club (test)`;
   await page.goto("http://localhost:3000/");
   await page.getByRole("button", { name: "Search Clubs 🏃" }).click();

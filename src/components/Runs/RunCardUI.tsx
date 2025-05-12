@@ -21,6 +21,7 @@ interface RunCardUIProps {
   isAdmin?: boolean;
   isCompact?: boolean;
   clubSlug?: string;
+  isPast?: boolean;
 }
 
 const getDifficultyInfo = (difficulty: string) => {
@@ -71,6 +72,7 @@ export default function RunCardUI({
   isAdmin,
   isCompact = false,
   clubSlug,
+  isPast = false,
 }: RunCardUIProps) {
   const difficultyInfo = getDifficultyInfo(difficulty);
 
@@ -124,7 +126,7 @@ export default function RunCardUI({
 
         <div className={`space-y-${isCompact ? "2" : "4"}`}>
           <div className="flex flex-wrap items-center gap-2">
-            {onLikeRun && (
+            {onLikeRun && !isPast && (
               <div className="z-10">
                 <LikeButton
                   onClick={handleLikeClick}
@@ -189,7 +191,7 @@ export default function RunCardUI({
           </TooltipContent>
         </Tooltip>
 
-        {mapsLink && (
+        {mapsLink && !isPast && (
           <div className="flex flex-col gap-2 sm:gap-3 mt-2 sm:mt-4">
             <Tooltip>
               <TooltipTrigger asChild>
@@ -224,8 +226,13 @@ export default function RunCardUI({
   return (
     <div className={`w-full mx-auto ${isCompact ? "mb-2" : "mb-4"}`}>
       {clubSlug ? (
-        <Link href={`/clubs/${clubSlug}`} className="block">
-          <div className="bg-white rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-all duration-200 cursor-pointer">
+        <Link
+          href={`/clubs/${clubSlug}`}
+          className={`block ${isPast ? "pointer-events-none" : ""}`}
+        >
+          <div
+            className={`bg-white rounded-lg shadow-sm border border-gray-100 ${!isPast ? "hover:shadow-md" : ""} transition-all duration-200 ${!isPast ? "cursor-pointer" : ""}`}
+          >
             <div
               className={`flex flex-col sm:flex-row ${isCompact ? "p-3" : "p-4 sm:p-6"} h-full`}
             >

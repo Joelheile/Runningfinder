@@ -5,6 +5,7 @@ import "./globals.css";
 import AuthProvider from "@/components/Auth/AuthProvider";
 import { TooltipProvider } from "@/components/UI/tooltip";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { SessionProvider } from "next-auth/react";
 import { Toaster } from "react-hot-toast";
 import ReactQueryProvider from "../components/Providers/ReactQueryProvider";
 import { CSPostHogProvider } from "./providers";
@@ -33,13 +34,15 @@ export default function RootLayout({
       <body className={inter.className}>
         <ReactQueryProvider>
           <AuthProvider>
-            <TooltipProvider>
-              <Toaster position="bottom-center" />
-              <CSPostHogProvider>
-                <body>{children}</body>
-              </CSPostHogProvider>
-              <SpeedInsights />
-            </TooltipProvider>
+            <SessionProvider>
+              <TooltipProvider>
+                <Toaster position="bottom-center" />
+                <CSPostHogProvider>
+                  <body>{children}</body>
+                </CSPostHogProvider>
+                <SpeedInsights />
+              </TooltipProvider>
+            </SessionProvider>
           </AuthProvider>
         </ReactQueryProvider>
       </body>

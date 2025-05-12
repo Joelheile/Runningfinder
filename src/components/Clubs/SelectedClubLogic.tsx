@@ -23,27 +23,19 @@ export function SelectedClubHeaderLogic({
   const { data: runs } = useClubRunsData(clubId);
 
   const futureRuns =
-    runs?.filter((run: Run) => run.datetime > new Date()) || [];
+    runs?.filter((run: Run) => new Date(run.datetime) > new Date()) || [];
 
-  if (!run.clubId) {
-    return <div>No club ID found for this run</div>;
-  }
+  const avatarUrl = club?.avatarUrl || "/assets/default-fallback-image.png";
 
-  if (isLoading) {
-    return <ClubHeaderSkeleton />;
-  }
-
-  if (!club) {
-    return <div>Club not found</div>;
-  }
-
-  const avatarUrl = club.avatarUrl || "/assets/default-fallback-image.png";
+  if (isLoading) return <ClubHeaderSkeleton />;
+  if (!run.clubId) return <div>No club ID found for this run</div>;
+  if (!club) return <div>Club not found</div>;
 
   return (
     <SelectedClubHeaderUI
       club={club}
       avatarUrl={avatarUrl}
-      runs={runs || []}
+      runs={futureRuns || []}
       onClose={onClose}
     />
   );

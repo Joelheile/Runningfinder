@@ -112,7 +112,6 @@ export default function AddRunState({
 
     mutation.mutate(newRun);
 
-    // Reset all form fields
     setName("");
     setDifficulty("");
     setDistance("");
@@ -123,7 +122,6 @@ export default function AddRunState({
     setIsRecurrent(false);
     setShowMap(false);
 
-    // Track successful run creation
     posthog.capture("run_created", {
       run_name: name,
       club_name: club.name,

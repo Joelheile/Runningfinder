@@ -10,13 +10,6 @@ const providers = [
   GitHub({
     clientId: process.env.AUTH_GITHUB_ID,
     clientSecret: process.env.AUTH_GITHUB_SECRET,
-    authorization: {
-      params: {
-        prompt: "consent",
-        access_type: "offline",
-        response_type: "code",
-      },
-    },
   }),
   Resend({
     apiKey: process.env.AUTH_RESEND_API_KEY,
