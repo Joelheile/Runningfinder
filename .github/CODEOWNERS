@@ -1,0 +1,18 @@
+# These owners will be the default owners for everything in
+# the repo. Unless a later match takes precedence,
+# they will be requested for review when someone opens a pull request.
+* @Joelheile
+
+# Backend-related files
+/src/lib/db/ @Joelheile
+/src/app/api/ @Joelheile
+
+# Authentication-related files
+/src/lib/authentication/ @Joelheile
+
+# Frontend components
+/src/components/ @Joelheile
+
+# Documentation
+/*.md @Joelheile
+/docs/ @Joelheile 

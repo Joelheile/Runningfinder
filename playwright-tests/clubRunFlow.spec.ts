@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { expect, test } from "@playwright/test";
 
-test("Test add club & run logic and delete both afterwards", async ({
+test("Test add club ", async ({
   page,
 }) => {
   const clubName = `${faker.company.name()} Club (test)`;
@@ -22,4 +22,5 @@ test("Test add club & run logic and delete both afterwards", async ({
     .fill("test");
   await page.getByRole("button", { name: "Create Club" }).click();
   await expect(page.getByText("Club added successfully 🎉 It")).toBeVisible();
+  
 });
