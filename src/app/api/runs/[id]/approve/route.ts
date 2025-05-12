@@ -3,6 +3,9 @@ import { runs } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export async function POST(
   request: Request,
   { params }: { params: { id: string } },
@@ -38,7 +41,15 @@ export async function POST(
       return NextResponse.json({ error: "Run not found" }, { status: 404 });
     }
 
-    return NextResponse.json(approvedRun[0]);
+    return NextResponse.json(approvedRun[0], {
+      headers: {
+        "Cache-Control":
+          "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0",
+        Pragma: "no-cache",
+        Expires: "0",
+        "Surrogate-Control": "no-store",
+      },
+    });
   } catch (error) {
     console.error("Error approving run:", error);
     return NextResponse.json(

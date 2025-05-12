@@ -1,7 +1,7 @@
 import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
 import { Run } from "@/lib/types/Run";
 import React, { useEffect, useState } from "react";
-import { SelectedClubHeaderLogic } from "../Clubs/SelectedCluLogic";
+import { SelectedClubHeaderLogic } from "../Clubs/SelectedClubLogic";
 
 interface MapViewProps {
   mapRef: React.RefObject<HTMLDivElement>;

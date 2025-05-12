@@ -5,18 +5,18 @@
 
 name: Daily Run Scraping
 
-on:
-  schedule:
-    # Runs at 00:00 UTC every day
-    # Modify the cron expression if you need a different schedule:
-    # ┌───────────── minute (0 - 59)
-    # │ ┌───────────── hour (0 - 23)
-    # │ │ ┌───────────── day of the month (1 - 31)
-    # │ │ │ ┌───────────── month (1 - 12)
-    # │ │ │ │ ┌───────────── day of the week (0 - 6)
-    # │ │ │ │ │
-    # * * * * *
-    - cron: "0 0 * * *"
+# on:
+#   schedule:
+#     # Runs at 00:00 UTC every day
+#     # Modify the cron expression if you need a different schedule:
+#     # ┌───────────── minute (0 - 59)
+#     # │ ┌───────────── hour (0 - 23)
+#     # │ │ ┌───────────── day of the month (1 - 31)
+#     # │ │ │ ┌───────────── month (1 - 12)
+#     # │ │ │ │ ┌───────────── day of the week (0 - 6)
+#     # │ │ │ │ │
+#     # * * * * *
+#     - cron: "0 0 * * *"
 
   # Allows manual triggering of the workflow from GitHub UI
   workflow_dispatch:
