@@ -6,7 +6,7 @@ describe("Club Database Operations", () => {
     try {
       const result = await db.select().from(clubs).execute();
       const limitedResults = result.slice(0, 1);
-      
+
       expect(limitedResults).toBeDefined();
       expect(Array.isArray(limitedResults)).toBe(true);
 

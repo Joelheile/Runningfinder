@@ -28,6 +28,10 @@ yarn-error.log*
 
 # local env files
 .env*.local
+.env
+.env.development
+.env.production
+.env.test
 
 # vercel
 .vercel
@@ -44,3 +48,26 @@ node_modules/
 # vs code
 /.vscode/
 node_modules
+
+# backups and data
+*.bak
+*.backup
+*.db
+*.sqlite
+*.dump
+
+# logs
+logs/
+*.log
+
+# temporary files
+*.tmp
+.temp/
+tmp/
+
+# sensitive or personal files
+credentials.json
+tokens.json
+secrets.json
+*secret*.json
+*key*.json
