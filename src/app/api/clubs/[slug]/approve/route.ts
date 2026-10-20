@@ -5,13 +5,14 @@ import { NextResponse } from "next/server";
 
 export async function POST(
   request: Request,
-  { params }: { params: { slug: string } },
+  { params }: { params: Promise<{ slug: string }> },
 ) {
   try {
+    const { slug } = await params;
     const existingClub = await db
       .select()
       .from(clubs)
-      .where(eq(clubs.slug, params.slug));
+      .where(eq(clubs.slug, slug));
 
     if (!existingClub.length) {
       return NextResponse.json({ error: "Club not found" }, { status: 404 });
@@ -20,7 +21,7 @@ export async function POST(
     const updatedClub = await db
       .update(clubs)
       .set({ isApproved: true })
-      .where(eq(clubs.slug, params.slug))
+      .where(eq(clubs.slug, slug))
       .returning();
 
     if (!updatedClub.length) {

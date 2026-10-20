@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { SelectedClubHeaderLogic } from "../Clubs/SelectedClubLogic";
 
 interface MapViewProps {
-  mapRef: React.RefObject<HTMLDivElement>;
+  mapRef: React.RefObject<HTMLDivElement | null>;
   selectedLocation: Run | null;
   runs: Run[];
 }

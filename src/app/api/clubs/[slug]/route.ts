@@ -7,13 +7,11 @@ const DEFAULT_FALLBACK_IMAGE_URL = "/assets/default-fallback-image.png";
 
 export async function GET(
   request: Request,
-  { params }: { params: { slug: string } },
+  { params }: { params: Promise<{ slug: string }> },
 ) {
   try {
-    const res = await db
-      .select()
-      .from(clubs)
-      .where(eq(clubs.slug, params.slug));
+    const { slug } = await params;
+    const res = await db.select().from(clubs).where(eq(clubs.slug, slug));
 
     if (res.length === 0) {
       return NextResponse.json({ error: "Club not found" }, { status: 404 });
@@ -33,10 +31,10 @@ export async function GET(
 
 export async function PATCH(
   request: Request,
-  { params }: { params: { slug: string } },
+  { params }: { params: Promise<{ slug: string }> },
 ) {
   try {
-    const { slug } = params;
+    const { slug } = await params;
     if (!slug) {
       return NextResponse.json(
         { error: "Club slug is required" },
@@ -63,10 +61,10 @@ export async function PATCH(
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { slug: string } },
+  { params }: { params: Promise<{ slug: string }> },
 ) {
   try {
-    const { slug } = params;
+    const { slug } = await params;
     if (!slug) {
       return NextResponse.json(
         { error: "Club slug is required" },

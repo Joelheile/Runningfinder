@@ -9,9 +9,10 @@ export const revalidate = 0;
 
 export async function GET(
   request: Request,
-  { params }: { params: { slug: string } },
+  { params }: { params: Promise<{ slug: string }> },
 ) {
-  if (!params.slug) {
+  const { slug } = await params;
+  if (!slug) {
     return NextResponse.json({ error: "User ID is required" }, { status: 400 });
   }
 
@@ -19,7 +20,7 @@ export async function GET(
     const query = db
       .select()
       .from(registrations)
-      .where(eq(registrations.userId, params.slug));
+      .where(eq(registrations.userId, slug));
 
     const res = await query.execute();
 
