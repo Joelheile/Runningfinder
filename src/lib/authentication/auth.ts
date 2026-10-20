@@ -12,7 +12,7 @@ const providers = [
     clientSecret: process.env.AUTH_GITHUB_SECRET,
   }),
   Resend({
-    apiKey: process.env.AUTH_RESEND_API_KEY,
+    apiKey: process.env.AUTH_RESEND_KEY,
     from: "no-reply@runningfinder.de",
     sendVerificationRequest: sendVerificationRequest,
   }),

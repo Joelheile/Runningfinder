@@ -7,7 +7,7 @@ import { ChevronLeft } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 
 export default function AddRunsPage() {
-  const slug = useParams().slug.toString();
+  const slug = useParams().slug!.toString();
   const router = useRouter();
   const {
     data: club,

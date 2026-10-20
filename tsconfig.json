@@ -13,7 +13,7 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "incremental": true,
     "baseUrl": ".",
     "paths": {
@@ -34,7 +34,18 @@
     "drizzle-dev.drizzle.config",
     "drizzle-prod.drizzle.config",
     "setupTests.js",
-    "src/app/providers.ts"
+    "src/app/providers.ts",
+    ".next/dev/types/**/*.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules",
+    "jest-tests",
+    "playwright-tests",
+    "tests",
+    "tests-examples",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "custom-worker.ts",
+    "cloudflare-env.d.ts"
+  ]
 }

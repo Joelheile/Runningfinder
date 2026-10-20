@@ -10,7 +10,7 @@ import ClubDashboardUI from "./ClubDashboardUI";
 
 export default function ClubDashboard() {
   const router = useRouter();
-  const slug = useParams().slug.toString();
+  const slug = useParams().slug!.toString();
 
   const {
     data: club,

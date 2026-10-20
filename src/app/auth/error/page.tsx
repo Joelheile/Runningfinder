@@ -1,8 +1,9 @@
-export default function AuthError({
+export default async function AuthError({
   searchParams,
 }: {
-  searchParams: { error?: string };
+  searchParams: Promise<{ error?: string }>;
 }) {
+  const { error } = await searchParams;
   return (
     <div className="flex min-h-screen flex-col items-center justify-center">
       <div className="w-full max-w-md space-y-8 rounded-lg bg-white p-6 shadow-md">
@@ -10,7 +11,7 @@ export default function AuthError({
           Authentication Error
         </h2>
         <p className="text-center text-gray-600">
-          {searchParams.error || "An error occurred during authentication"}
+          {error || "An error occurred during authentication"}
         </p>
       </div>
     </div>
